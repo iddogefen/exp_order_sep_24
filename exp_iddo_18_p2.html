@@ -7,27 +7,27 @@
         }
     </style>
     <title>My experiment</title>
-    <script src="jspsych/jspsych.js"></script>
+    <script src="jspsych/plugins/jspsych.js"></script>
 
     <!--<script src="jspsych/plugins/jspsych-order.js"></script>-->
-    <script src="jspsych/plugin-instructions.js"></script>
-    <script src="jspsych/plugin-survey-text.js"></script>
-    <script src="jspsych/plugin-html-keyboard-response.js"></script>
-	<script src="jspsych/plugin-html-button-response.js"></script>
-    <script src="jspsych/plugin-image-button-response.js"></script>
-    <script src="jspsych/plugin-image-keyboard-response.js"></script>
-    <script src="jspsych/plugin-html-audio-response.js"></script>
-    <script src="jspsych/plugin-initialize-microphone.js"></script>
-    <script src="jspsych/plugin-fullscreen.js"></script>
-    <script src="jspsych/plugin-preload.js"></script>
-    <script src="jspsych/plugin-browser-check.js"></script>
+    <script src="jspsych/plugins/plugin-instructions.js"></script>
+    <script src="jspsych/plugins/plugin-survey-text.js"></script>
+    <script src="jspsych/plugins/plugin-html-keyboard-response.js"></script>
+	<script src="jspsych/plugins/plugin-html-button-response.js"></script>
+    <script src="jspsych/plugins/plugin-image-button-response.js"></script>
+    <script src="jspsych/plugins/plugin-image-keyboard-response.js"></script>
+    <script src="jspsych/plugins/plugin-html-audio-response.js"></script>
+    <script src="jspsych/plugins/plugin-initialize-microphone.js"></script>
+    <script src="jspsych/plugins/plugin-fullscreen.js"></script>
+    <script src="jspsych/plugins/plugin-preload.js"></script>
+    <script src="jspsych/plugins/plugin-browser-check.js"></script>
 
     <script src="Tools/Functions.js"></script>
 
 
-    <link rel="stylesheet" href="jspsych/jspsych.css">
+    <link rel="stylesheet" href="jspsych/css/jspsych.css">
   </head>
-  <body>Test version 20240826</body>
+  <body>Sep 2024</body>
   <script>
 	// MG - added constants	for the parameters used
 	const duration_recording	= 55000;
@@ -258,7 +258,7 @@
     type: jsPsychHtmlAudioResponse,
     stimulus: `<span style="color: red; font-size: 24px"> NOW RECORDING</span>
         <p>Please test Microphone</p>`,
-    recording_duration: 55000,
+    recording_duration: duration_recording,
     allow_playback: true,
     };
     var trial_rc = {
@@ -274,7 +274,7 @@ var trial_butt = {
 	var trial_02mic=[trial_02, trial_mic,trial_butt];
 
 var loop_node = {
-    timeline: [trial_02mic],
+    timeline: trial_02mic,
     loop_function: function(data){
 		console.log(data);
         if(data.values()[2].response== 0){

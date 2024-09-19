@@ -37,9 +37,9 @@
 	const prompt_oddeven		= "<p>Is the year of birth odd or even?</p>";
 	const prompt_empty			= '<p></p>';
 	const groups = [
-    	{ name: "causal",		n: 1, random: "half" },
-    	{ name: "schematic", 	n: 1, random: "half" },
-    	{ name: "semantic", 	n: 1, random: "all" }
+    	{ name: "causal",		n: 2, random: "half" },
+    	{ name: "schematic", 	n: 2, random: "half" },
+    	{ name: "semantic", 	n: 2, random: "all" }
 	];
 
 //	Define all prompts for both parts - 1 and 2. The prompts that are not identical are built as an array,
@@ -274,7 +274,7 @@ var trial_butt = {
 	var trial_02mic=[trial_02, trial_mic,trial_butt];
 
 var loop_node = {
-    timeline: [trial_02mic],
+    timeline: trial_02mic,
     loop_function: function(data){
 		console.log(data);
         if(data.values()[2].response== 0){
