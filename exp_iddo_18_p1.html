@@ -173,7 +173,7 @@
 	 // MG dynamic preload of images - looking for all image files under the "images"folder
 	images_to_preload=retrieveImageNames("images");
     var preload = {
-      type: jsPsychPreload,
+      type: 'preload',
       images: images_to_preload
 	};
     timeline.push(preload);
@@ -208,7 +208,7 @@
 
 
     var trial_0 = {
-		type: jsPsychInstructions,
+		type: 'instructions',
 		pages: prompt_0,
 		show_clickable_nav: true,
 		on_load: function() {
@@ -237,37 +237,37 @@
 	timeline.push(trial_0);
 
     var trial_consent = {
-        type: jsPsychInstructions,
+        type: 'instructions',
         pages: prompt_consent,
         show_clickable_nav: true
     };
     timeline.push(trial_consent);
 
     var trial_01 = {
-  		type: jsPsychFullscreen,
+  		type: 'fullscreen',
   		fullscreen_mode: true
 	}
 	timeline.push(trial_01);
 
     var trial_02 = {
-        type: jsPsychInitializeMicrophone
+        type: 'initialize-microphone'
     };
   // timeline.push(trial_02);
 
     var trial_mic = {
-    type: jsPsychHtmlAudioResponse,
+    type: 'audio-response',
     stimulus: `<span style="color: red; font-size: 24px"> NOW RECORDING</span>
         <p>Please test Microphone</p>`,
     recording_duration: duration_recording,
     allow_playback: true,
     };
     var trial_rc = {
-      type: jsPsychHtmlKeyboardResponse,
+      type: 'html-keyboard-response',
       stimulus: 'Hello. This is in a loop. Press "r" to repeat this trial, or "c" to continue.',
       choices: ['r','c']
     };
 var trial_butt = {
-  type: jsPsychHtmlButtonResponse,
+  type: 'html-button-response',
   stimulus: '<p style="font-size:48px; color:red;">Is Microphone OK?</p>',
   choices: ['Repeat microphone selection', 'Microphone OK']
 };
@@ -287,7 +287,7 @@ var loop_node = {
 timeline.push(loop_node);
 
  const trialxx = {
-       type: jsPsychInstructions,
+       type: 'instructions',
        pages: [
          'Welcome to the experiment. Click next to begin.',
          'This is the second page of instructions.',
@@ -301,7 +301,7 @@ timeline.push(loop_node);
 //timeline.push(trialxx);
 
 	var trial_03 = {
-		type: jsPsychInstructions,
+		type: 'instructions',
 		pages: prompt_03[part-1],
 		show_clickable_nav: true
 	};
@@ -313,14 +313,14 @@ timeline.push(loop_node);
 
     // only part 1 trial
     var trial_05 = {
-        type: jsPsychInstructions,
+        type: 'instructions',
         pages: prompt_05,
     	show_clickable_nav: true
     };
     if (part==1) timeline.push(trial_05);
 
     var trial_06 = {
-		type: jsPsychHtmlAudioResponse,
+		type: 'audio-response',
 		stimulus: prompt_06[part-1],
 		recording_duration: duration_recording,
 		allow_playback: true,
@@ -362,7 +362,7 @@ timeline.push(loop_node);
 	timeline.push(trial_06);
 
  	var trial_07 = {
-        type: jsPsychInstructions,
+        type: 'instructions',
         pages: [
 			prompt_07[part-1]
     	],
@@ -372,7 +372,7 @@ timeline.push(loop_node);
 
 
     var trial_10 = {
-		type: jsPsychHtmlAudioResponse,
+		type: 'audio-response',
 		stimulus: prompt_10[part-1],
 		recording_duration: duration_recording,
 		allow_playback: true,
@@ -450,7 +450,7 @@ timeline.push(loop_node);
 	timeline.push(trial_15);
 
 	var trial_16 = {
-		type: jsPsychInstructions,
+		type: 'instructions',
 		pages: [
 			prompt_16[part-1]
 		],
