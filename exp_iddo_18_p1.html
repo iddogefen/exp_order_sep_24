@@ -326,7 +326,7 @@ timeline.push(loop_node);
 		allow_playback: true,
 		on_finish: function(data){
 			   // console.log("fetching pho:", subject_id);
-			fetch('http://localhost/save-my-data.php', {
+			fetch('/save-my-data.php', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'

@@ -7,6 +7,7 @@ function retrieveImages($dir) {
             $images[] = $file->getPathname();
         }
     }
+    sort($images);
     return $images;
 }
 
