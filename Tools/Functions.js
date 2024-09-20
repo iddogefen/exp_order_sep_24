@@ -21,8 +21,11 @@ function saveData(name, data){
   // MG end change
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
+=======
+>>>>>>> 1df4eeab21550e262d3f9fceb23311fe6ba56640
 function saveText(name, seqs){
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/write_text.php'); // 'write_text.php' is the path to the php file described above.
@@ -42,7 +45,10 @@ function getText(name) {
         return null;
     }
 }
+<<<<<<< HEAD
 >>>>>>> c8c36c243a37876c90f078610576f7a5f0f17f2f
+=======
+>>>>>>> 1df4eeab21550e262d3f9fceb23311fe6ba56640
 function retrieveImageNames(folder) {
 	// get all images in the system
     var xhr = new XMLHttpRequest();
@@ -59,15 +65,20 @@ function retrieveImageNames(folder) {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // now using test values
 
 =======
 // These are the size parameters.
 >>>>>>> c8c36c243a37876c90f078610576f7a5f0f17f2f
+=======
+// These are the size parameters.
+>>>>>>> 1df4eeab21550e262d3f9fceb23311fe6ba56640
 const width_title			= 600;
 const height_title			= 600;
 const width_image			= 300;
 const height_image			= 300;
+<<<<<<< HEAD
 <<<<<<< HEAD
 const duration_title		= 1500;
 const duration_image		= 1800;
@@ -85,6 +96,9 @@ const duration_response		= 1800;
 =======
 
 >>>>>>> c8c36c243a37876c90f078610576f7a5f0f17f2f
+=======
+
+>>>>>>> 1df4eeab21550e262d3f9fceb23311fe6ba56640
 
 function getRandomValues(arr, n) {
     // Shuffle the array using Fisher-Yates algorithm
@@ -144,11 +158,14 @@ function getAllSequences(groups) {
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 function getTimeline(seq,p1,p2,choices,num,part) {
 	// create a "trial_10" timeline
     var images = retrieveImageNames('images/' + seq[0]);
 //alert(images);
 =======
+=======
+>>>>>>> 1df4eeab21550e262d3f9fceb23311fe6ba56640
 function getTimeline(seq,p1,p2,choices,num,part,slow) {
 	if (slow==false) {
 		duration_title			= 1500;
@@ -166,7 +183,10 @@ function getTimeline(seq,p1,p2,choices,num,part,slow) {
 	// create a "trial_10" timeline
     var images = retrieveImageNames('images/' + seq[0]);
 
+<<<<<<< HEAD
 >>>>>>> c8c36c243a37876c90f078610576f7a5f0f17f2f
+=======
+>>>>>>> 1df4eeab21550e262d3f9fceb23311fe6ba56640
     // Ensure num does not exceed the number of available images
     num = Math.min(num, images.length - 1);
 
@@ -242,7 +262,11 @@ function getTimeline(seq,p1,p2,choices,num,part,slow) {
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // MG deleted call to init");
 =======
 // MG deleted call to init");
 >>>>>>> c8c36c243a37876c90f078610576f7a5f0f17f2f
+=======
+// MG deleted call to init");
+>>>>>>> 1df4eeab21550e262d3f9fceb23311fe6ba56640
