@@ -37,9 +37,9 @@
 	const prompt_oddeven		= "<p>Is the year of birth odd or even?</p>";
 	const prompt_empty			= '<p></p>';
 	const groups = [
-    	{ name: "causal",		n: 2, random: "half" },
-    	{ name: "schematic", 	n: 2, random: "half" },
-    	{ name: "semantic", 	n: 2, random: "all" }
+    	{ name: "causal",		n: 100, random: "half" },
+    	{ name: "schematic", 	n: 100, random: "half" },
+    	{ name: "semantic", 	n: 100, random: "all" }
 	];
 
 //	Define all prompts for both parts - 1 and 2. The prompts that are not identical are built as an array,
@@ -154,6 +154,8 @@
       on_finish: function() {
 	  // File to be saved in "data/part_X" subfolder
         saveData(data_folder+subject_id+".csv", jsPsych.data.get().csv());
+        saveText(audio_folder+'/'+subject_id+"/part_"+part+"_seqs.txt",all_seq);
+		console.log("saved in :",JSON.stringify(all_seq));
       }
     });
 	// I am using version 8.0.2 - not sure what is installed at the server
@@ -187,6 +189,18 @@
 	// assuming we can add a parameter to the URL. If not, we may have to have 2 files, only different with one variable
 	// FOR NOW 2 FILES var part					= jsPsych.data.getURLVariable('part');
 	part=1;
+	slow=true;
+	fast_test=jsPsych.data.getURLVariable('fast_test');
+	if (fast_test != undefined) {
+		slow=false;
+	}
+	num_seqs=jsPsych.data.getURLVariable('num_seqs');
+	if (num_seqs != undefined) {
+		groups[0].n=num_seqs;
+		groups[1].n=num_seqs;
+		groups[2].n=num_seqs;
+	}
+	console.log("params=",groups,slow);
 	// Save in subfolders - data/part_N, audio_files/part_N/subject_d/	(needs to be make sure there is permission to create sub-folders)
 	var data_folder             = 'data/part_'+part+'/';
 	var audio_folder            = 'audio_files/part_'+part+'/';
@@ -198,8 +212,6 @@
         urlvar: urlvar,
         current_url: currentUrl
     });
-// For now - while testing
-//alert("PART "+part);
 	console.log("in test program part=",part);
 
     jsPsych.data.addProperties({
@@ -266,39 +278,26 @@
       stimulus: 'Hello. This is in a loop. Press "r" to repeat this trial, or "c" to continue.',
       choices: ['r','c']
     };
-var trial_butt = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: '<p style="font-size:48px; color:red;">Is Microphone OK?</p>',
-  choices: ['Repeat microphone selection', 'Microphone OK']
-};
+	var trial_butt = {
+	  type: jsPsychHtmlButtonResponse,
+	  stimulus: '<p style="font-size:48px; color:red;">Is Microphone OK?</p>',
+	  choices: ['Repeat microphone selection', 'Microphone OK']
+	};
 	var trial_02mic=[trial_02, trial_mic,trial_butt];
 
-var loop_node = {
-    timeline: trial_02mic,
-    loop_function: function(data){
-		console.log(data);
-        if(data.values()[2].response== 0){
-            return true;
-        } else {
-            return false;
-        }
-    }
-}
-timeline.push(loop_node);
+	var loop_node = {
+		timeline: trial_02mic,
+		loop_function: function(data){
+			//console.log(data);
+			if(data.values()[2].response== 0){
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+	timeline.push(loop_node);
 
- const trialxx = {
-       type: jsPsychInstructions,
-       pages: [
-         'Welcome to the experiment. Click next to begin.',
-         'This is the second page of instructions.',
-         'This is the final page.'
-       ],
-       button_label_next: "Continue",
-       button_label_previous: "Return to the dark side",
-       show_clickable_nav: true
-     }
-
-//timeline.push(trialxx);
 
 	var trial_03 = {
 		type: jsPsychInstructions,
@@ -308,7 +307,7 @@ timeline.push(loop_node);
 	timeline.push(trial_03);
 
     // Movie trial always present
-	trial_04=getTimeline(["instructions", false], prompt_empty,prompt_person,choice_yn,4,part);
+	trial_04=getTimeline(["instructions", false], prompt_empty,prompt_person,choice_yn,4,part,slow);
     timeline.push(trial_04);
 
     // only part 1 trial
@@ -412,8 +411,12 @@ timeline.push(loop_node);
 	};
 
 	// Function to randomly select one of the specified options
-	all_seq=getAllSequences(groups);
+	if (part==2)
+		all_seq=getText(audio_folder.replace("part_2","part_1")+'/'+subject_id+"/p1_seqs.txt");
+	else
+		all_seq=getAllSequences(groups);
 	console.log("sequences:", all_seq);
+
 	// array of structures for experiment based on random list
 	var selectedOption =[];
 	for (iseq=0;iseq<all_seq.length;iseq++){
@@ -426,7 +429,7 @@ timeline.push(loop_node);
 			prompt=prompt_person;
 			choice=choice_yn;
 		}
-		selectedOption[iseq]=getTimeline(all_seq[iseq], prompt_empty,prompt,choice,10,part);
+		selectedOption[iseq]=getTimeline(all_seq[iseq], prompt_empty,prompt,choice,10,part,slow);
 	}
 	for (var seq=0;seq<	selectedOption.length;seq++) {
 			var trial=Object.assign({},trial_10);
