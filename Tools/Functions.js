@@ -20,7 +20,29 @@ function saveData(name, data){
   xhr.send(JSON.stringify({filedata: data, subject_id: subject_id, folder:folder }));
   // MG end change
 }
+<<<<<<< HEAD
 
+=======
+function saveText(name, seqs){
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/write_text.php'); // 'write_text.php' is the path to the php file described above.
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.send(JSON.stringify({filedata: JSON.stringify(seqs), fname: name }));
+}
+function getText(name) {
+  	var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/read_text.php?fname='+encodeURIComponent(name), false); // false makes the request synchronous
+    xhr.send();
+    if (xhr.status === 200) {
+        var data = JSON.parse(xhr.responseText);
+		//alert(JSON.parse(data));
+        return JSON.parse(data);
+    } else {
+        console.error('Error:', xhr.statusText);
+        return null;
+    }
+}
+>>>>>>> c8c36c243a37876c90f078610576f7a5f0f17f2f
 function retrieveImageNames(folder) {
 	// get all images in the system
     var xhr = new XMLHttpRequest();
@@ -36,12 +58,17 @@ function retrieveImageNames(folder) {
     }
 }
 
+<<<<<<< HEAD
 // now using test values
 
+=======
+// These are the size parameters.
+>>>>>>> c8c36c243a37876c90f078610576f7a5f0f17f2f
 const width_title			= 600;
 const height_title			= 600;
 const width_image			= 300;
 const height_image			= 300;
+<<<<<<< HEAD
 const duration_title		= 1500;
 const duration_image		= 1800;
 const duration_question		= 1000;
@@ -55,6 +82,9 @@ const duration_response		= 1800;
  const duration_response		= 1800;
 */
 //alert(duration_title);
+=======
+
+>>>>>>> c8c36c243a37876c90f078610576f7a5f0f17f2f
 
 function getRandomValues(arr, n) {
     // Shuffle the array using Fisher-Yates algorithm
@@ -113,10 +143,30 @@ function getAllSequences(groups) {
 }
 
 
+<<<<<<< HEAD
 function getTimeline(seq,p1,p2,choices,num,part) {
 	// create a "trial_10" timeline
     var images = retrieveImageNames('images/' + seq[0]);
 //alert(images);
+=======
+function getTimeline(seq,p1,p2,choices,num,part,slow) {
+	if (slow==false) {
+		duration_title			= 1500;
+		duration_image			= 180;
+		duration_question		= 180;
+		duration_response		= 180;
+	}
+	else {
+	 	duration_title			= 6000;
+	 	duration_image			= 4500;
+	 	duration_question		= 4000;
+	 	duration_response		= 1800;
+	}
+
+	// create a "trial_10" timeline
+    var images = retrieveImageNames('images/' + seq[0]);
+
+>>>>>>> c8c36c243a37876c90f078610576f7a5f0f17f2f
     // Ensure num does not exceed the number of available images
     num = Math.min(num, images.length - 1);
 
@@ -191,4 +241,8 @@ function getTimeline(seq,p1,p2,choices,num,part) {
 }
 
 
+<<<<<<< HEAD
 // MG deleted call to init");
+=======
+// MG deleted call to init");
+>>>>>>> c8c36c243a37876c90f078610576f7a5f0f17f2f
