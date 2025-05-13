@@ -27,9 +27,9 @@
 
     <link rel="stylesheet" href="jspsych/css/jspsych.css">
   </head>
-  <body>Nov 2024</body>
+  <body>May 2025</body>
   <script>
-	const vrs = "D11-14,T12:00"
+	const vrs = "D05-13,T23:00"
 	const duration_recording	= 55000;
 	const choice_yn				= ['yes', 'no'];
 	const choice_oddeven		= ['odd', 'even'];
@@ -200,11 +200,15 @@
 
 
     // capture info
+	var now =  new Date();
+	// default subject_id
     var subject_id = jsPsych.data.getURLVariable('participantId');
+	if (subject_id == undefined)    subject_id = "user_"+parseInt(Math.random()*1000000).toString();
     var study_id = jsPsych.data.getURLVariable('assignmentId');
     var session_id = jsPsych.data.getURLVariable('projectId');
     var urlvar = jsPsych.data.urlVariables();
 	// assuming we can add a parameter to the URL. If not, we may have to have 2 files, only different with one variable
+	// ****************** To be changed to part=2 in  _p2 file !
 	part = 1;
 	part_URL = jsPsych.data.getURLVariable('part');
 	if (part_URL != undefined)
@@ -214,11 +218,35 @@
 	if (fast_test != undefined) {
 		slow=false;
 	}
-	num_seqs=jsPsych.data.getURLVariable('num_seqs');
-	if (num_seqs != undefined) {
-		groups[0].n=num_seqs;
-		groups[1].n=num_seqs;
-		groups[2].n=num_seqs;
+	num_seqs_full=jsPsych.data.getURLVariable('num_seqs');
+	if (num_seqs_full != undefined) {
+		groups[0].n=num_seqs_full;
+		groups[1].n=num_seqs_full;
+		groups[2].n=num_seqs_full;
+	}
+	num_seqs_causal=jsPsych.data.getURLVariable('causal');
+	num_seqs_schematic=jsPsych.data.getURLVariable('schematic');
+	num_seqs_semantic=jsPsych.data.getURLVariable('semantic');
+	if (num_seqs_causal != undefined) {
+ 		groups[0].n=num_seqs_causal;
+	}
+	if (num_seqs_schematic != undefined) {
+ 		groups[1].n=num_seqs_schematic;
+	}
+	if (num_seqs_semantic != undefined) {
+ 		groups[2].n=num_seqs_semantic;
+	}
+	num_scrambled_causal=jsPsych.data.getURLVariable('num_scrambled_causal');
+	num_scrambled_schematic=jsPsych.data.getURLVariable('num_scrambled_schematic');
+	num_scrambled_semantic=jsPsych.data.getURLVariable('num_scrambled_semantic');
+	if (num_scrambled_causal != undefined) {
+ 		groups[0].random=num_scrambled_causal;
+	}
+	if (num_scrambled_schematic != undefined) {
+ 		groups[1].random=num_scrambled_schematic;
+	}
+	if (num_scrambled_semantic != undefined) {
+ 		groups[2].random=num_scrambled_semantic;
 	}
 	console.log("params=",groups);
 	if (slow)
@@ -436,8 +464,8 @@
 	};
 
 	// Function to randomly select one of the specified options
-	console.log(part,num_seqs)	;
-	if (part > 1 && num_seqs != undefined)
+	console.log(part,num_seqs_full)	;
+	if (part == 2)// && num_seqs_full != undefined)
 		try {
 		file_to_load=audio_folder.replace("part_2","part_1")+'/'+subject_id+"/part_1_seqs.txt";
 			all_seq=getText(file_to_load);
@@ -445,7 +473,7 @@
 		catch (error) {
 			console.log("error: no part_1 seq list", error);
 			console.log(file_to_load);
-			console.log("Taking random list of ",num_seqs," seqs");
+			console.log("Taking random list of ",num_seqs_full," seqs");
 			all_seq=getAllSequences(groups);
 
 		}

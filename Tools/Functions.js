@@ -5,6 +5,7 @@
   xhr.send(JSON.stringify({filedata: data}));
 }*/
 
+// VERSION const vrs = "D05-13,T23:00"
 
 function saveData(name, data){
 	// MG start change - extracting subject_id from name parameter
@@ -88,16 +89,36 @@ function getAllSequences(groups) {
 				if(data[idata].length == 0)
 					continue;
 				if (data[idata][0].indexOf(groups[igroup].name)!== -1) {
+					n_scrambled = 0
             		ns=Math.min(groups[igroup].n, data[idata].length);
 					rval=getRandomValues(data[idata],ns);
+					var last_random_exists = false;
+					var last_scrambled = false;
 					for (let val=0;val<rval.length;val++){
 						rval_array=[];
-						if ( val % 2   === 0 && groups[igroup].random == "half")
-							random = false;
-						else
-							random = true;
+						if 	  (groups[igroup].random == "all" )
+							scrambled = true;
+						else {
+							if (groups[igroup].random == "half" )  {
+								if (last_random_exists)	{
+									scrambled=!last_scrambled;
+								}
+								else {
+									scrambled = (Math.random()>0.5) ;
+									last_random_exists = true;
+								}
+								last_scrambled=scrambled;
+							}
+							else {
+								 n_scrambled=n_scrambled+1;
+								 if (n_scrambled<=groups[igroup].random)
+									 scrambled = true;
+								 else
+									 scrambled = false;
+							}
+						}
 						rval_array.push(rval[val]);
-						rval_array.push(random);
+						rval_array.push(scrambled);
 						seqs.push(rval_array);
 					}
 					break;
@@ -120,10 +141,10 @@ function getAllSequences(groups) {
 
 function getTimeline(seq,p1,p2,choices,num,part,slow) {
 	if (slow==false) {
-		duration_title			= 1500;
-		duration_image			= 180;
-		duration_question		= 180;
-		duration_response		= 180;
+		duration_title			= 200;
+		duration_image			= 200;
+		duration_question		= 50;
+		duration_response		= 50;
 	}
 	else {
 	 	duration_title			= 6000;
@@ -207,6 +228,39 @@ function getTimeline(seq,p1,p2,choices,num,part,slow) {
 	}
 	  return(tl2);
 }
+
+
+// The following functions are for the ORDER experiment
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+	}
+    return array;
+}
+
+
+    function getTimeline_Order(seq,num,slow) {
+    var images = retrieveImageNames('images/' + seq[0]);
+	//randomize
+	if (seq[1]==true) images=shuffle(images.slice(1));
+
+    // Ensure num does not exceed the number of available images
+    num = Math.min(num, images.length - 1);
+
+    // Create timeline_variables dynamically based on num
+    var timelineVariables = [];
+    for (var i = 0; i <= num; i++) {
+		img= images[i].replace(/\\/g, "/");
+		img=img.replace(/images\//g, "");
+		img=img.replace(".png","");
+		img=img.replace(".png","");
+		//img=img.replace(/^.*?\//,"");
+        timelineVariables.push(img);
+    }
+	  return(timelineVariables);
+}
+
 
 
 // MG deleted call to init");
