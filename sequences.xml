@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequences>
+	<sequence>
+		<name>instructions</name>
+		<category>intro</category>
+		<step>Entering a movie theater</step>
+		<step>Purchasing tickets</step>
+		<step>Buying popcorn</step>
+		<step>Watching the movie</step>
+	</sequence>
+	<sequence>
+		 <name>flight_scheme</name>
+		 <category>schematic_sequence</category>
+		 <step>Purchasing a plane ticket</step>
+		 <step>Arriving at the airport</step>
+		 <step>Checking in</step>
+		 <step>Passing through security</step>
+		 <step>Boarding the plane</step>
+		 <step>Plane take off</step>
+		 <step>Eating on the plane</step>
+		 <step>Landing at the destination</step>
+		 <step>Claiming baggage</step>
+		 <step>Exiting the airport</step>
+	</sequence>
+  	<sequence>
+		<name>restaurant_scheme</name>
+		<category>schematic_sequence</category>
+		<step>Entering the Restaurant</step>
+		<step>Waiting to be seated</step>
+		<step>Reading the Menu</step>
+		<step>Placing an order</step>
+		<step>Receiving the food</step>
+		<step>Eating an appetizer</step>
+		<step>Eating a main course</step>
+		<step>Eating dessert</step>
+		<step>Paying the bill</step>
+		<step>Exiting the restaurant</step>
+  	</sequence>
+  	<sequence>
+		<name>interview_scheme</name>
+		<category>schematic_sequence</category>
+		<step>Submitting a CV</step>
+		<step>Job interview invitation</step>
+		<step>Preparation for an interview</step>
+		<step>Choosing clothes</step>
+		<step>Arriving for an interview</step>
+		<step>Waiting for an interview</step>
+		<step>Entering an interview</step>
+		<step>Being interviewed</step>
+		<step>Leaving an interview</step>
+		<step>First day at the new job</step>
+	</sequence>
+	<sequence>
+		<name>hotel_scheme</name>
+		<category>schematic_sequence</category>
+		<step>Book a hotel room</step>
+		<step>Arrival at the hotel</step>
+		<step>Checking in</step>
+		<step>Entering the room</step>
+		<step>Unpacking clothes</step>
+		<step>Eating dinner</step>
+		<step>Going to sleep</step>
+		<step>Morning workout</step>
+		<step>Breakfast</step>
+		<step>Check out</step>
+	</sequence>
+	<sequence>
+		<name>supermarket_scheme</name>
+		<category>schematic_sequence</category>
+		<step>Creating a grocery list</step>
+		<step>Retrieving a shopping cart</step>
+		<step>Entering the supermarket</step>
+		<step>Navigating through the aisles</step>
+		<step>Filling the cart</step>
+		<step>Waiting in the checkout line</step>
+		<step>Paying for the groceries</step>
+		<step>Bagging the groeries</step>
+		<step>Walking home with the groceries</step>
+		<step>Filling the fridge</step>
+	</sequence>
+	<sequence>
+		<name>dinner_party_scheme</name>
+		<category>schematic_sequence</category>
+		<step>Invite friends</step>
+		<step>Choose dishes</step>
+		<step>Shop for ingredients</step>
+		<step>Prepare the food</step>
+		<step>Set the table</step>
+		<step>People arrive for dinner</step>
+		<step>Eating dinner</step>
+		<step>Putting away dishes</step>
+		<step>Guests leaving</step>
+		<step>Cleaning the house</step>
+	</sequence>
+	<sequence>
+		<name>museum_causal</name>
+		<category>causal_sequence</category>
+		<step>Exploring the exhibitions</step>
+		<step>Looking at the Mona Lisa</step>
+		<step>Stealing the Mona Lisa</step>
+		<step>Escaping through exit door</step>
+		<step>Hiding the Mona Lisa</step>
+		<step>Get caught by the police</step>
+		<step>Entering an interrogation room</step>
+		<step>Returning the Mona Lisa to the Museum</step>
+		<step>Released on bail</step>
+		<step>Thief goes to jail</step>
+	</sequence>
+	<sequence>
+		<name>package_causal</name>
+		<category>causal_sequence</category>
+		<step>Man answers the phone</step>
+		<step>Bus stops at the station</step>
+		<step>Man gets off the bus</step>
+		<step>Package remains on the bus seat</step>
+		<step>Woman finds the package</step>
+		<step>Woman calls the package owner</step>
+		<step>Woman returns package to its owner</step>
+		<step>Man and woman go on a date</step>
+		<step>Marriage proposal</step>
+		<step>Couple gets married</step>
+	</sequence>
+	<sequence>
+		<name>dog_causal</name>
+		<category>causal_sequence</category>
+		<step>Man walks in an animal shelter</step>
+		<step>Man connects with a dog</step>
+		<step>Man takes the dog home</step>
+		<step>Man and dog go for a walk on the beach</step>
+		<step>Man has a heart attack</step>
+		<step>Dog calls for help</step>
+		<step>A couple finds the man unconscious</step>
+		<step>An ambulance evacuates the man</step>
+		<step>Man recovers in the hospital</step>
+		<step>Man leaves the hospital</step>
+	</sequence>
+	<sequence>
+  		<name>coin_causal</name>
+		<category>causal_sequence</category>
+		<step>Family rents digging equipment</step>
+		<step>Family digging at an archaelogical park</step>
+		<step>Child finds an ancient coin</step>
+		<step>Child goes home with a coin</step>
+		<step>Child frames a coin</step>
+		<step>Child receives a letter</step>
+		<step>Museum requests to display the coin</step>
+		<step>Museum representative collects the coin</step>
+		<step>Family goes to the museum</step>
+		<step>Coin displayed at exhibition</step>
+	</sequence>
+	<sequence>
+  		<name>saving_a_cat_causal</name>
+		<category>causal_sequence</category>
+		<step>Girl walking with a cat</step>
+		<step>Cat startled by honking car</step>
+		<step>Cat jumping on a tree</step>
+		<step>Girl trying to make cat come down</step>
+		<step>Girl calls the fire department</step>
+		<step>Firefighters arrive</step>
+		<step>Firefighters placing a ladder on a tree</step>
+		<step>Firefighters taking down a cat</step>
+		<step>Girl returning home with her cat</step>
+		<step>Girl bathing a cat</step>
+	</sequence>
+	<sequence>
+  		<name>the_performance_causal</name>
+		<category>causal_sequence</category>
+		<step>woman leaves work</step>
+		<step>woman walks past an open stage club</step>
+		<step>Woman enters a club</step>
+		<step>Moderator invites people to the stage</step>
+		<step>Woman goes on stage to sing</step>
+		<step>Agent hears a woman singing</step>
+		<step>Agent signs woman on a representation contract</step>
+		<step>Woman recording an album</step>
+		<step>Woman releases a hit album</step>
+		<step>Woman performs for a full stadium</step>
+	</sequence>
+	<sequence>
+  		<name>housework_semantic</name>
+		<category>semantic_sequence</category>
+		<step>Wash the dishes</step>
+		<step>Throw the trash</step>
+		<step>Do laundry</step>
+		<step>Sweeping the floor</step>
+		<step>Vacuum the carpets</step>
+		<step>Organize the closet</step>
+		<step>Water the plants</step>
+		<step>Clean the windows</step>
+		<step>Wash the car</step>
+		<step>Make the bed</step>
+	</sequence>
+	<sequence>
+  		<name>market_semantic</name>
+		<category>semantic_sequence</category>
+		<step>Buying apples</step>
+		<step>Buying cheese</step>
+		<step>Going to the public restroom</step>
+		<step>Negotiate with seller</step>
+		<step>Smelling spices</step>
+		<step>Looking at graffiti</step>
+		<step>Listening to street performer</step>
+		<step>Drinking juice</step>
+		<step>Filling a shopping bag</step>
+		<step>Enter an umbrella shop</step>
+	</sequence>
+	<sequence>
+  		<name>physical_activity_semantic</name>
+		<category>semantic_sequence</category>
+		<step>Playing soccer</step>
+		<step>Playing tennis</step>
+		<step>Running</step>
+		<step>Skiing</step>
+		<step>Doing gymnastics</step>
+		<step>Swimming</step>
+		<step>Cycling</step>
+		<step>Skateboarding</step>
+		<step>Playing basketball</step>
+		<step>Rock Climbing</step>
+	</sequence>
+	<sequence>
+  		<name>cat_care_semantic</name>
+		<category>semantic_sequence</category>
+		<step>Feeding a cat</step>
+		<step>Giving a bath</step>
+		<step>Cleaning a litter box</step>
+		<step>Visit the vet</step>
+		<step>Brushing a cat's fur</step>
+		<step>Refilling a water bowl</step>
+		<step>Playing with a cat</step>
+		<step>Cutting nails</step>
+		<step>Cleaning a cat's ears</step>
+		<step>Letting a cat outside</step>
+	</sequence>
+	<sequence>
+  		<name>visiting_cities_semantic</name>
+		<category>semantic_sequence</category>
+		<step>New York City</step>
+		<step>Tokyo</step>
+		<step>Sydney</step>
+		<step>Istanbul</step>
+		<step>Barcelona</step>
+		<step>Mexico City</step>
+		<step>London</step>
+		<step>Moscow</step>
+		<step>Dubai</step>
+		<step>Paris</step>
+	</sequence>
+	<sequence>
+  		<name>creative_activities_semantic</name>
+		<category>semantic_sequence</category>
+		<step>Painting</step>
+		<step>Music Composition</step>
+		<step>Dancing</step>
+		<step>Writing</step>
+		<step>Photography</step>
+		<step>Theater Acting</step>
+		<step>Cooking</step>
+		<step>Pottery</step>
+		<step>Origami</step>
+		<step>Glassblowing</step>
+	</sequence>
+	<sequence>
+  		<name>exploring_nature_semantic</name>
+		<category>semantic_sequence</category>
+		<step>Hiking</step>
+		<step>Identifying Animal Tracks</step>
+		<step>Observing Birds</step>
+		<step>Collecting Rocks</step>
+		<step>Examining Insects</step>
+		<step>Photographing Landscapes</step>
+		<step>Fishing</step>
+		<step>Walking Barefoot</step>
+		<step>Setting Up a Tent</step>
+		<step>Setting up a Campfire</step>
+	</sequence>
+	<sequence>
+  		<name>kitchen_operations_semantic</name>
+		<category>semantic_sequence</category>
+		<step>Baking Bread</step>
+		<step>Stirring a Pot</step>
+		<step>Chopping Vegetables</step>
+		<step>Washing Dishes</step>
+		<step>Cracking an Egg</step>
+		<step>Setting a Table</step>
+		<step>Opening The Fridge</step>
+		<step>Using a Coffee Machine</step>
+		<step>Peeling Potatoes</step>
+		<step>Boiling Water</step>
+	</sequence>
+	<sequence>
+  		<name>maintaining_a_car_semantic</name>
+		<category>semantic_sequence</category>
+		<step>Filling Gas</step>
+		<step>Washing a Car</step>
+		<step>Changing the oil</step>
+		<step>Polishing</step>
+		<step>Replacing a Flat Tire</step>
+		<step>Inspecting The Engine</step>
+		<step>Installing Parking Sensors</step>
+		<step>Upgrading Stereo Systems</step>
+		<step>Cleaning Floor Mats</step>
+		<step>Vacuuming The Interior</step>
+	</sequence>
+	<sequence>
+  		<name>redecorating_semantic</name>
+		<category>semantic_sequence</category>
+		<step>Painting The Walls</step>
+		<step>Replacing Curtains</step>
+		<step>Hanging Artwork</step>
+		<step>Buying a Sofa</step>
+		<step>Installing New Lights</step>
+		<step>Organizing Book Shelves</step>
+		<step>Watering Plants</step>
+		<step>Cleaning The Mirror</step>
+		<step>Switching Doorknobs</step>
+		<step>Organizing the Warehouse</step>
+	</sequence>
+	<sequence>
+  		<name>self_care_activities_semantic</name>
+		<category>semantic_sequence</category>
+		<step>Brushing Teeth</step>
+		<step>Trim Nails</step>
+		<step>Geting a Message</step>
+		<step>Drink Tea</step>
+		<step>Ear Cleaning</step>
+		<step>Spread Body Lotion</step>
+		<step>Flossing</step>
+		<step>Wash Hair</step>
+		<step>Meditating</step>
+		<step>Stretching</step>
+	</sequence>
+	<sequence>
+  		<name>using_technology_semantic</name>
+		<category>semantic_sequence</category>
+		<step>Playing Computer Games</step>
+		<step>Reading an Ebook</step>
+		<step>Using Navigation App</step>
+		<step>Talk to a Voice Assistant</step>
+		<step>Browsing The Internet</step>
+		<step>Having a Video Call</step>
+		<step>Scan QR code</step>
+		<step>Fly a Drone</step>
+		<step>Using a Smart Watch</step>
+		<step>Using Headphones</step>
+	</sequence>
+</sequences>
+
+
+
+
+
