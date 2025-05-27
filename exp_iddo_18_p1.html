@@ -146,7 +146,25 @@
    		[
    			'<span style="color: black; font-size: 24px"> You have completed the experiment.'  +'<br/>'+ 'The completion code is : AJFHBG896' +'<br/>'+  'Thank you for your participation!</span> '
    		]
+
+
    	];
+
+	// ⏸️ מסך הפסקה
+var break_screen = {
+  type: jsPsychInstructions,
+  pages: [
+    '<div style="font-size: 24px; text-align: center;">' +
+    'You are halfway through the experiment.<br><br>' +
+    'Feel free to take a short break of up to 2 minutes.<br><br>' +
+    'When you’re ready, click “Next” to continue.' +
+    '</div>'
+  ],
+  show_clickable_nav: true
+};
+
+
+
 //check df - not done for now
 /*
     var xhr = new XMLHttpRequest();
@@ -495,14 +513,33 @@
 		}
 		selectedOption[iseq]=getTimeline(all_seq[iseq], prompt_empty,prompt,choice,10,part,slow);
 	}
-	for (var seq=0;seq<	selectedOption.length;seq++) {
-			var trial=Object.assign({},trial_10);
-			seq_name= selectedOption[seq].timeline[0].stimulus.split("/")[2];
-			trial.data= {seq_name: seq_name};
-			timeline.push(selectedOption[seq]);
-			timeline.push(trial);
-	}
-	console.log("selectedOption:", selectedOption);
+
+	// 🧪 Loop over all selected sequences and push to timeline
+for (var seq = 0; seq < selectedOption.length; seq++) {
+    var trial = Object.assign({}, trial_10);
+    seq_name = selectedOption[seq].timeline[0].stimulus.split("/")[2];
+    trial.data = { seq_name: seq_name };
+
+    timeline.push(selectedOption[seq]);
+    timeline.push(trial);
+
+    // 🧘 Optional break halfway through
+    if (seq === Math.floor(selectedOption.length / 2)) {
+        var break_screen = {
+            type: jsPsychInstructions,
+            pages: [
+                '<div style="font-size: 24px; text-align: center;">' +
+                'You are halfway through the experiment.<br><br>' +
+                'Feel free to take a short break of up to 2 minutes.<br><br>' +
+                'When you’re ready, click “Next” to continue.' +
+                '</div>'
+            ],
+            show_clickable_nav: true
+        };
+        timeline.push(break_screen);
+    }
+}
+
 	//jsPsych.data.addProperties({
 	//	selectedOption: selectedOption  // Adjust 'selected_option' to your preferred data key
 	//});
