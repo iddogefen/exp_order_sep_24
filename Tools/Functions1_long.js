@@ -157,7 +157,7 @@ function getTimeline(seq,p1,p2,choices,num,part,slow) {
 	 	duration_title			= 6000;
 	 	duration_image			= 4500;
 	 	duration_question		= 4000;
-	 	duration_response		= 5400;
+	 	duration_response		= 10800;
 	}
 
 	// create a "trial_10" timeline
