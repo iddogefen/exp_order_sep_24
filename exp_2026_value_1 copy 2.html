@@ -311,72 +311,76 @@ var jsPsych = initJsPsych({
     };
     timeline.push(part1_end);
 
- // ----------- PART 2: VALUE LEARNING (50% Valuable, 50% Neutral) -----------
+    // ----------- PART 2: CAUSAL SERIES WITH RANDOM VALUE INJECTION -----------
+// ----------- PART 2: VALUE LEARNING (ONLY VALUABLE IMAGES) -----------
 
-// 1. Part 2 Introduction (מעודכן להסבר על שני הסוגים)
+// 1. Part 2 Introduction
 var part2_intro = {
     type: jsPsychInstructions,
     pages: [
         '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
         '<h2>Part 2: Value Learning</h2>' +
-        '<p style="font-size: 20px;">In this part, you will see images from the previous sequences.</p>' +
-        '<p style="font-size: 20px;">Some images are <b>worth $1</b> (marked in <span style="color:green">GREEN</span>),<br>' +
-        'and others have a <b>neutral value</b> (marked in <span style="color:grey">GREY</span>).</p>' +
-        '<p style="font-size: 20px;">Study these images and their values carefully.</p>' +
-        '<p>Click "Next" to see examples.</p>' +
+        '<p style="font-size: 20px;">In this part, you will be shown specific images that are <b>worth $1</b>.</p>' +
+        '<p style="font-size: 20px;">Study these images carefully.</p>' +
+        '<p>After each image, you must still answer if there was a person in the image.</p>' +
+        '<p>Click "Next" to see an example.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
 };
 timeline.push(part2_intro);
 
-// 2. Part 2 EXAMPLES (הצגת דוגמה של דולר ודוגמה של נטרלי)
-var part2_examples = {
-    timeline: [
-        {
-            type: jsPsychHtmlButtonResponse,
-            stimulus: `
-                <div style="margin-bottom:20px;"><h3>Example: Valuable Image</h3></div>
-                <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 30px;">
-                    <img src="images/instructions/movie_1.png" class="exp-image">
-                    <div style="font-size: 35px; font-weight: bold; color: green; border: 5px solid green; padding: 20px; border-radius: 15px; background-color: #f0fff0;">
-                        WORTH<br>$1
-                    </div>
-                </div>
-                <div class="question-area"><p>Was there a person in this image?</p></div>`,
-            choices: ['Yes', 'No']
-        },
-        {
-            type: jsPsychHtmlButtonResponse,
-            stimulus: `
-                <div style="margin-bottom:20px;"><h3>Example: Neutral Image</h3></div>
-                <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 30px;">
-                    <img src="images/instructions/movie_2.png" class="exp-image">
-                    <div style="font-size: 35px; font-weight: bold; color: grey; border: 5px solid grey; padding: 20px; border-radius: 15px; background-color: #f0f0f0;">
-                        NEUTRAL<br>VALUE
-                    </div>
-                </div>
-                <div class="question-area"><p>Was there a person in this image?</p></div>`,
-            choices: ['Yes', 'No']
-        }
-    ]
+// 2. Part 2 EXAMPLE (תיקון נתיב התמונה מ-1.png ל-movie_1.png)
+var part2_example_view = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `
+        <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 30px;">
+            <img src="images/instructions/movie_1.png" class="exp-image">
+            <div style="font-size: 40px; font-weight: bold; color: green; border: 5px solid green; padding: 25px; border-radius: 15px; background-color: #f0fff0;">
+                WORTH<br>$1
+            </div>
+        </div>
+        <div class="question-area"></div>`,
+    choices: "NO_KEYS",
+    trial_duration: 1000 
 };
-timeline.push(part2_examples);
 
-// 3. לוגיקת החלוקה של התיקיות (3 יקרות, 3 נטרליות)
-var shuffled_folders = jsPsych.randomization.shuffle(causal_folders);
-var valuable_folders = shuffled_folders.slice(0, 3); // שלוש הראשונות יקרות
+var part2_example_question = {
+    type: jsPsychHtmlButtonResponse,
+    stimulus: `
+        <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 30px;">
+            <img src="images/instructions/movie_1.png" class="exp-image">
+            <div style="font-size: 40px; font-weight: bold; color: green; border: 5px solid green; padding: 25px; border-radius: 15px; background-color: #f0fff0;">
+                WORTH<br>$1
+            </div>
+        </div>
+        <div class="question-area">
+            <p style="font-size: 20px; font-weight: bold; margin: 0;">Was there a person in this image?</p>
+        </div>`,
+    choices: ['Yes', 'No'],
+    trial_duration: 3000,
+    response_ends_trial: true
+};
+timeline.push(part2_example_view, part2_example_question);
 
-// 4. הרצת הלופ של חלק 2
-shuffled_folders.forEach(function(folderName) {
-    var is_valuable = valuable_folders.includes(folderName);
-    
-    // הגדרת עיצוב לפי סוג הערך
-    var reward_text = is_valuable ? "WORTH<br>$1" : "NEUTRAL<br>VALUE";
-    var reward_color = is_valuable ? "green" : "grey";
-    var reward_bg = is_valuable ? "#f0fff0" : "#f0f0f0";
-    var reward_type_label = is_valuable ? "valuable" : "neutral";
+// 3. Start Actual Part 2
+var part2_real_start = {
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align: center; padding: 50px;">' +
+        '<h3>Example Finished</h3>' +
+        '<p>Now the actual Value Learning part will begin.</p>' +
+        '<p>You will see one valuable image from each of the series you saw earlier.</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
+};
+timeline.push(part2_real_start);
 
+// 4. Actual Part 2 Logic
+var randomized_folders_part2 = jsPsych.randomization.shuffle(causal_folders);
+
+randomized_folders_part2.forEach(function(folderName) {
     var value_indices = [3, 4, 5, 6, 7];
     var random_valuable_index = jsPsych.randomization.sampleWithReplacement(value_indices, 1)[0];
 
@@ -385,13 +389,13 @@ shuffled_folders.forEach(function(folderName) {
         stimulus: `
             <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 30px;">
                 <img src="images/causal_sequence/${folderName}/${folderName}_${random_valuable_index}.png" class="exp-image">
-                <div style="font-size: 40px; font-weight: bold; color: ${reward_color}; border: 5px solid ${reward_color}; padding: 25px; border-radius: 15px; background-color: ${reward_bg};">
-                    ${reward_text}
+                <div style="font-size: 40px; font-weight: bold; color: green; border: 5px solid green; padding: 25px; border-radius: 15px; background-color: #f0fff0;">
+                    WORTH<br>$1
                 </div>
             </div>
             <div class="question-area"></div>`,
         choices: "NO_KEYS",
-        trial_duration: 8000 
+        trial_duration: 10000 
     };
 
     var main_question_part2 = {
@@ -399,8 +403,8 @@ shuffled_folders.forEach(function(folderName) {
         stimulus: `
             <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 30px;">
                 <img src="images/causal_sequence/${folderName}/${folderName}_${random_valuable_index}.png" class="exp-image">
-                <div style="font-size: 40px; font-weight: bold; color: ${reward_color}; border: 5px solid ${reward_color}; padding: 25px; border-radius: 15px; background-color: ${reward_bg};">
-                    ${reward_text}
+                <div style="font-size: 40px; font-weight: bold; color: green; border: 5px solid green; padding: 25px; border-radius: 15px; background-color: #f0fff0;">
+                    WORTH<br>$1
                 </div>
             </div>
             <div class="question-area">
@@ -412,15 +416,20 @@ shuffled_folders.forEach(function(folderName) {
         data: {
             task: 'part2_value_learning',
             folder: folderName,
-            valuable_image_index: random_valuable_index,
-            reward_type: reward_type_label // תיוג ברור בדאטא: valuable/neutral
+            valuable_image_index: random_valuable_index
         }
     };
     timeline.push(main_view_part2, main_question_part2);
 });
-// ----------- PART 3: CHOICE & VALUATION TEST (Distance 2) -----------
 
-// ----------- PART 3: CHOICE & VALUATION TEST (Distance 1) -----------
+var part2_end = {
+    type: jsPsychInstructions,
+    pages: ['<div style="text-align: center; padding: 50px;"><h2>Part 2 Completed</h2><p>Click "Next" to continue.</p></div>'],
+    show_clickable_nav: true
+};
+timeline.push(part2_end);
+
+// ----------- PART 3: CHOICE & VALUATION TEST (Distance 2) -----------
 
 var part3_intro = {
     type: jsPsychInstructions,
@@ -438,15 +447,13 @@ randomized_folders_part3.forEach(function(folderName) {
             {
                 type: jsPsychHtmlKeyboardResponse,
                 stimulus: function() {
-                    // שליפת נתונים מחלק 2 כדי לדעת מה ה-X ומה סוג התגמול
-                    var part2_info = jsPsych.data.get().filter({folder: folderName, task: 'part2_value_learning'}).values()[0];
-                    var X = (part2_info) ? part2_info.valuable_image_index : 5;
-                    
+                    var part2_data = jsPsych.data.get().filter({folder: folderName, task: 'part2_value_learning'}).values();
+                    var X = (part2_data.length > 0) ? part2_data[0].valuable_image_index : 5;
                     var is_left_smaller = (folderName.length % 2 === 0);
                     
-                    // שינוי כאן: מ-X+/-2 ל-X+/-1
-                    var left_idx = is_left_smaller ? X - 1 : X + 1;
-                    var right_idx = is_left_smaller ? X + 1 : X - 1;
+                    // שינוי כאן: מ-X-1 ל-X-2 ומ-X+1 ל-X+2
+                    var left_idx = is_left_smaller ? X - 2 : X + 2;
+                    var right_idx = is_left_smaller ? X + 2 : X - 2;
 
                     return `
                         <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is more valuable?</h3></div>
@@ -461,13 +468,13 @@ randomized_folders_part3.forEach(function(folderName) {
             {
                 type: jsPsychHtmlButtonResponse,
                 stimulus: function() {
-                    var part2_info = jsPsych.data.get().filter({folder: folderName, task: 'part2_value_learning'}).values()[0];
-                    var X = (part2_info) ? part2_info.valuable_image_index : 5;
+                    var part2_data = jsPsych.data.get().filter({folder: folderName, task: 'part2_value_learning'}).values();
+                    var X = (part2_data.length > 0) ? part2_data[0].valuable_image_index : 5;
                     var is_left_smaller = (folderName.length % 2 === 0);
                     
-                    // שינוי כאן: מ-X+/-2 ל-X+/-1
-                    var left_idx = is_left_smaller ? X - 1 : X + 1;
-                    var right_idx = is_left_smaller ? X + 1 : X - 1;
+                    // שינוי כאן: מ-X-1 ל-X-2 ומ-X+1 ל-X+2
+                    var left_idx = is_left_smaller ? X - 2 : X + 2;
+                    var right_idx = is_left_smaller ? X + 2 : X - 2;
 
                     return `
                         <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is more valuable?</h3></div>
@@ -478,24 +485,22 @@ randomized_folders_part3.forEach(function(folderName) {
                 },
                 choices: ['Left', 'Right'],
                 on_finish: function(data) {
-                    var part2_info = jsPsych.data.get().filter({folder: folderName, task: 'part2_value_learning'}).values()[0];
-                    var X = (part2_info) ? part2_info.valuable_image_index : 5;
-                    var reward_type = (part2_info) ? part2_info.reward_type : 'unknown';
-
+                    var part2_data = jsPsych.data.get().filter({folder: folderName, task: 'part2_value_learning'}).values();
+                    var X = (part2_data.length > 0) ? part2_data[0].valuable_image_index : 5;
+                    
                     var is_left_smaller = (folderName.length % 2 === 0);
                     
-                    // שינוי כאן: מ-X+/-2 ל-X+/-1
-                    var left_idx = is_left_smaller ? X - 1 : X + 1;
-                    var right_idx = is_left_smaller ? X + 1 : X - 1;
+                    // שינוי כאן: מ-X-1 ל-X-2 ומ-X+1 ל-X+2
+                    var left_idx = is_left_smaller ? X - 2 : X + 2;
+                    var right_idx = is_left_smaller ? X + 2 : X - 2;
 
                     var chosen_idx = (data.response === 0) ? left_idx : right_idx;
                     
                     data.task = 'part3_final_choice';
                     data.folder = folderName;
-                    data.reward_type = reward_type; // תיוג נטרלי/יקר
                     data.valuable_X = X;
                     data.chosen_image_index = chosen_idx;
-                    data.distance_from_X = chosen_idx - X; // ייתן 1 או -1
+                    data.distance_from_X = chosen_idx - X; // ייתן 2 או -2
                 }
             }
         ]
