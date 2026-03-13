@@ -87,7 +87,7 @@
         //'museum_causal',
         //'package_causal',
         //'saving_a_cat_causal',
-        //'the_performance_causal'
+        'the_performance_causal'
     ];
 
     var causal_images = [];
@@ -293,7 +293,7 @@ var part2_intro = {
         '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
         '<h2>Part 2: Value Learning</h2>' +
         '<p style="font-size: 20px;">In this part, you will be shown specific images that are <b>worth $1</b>.</p>' +
-        '<p style="font-size: 20px;">Study these images carefully. </p>' +
+        '<p style="font-size: 20px;">Study these images carefully.</p>' +
         '<p>After each image, you must still answer if there was a person in the image.</p>' +
         '<p>Click "Next" to see an example.</p>' +
         '</div>'
@@ -521,8 +521,6 @@ randomized_folders_part3.forEach(function(folderName) {
 });
 
 // ----------- END OF EXPERIMENT -----------
-timeline.push(trial_demographics, trial_finish);
-
 
     var trial_demographics = {
       type: jsPsychSurveyText,
