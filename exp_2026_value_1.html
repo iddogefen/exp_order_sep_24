@@ -146,15 +146,17 @@ timeline.push(preload);
 // ----------- PART 1 EXAMPLE SEQUENCE (TIMED) -----------
 
 // 1. Transition slide
+// ----------- PART 1 EXAMPLE SEQUENCE (IMAGE REMAINS DURING QUESTION) -----------
+
+// 1. Transition slide - Updated to remove mention of seconds
 var part1_example_intro = {
     type: jsPsychInstructions,
     pages: [
         '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
         '<h2>Part 1 Example</h2>' +
         '<p style="font-size: 20px;">You will now see a sequence of images.</p>' +
-        '<p style="font-size: 20px;">Each image will appear for <b>4 seconds</b>, ' +
-        'followed by a question for <b>3 seconds</b>.</p>' +
-        '<p style="color: #d9534f;"><b>Your Task:</b> Answer if there was a person in the image.</p>' +
+        '<p style="font-size: 20px;">First, you will view the image, and then a question will appear below it.</p>' +
+        '<p style="color: #d9534f;"><b>Your Task:</b> Answer if there is a person in the image using the buttons provided.</p>' +
         '<p>Click "Next" to start the example.</p>' +
         '</div>'
     ],
@@ -162,30 +164,33 @@ var part1_example_intro = {
 };
 timeline.push(part1_example_intro);
 
-// 2. Loop to create the sequence for movie_1 to movie_4
+// 2. Loop to create the sequence
 for (var i = 1; i <= 4; i++) {
     
-    // שלב א: הצגת התמונה ל-4 שניות
+    // Phase A: View image only
     var view_trial = {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: `
             <div style="text-align:center;">
                 <img src="images/instructions/movie_${i}.png" style="width:500px; border: 2px solid #ccc;">
-            </div>`,
-        choices: "NO_KEYS", // המשתתף לא יכול לדלג
-        trial_duration: 4000 // 4 שניות
+                <div style="height: 100px;"></div> </div>`,
+        choices: "NO_KEYS", 
+        trial_duration: 4000 
     };
 
-    // שלב ב: השאלה ל-3 שניות
+    // Phase B: Image remains + Question appears
     var question_trial = {
         type: jsPsychHtmlButtonResponse,
         stimulus: `
-            <div style="text-align:center; height: 300px; display: flex; align-items: center; justify-content: center;">
-                <p style="font-size: 24px; font-weight: bold;">Was there a person in the previous image?</p>
+            <div style="text-align:center;">
+                <img src="images/instructions/movie_${i}.png" style="width:500px; border: 2px solid #ccc;">
+                <div style="height: 100px; display: flex; align-items: center; justify-content: center;">
+                    <p style="font-size: 24px; font-weight: bold; margin: 0;">Was there a person in this image?</p>
+                </div>
             </div>`,
         choices: ['Yes', 'No'],
-        trial_duration: 3000, // 3 שניות
-        response_ends_trial: true, // עובר הלאה ברגע שלוחצים
+        trial_duration: 3000, 
+        response_ends_trial: true,
         data: {
             task: 'part1_example_question',
             image_index: i
@@ -207,7 +212,7 @@ var end_of_example = {
     show_clickable_nav: true
 };
 timeline.push(end_of_example);
-    // ----------- HELPER FUNCTIONS -----------
+    // ----------- HELPER FUNCTIONS --------
     function createImageTrial(imagePath) {
       return {
         type: jsPsychHtmlKeyboardResponse,
