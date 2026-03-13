@@ -274,100 +274,138 @@
         }
     });
 
+        // ----------- END SURVEY & COMPLETION -----------
+    var part1_end = {
+        type: jsPsychInstructions,
+        pages: ['<div style="text-align: center; padding: 50px;"><h2>Part 1 Completed</h2><p>You have finished the first part of the experiment.</p></div>'],
+        show_clickable_nav: true
+    };
+    timeline.push(part1_end);
+
     // ----------- PART 2: CAUSAL SERIES WITH RANDOM VALUE INJECTION -----------
 
-// 1. Randomize the causal folders again for a different order in Part 2
+// ----------- PART 2: VALUE LEARNING (ONLY VALUABLE IMAGES) -----------
+
+// 1. Part 2 Introduction
+var part2_intro = {
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
+        '<h2>Part 2: Value Learning</h2>' +
+        '<p style="font-size: 20px;">In this part, you will be shown specific images that are <b>worth $1</b>.</p>' +
+        '<p style="font-size: 20px;">Study these images carefully. You will see them for <b>10 seconds</b>.</p>' +
+        '<p>After each image, you must still answer if there was a person in the image.</p>' +
+        '<p>Click "Next" to see an example.</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
+};
+timeline.push(part2_intro);
+
+// 2. Part 2 EXAMPLE (Using movie_2.png)
+var part2_example_view = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `
+        <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 30px;">
+            <img src="images/instructions/movie_2.png" class="exp-image">
+            <div style="font-size: 40px; font-weight: bold; color: green; border: 5px solid green; padding: 25px; border-radius: 15px; background-color: #f0fff0;">
+                WORTH<br>$1
+            </div>
+        </div>
+        <div class="question-area"></div>`,
+    choices: "NO_KEYS",
+    trial_duration: 10000 // 10 seconds
+};
+
+var part2_example_question = {
+    type: jsPsychHtmlButtonResponse,
+    stimulus: `
+        <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 30px;">
+            <img src="images/instructions/movie_2.png" class="exp-image">
+            <div style="font-size: 40px; font-weight: bold; color: green; border: 5px solid green; padding: 25px; border-radius: 15px; background-color: #f0fff0;">
+                WORTH<br>$1
+            </div>
+        </div>
+        <div class="question-area">
+            <p style="font-size: 20px; font-weight: bold; margin: 0;">Was there a person in this image?</p>
+        </div>`,
+    choices: ['Yes', 'No'],
+    trial_duration: 3000,
+    response_ends_trial: true
+};
+timeline.push(part2_example_view, part2_example_question);
+
+// 3. Start Actual Part 2
+var part2_real_start = {
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align: center; padding: 50px;">' +
+        '<h3>Example Finished</h3>' +
+        '<p>Now the actual Value Learning part will begin.</p>' +
+        '<p>You will see one valuable image from each of the series you saw earlier.</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
+};
+timeline.push(part2_real_start);
+
+// 4. Actual Part 2 Logic (Showing only the 1 valuable image per series)
 var randomized_folders_part2 = jsPsych.randomization.shuffle(causal_folders);
 
-// 2. Loop through each randomized folder for Part 2
 randomized_folders_part2.forEach(function(folderName) {
     
-    // Inter-block Gray Screen (1 second)
-    timeline.push({
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: '<div style="background-color: gray; width: 100vw; height: 100vh;"></div>',
-        choices: "NO_KEYS",
-        trial_duration: 1000 
-    });
-
-    // 3. Select ONE image from index 4, 5, or 6 to be the "Valuable" image for this series
+    // Pick the valuable image index (4, 5, or 6)
     var value_indices = [4, 5, 6];
     var random_valuable_index = jsPsych.randomization.sampleWithReplacement(value_indices, 1)[0];
-    
-    // Record this logic in jsPsych data
-    jsPsych.data.addProperties({
-        [`part2_valuable_index_${folderName}`]: random_valuable_index
-    });
 
-    // 4. Main Loop for images 1 to 9 within the folder
-    for (var i = 1; i <= 9; i++) {
-        
-        // Check if current image 'i' is the randomly chosen valuable image
-        var is_valuable = (i === random_valuable_index);
-        
-        // Build the HTML for the Phase A: View Image (5 seconds)
-        // We include the "WORTH $1" div ONLY if is_valuable is true
-        var view_stimulus = `
-            <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 20px;">
-                <img src="images/causal_sequence/${folderName}/${folderName}_${i}.png" class="exp-image">
-                
-                ${is_valuable ? `
-                    <div style="font-size: 40px; font-weight: bold; color: green; border: 4px solid green; padding: 20px; border-radius: 10px;">
-                        WORTH<br>$1
-                    </div>` : `
-                    <div style="height: 100px;"></div> `}
+    // Phase A: Display ONLY the valuable image for 10 seconds
+    var main_view_part2 = {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: `
+            <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 30px;">
+                <img src="images/causal_sequence/${folderName}/${folderName}_${random_valuable_index}.png" class="exp-image">
+                <div style="font-size: 40px; font-weight: bold; color: green; border: 5px solid green; padding: 25px; border-radius: 15px; background-color: #f0fff0;">
+                    WORTH<br>$1
+                </div>
             </div>
-            <div class="question-area"></div>`;
+            <div class="question-area"></div>`,
+        choices: "NO_KEYS",
+        trial_duration: 10000 // 10 seconds for learning
+    };
 
-        var main_view_part2 = {
-            type: jsPsychHtmlKeyboardResponse,
-            stimulus: view_stimulus,
-            choices: "NO_KEYS",
-            trial_duration: 5000 // 5 seconds image view
-        };
-
-        // Build the HTML for Phase B: Image + Question (3 seconds)
-        var question_stimulus = `
-            <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 20px;">
-                <img src="images/causal_sequence/${folderName}/${folderName}_${i}.png" class="exp-image">
-                
-                ${is_valuable ? `
-                    <div style="font-size: 40px; font-weight: bold; color: green; border: 4px solid green; padding: 20px; border-radius: 10px;">
-                        WORTH<br>$1
-                    </div>` : `
-                    <div style="height: 100px;"></div>
-                `}
+    // Phase B: Question (3 seconds)
+    var main_question_part2 = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: `
+            <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 30px;">
+                <img src="images/causal_sequence/${folderName}/${folderName}_${random_valuable_index}.png" class="exp-image">
+                <div style="font-size: 40px; font-weight: bold; color: green; border: 5px solid green; padding: 25px; border-radius: 15px; background-color: #f0fff0;">
+                    WORTH<br>$1
+                </div>
             </div>
             <div class="question-area">
                 <p style="font-size: 20px; font-weight: bold; margin: 0;">Was there a person in this image?</p>
-            </div>`;
+            </div>`,
+        choices: ['Yes', 'No'],
+        trial_duration: 3000,
+        response_ends_trial: true,
+        data: {
+            task: 'part2_value_learning',
+            folder: folderName,
+            valuable_image_index: random_valuable_index
+        }
+    };
 
-        var main_question_part2 = {
-            type: jsPsychHtmlButtonResponse,
-            stimulus: question_stimulus,
-            choices: ['Yes', 'No'],
-            trial_duration: 3000,
-            response_ends_trial: true,
-            data: {
-                task: 'part2_value_task',
-                folder: folderName,
-                image_index: i,
-                is_valuable_trial: is_valuable
-            }
-        };
-
-        timeline.push(main_view_part2, main_question_part2);
-    }
+    timeline.push(main_view_part2, main_question_part2);
 });
 
-// ----------- END OF PART 2 -----------
+// 5. Part 2 Conclusion
 var part2_end = {
     type: jsPsychInstructions,
     pages: [
         '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
         '<h2>Part 2 Completed</h2>' +
-        '<p>You have finished the second part of the experiment.</p>' +
-        '<p>You should now know which images in each series are worth $1.</p>' +
+        '<p>You have finished the Value Learning part.</p>' +
         '<p>Click "Next" to continue to the third and final part.</p>' +
         '</div>'
     ],
@@ -375,13 +413,7 @@ var part2_end = {
 };
 timeline.push(part2_end);
 
-    // ----------- END SURVEY & COMPLETION -----------
-    var part1_end = {
-        type: jsPsychInstructions,
-        pages: ['<div style="text-align: center; padding: 50px;"><h2>Part 1 Completed</h2><p>You have finished the first part of the experiment.</p></div>'],
-        show_clickable_nav: true
-    };
-    timeline.push(part1_end);
+
 
     var trial_demographics = {
       type: jsPsychSurveyText,
