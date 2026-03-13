@@ -44,21 +44,28 @@
   </head>
   <body></body>
   <script>
-   var data_folder = 'data/';
+    // Define data folder for saving results
+    var data_folder = 'data/';
 
-    function saveData(name, data){
+    // Function to save data via POST request
+    function saveData(name, data) {
       var xhr = new XMLHttpRequest();
-      xhr.open('POST', 'write_data.php');
+      xhr.open('POST', 'write_data.php'); // PHP file to handle data writing
       xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.send(JSON.stringify({filedata: data}));
+      xhr.send(JSON.stringify({ filedata: data }));
     }
 
+    // Initialize jsPsych
     var jsPsych = initJsPsych({
-      on_finish: function() {
-        saveData(data_folder+'All_data/all_data_sub_'+subject_id+".csv", jsPsych.data.get().csv());
+      on_finish: function () {
+        saveData(data_folder + 'all_data_sub_' + subject_id + '.csv', jsPsych.data.get().csv());
       }
     });
 
+    // Generate a random subject ID
+    var subject_id = jsPsych.randomization.randomID(15);
+
+    // Initialize experiment timeline
     var timeline = [];
 
     // Adding subject properties
