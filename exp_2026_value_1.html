@@ -143,33 +143,59 @@ timeline.push(preload);
     timeline.push(trial_0, trial_consent, trial_01);
 
     // ----------- INSTRUCTIONS -----------
-    var instructions_deck_choice = {
-      type: jsPsychInstructions,
-pages: [
-  '<div style="font-family: Arial; text-align: left; padding: 100px; padding-top: 5%;">' +
-  '<h2>Instructions</h2>' +
-  '<p>In this experiment, you will view a series of images and choose between two decks of cards: one <span style="color: red;">red</span> and one <span style="color: blue;">blue</span>.</p>' +
-  '<p><b>Your choice will determine the sequence of images that follows.</b></p>' +
+var instructions_deck_choice = {
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="font-family: Arial; text-align: left; padding: 50px; line-height: 1.6;">' +
+        '<h2>Experiment Overview</h2>' +
+        '<p>This experiment consists of <b>three parts</b>:</p>' +
+        
+        '<div style="background-color: #f9f9f9; border-left: 5px solid #333; padding: 20px; margin: 20px 0;">' +
+        '<p><b>Part 1:</b> You will view a series of images depicting different events.</p>' +
+        '<p><b>Part 2:</b> You will be shown specific images that are <b>worth money</b>.</p>' +
+        '<p><b>Part 3:</b> You will choose between two images and estimate which one is more valuable. ' +
+        'A correct guess will lead to a <b>monetary reward</b>.</p>' +
+        '</div>' +
 
-  // 🔹 קטע מודגש ומופרד ללא צבעים
-  '<div style="border: 2px solid #333; border-radius: 12px; padding: 25px; margin: 35px 0; background-color: #f5f5f5;">' +
-    '<p style="font-size: 22px; font-weight: bold; text-align: center; line-height: 1.6;">' +
-    'One deck presents a coherent and connected sequence of events that unfold logically over time.<br>' +
-    'The other deck presents a random series of events that are independent and do not follow a clear sequence.' +
-    '</p>' +
-  '</div>' +
+        '<p>Please pay close attention to the images and follow your intuition. Click "Next" to begin.</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
+};
+timeline.push(instructions_deck_choice);
 
-  '<p>As you go along, try to explore the differences between the two decks and choose the one that feels more interesting or engaging to you.</p>' +
-  '<p>There are no right or wrong answers — simply follow your intuition.</p>' +
-  '</div>'
-],
+// ----------- PART 1 EXAMPLE SEQUENCE -----------
 
+// 1. Transition slide
+var part1_example_intro = {
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
+        '<h2>Part 1</h2>' +
+        '<p style="font-size: 20px;">The following is an example of <b>Part 1</b>.</p>' +
+        '<p>You will now see a sequence of images. Click "Next" to view them.</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
+};
 
+// 2. Sequence of images (movie_1 to movie_4)
+// We use jsPsychInstructions again so the user can click through the example at their own pace
+var part1_example_images = {
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align:center;"><img src="images/instructions/movie_1.png" style="width:500px;"></div>',
+        '<div style="text-align:center;"><img src="images/instructions/movie_2.png" style="width:500px;"></div>',
+        '<div style="text-align:center;"><img src="images/instructions/movie_3.png" style="width:500px;"></div>',
+        '<div style="text-align:center;"><img src="images/instructions/movie_4.png" style="width:500px;"></div>'
+    ],
+    show_clickable_nav: true,
+    button_label_next: "Continue",
+    allow_backward: true
+};
 
-      show_clickable_nav: true
-    };
-    timeline.push(instructions_deck_choice);
-
+// Add them to the timeline right after the overview
+timeline.push(part1_example_intro, part1_example_images);
     // ----------- HELPER FUNCTIONS -----------
     function createImageTrial(imagePath) {
       return {
