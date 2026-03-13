@@ -111,12 +111,12 @@ var jsPsych = initJsPsych({
 
     // Causal folders from your VS Code
     var causal_folders = [
-        //'coin_causal',
+        'coin_causal',
         'dog_causal',
-        //'museum_causal',
-        //'package_causal',
-        //'saving_a_cat_causal',
-        //'the_performance_causal'
+        'museum_causal',
+        'package_causal',
+        'saving_a_cat_causal',
+        'the_performance_causal'
     ];
 
     var causal_images = [];
@@ -230,7 +230,7 @@ var jsPsych = initJsPsych({
                     <div class="question-area"></div> 
                 </div>`,
             choices: "NO_KEYS", 
-            trial_duration: 1000 
+            trial_duration: 4000 
         };
 
         var example_question = {
@@ -265,7 +265,7 @@ var jsPsych = initJsPsych({
             type: jsPsychHtmlKeyboardResponse,
             stimulus: '<div style="background-color: gray; width: 100vw; height: 100vh;"></div>',
             choices: "NO_KEYS",
-            trial_duration: 100
+            trial_duration: 1000
         });
 
         // Loop through images 1 to 9 (skipping _0)
@@ -278,7 +278,7 @@ var jsPsych = initJsPsych({
                         <div class="question-area"></div> 
                     </div>`,
                 choices: "NO_KEYS",
-                trial_duration: 1000 // 5 seconds image view
+                trial_duration: 5000 // 5 seconds image view
             };
 
             var main_question = {
@@ -395,7 +395,7 @@ randomized_folders_part2.forEach(function(folderName) {
             </div>
             <div class="question-area"></div>`,
         choices: "NO_KEYS",
-        trial_duration: 1000 
+        trial_duration: 10000 
     };
 
     var main_question_part2 = {
