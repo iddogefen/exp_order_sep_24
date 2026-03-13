@@ -1,164 +1,263 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <style>
-        .hide_cursor { cursor: none; }
+      .hide_cursor {
+        cursor: none;
+      }
     </style>
-    <title>Causal Memory Experiment</title>
-    <script src="jspsych/jspsych.js"></script>
-    <script src="jspsych/plugin-instructions.js"></script>
-    <script src="jspsych/plugin-image-keyboard-response.js"></script>
-    <script src="jspsych/plugin-image-button-response.js"></script>
-    <script src="jspsych/plugin-fullscreen.js"></script>
-    <script src="jspsych/plugin-preload.js"></script>
-    <script src="Tools/Functions1.js"></script>
+    <title>My experiment</title>
+    <script src="jspsych/plugins/jspsych.js"></script>
+    <script src="jspsych/plugins/plugin-instructions.js"></script>
+    <script src="jspsych/plugins/plugin-html-button-response.js"></script>
+    <script src="jspsych/plugins/plugin-survey-text.js"></script>
+    <script src="jspsych/plugins/plugin-html-keyboard-response.js"></script>
+    <script src="jspsych/plugins/plugin-survey-likert.js"></script>
+    <script src="jspsych/plugins/plugin-fullscreen.js"></script>
+    <script src="jspsych/plugins/plugin-preload.js"></script>
     <link rel="stylesheet" href="jspsych/css/jspsych.css">
-</head>
-<body></body>
-<script>
-    // Constants for consistency with your previous code versions
-    const vrs = "D05-13,T23:00";
+  </head>
+  <body></body>
+  <script>
+    var data_folder = 'data/';
 
-    /**
-     * Initialize jsPsych
-     */
-    const jsPsych = initJsPsych({
-        on_finish: function() {
-            const data = jsPsych.data.get();
-            // Original saving logic
-            saveData(data_folder + subject_id + ".csv", data.csv());
-            saveText(audio_folder + '/' + subject_id + "/part_" + part + "_seqs.txt", JSON.stringify(all_seq));
-            saveText(audio_folder + '/' + subject_id + "/part_" + part + "_selopts.txt", JSON.stringify(test_selections));
-        }
+    function saveData(name, data){
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', 'write_data.php');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify({filedata: data}));
+    }
+
+    var jsPsych = initJsPsych({
+      on_finish: function() {
+        saveData(data_folder+'All_data/all_data_sub_'+subject_id+".csv", jsPsych.data.get().csv());
+      }
     });
 
-    // Capture URL variables and set defaults
-    const subject_id = jsPsych.data.getURLVariable('participantId') || "user_" + Math.floor(Math.random()*1000000);
-    const part = jsPsych.data.getURLVariable('part') || 1;
-    const data_folder = 'data/part_' + part + '/';
-    const audio_folder = 'audio_files/part_' + part + '/'; 
+    var timeline = [];
 
-    // Define groups for causal sequences
-    const groups = [{ name: "causal", n: 10, random: "false" }];
-    const all_seq = getAllSequences(groups); 
-    const test_selections = []; 
+    // ----------- SUBJECT PROPERTIES -----------
+    var subject_id = jsPsych.data.getURLVariable('participantId');
+    var study_id = jsPsych.data.getURLVariable('assignmentId');
+    var session_id = jsPsych.data.getURLVariable('projectId');
 
-    console.log("jsPsych Version:", jsPsych.version(), "Code version:", vrs);
-    console.log("Sequences loaded:", all_seq);
-
-    let timeline = [];
-
-    /**
-     * 1. PRELOAD & FULLSCREEN
-     * (Removed Microphone Initialization to fix Permission Denied error)
-     */
-    timeline.push({
-        type: jsPsychPreload,
-        auto_preload: true
+    jsPsych.data.addProperties({
+      subject_id: subject_id,
+      study_id: study_id,
+      session_id: session_id,
     });
 
-    timeline.push({
-        type: jsPsychFullscreen,
-        fullscreen_mode: true
+    // ----------- PRELOAD -----------
+    var preload = {
+      type: jsPsychPreload,
+      images: [
+        'consent_form_2022.png',
+        'images/instructions/movie_0.png',
+        'images/instructions/movie_1.png'
+      ]
+    };
+    timeline.push(preload);
+
+    // ----------- INTRO / CONSENT -----------
+    var trial_0 = {
+      type: jsPsychInstructions,
+      pages: [
+        '<div style="font-family: Arial; padding: 100px; padding-top: 5%; text-align: left;">' +
+        '<h2>Thank you for participating in this experiment!</h2>' +
+        '<p>By clicking the "Begin Study" button, you will be taken to the study, including complete instructions and an informed consent agreement.</p>'
+      ],
+      show_clickable_nav: true
+    };
+
+    var trial_consent = {
+      type: jsPsychInstructions,
+      pages: [
+        '<div style="text-align:center; font-family:Arial; font-size: 22px; padding-top:20px;">' +
+        '<p>Please carefully read the consent form below before proceeding.</p>' +
+        '<img src="consent_form_2022.png" style="max-width:80%; padding:20px;"></img>' +
+        '</div>'
+      ],
+      show_clickable_nav: true
+    };
+
+    var trial_01 = {
+      type: jsPsychFullscreen,
+      fullscreen_mode: true
+    };
+
+    timeline.push(trial_0, trial_consent, trial_01);
+
+    // ----------- INSTRUCTIONS -----------
+    var instructions_deck_choice = {
+      type: jsPsychInstructions,
+pages: [
+  '<div style="font-family: Arial; text-align: left; padding: 100px; padding-top: 5%;">' +
+  '<h2>Instructions</h2>' +
+  '<p>In this experiment, you will view a series of images and choose between two decks of cards: one <span style="color: red;">red</span> and one <span style="color: blue;">blue</span>.</p>' +
+  '<p><b>Your choice will determine the sequence of images that follows.</b></p>' +
+
+  // 🔹 קטע מודגש ומופרד ללא צבעים
+  '<div style="border: 2px solid #333; border-radius: 12px; padding: 25px; margin: 35px 0; background-color: #f5f5f5;">' +
+    '<p style="font-size: 22px; font-weight: bold; text-align: center; line-height: 1.6;">' +
+    'One deck presents a coherent and connected sequence of events that unfold logically over time.<br>' +
+    'The other deck presents a random series of events that are independent and do not follow a clear sequence.' +
+    '</p>' +
+  '</div>' +
+
+  '<p>As you go along, try to explore the differences between the two decks and choose the one that feels more interesting or engaging to you.</p>' +
+  '<p>There are no right or wrong answers — simply follow your intuition.</p>' +
+  '</div>'
+],
+
+
+
+      show_clickable_nav: true
+    };
+    timeline.push(instructions_deck_choice);
+
+    // ----------- HELPER FUNCTIONS -----------
+    function createImageTrial(imagePath) {
+      return {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: `<div style="display: flex; justify-content: center; align-items: center;">
+                     <img src="${imagePath}" style="width: 300px; height: 300px;" />
+                   </div>`,
+        choices: "NO_KEYS",
+        trial_duration: 7000
+      };
+    }
+
+    var choose_next_image = {
+      type: jsPsychHtmlButtonResponse,
+      stimulus: `
+        <div style="display: flex; justify-content: center; align-items: center;">
+          <img src="images/instructions/movie_0.png" style="width: 300px; height: 300px; margin-right: 10px;" />
+          <img src="images/instructions/movie_1.png" style="width: 300px; height: 300px;" />
+        </div>`,
+      choices: ['deck 1', 'deck 2'],
+      on_finish: function(data) {
+        data.choice = data.response;
+      }
+    };
+
+    var clean_deck = [ createImageTrial('images/other/blank.png') ];
+
+    // ----------- BLOCK CREATION (UPDATED STRUCTURE) -----------
+    function createCausalBlock(seriesIndex, semanticIndex) {
+      return [
+        // 1. קלף ראשון
+        createImageTrial(`images/causal/causal_series_${seriesIndex}/causal_series_${seriesIndex}_a.png`),
+
+        // 2. בחירה
+        choose_next_image,
+
+        // 3. שלושה קלפים בהתאם לבחירה
+        {
+          timeline: [
+            {
+              conditional_function: function() {
+                return jsPsych.data.getLastTrialData().values()[0].response == 0;
+              },
+              timeline: [
+                createImageTrial(`images/causal/causal_series_${seriesIndex}/causal_series_${seriesIndex}_b.png`),
+                createImageTrial(`images/causal/causal_series_${seriesIndex}/causal_series_${seriesIndex}_c.png`),
+                createImageTrial(`images/causal/causal_series_${seriesIndex}/causal_series_${seriesIndex}_d.png`)
+              ]
+            },
+            {
+              conditional_function: function() {
+                return jsPsych.data.getLastTrialData().values()[0].response == 1;
+              },
+              timeline: [
+                createImageTrial(`images/semantic/semantic_series_${semanticIndex}/semantic_series_${semanticIndex}_b.png`),
+                createImageTrial(`images/semantic/semantic_series_${semanticIndex}/semantic_series_${semanticIndex}_c.png`),
+                createImageTrial(`images/semantic/semantic_series_${semanticIndex}/semantic_series_${semanticIndex}_d.png`)
+              ]
+            }
+          ]
+        },
+        ...clean_deck
+      ];
+    }
+
+    // ----------- ALL BLOCKS -----------
+    var causal_blocks = [
+      createCausalBlock(1, 1),
+      createCausalBlock(2, 2),
+      createCausalBlock(3, 3),
+      createCausalBlock(4, 4),
+      createCausalBlock(5, 5),
+      createCausalBlock(6, 6),
+      createCausalBlock(7, 7),
+      createCausalBlock(8, 8),
+      createCausalBlock(9, 9),
+      createCausalBlock(10, 10)
+    ];
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    var randomized_causal_blocks = shuffleArray(causal_blocks);
+    randomized_causal_blocks.forEach(block => {
+      timeline.push(...block);
     });
 
-    /**
-     * 3. PART 1: ENCODING (Passive Observation)
-     */
-    timeline.push({
-        type: jsPsychInstructions,
-        pages: [
-            '<div style="font-size: 24px;">Welcome to Part 1.<br>You will view several sequences of images. Please observe them carefully.</div>'
-        ],
-        show_clickable_nav: true
-    });
+    // ----------- POST QUESTIONS -----------
+    var trial_difference_between_decks = {
+      type: jsPsychSurveyText,
+      questions: [{prompt: 'Can you describe the difference between the two decks of cards?'}]
+    };
 
-    // Iterate through sequences
-    all_seq.forEach((sequence, s_idx) => {
-        // Based on your console log, sequence might be an array of image paths
-        const images = Array.isArray(sequence) ? sequence : sequence.images;
+    var trial_deck_color = {
+      type: jsPsychHtmlButtonResponse,
+      stimulus: 'Which color deck does the following images continue the story from?',
+      choices: ['Blue', 'Red']
+    };
 
-        images.forEach((img_path, i_idx) => {
-            timeline.push({
-                type: jsPsychImageKeyboardResponse,
-                stimulus: img_path,
-                choices: "NO_KEYS",
-                trial_duration: 2000,
-                data: { phase: 'encoding', sequence_index: s_idx, image_index: i_idx }
-            });
-        });
+    var trial_deck_color_not_following = {
+      type: jsPsychHtmlButtonResponse,
+      stimulus: 'Which color deck do the following images NOT follow the story from?',
+      choices: ['Blue', 'Red']
+    };
+    
+    var trial_deck_preference = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: 'Which type of deck did you prefer overall?',
+  choices: [
+    'The red deck, which showed a series of unrelated events',
+    'The blue deck, which showed a connected and coherent story'
+  ]
+};
 
-        // Inter-sequence break
-        timeline.push({
-            type: jsPsychImageKeyboardResponse,
-            stimulus: 'clear.png', // Ensure this file exists or use a blank HTML trial
-            choices: "NO_KEYS",
-            trial_duration: 1000
-        });
-    });
 
-    /**
-     * 4. PART 2: RETRIEVAL (2AFC - 4th vs 6th image)
-     */
-    timeline.push({
-        type: jsPsychInstructions,
-        pages: [
-            '<div style="font-size: 24px;">Part 2: Memory Test.<br>You will see two images. Select the one that appeared <b>LATER</b> in the sequence.</div>'
-        ],
-        show_clickable_nav: true
-    });
+    timeline.push(trial_difference_between_decks, trial_deck_color, trial_deck_color_not_following, trial_deck_preference);
 
-    all_seq.forEach((sequence, s_idx) => {
-        const images = Array.isArray(sequence) ? sequence : sequence.images;
-        
-        // Safety check: ensure sequence has enough images for 4th (idx 3) and 6th (idx 5)
-        if (images.length >= 6) {
-            const img4 = images[3];
-            const img6 = images[5];
-            const choices = jsPsych.randomization.shuffle([img4, img6]);
-            
-            test_selections.push({ seq_idx: s_idx, img4: img4, img6: img6 });
+    var trial_101 = {
+      type: jsPsychSurveyText,
+      questions: [
+        {prompt: 'Please insert your gender (MALE/ FEMALE/ OTHER)'},
+        {prompt: 'Please insert your age'}
+      ]
+    };
+    timeline.push(trial_101);
 
-            timeline.push({
-                type: jsPsychImageButtonResponse,
-                stimulus: '',
-                choices: choices,
-                button_html: '<button class="jspsych-btn" style="margin: 20px;"><img src="%choice%" style="width:300px;"/></button>',
-                prompt: "<p style='font-size: 20px;'>Which image appeared LATER in the sequence?</p>",
-                data: {
-                    task: '2AFC_test',
-                    sequence_index: s_idx,
-                    correct_img: img6
-                },
-                on_finish: function(data) {
-                    const choice_made = choices[data.response];
-                    data.correct = (choice_made === data.correct_img);
-                    
-                    // Maintain server-side logging as per original code
-                    fetch('/save-my-data.php', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            subject_id: subject_id,
-                            sequence_index: s_idx,
-                            is_correct: data.correct,
-                            folder: data_folder
-                        })
-                    }).catch(e => console.error("Logging error:", e));
-                }
-            });
-        }
-    });
+    var trial_102 = {
+      type: jsPsychInstructions,
+      pages: [
+        '<span style="color: black; font-size: 24px">You have completed the experiment.' + 
+        '<br/>The completion code is : 85B28EDEFF <br/>Thank you for your participation!</span>'
+      ],
+      show_clickable_nav: true
+    };
+    timeline.push(trial_102);
 
-    /**
-     * 5. FINISH & DATA SAVE
-     */
-    timeline.push({
-        type: jsPsychInstructions,
-        pages: ['<div style="font-size: 24px;">Experiment complete. Thank you for your participation!</div>'],
-        show_clickable_nav: true
-    });
-
+    // ----------- RUN EXPERIMENT -----------
     jsPsych.run(timeline);
-</script>
+
+  </script>
 </html>
