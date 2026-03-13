@@ -1,0 +1,233 @@
+"success","timeout","failed_images","failed_audio","failed_video","trial_type","trial_index","time_elapsed","internal_node_id","subject_id","study_id","session_id","view_history","rt","stimulus","response","task","image_index","folder","valuable_image_index","valuable_X","left_image_index","right_image_index"
+"false","false","[]","[]","[]","preload","0","3822","0.0-0.0","","","","","","","","","","","","","",""
+"","","","","","instructions","1","6049","0.0-1.0","","","","[{""page_index"":0,""viewing_time"":2197}]","2226","","","","","","","","",""
+"","","","","","instructions","2","8736","0.0-2.0","","","","[{""page_index"":0,""viewing_time"":2685}]","2686","","","","","","","","",""
+"true","","","","","fullscreen","3","11076","0.0-3.0","","","","","1327","","","","","","","","",""
+"","","","","","instructions","4","12305","0.0-4.0","","","","[{""page_index"":0,""viewing_time"":1228}]","1228","","","","","","","","",""
+"","","","","","instructions","5","13187","0.0-5.0","","","","[{""page_index"":0,""viewing_time"":880}]","881","","","","","","","","",""
+"","","","","","html-keyboard-response","6","14198","0.0-6.0","","","","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/instructions/movie_1.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","",""
+"","","","","","html-button-response","7","15241","0.0-7.0","","","","","1039","
+                <div class=""stimulus-container"">
+                    <img src=""images/instructions/movie_1.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Was there a person in this image?</p>
+                    </div>
+                </div>","1","example_question","1","","","","",""
+"","","","","","html-keyboard-response","8","16259","0.0-8.0","","","","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/instructions/movie_2.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","",""
+"","","","","","html-button-response","9","17217","0.0-9.0","","","","","954","
+                <div class=""stimulus-container"">
+                    <img src=""images/instructions/movie_2.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Was there a person in this image?</p>
+                    </div>
+                </div>","1","example_question","2","","","","",""
+"","","","","","html-keyboard-response","10","18232","0.0-10.0","","","","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/instructions/movie_3.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","",""
+"","","","","","html-button-response","11","18787","0.0-11.0","","","","","552","
+                <div class=""stimulus-container"">
+                    <img src=""images/instructions/movie_3.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Was there a person in this image?</p>
+                    </div>
+                </div>","1","example_question","3","","","","",""
+"","","","","","html-keyboard-response","12","19795","0.0-12.0","","","","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/instructions/movie_4.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","",""
+"","","","","","html-button-response","13","20533","0.0-13.0","","","","","736","
+                <div class=""stimulus-container"">
+                    <img src=""images/instructions/movie_4.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Was there a person in this image?</p>
+                    </div>
+                </div>","1","example_question","4","","","","",""
+"","","","","","instructions","14","21579","0.0-14.0","","","","[{""page_index"":0,""viewing_time"":1044}]","1045","","","","","","","","",""
+"","","","","","html-keyboard-response","15","21692","0.0-15.0","","","","","null","<div style=""background-color: gray; width: 100vw; height: 100vh;""></div>","null","","","","","","",""
+"","","","","","html-keyboard-response","16","22710","0.0-16.0","","","","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_1.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","",""
+"","","","","","html-button-response","17","23540","0.0-17.0","","","","","827","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_1.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","1","main_causal_task","1","dog_causal","","","",""
+"","","","","","html-keyboard-response","18","24548","0.0-18.0","","","","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_2.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","",""
+"","","","","","html-button-response","19","25013","0.0-19.0","","","","","463","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_2.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","1","main_causal_task","2","dog_causal","","","",""
+"","","","","","html-keyboard-response","20","26017","0.0-20.0","","","","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_3.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","",""
+"","","","","","html-button-response","21","26221","0.0-21.0","","","","","202","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_3.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","1","main_causal_task","3","dog_causal","","","",""
+"","","","","","html-keyboard-response","22","27228","0.0-22.0","","","","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_4.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","",""
+"","","","","","html-button-response","23","27484","0.0-23.0","","","","","254","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_4.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","1","main_causal_task","4","dog_causal","","","",""
+"","","","","","html-keyboard-response","24","28494","0.0-24.0","","","","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_5.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","",""
+"","","","","","html-button-response","25","28756","0.0-25.0","","","","","259","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_5.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","1","main_causal_task","5","dog_causal","","","",""
+"","","","","","html-keyboard-response","26","29758","0.0-26.0","","","","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_6.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","",""
+"","","","","","html-button-response","27","30065","0.0-27.0","","","","","305","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_6.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","1","main_causal_task","6","dog_causal","","","",""
+"","","","","","html-keyboard-response","28","31080","0.0-28.0","","","","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_7.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","",""
+"","","","","","html-button-response","29","31338","0.0-29.0","","","","","256","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_7.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","1","main_causal_task","7","dog_causal","","","",""
+"","","","","","html-keyboard-response","30","32354","0.0-30.0","","","","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_8.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","",""
+"","","","","","html-button-response","31","33697","0.0-31.0","","","","","1341","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_8.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","1","main_causal_task","8","dog_causal","","","",""
+"","","","","","html-keyboard-response","32","34714","0.0-32.0","","","","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_9.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","",""
+"","","","","","html-button-response","33","35093","0.0-33.0","","","","","375","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_9.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","1","main_causal_task","9","dog_causal","","","",""
+"","","","","","instructions","34","36539","0.0-34.0","","","","[{""page_index"":0,""viewing_time"":1444}]","1445","","","","","","","","",""
+"","","","","","instructions","35","37182","0.0-35.0","","","","[{""page_index"":0,""viewing_time"":641}]","642","","","","","","","","",""
+"","","","","","html-keyboard-response","36","38194","0.0-36.0","","","","","null","
+        <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 30px;"">
+            <img src=""images/instructions/movie_1.png"" class=""exp-image"">
+            <div style=""font-size: 40px; font-weight: bold; color: green; border: 5px solid green; padding: 25px; border-radius: 15px; background-color: #f0fff0;"">
+                WORTH<br>$1
+            </div>
+        </div>
+        <div class=""question-area""></div>","null","","","","","","",""
+"","","","","","html-button-response","37","38947","0.0-37.0","","","","","750","
+        <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 30px;"">
+            <img src=""images/instructions/1.png"" class=""exp-image"">
+            <div style=""font-size: 40px; font-weight: bold; color: green; border: 5px solid green; padding: 25px; border-radius: 15px; background-color: #f0fff0;"">
+                WORTH<br>$1
+            </div>
+        </div>
+        <div class=""question-area"">
+            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Was there a person in this image?</p>
+        </div>","1","","","","","","",""
+"","","","","","instructions","38","41026","0.0-38.0","","","","[{""page_index"":0,""viewing_time"":2078}]","2079","","","","","","","","",""
+"","","","","","html-keyboard-response","39","42039","0.0-39.0","","","","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 30px;"">
+                <img src=""images/causal_sequence/dog_causal/dog_causal_7.png"" class=""exp-image"">
+                <div style=""font-size: 40px; font-weight: bold; color: green; border: 5px solid green; padding: 25px; border-radius: 15px; background-color: #f0fff0;"">
+                    WORTH<br>$1
+                </div>
+            </div>
+            <div class=""question-area""></div>","null","","","","","","",""
+"","","","","","html-button-response","40","42580","0.0-40.0","","","","","538","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 30px;"">
+                <img src=""images/causal_sequence/dog_causal/dog_causal_7.png"" class=""exp-image"">
+                <div style=""font-size: 40px; font-weight: bold; color: green; border: 5px solid green; padding: 25px; border-radius: 15px; background-color: #f0fff0;"">
+                    WORTH<br>$1
+                </div>
+            </div>
+            <div class=""question-area"">
+                <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Was there a person in this image?</p>
+            </div>","1","part2_value_learning","","dog_causal","7","","",""
+"","","","","","instructions","41","43653","0.0-41.0","","","","[{""page_index"":0,""viewing_time"":1072}]","1073","","","","","","","","",""
+"","","","","","instructions","42","44356","0.0-42.0","","","","[{""page_index"":0,""viewing_time"":701}]","702","","","","","","","","",""
+"","","","","","html-keyboard-response","43","45362","0.0-43.0","","","","","null","
+        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which one is more valuable?</h3><p>Study the images...</p></div>
+        <div class=""stimulus-container"" style=""display: flex; width: 1100px; justify-content: center; gap: 50px;"">
+            <img src=""images/instructions/movie_2.png"" class=""exp-image"">
+            <img src=""images/instructions/movie_3.png"" class=""exp-image"">
+        </div>","null","","","","","","",""
+"","","","","","html-button-response","44","46228","0.0-44.0","","","","","862","
+        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which one is more valuable?</h3><p>Make your choice now.</p></div>
+        <div class=""stimulus-container"" style=""display: flex; width: 1100px; justify-content: center; gap: 50px;"">
+            <img src=""images/instructions/movie_2.png"" class=""exp-image"">
+            <img src=""images/instructions/movie_3.png"" class=""exp-image"">
+        </div>","1","part3_example_choice","","","","","",""
+"","","","","","instructions","45","47209","0.0-45.0","","","","[{""page_index"":0,""viewing_time"":979}]","980","","","","","","","","",""
+"","","","","","html-keyboard-response","46","57225","0.0-46.0-0.0","","","","","null","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is  more valuable?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 1100px; justify-content: center; gap: 50px;"">
+                            <img src=""images/causal_sequence/dog_causal/dog_causal_6.png"" class=""exp-image"">
+                            <img src=""images/causal_sequence/dog_causal/dog_causal_8.png"" class=""exp-image"">
+                        </div>","null","","","","","","",""
+"","","","","","html-button-response","47","58159","0.0-46.0-1.0","","","","","931","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is  more valuable?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 1100px; justify-content: center; gap: 50px;"">
+                            <img src=""images/causal_sequence/dog_causal/dog_causal_6.png"" class=""exp-image"">
+                            <img src=""images/causal_sequence/dog_causal/dog_causal_8.png"" class=""exp-image"">
+                        </div>","1","part3_final_choice","","dog_causal","","7","6","8"
+"","","","","","survey-text","48","59315","0.0-47.0","","","","","1133","","{""Q0"":"""",""Q1"":""""}","","","","","","",""
+"","","","","","instructions","49","60336","0.0-48.0","","","","[{""page_index"":0,""viewing_time"":1020}]","1020","","","","","","","","",""
