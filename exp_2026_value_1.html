@@ -47,21 +47,41 @@
     // Define data folder for saving results
     var data_folder = 'data/';
 
-    // Function to save data via POST request
-    function saveData(name, data) {
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', 'write_data.php'); // PHP file to handle data writing
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.send(JSON.stringify({ filedata: data }));
-    }
-
-    // Initialize jsPsych
-    var jsPsych = initJsPsych({
-on_finish: function() {
-    // שלח רק את הנתונים, ה-PHP כבר יחליט על השם והתיקייה
-    saveData("data.csv", jsPsych.data.get().csv());
-}
+// Function to save data via POST request
+function saveData(data) {
+    // ה-PHP שלך מצפה ל-JSON עם המפתח 'filedata'
+    // השם "data.csv" נשלח כאן אבל ה-PHP שלך יתעלם ממנו וייצר שם מבוסס זמן
+    fetch('write_data.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ filedata: data })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok: ' + response.status);
+        }
+        return response.json();
+    })
+    .then(result => {
+        console.log("Success! File saved as: ", result.file);
+        // הצגת קוד הסיום למשתמש רק לאחר וידוא שהנתונים נשמרו
+    })
+    .catch(error => {
+        console.error("Error saving data:", error);
+        alert("There was an error saving your data. Please do not close this window.");
     });
+}
+
+// Initialize jsPsych
+var jsPsych = initJsPsych({
+    on_finish: function() {
+        // שולח את הנתונים בפורמט CSV. 
+        // ה-PHP שלך כבר מוסיף תאריך, שעה ו-ID ייחודי לשם הקובץ בתיקיית data/
+        saveData(jsPsych.data.get().csv());
+    }
+});
 
     // Generate a random subject ID
     var subject_id = jsPsych.randomization.randomID(15);
