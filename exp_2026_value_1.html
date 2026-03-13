@@ -44,18 +44,14 @@
   </head>
   <body></body>
   <script>
-  var data_folder = 'data/';
+   var data_folder = 'data/';
 
-function saveData(name, data, folder) { // הוספנו פרמטרים
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', 'write_data.php');
-  xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.send(JSON.stringify({
-      filedata: data,
-      subject_id: subject_id, // המשתנה הגלובלי שהגדרת
-      folder: folder          // התיקייה שבה תרצה לשמור (למשל 'data/All_data')
-  }));
-}
+    function saveData(name, data){
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', 'write_data.php');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify({filedata: data}));
+    }
 
     var jsPsych = initJsPsych({
       on_finish: function() {
@@ -65,7 +61,7 @@ function saveData(name, data, folder) { // הוספנו פרמטרים
 
     var timeline = [];
 
-    // ----------- SUBJECT PROPERTIES -----------
+    // Adding subject properties
     var subject_id = jsPsych.data.getURLVariable('participantId');
     var study_id = jsPsych.data.getURLVariable('assignmentId');
     var session_id = jsPsych.data.getURLVariable('projectId');
