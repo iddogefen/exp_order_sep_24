@@ -143,59 +143,70 @@ timeline.push(preload);
     timeline.push(trial_0, trial_consent, trial_01);
 
     // ----------- INSTRUCTIONS -----------
-var instructions_deck_choice = {
-    type: jsPsychInstructions,
-    pages: [
-        '<div style="font-family: Arial; text-align: left; padding: 50px; line-height: 1.6;">' +
-        '<h2>Experiment Overview</h2>' +
-        '<p>This experiment consists of <b>three parts</b>:</p>' +
-        
-        '<div style="background-color: #f9f9f9; border-left: 5px solid #333; padding: 20px; margin: 20px 0;">' +
-        '<p><b>Part 1:</b> You will view a series of images depicting different events.</p>' +
-        '<p><b>Part 2:</b> You will be shown specific images that are <b>worth money</b>.</p>' +
-        '<p><b>Part 3:</b> You will choose between two images and estimate which one is more valuable. ' +
-        'A correct guess will lead to a <b>monetary reward</b>.</p>' +
-        '</div>' +
-
-        '<p>Please pay close attention to the images and follow your intuition. Click "Next" to begin.</p>' +
-        '</div>'
-    ],
-    show_clickable_nav: true
-};
-timeline.push(instructions_deck_choice);
-
-// ----------- PART 1 EXAMPLE SEQUENCE -----------
+// ----------- PART 1 EXAMPLE SEQUENCE (TIMED) -----------
 
 // 1. Transition slide
 var part1_example_intro = {
     type: jsPsychInstructions,
     pages: [
         '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
-        '<h2>Part 1</h2>' +
-        '<p style="font-size: 20px;">The following is an example of <b>Part 1</b>.</p>' +
-        '<p>You will now see a sequence of images. Click "Next" to view them.</p>' +
+        '<h2>Part 1 Example</h2>' +
+        '<p style="font-size: 20px;">You will now see a sequence of images.</p>' +
+        '<p style="font-size: 20px;">Each image will appear for <b>4 seconds</b>, ' +
+        'followed by a question for <b>3 seconds</b>.</p>' +
+        '<p style="color: #d9534f;"><b>Your Task:</b> Answer if there was a person in the image.</p>' +
+        '<p>Click "Next" to start the example.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
 };
+timeline.push(part1_example_intro);
 
-// 2. Sequence of images (movie_1 to movie_4)
-// We use jsPsychInstructions again so the user can click through the example at their own pace
-var part1_example_images = {
+// 2. Loop to create the sequence for movie_1 to movie_4
+for (var i = 1; i <= 4; i++) {
+    
+    // שלב א: הצגת התמונה ל-4 שניות
+    var view_trial = {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: `
+            <div style="text-align:center;">
+                <img src="images/instructions/movie_${i}.png" style="width:500px; border: 2px solid #ccc;">
+            </div>`,
+        choices: "NO_KEYS", // המשתתף לא יכול לדלג
+        trial_duration: 4000 // 4 שניות
+    };
+
+    // שלב ב: השאלה ל-3 שניות
+    var question_trial = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: `
+            <div style="text-align:center; height: 300px; display: flex; align-items: center; justify-content: center;">
+                <p style="font-size: 24px; font-weight: bold;">Was there a person in the previous image?</p>
+            </div>`,
+        choices: ['Yes', 'No'],
+        trial_duration: 3000, // 3 שניות
+        response_ends_trial: true, // עובר הלאה ברגע שלוחצים
+        data: {
+            task: 'part1_example_question',
+            image_index: i
+        }
+    };
+
+    timeline.push(view_trial, question_trial);
+}
+
+// 3. End of example slide
+var end_of_example = {
     type: jsPsychInstructions,
     pages: [
-        '<div style="text-align:center;"><img src="images/instructions/movie_1.png" style="width:500px;"></div>',
-        '<div style="text-align:center;"><img src="images/instructions/movie_2.png" style="width:500px;"></div>',
-        '<div style="text-align:center;"><img src="images/instructions/movie_3.png" style="width:500px;"></div>',
-        '<div style="text-align:center;"><img src="images/instructions/movie_4.png" style="width:500px;"></div>'
+        '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
+        '<h3>Example Completed</h3>' +
+        '<p>Great! Now we will move to the actual experiment.</p>' +
+        '</div>'
     ],
-    show_clickable_nav: true,
-    button_label_next: "Continue",
-    allow_backward: true
+    show_clickable_nav: true
 };
-
-// Add them to the timeline right after the overview
-timeline.push(part1_example_intro, part1_example_images);
+timeline.push(end_of_example);
     // ----------- HELPER FUNCTIONS -----------
     function createImageTrial(imagePath) {
       return {
