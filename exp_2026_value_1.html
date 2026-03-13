@@ -46,12 +46,16 @@
   <script>
   var data_folder = 'data/';
 
-    function saveData(name, data){
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', 'write_data.php');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.send(JSON.stringify({filedata: data}));
-    }
+function saveData(name, data, folder) { // הוספנו פרמטרים
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'write_data.php');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.send(JSON.stringify({
+      filedata: data,
+      subject_id: subject_id, // המשתנה הגלובלי שהגדרת
+      folder: folder          // התיקייה שבה תרצה לשמור (למשל 'data/All_data')
+  }));
+}
 
     var jsPsych = initJsPsych({
       on_finish: function() {
@@ -356,7 +360,7 @@ var randomized_folders_part2 = jsPsych.randomization.shuffle(causal_folders);
 randomized_folders_part2.forEach(function(folderName) {
     
     // Pick the valuable image index (4, 5, or 6)
-    var value_indices = [4, 5, 6];
+    var value_indices = [3,4, 5, 6,7];
     var random_valuable_index = jsPsych.randomization.sampleWithReplacement(value_indices, 1)[0];
 
     // Phase A: Display ONLY the valuable image for 10 seconds
@@ -423,7 +427,7 @@ var part3_intro = {
         '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
         '<h2>Part 3: Final Choice</h2>' +
         '<p style="font-size: 20px;">In this final part, you will be presented with <b>two images</b> from the same series.</p>' +
-        '<p style="font-size: 20px;">Your goal is to choose the "luckier" image — the one you believe is more valuable.</p>' +
+        '<p style="font-size: 20px;">Your goal is to choose the "more valuable" image — the one you believe is more valuable.</p>' +
         '<p>A correct choice will result in a <b>monetary bonus</b> at the end of the study.</p>' +
         '<p>Click "Next" to see an example.</p>' +
         '</div>'
@@ -436,7 +440,7 @@ timeline.push(part3_intro);
 var part3_example_view = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
-        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which one is luckier?</h3><p>Study the images...</p></div>
+        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which one is more valuable?</h3><p>Study the images...</p></div>
         <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
             <img src="images/instructions/movie_1.png" class="exp-image">
             <img src="images/instructions/movie_3.png" class="exp-image">
@@ -448,7 +452,7 @@ var part3_example_view = {
 var part3_example_choice = {
     type: jsPsychHtmlButtonResponse,
     stimulus: `
-        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which one is luckier?</h3><p>Make your choice now.</p></div>
+        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which one is more valuable?</h3><p>Make your choice now.</p></div>
         <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
             <img src="images/instructions/movie_1.png" class="exp-image">
             <img src="images/instructions/movie_3.png" class="exp-image">
