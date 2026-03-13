@@ -312,7 +312,6 @@ var jsPsych = initJsPsych({
     timeline.push(part1_end);
 
     // ----------- PART 2: CAUSAL SERIES WITH RANDOM VALUE INJECTION -----------
-
 // ----------- PART 2: VALUE LEARNING (ONLY VALUABLE IMAGES) -----------
 
 // 1. Part 2 Introduction
@@ -331,7 +330,7 @@ var part2_intro = {
 };
 timeline.push(part2_intro);
 
-// 2. Part 2 EXAMPLE (Using movie_2.png)
+// 2. Part 2 EXAMPLE (תיקון נתיב התמונה מ-1.png ל-movie_1.png)
 var part2_example_view = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
@@ -343,14 +342,14 @@ var part2_example_view = {
         </div>
         <div class="question-area"></div>`,
     choices: "NO_KEYS",
-    trial_duration: 1000 // 10 seconds
+    trial_duration: 1000 
 };
 
 var part2_example_question = {
     type: jsPsychHtmlButtonResponse,
     stimulus: `
         <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 30px;">
-            <img src="images/instructions/1.png" class="exp-image">
+            <img src="images/instructions/movie_1.png" class="exp-image">
             <div style="font-size: 40px; font-weight: bold; color: green; border: 5px solid green; padding: 25px; border-radius: 15px; background-color: #f0fff0;">
                 WORTH<br>$1
             </div>
@@ -378,16 +377,13 @@ var part2_real_start = {
 };
 timeline.push(part2_real_start);
 
-// 4. Actual Part 2 Logic (Showing only the 1 valuable image per series)
+// 4. Actual Part 2 Logic
 var randomized_folders_part2 = jsPsych.randomization.shuffle(causal_folders);
 
 randomized_folders_part2.forEach(function(folderName) {
-    
-    // Pick the valuable image index (4, 5, or 6)
-    var value_indices = [3,4, 5, 6,7];
+    var value_indices = [3, 4, 5, 6, 7];
     var random_valuable_index = jsPsych.randomization.sampleWithReplacement(value_indices, 1)[0];
 
-    // Phase A: Display ONLY the valuable image for 10 seconds
     var main_view_part2 = {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: `
@@ -399,10 +395,9 @@ randomized_folders_part2.forEach(function(folderName) {
             </div>
             <div class="question-area"></div>`,
         choices: "NO_KEYS",
-        trial_duration: 1000 // 10 seconds for learning
+        trial_duration: 1000 
     };
 
-    // Phase B: Question (3 seconds)
     var main_question_part2 = {
         type: jsPsychHtmlButtonResponse,
         stimulus: `
@@ -424,97 +419,42 @@ randomized_folders_part2.forEach(function(folderName) {
             valuable_image_index: random_valuable_index
         }
     };
-
     timeline.push(main_view_part2, main_question_part2);
 });
 
-// 5. Part 2 Conclusion
 var part2_end = {
     type: jsPsychInstructions,
-    pages: [
-        '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
-        '<h2>Part 2 Completed</h2>' +
-        '<p>You have finished the Value Learning part.</p>' +
-        '<p>Click "Next" to continue to the third and final part.</p>' +
-        '</div>'
-    ],
+    pages: ['<div style="text-align: center; padding: 50px;"><h2>Part 2 Completed</h2><p>Click "Next" to continue.</p></div>'],
     show_clickable_nav: true
 };
 timeline.push(part2_end);
 
-// ----------- PART 3: CHOICE & VALUATION TEST -----------
+// ----------- PART 3: CHOICE & VALUATION TEST (שינויים כאן) -----------
 
-// 1. Part 3 Introduction
 var part3_intro = {
     type: jsPsychInstructions,
-    pages: [
-        '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
-        '<h2>Part 3: Final Choice</h2>' +
-        '<p style="font-size: 20px;">In this final part, you will be presented with <b>two images</b> from the same series.</p>' +
-        '<p style="font-size: 20px;">Your goal is to choose the "more valuable" image — the one you believe is more valuable.</p>' +
-        '<p>A correct choice will result in a <b>monetary bonus</b> at the end of the study.</p>' +
-        '<p>Click "Next" to see an example.</p>' +
-        '</div>'
-    ],
+    pages: ['<div style="text-align: center; padding: 50px;"><h2>Part 3: Final Choice</h2><p>Choose the "more valuable" image.</p></div>'],
     show_clickable_nav: true
 };
 timeline.push(part3_intro);
 
-// 2. PART 3 EXAMPLE (Using movie_1 and movie_3)
-var part3_example_view = {
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: `
-        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which one is more valuable?</h3><p>Study the images...</p></div>
-        <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
-            <img src="images/instructions/movie_2.png" class="exp-image">
-            <img src="images/instructions/movie_3.png" class="exp-image">
-        </div>`,
-    choices: "NO_KEYS",
-    trial_duration: 1000 // 10 seconds study time
-};
-
-var part3_example_choice = {
-    type: jsPsychHtmlButtonResponse,
-    stimulus: `
-        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which one is more valuable?</h3><p>Make your choice now.</p></div>
-        <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
-            <img src="images/instructions/movie_2.png" class="exp-image">
-            <img src="images/instructions/movie_3.png" class="exp-image">
-        </div>`,
-    choices: ['Left Image', 'Right Image'],
-    data: { task: 'part3_example_choice' }
-};
-timeline.push(part3_example_view, part3_example_choice);
-
-// 3. Start Actual Part 3
-timeline.push({
-    type: jsPsychInstructions,
-    pages: ['<div style="text-align: center; padding: 50px;"><h3>Example Finished</h3><p>The final test will now begin.</p></div>'],
-    show_clickable_nav: true
-});
-
-// 4. Actual Part 3 Logic (Dynamic Evaluation)
 var randomized_folders_part3 = jsPsych.randomization.shuffle(causal_folders);
 
 randomized_folders_part3.forEach(function(folderName) {
     
-    // We use a trial sequence to ensure images stay in the same position for both View and Choice
     var part3_sequence = {
         timeline: [
             {
                 type: jsPsychHtmlKeyboardResponse,
                 stimulus: function() {
-                    // Extract X from Part 2 data
                     var part2_data = jsPsych.data.get().filter({folder: folderName, task: 'part2_value_learning'}).values();
                     var X = (part2_data.length > 0) ? part2_data[0].valuable_image_index : 5;
-                    
-                    // Determine Left/Right once per folder
                     var is_left_smaller = (folderName.length % 2 === 0);
                     var left_idx = is_left_smaller ? X - 1 : X + 1;
                     var right_idx = is_left_smaller ? X + 1 : X - 1;
 
                     return `
-                        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is  more valuable?</h3></div>
+                        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is more valuable?</h3></div>
                         <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
                             <img src="images/causal_sequence/${folderName}/${folderName}_${left_idx}.png" class="exp-image">
                             <img src="images/causal_sequence/${folderName}/${folderName}_${right_idx}.png" class="exp-image">
@@ -528,29 +468,36 @@ randomized_folders_part3.forEach(function(folderName) {
                 stimulus: function() {
                     var part2_data = jsPsych.data.get().filter({folder: folderName, task: 'part2_value_learning'}).values();
                     var X = (part2_data.length > 0) ? part2_data[0].valuable_image_index : 5;
-                    
                     var is_left_smaller = (folderName.length % 2 === 0);
                     var left_idx = is_left_smaller ? X - 1 : X + 1;
                     var right_idx = is_left_smaller ? X + 1 : X - 1;
 
                     return `
-                        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is  more valuable?</h3></div>
+                        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is more valuable?</h3></div>
                         <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
                             <img src="images/causal_sequence/${folderName}/${folderName}_${left_idx}.png" class="exp-image">
                             <img src="images/causal_sequence/${folderName}/${folderName}_${right_idx}.png" class="exp-image">
                         </div>`;
                 },
                 choices: ['Left', 'Right'],
-                data: function() {
+                // כאן השינוי המרכזי ששומר את הבחירה המחושבת:
+                on_finish: function(data) {
                     var part2_data = jsPsych.data.get().filter({folder: folderName, task: 'part2_value_learning'}).values();
                     var X = (part2_data.length > 0) ? part2_data[0].valuable_image_index : 5;
-                    return {
-                        task: 'part3_final_choice',
-                        folder: folderName,
-                        valuable_X: X,
-                        left_image_index: (folderName.length % 2 === 0) ? X-1 : X+1,
-                        right_image_index: (folderName.length % 2 === 0) ? X+1 : X-1
-                    };
+                    
+                    var is_left_smaller = (folderName.length % 2 === 0);
+                    var left_idx = is_left_smaller ? X - 1 : X + 1;
+                    var right_idx = is_left_smaller ? X + 1 : X - 1;
+
+                    // data.response הוא 0 לשמאל, 1 לימין
+                    var chosen_idx = (data.response === 0) ? left_idx : right_idx;
+                    
+                    // הוספת הנתונים לשורה ב-CSV
+                    data.task = 'part3_final_choice';
+                    data.folder = folderName;
+                    data.valuable_X = X;
+                    data.chosen_image_index = chosen_idx;
+                    data.distance_from_X = chosen_idx - X; // ייתן 1 או -1
                 }
             }
         ]
@@ -558,31 +505,22 @@ randomized_folders_part3.forEach(function(folderName) {
     timeline.push(part3_sequence);
 });
 
-
-// ----------- END חOF EXPERIMENT -----------
-
-    var trial_demographics = {
-      type: jsPsychSurveyText,
-      questions: [
+// דמוגרפיה וסיום (ללא שינוי)
+var trial_demographics = {
+    type: jsPsychSurveyText,
+    questions: [
         {prompt: 'Please insert your gender (MALE/ FEMALE/ OTHER)'},
         {prompt: 'Please insert your age'}
-      ]
-    };
-    timeline.push(trial_demographics);
-    
+    ]
+};
+timeline.push(trial_demographics);
 
-    var trial_finish = {
-      type: jsPsychInstructions,
-      pages: [
-        '<span style="color: black; font-size: 24px">You have completed the experiment.' + 
-        '<br/>The completion code is : 8wwwwB28EDEFF <br/>Thank you for your participation!</span>'
-      ],
-      show_clickable_nav: true
-    };
-    timeline.push(trial_finish);
-
-    // ----------- RUN -----------
-    jsPsych.run(timeline);
+var trial_finish = {
+    type: jsPsychInstructions,
+    pages: ['<span style="font-size: 24px">You have completed the experiment. Code: 8wwwwB28EDEFF</span>'],
+    show_clickable_nav: true
+};
+timeline.push(trial_finish);
 
   </script>
 </html>
