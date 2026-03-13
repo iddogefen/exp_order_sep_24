@@ -212,6 +212,87 @@ var end_of_example = {
     show_clickable_nav: true
 };
 timeline.push(end_of_example);
+
+
+// ----------- MAIN EXPERIMENTAL PHASE: CAUSAL SERIES -----------
+
+// 1. Define the list of causal folders (matching your VS Code structure)
+var causal_folders = [
+    'coin_causal',
+    'dog_causal',
+    'museum_causal',
+    'package_causal',
+    'saving_a_cat_causal',
+    'the_performance_causal'
+];
+
+// 2. Randomize the order of the series (folders)
+var randomized_folders = jsPsych.randomization.shuffle(causal_folders);
+
+// 3. Loop through each randomized folder to build the timeline
+randomized_folders.forEach(function(folderName) {
+    
+    // Create a Gray Transition Screen between different series
+    var gray_screen = {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: '<div style="background-color: gray; width: 100vw; height: 100vh;"></div>',
+        choices: "NO_KEYS",
+        trial_duration: 1000 // 1 second of gray screen
+    };
+    timeline.push(gray_screen);
+
+    // Loop through images 0 to 9 within the folder (total of 10 images)
+    for (var i = 0; i <= 9; i++) {
+        
+        // Phase A: Image presentation (4 seconds)
+        var view_trial = {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: `
+                <div style="text-align:center;">
+                    <img src="images/causal_sequence/${folderName}/${folderName}_${i}.png" style="width:500px; border: 2px solid #ccc;">
+                    <div style="height: 100px;"></div> </div>`,
+            choices: "NO_KEYS",
+            trial_duration: 4000 // Display image alone for 4s
+        };
+
+        // Phase B: Image remains + Question appears (3 seconds)
+        var question_trial = {
+            type: jsPsychHtmlButtonResponse,
+            stimulus: `
+                <div style="text-align:center;">
+                    <img src="images/causal_sequence/${folderName}/${folderName}_${i}.png" style="width:500px; border: 2px solid #ccc;">
+                    <div style="height: 100px; display: flex; align-items: center; justify-content: center;">
+                        <p style="font-size: 24px; font-weight: bold; margin: 0;">Is there a person in this image?</p>
+                    </div>
+                </div>`,
+            choices: ['Yes', 'No'],
+            trial_duration: 3000, // Question appears for 3s
+            response_ends_trial: true, // Move to next image immediately if they answer
+            data: {
+                task: 'main_causal_task',
+                folder: folderName,
+                image_index: i
+            }
+        };
+
+        timeline.push(view_trial, question_trial);
+    }
+});
+
+// ----------- END OF PART 1 -----------
+var part1_end = {
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
+        '<h2>Part 1 Completed</h2>' +
+        '<p>You have finished the first part of the experiment.</p>' +
+        '<p>Click "Next" to continue to Part 2.</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
+};
+timeline.push(part1_end);
+
     // ----------- HELPER FUNCTIONS --------
     function createImageTrial(imagePath) {
       return {
