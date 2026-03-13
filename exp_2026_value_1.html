@@ -216,11 +216,13 @@ timeline.push(end_of_example);
 
 // ----------- MAIN EXPERIMENTAL PHASE: CAUSAL SERIES -----------
 
+// ----------- MAIN EXPERIMENTAL PHASE: CAUSAL SERIES -----------
+
 // 1. Define the list of causal folders (matching your VS Code structure)
 var causal_folders = [
-    'coin_causal',
+    //'coin_causal',
     'dog_causal',
-    'museum_causal',
+    //'museum_causal',
     'package_causal',
     'saving_a_cat_causal',
     'the_performance_causal'
@@ -241,10 +243,10 @@ randomized_folders.forEach(function(folderName) {
     };
     timeline.push(gray_screen);
 
-    // Loop through images 0 to 9 within the folder (total of 10 images)
-    for (var i = 0; i <= 9; i++) {
+    // Loop through images 1 to 9 within the folder (Starting from 1 to skip _0 images)
+    for (var i = 1; i <= 9; i++) {
         
-        // Phase A: Image presentation (4 seconds)
+        // Phase A: Image presentation (5 seconds)
         var view_trial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
@@ -252,7 +254,7 @@ randomized_folders.forEach(function(folderName) {
                     <img src="images/causal_sequence/${folderName}/${folderName}_${i}.png" style="width:500px; border: 2px solid #ccc;">
                     <div style="height: 100px;"></div> </div>`,
             choices: "NO_KEYS",
-            trial_duration: 4000 // Display image alone for 4s
+            trial_duration: 5000 // Display image alone for 5s
         };
 
         // Phase B: Image remains + Question appears (3 seconds)
