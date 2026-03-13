@@ -436,7 +436,7 @@ var part3_example_view = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
         <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which one is luckier?</h3><p>Study the images...</p></div>
-        <div class="stimulus-container" style="display: flex; width: 1000px; justify-content: center; gap: 50px;">
+        <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
             <img src="images/instructions/movie_1.png" class="exp-image">
             <img src="images/instructions/movie_3.png" class="exp-image">
         </div>`,
@@ -448,7 +448,7 @@ var part3_example_choice = {
     type: jsPsychHtmlButtonResponse,
     stimulus: `
         <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which one is luckier?</h3><p>Make your choice now.</p></div>
-        <div class="stimulus-container" style="display: flex; width: 1000px; justify-content: center; gap: 50px;">
+        <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
             <img src="images/instructions/movie_1.png" class="exp-image">
             <img src="images/instructions/movie_3.png" class="exp-image">
         </div>`,
@@ -464,63 +464,75 @@ timeline.push({
     show_clickable_nav: true
 });
 
-// 4. Actual Part 3 Logic
-// We shuffle the folders again
+// 4. Actual Part 3 Logic (Dynamic Evaluation)
 var randomized_folders_part3 = jsPsych.randomization.shuffle(causal_folders);
 
 randomized_folders_part3.forEach(function(folderName) {
     
-    // Logic: Retrieve the valuable index (X) that was assigned in Part 2
-    // If for some reason it wasn't set, we default to 5.
-    var X = jsPsych.data.get().filter({folder: folderName, task: 'part2_value_learning'}).values()[0].valuable_image_index || 5;
-    
-    var img_left_idx, img_right_idx;
-    
-    // Randomize whether X-1 is on the left or right
-    if (Math.random() > 0.5) {
-        img_left_idx = X - 1;
-        img_right_idx = X + 1;
-    } else {
-        img_left_idx = X + 1;
-        img_right_idx = X - 1;
-    }
+    // We use a trial sequence to ensure images stay in the same position for both View and Choice
+    var part3_sequence = {
+        timeline: [
+            {
+                type: jsPsychHtmlKeyboardResponse,
+                stimulus: function() {
+                    // Extract X from Part 2 data
+                    var part2_data = jsPsych.data.get().filter({folder: folderName, task: 'part2_value_learning'}).values();
+                    var X = (part2_data.length > 0) ? part2_data[0].valuable_image_index : 5;
+                    
+                    // Determine Left/Right once per folder
+                    var is_left_smaller = (folderName.length % 2 === 0);
+                    var left_idx = is_left_smaller ? X - 1 : X + 1;
+                    var right_idx = is_left_smaller ? X + 1 : X - 1;
 
-    // Phase A: Display both images for 10 seconds
-    var main_view_part3 = {
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: `
-            <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
-            <div class="stimulus-container" style="display: flex; width: 1000px; justify-content: center; gap: 50px;">
-                <img src="images/causal_sequence/${folderName}/${folderName}_${img_left_idx}.png" class="exp-image">
-                <img src="images/causal_sequence/${folderName}/${folderName}_${img_right_idx}.png" class="exp-image">
-            </div>`,
-        choices: "NO_KEYS",
-        trial_duration: 10000
+                    return `
+                        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
+                        <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
+                            <img src="images/causal_sequence/${folderName}/${folderName}_${left_idx}.png" class="exp-image">
+                            <img src="images/causal_sequence/${folderName}/${folderName}_${right_idx}.png" class="exp-image">
+                        </div>`;
+                },
+                choices: "NO_KEYS",
+                trial_duration: 10000
+            },
+            {
+                type: jsPsychHtmlButtonResponse,
+                stimulus: function() {
+                    var part2_data = jsPsych.data.get().filter({folder: folderName, task: 'part2_value_learning'}).values();
+                    var X = (part2_data.length > 0) ? part2_data[0].valuable_image_index : 5;
+                    
+                    var is_left_smaller = (folderName.length % 2 === 0);
+                    var left_idx = is_left_smaller ? X - 1 : X + 1;
+                    var right_idx = is_left_smaller ? X + 1 : X - 1;
+
+                    return `
+                        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
+                        <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
+                            <img src="images/causal_sequence/${folderName}/${folderName}_${left_idx}.png" class="exp-image">
+                            <img src="images/causal_sequence/${folderName}/${folderName}_${right_idx}.png" class="exp-image">
+                        </div>`;
+                },
+                choices: ['Left', 'Right'],
+                data: function() {
+                    var part2_data = jsPsych.data.get().filter({folder: folderName, task: 'part2_value_learning'}).values();
+                    var X = (part2_data.length > 0) ? part2_data[0].valuable_image_index : 5;
+                    return {
+                        task: 'part3_final_choice',
+                        folder: folderName,
+                        valuable_X: X,
+                        left_image_index: (folderName.length % 2 === 0) ? X-1 : X+1,
+                        right_image_index: (folderName.length % 2 === 0) ? X+1 : X-1
+                    };
+                }
+            }
+        ]
     };
-
-    // Phase B: Choice (Still showing images)
-    var main_choice_part3 = {
-        type: jsPsychHtmlButtonResponse,
-        stimulus: `
-            <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
-            <div class="stimulus-container" style="display: flex; width: 1000px; justify-content: center; gap: 50px;">
-                <img src="images/causal_sequence/${folderName}/${folderName}_${img_left_idx}.png" class="exp-image">
-                <img src="images/causal_sequence/${folderName}/${folderName}_${img_right_idx}.png" class="exp-image">
-            </div>`,
-        choices: ['Left', 'Right'],
-        data: {
-            task: 'part3_final_choice',
-            folder: folderName,
-            valuable_X: X,
-            left_image_index: img_left_idx,
-            right_image_index: img_right_idx
-        }
-    };
-
-    timeline.push(main_view_part3, main_choice_part3);
+    timeline.push(part3_sequence);
 });
 
-// ----------- END OF EXPERIMENT -----------
+// ----------- WRAP UP -----------
+timeline.push(trial_demographics, trial_finish);
+
+// ----------- END חOF EXPERIMENT -----------
 
     var trial_demographics = {
       type: jsPsychSurveyText,
