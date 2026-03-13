@@ -429,7 +429,7 @@ var part2_end = {
 };
 timeline.push(part2_end);
 
-// ----------- PART 3: CHOICE & VALUATION TEST (שינויים כאן) -----------
+// ----------- PART 3: CHOICE & VALUATION TEST (Distance 2) -----------
 
 var part3_intro = {
     type: jsPsychInstructions,
@@ -450,8 +450,10 @@ randomized_folders_part3.forEach(function(folderName) {
                     var part2_data = jsPsych.data.get().filter({folder: folderName, task: 'part2_value_learning'}).values();
                     var X = (part2_data.length > 0) ? part2_data[0].valuable_image_index : 5;
                     var is_left_smaller = (folderName.length % 2 === 0);
-                    var left_idx = is_left_smaller ? X - 1 : X + 1;
-                    var right_idx = is_left_smaller ? X + 1 : X - 1;
+                    
+                    // שינוי כאן: מ-X-1 ל-X-2 ומ-X+1 ל-X+2
+                    var left_idx = is_left_smaller ? X - 2 : X + 2;
+                    var right_idx = is_left_smaller ? X + 2 : X - 2;
 
                     return `
                         <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is more valuable?</h3></div>
@@ -469,8 +471,10 @@ randomized_folders_part3.forEach(function(folderName) {
                     var part2_data = jsPsych.data.get().filter({folder: folderName, task: 'part2_value_learning'}).values();
                     var X = (part2_data.length > 0) ? part2_data[0].valuable_image_index : 5;
                     var is_left_smaller = (folderName.length % 2 === 0);
-                    var left_idx = is_left_smaller ? X - 1 : X + 1;
-                    var right_idx = is_left_smaller ? X + 1 : X - 1;
+                    
+                    // שינוי כאן: מ-X-1 ל-X-2 ומ-X+1 ל-X+2
+                    var left_idx = is_left_smaller ? X - 2 : X + 2;
+                    var right_idx = is_left_smaller ? X + 2 : X - 2;
 
                     return `
                         <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is more valuable?</h3></div>
@@ -480,24 +484,23 @@ randomized_folders_part3.forEach(function(folderName) {
                         </div>`;
                 },
                 choices: ['Left', 'Right'],
-                // כאן השינוי המרכזי ששומר את הבחירה המחושבת:
                 on_finish: function(data) {
                     var part2_data = jsPsych.data.get().filter({folder: folderName, task: 'part2_value_learning'}).values();
                     var X = (part2_data.length > 0) ? part2_data[0].valuable_image_index : 5;
                     
                     var is_left_smaller = (folderName.length % 2 === 0);
-                    var left_idx = is_left_smaller ? X - 1 : X + 1;
-                    var right_idx = is_left_smaller ? X + 1 : X - 1;
+                    
+                    // שינוי כאן: מ-X-1 ל-X-2 ומ-X+1 ל-X+2
+                    var left_idx = is_left_smaller ? X - 2 : X + 2;
+                    var right_idx = is_left_smaller ? X + 2 : X - 2;
 
-                    // data.response הוא 0 לשמאל, 1 לימין
                     var chosen_idx = (data.response === 0) ? left_idx : right_idx;
                     
-                    // הוספת הנתונים לשורה ב-CSV
                     data.task = 'part3_final_choice';
                     data.folder = folderName;
                     data.valuable_X = X;
                     data.chosen_image_index = chosen_idx;
-                    data.distance_from_X = chosen_idx - X; // ייתן 1 או -1
+                    data.distance_from_X = chosen_idx - X; // ייתן 2 או -2
                 }
             }
         ]
@@ -505,9 +508,9 @@ randomized_folders_part3.forEach(function(folderName) {
     timeline.push(part3_sequence);
 });
 
-// דמוגרפיה וסיום (ללא שינוי)
+// דמ'וגרפיה וסיום (ללא שינוי)
 var trial_demographics = {
-    type: jsPsychSurveyText,
+    type: jsPsychSurveyText, 
     questions: [
         {
             prompt: 'Please insert your gender (MALE / FEMALE / OTHER)', 
