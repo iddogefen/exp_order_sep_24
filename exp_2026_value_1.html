@@ -230,7 +230,7 @@ var jsPsych = initJsPsych({
                     <div class="question-area"></div> 
                 </div>`,
             choices: "NO_KEYS", 
-            trial_duration: 4000 
+            trial_duration: 1000 
         };
 
         var example_question = {
@@ -265,7 +265,7 @@ var jsPsych = initJsPsych({
             type: jsPsychHtmlKeyboardResponse,
             stimulus: '<div style="background-color: gray; width: 100vw; height: 100vh;"></div>',
             choices: "NO_KEYS",
-            trial_duration: 1000
+            trial_duration: 100
         });
 
         // Loop through images 1 to 9 (skipping _0)
@@ -343,7 +343,7 @@ var part2_example_view = {
         </div>
         <div class="question-area"></div>`,
     choices: "NO_KEYS",
-    trial_duration: 10000 // 10 seconds
+    trial_duration: 1000 // 10 seconds
 };
 
 var part2_example_question = {
@@ -399,7 +399,7 @@ randomized_folders_part2.forEach(function(folderName) {
             </div>
             <div class="question-area"></div>`,
         choices: "NO_KEYS",
-        trial_duration: 10000 // 10 seconds for learning
+        trial_duration: 1000 // 10 seconds for learning
     };
 
     // Phase B: Question (3 seconds)
@@ -470,7 +470,7 @@ var part3_example_view = {
             <img src="images/instructions/movie_3.png" class="exp-image">
         </div>`,
     choices: "NO_KEYS",
-    trial_duration: 10000 // 10 seconds study time
+    trial_duration: 1000 // 10 seconds study time
 };
 
 var part3_example_choice = {

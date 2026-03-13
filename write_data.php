@@ -1,25 +1,38 @@
 <?php
-// get the data from the POST message
-	$post_data = json_decode(file_get_contents('php://input'), true);
-	$data = $post_data['filedata'];	
-	// MG  - start change - adding retrieval of subject_id that is now provided by the saveData function
-	$subject_id = $post_data['subject_id'];
-	// MG - end change
-	// generate a unique ID for the file, e.g., session-6feu833950202 
-	$file = date("Y-m-d-h-i-sa");
-	// the directory "data" must be writable by the server
-	// MG start change - add subject_id as prefix of file
-	// MG $name = "data/{$file}.csv"; 
-	$folder = $post_data['folder'];
-	if (!is_dir("{$folder}")) {
-	// create part_1/2 folder if does not exist
-	      if (!mkdir("{$folder}",0777, true)) {
-		error_log("could not create ","{$folder}");
-	      }
-	}
-	$file_name = "{$folder}/{$subject_id}-{$file}.csv"; 
-	error_log($folder);
-	// MG end change
-	// write the file to disk
-	file_put_contents($file_name, $data);
+// הגדרת כותרות למניעת שגיאות ב-JS
+header('Content-Type: application/json');
+
+// קבלת הנתונים הגולמיים מה-fetch
+$post_data = json_decode(file_get_contents('php://input'), true);
+
+if (isset($post_data['filedata'])) {
+    $data = $post_data['filedata'];
+    
+    // יצירת שם קובץ פשוט עם תאריך, שעה וקוד אקראי
+    // זה ימנע את כל השגיאות של "Undefined array key" שראינו ב-Log
+    $filename = "exp_data_" . date("Y-m-d_H-i-s") . "_" . uniqid() . ".csv";
+    
+    // נתיב מלא כדי להיות בטוחים (Absolute Path)
+    $path = "/var/www/html/exp_order_sep_24/data/" . $filename;
+    
+    // שמירת הקובץ
+    if (file_put_contents($path, $data)) {
+        echo json_encode([
+            "status" => "success", 
+            "file" => $filename
+        ]);
+    } else {
+        header('HTTP/1.1 500 Internal Server Error');
+        echo json_encode([
+            "status" => "error", 
+            "message" => "Failed to write to data folder. Check permissions."
+        ]);
+    }
+} else {
+    header('HTTP/1.1 400 Bad Request');
+    echo json_encode([
+        "status" => "error", 
+        "message" => "No filedata received in JSON payload"
+    ]);
+}
 ?>
