@@ -48,15 +48,70 @@
     });
 
     // ----------- PRELOAD -----------
-    var preload = {
-      type: jsPsychPreload,
-      images: [
+// Instructions (movie_0.png to movie_4.png)
+var instruction_images = [];
+for (var i = 0; i <= 4; i++) {
+    instruction_images.push(`images/instructions/movie_${i}.png`);
+}
+
+// Causal Sequences (Folders based on your VS Code screenshot)
+var causal_folders = [
+    'coin_causal',
+    'dog_causal',
+    'museum_causal',
+    'package_causal',
+    'saving_a_cat_causal',
+    'the_performance_causal'
+];
+
+var causal_images = [];
+causal_folders.forEach(function(folder) {
+    // Assuming up to 9 images per sequence (0-8)
+    for (var i = 0; i <= 8; i++) {
+        causal_images.push(`images/causal_sequence/${folder}/${folder}_${i}.png`);
+    }
+});
+
+// Semantic Sequences (Folders based on your VS Code screenshot)
+var semantic_folders = [
+    'cat_care_semantic',
+    'creative_activities_semantic',
+    'exploring_nature_semantic',
+    'housework_semantic',
+    'kitchen_operations_semantic'
+];
+
+var semantic_images = [];
+semantic_folders.forEach(function(folder) {
+    // According to your logic, semantic uses suffixes _b, _c, _d
+    ['b', 'c', 'd'].forEach(function(letter) {
+        semantic_images.push(`images/semantic_sequence/${folder}/${folder}_${letter}.png`);
+    });
+});
+
+// ----------- 2. CONSOLIDATED PRELOAD OBJECT -----------
+
+var preload = {
+    type: jsPsychPreload,
+    images: [
         'consent_form_2022.png',
-        'images/instructions/movie_0.png',
-        'images/instructions/movie_1.png'
-      ]
-    };
-    timeline.push(preload);
+        'images/other/blank.png',
+        ...instruction_images,
+        ...causal_images,
+        ...semantic_images
+    ],
+    message: 'Loading experiment assets... Please wait.',
+    continue_after_error: true, // Prevents crash if a specific image index is missing
+    on_error: function(file) {
+        console.log('Error loading file: ', file);
+    },
+    on_success: function(file) {
+        console.log('Loaded: ', file);
+    }
+};
+
+// Add to timeline
+timeline.push(preload);
 
     // ----------- INTRO / CONSENT -----------
     var trial_0 = {
