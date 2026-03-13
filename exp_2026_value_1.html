@@ -509,10 +509,36 @@ randomized_folders_part3.forEach(function(folderName) {
 var trial_demographics = {
     type: jsPsychSurveyText,
     questions: [
-        {prompt: 'Please insert your gender (MALE/ FEMALE/ OTHER)'},
-        {prompt: 'Please insert your age'}
-    ]
+        {
+            prompt: 'Please insert your gender (MALE / FEMALE / OTHER)', 
+            name: 'gender', 
+            rows: 1, 
+            columns: 20
+        },
+        {
+            prompt: 'Please insert your age', 
+            name: 'age', 
+            rows: 1, 
+            columns: 5
+        },
+        {
+            prompt: 'In the last part, how did you decide which image was more valuable?', 
+            name: 'decision_strategy', 
+            rows: 3, 
+            columns: 50
+        },
+        {
+            prompt: 'Did you use the same logic for all pairs of images, or did your reasoning change between different sets? Please explain.', 
+            name: 'consistency_check', 
+            rows: 3, 
+            columns: 50
+        }
+    ],
+    data: {
+        task: 'demographics_and_strategy'
+    }
 };
+
 timeline.push(trial_demographics);
 
 var trial_finish = {
