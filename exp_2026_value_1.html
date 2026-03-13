@@ -57,9 +57,10 @@
 
     // Initialize jsPsych
     var jsPsych = initJsPsych({
-      on_finish: function () {
-        saveData(data_folder + 'all_data_sub_' + subject_id + '.csv', jsPsych.data.get().csv());
-      }
+on_finish: function() {
+    // שלח רק את הנתונים, ה-PHP כבר יחליט על השם והתיקייה
+    saveData("data.csv", jsPsych.data.get().csv());
+}
     });
 
     // Generate a random subject ID
@@ -315,7 +316,7 @@ var part2_example_view = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
         <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 30px;">
-            <img src="images/instructions/movie_2.png" class="exp-image">
+            <img src="images/instructions/movie_1.png" class="exp-image">
             <div style="font-size: 40px; font-weight: bold; color: green; border: 5px solid green; padding: 25px; border-radius: 15px; background-color: #f0fff0;">
                 WORTH<br>$1
             </div>
@@ -329,7 +330,7 @@ var part2_example_question = {
     type: jsPsychHtmlButtonResponse,
     stimulus: `
         <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 30px;">
-            <img src="images/instructions/movie_2.png" class="exp-image">
+            <img src="images/instructions/1.png" class="exp-image">
             <div style="font-size: 40px; font-weight: bold; color: green; border: 5px solid green; padding: 25px; border-radius: 15px; background-color: #f0fff0;">
                 WORTH<br>$1
             </div>
@@ -445,7 +446,7 @@ var part3_example_view = {
     stimulus: `
         <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which one is more valuable?</h3><p>Study the images...</p></div>
         <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
-            <img src="images/instructions/movie_1.png" class="exp-image">
+            <img src="images/instructions/movie_2.png" class="exp-image">
             <img src="images/instructions/movie_3.png" class="exp-image">
         </div>`,
     choices: "NO_KEYS",
@@ -457,7 +458,7 @@ var part3_example_choice = {
     stimulus: `
         <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which one is more valuable?</h3><p>Make your choice now.</p></div>
         <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
-            <img src="images/instructions/movie_1.png" class="exp-image">
+            <img src="images/instructions/movie_2.png" class="exp-image">
             <img src="images/instructions/movie_3.png" class="exp-image">
         </div>`,
     choices: ['Left Image', 'Right Image'],
@@ -493,7 +494,7 @@ randomized_folders_part3.forEach(function(folderName) {
                     var right_idx = is_left_smaller ? X + 1 : X - 1;
 
                     return `
-                        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
+                        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is  more valuable?</h3></div>
                         <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
                             <img src="images/causal_sequence/${folderName}/${folderName}_${left_idx}.png" class="exp-image">
                             <img src="images/causal_sequence/${folderName}/${folderName}_${right_idx}.png" class="exp-image">
@@ -513,7 +514,7 @@ randomized_folders_part3.forEach(function(folderName) {
                     var right_idx = is_left_smaller ? X + 1 : X - 1;
 
                     return `
-                        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
+                        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is  more valuable?</h3></div>
                         <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
                             <img src="images/causal_sequence/${folderName}/${folderName}_${left_idx}.png" class="exp-image">
                             <img src="images/causal_sequence/${folderName}/${folderName}_${right_idx}.png" class="exp-image">
