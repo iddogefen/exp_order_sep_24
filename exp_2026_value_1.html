@@ -2,6 +2,31 @@
 <html>
   <head>
     <style>
+      /* Lock the image size for consistency */
+      .exp-image {
+          width: 500px;
+          height: 400px; /* Fixed height to prevent layout jumps */
+          object-fit: contain; /* Keeps aspect ratio without distortion */
+          border: 2px solid #ccc;
+          display: block;
+          margin: 0 auto;
+      }
+
+      /* Container to keep everything centered and uniform */
+      .stimulus-container {
+          width: 600px;
+          margin: 0 auto;
+          text-align: center;
+      }
+
+      /* Fixed height for the question area so buttons don't move */
+      .question-area {
+          height: 100px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+
       .hide_cursor {
         cursor: none;
       }
@@ -47,71 +72,60 @@
       session_id: session_id,
     });
 
-    // ----------- PRELOAD -----------
-// Instructions (movie_0.png to movie_4.png)
-var instruction_images = [];
-for (var i = 0; i <= 4; i++) {
-    instruction_images.push(`images/instructions/movie_${i}.png`);
-}
-
-// Causal Sequences (Folders based on your VS Code screenshot)
-var causal_folders = [
-    'coin_causal',
-    'dog_causal',
-    'museum_causal',
-    'package_causal',
-    'saving_a_cat_causal',
-    'the_performance_causal'
-];
-
-var causal_images = [];
-causal_folders.forEach(function(folder) {
-    // Assuming up to 9 images per sequence (0-8)
-    for (var i = 0; i <= 8; i++) {
-        causal_images.push(`images/causal_sequence/${folder}/${folder}_${i}.png`);
+    // ----------- PRELOAD SECTION -----------
+    
+    // Instruction images
+    var instruction_images = [];
+    for (var i = 0; i <= 4; i++) {
+        instruction_images.push(`images/instructions/movie_${i}.png`);
     }
-});
 
-// Semantic Sequences (Folders based on your VS Code screenshot)
-var semantic_folders = [
-    'cat_care_semantic',
-    'creative_activities_semantic',
-    'exploring_nature_semantic',
-    'housework_semantic',
-    'kitchen_operations_semantic'
-];
+    // Causal folders from your VS Code
+    var causal_folders = [
+        'coin_causal',
+        'dog_causal',
+        'museum_causal',
+        'package_causal',
+        'saving_a_cat_causal',
+        'the_performance_causal'
+    ];
 
-var semantic_images = [];
-semantic_folders.forEach(function(folder) {
-    // According to your logic, semantic uses suffixes _b, _c, _d
-    ['b', 'c', 'd'].forEach(function(letter) {
-        semantic_images.push(`images/semantic_sequence/${folder}/${folder}_${letter}.png`);
+    var causal_images = [];
+    causal_folders.forEach(function(folder) {
+        for (var i = 0; i <= 9; i++) {
+            causal_images.push(`images/causal_sequence/${folder}/${folder}_${i}.png`);
+        }
     });
-});
 
-// ----------- 2. CONSOLIDATED PRELOAD OBJECT -----------
+    // Semantic folders
+    var semantic_folders = [
+        'cat_care_semantic',
+        'creative_activities_semantic',
+        'exploring_nature_semantic',
+        'housework_semantic',
+        'kitchen_operations_semantic'
+    ];
 
-var preload = {
-    type: jsPsychPreload,
-    images: [
-        'consent_form_2022.png',
-        'images/other/blank.png',
-        ...instruction_images,
-        ...causal_images,
-        ...semantic_images
-    ],
-    message: 'Loading experiment assets... Please wait.',
-    continue_after_error: true, // Prevents crash if a specific image index is missing
-    on_error: function(file) {
-        console.log('Error loading file: ', file);
-    },
-    on_success: function(file) {
-        console.log('Loaded: ', file);
-    }
-};
+    var semantic_images = [];
+    semantic_folders.forEach(function(folder) {
+        ['b', 'c', 'd'].forEach(function(letter) {
+            semantic_images.push(`images/semantic_sequence/${folder}/${folder}_${letter}.png`);
+        });
+    });
 
-// Add to timeline
-timeline.push(preload);
+    var preload = {
+        type: jsPsychPreload,
+        images: [
+            'consent_form_2022.png',
+            'images/other/blank.png',
+            ...instruction_images,
+            ...causal_images,
+            ...semantic_images
+        ],
+        message: 'Loading experiment assets... Please wait.',
+        continue_after_error: true
+    };
+    timeline.push(preload);
 
     // ----------- INTRO / CONSENT -----------
     var trial_0 = {
@@ -142,291 +156,142 @@ timeline.push(preload);
 
     timeline.push(trial_0, trial_consent, trial_01);
 
-    // ----------- INSTRUCTIONS -----------
-// ----------- PART 1 EXAMPLE SEQUENCE (TIMED) -----------
-
-// 1. Transition slide
-// ----------- PART 1 EXAMPLE SEQUENCE (IMAGE REMAINS DURING QUESTION) -----------
-
-// 1. Transition slide - Updated to remove mention of seconds
-var part1_example_intro = {
-    type: jsPsychInstructions,
-    pages: [
-        '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
-        '<h2>Part 1 Example</h2>' +
-        '<p style="font-size: 20px;">You will now see a sequence of images.</p>' +
-        '<p style="font-size: 20px;">First, you will view the image, and then a question will appear below it.</p>' +
-        '<p style="color: #d9534f;"><b>Your Task:</b> Answer if there is a person in the image using the buttons provided.</p>' +
-        '<p>Click "Next" to start the example.</p>' +
-        '</div>'
-    ],
-    show_clickable_nav: true
-};
-timeline.push(part1_example_intro);
-
-// 2. Loop to create the sequence
-for (var i = 1; i <= 4; i++) {
-    
-    // Phase A: View image only
-    var view_trial = {
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: `
-            <div style="text-align:center;">
-                <img src="images/instructions/movie_${i}.png" style="width:500px; border: 2px solid #ccc;">
-                <div style="height: 100px;"></div> </div>`,
-        choices: "NO_KEYS", 
-        trial_duration: 4000 
+    // ----------- OVERVIEW INSTRUCTIONS -----------
+    var instructions_overview = {
+        type: jsPsychInstructions,
+        pages: [
+            '<div style="font-family: Arial; text-align: left; padding: 50px; line-height: 1.6;">' +
+            '<h2>Experiment Overview</h2>' +
+            '<p>This experiment consists of <b>three parts</b>:</p>' +
+            '<div style="background-color: #f9f9f9; border-left: 5px solid #333; padding: 20px; margin: 20px 0;">' +
+            '<p><b>Part 1:</b> You will view a series of images depicting different events.</p>' +
+            '<p><b>Part 2:</b> You will be shown specific images that are <b>worth money</b>.</p>' +
+            '<p><b>Part 3:</b> You will choose between two images and estimate which one is more valuable. ' +
+            'A correct guess will lead to a <b>monetary reward</b>.</p>' +
+            '</div>' +
+            '<p>Please pay close attention to the images and follow your intuition. Click "Next" to begin.</p>' +
+            '</div>'
+        ],
+        show_clickable_nav: true
     };
+    timeline.push(instructions_overview);
 
-    // Phase B: Image remains + Question appears
-    var question_trial = {
-        type: jsPsychHtmlButtonResponse,
-        stimulus: `
-            <div style="text-align:center;">
-                <img src="images/instructions/movie_${i}.png" style="width:500px; border: 2px solid #ccc;">
-                <div style="height: 100px; display: flex; align-items: center; justify-content: center;">
-                    <p style="font-size: 24px; font-weight: bold; margin: 0;">Was there a person in this image?</p>
-                </div>
-            </div>`,
-        choices: ['Yes', 'No'],
-        trial_duration: 3000, 
-        response_ends_trial: true,
-        data: {
-            task: 'part1_example_question',
-            image_index: i
-        }
+    // ----------- PART 1 EXAMPLE SEQUENCE -----------
+    var part1_example_intro = {
+        type: jsPsychInstructions,
+        pages: [
+            '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
+            '<h2>Part 1 Example</h2>' +
+            '<p style="font-size: 20px;">You will now see a sequence of images as an example.</p>' +
+            '<p style="font-size: 20px;">First, you will view the image, and then a question will appear below it.</p>' +
+            '<p style="color: #d9534f;"><b>Your Task:</b> Answer if there is a person in the image using the buttons provided.</p>' +
+            '<p>Click "Next" to start the example.</p>' +
+            '</div>'
+        ],
+        show_clickable_nav: true
     };
+    timeline.push(part1_example_intro);
 
-    timeline.push(view_trial, question_trial);
-}
-
-// 3. End of example slide
-var end_of_example = {
-    type: jsPsychInstructions,
-    pages: [
-        '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
-        '<h3>Example Completed</h3>' +
-        '<p>Great! Now we will move to the actual experiment.</p>' +
-        '</div>'
-    ],
-    show_clickable_nav: true
-};
-timeline.push(end_of_example);
-
-
-// ----------- MAIN EXPERIMENTAL PHASE: CAUSAL SERIES -----------
-
-// ----------- MAIN EXPERIMENTAL PHASE: CAUSAL SERIES -----------
-
-// 1. Define the list of causal folders (matching your VS Code structure)
-var causal_folders = [
-    //'coin_causal',
-    'dog_causal',
-    //'museum_causal',
-    'package_causal',
-    'saving_a_cat_causal',
-    'the_performance_causal'
-];
-
-// 2. Randomize the order of the series (folders)
-var randomized_folders = jsPsych.randomization.shuffle(causal_folders);
-
-// 3. Loop through each randomized folder to build the timeline
-randomized_folders.forEach(function(folderName) {
-    
-    // Create a Gray Transition Screen between different series
-    var gray_screen = {
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: '<div style="background-color: gray; width: 100vw; height: 100vh;"></div>',
-        choices: "NO_KEYS",
-        trial_duration: 1000 // 1 second of gray screen
-    };
-    timeline.push(gray_screen);
-
-    // Loop through images 1 to 9 within the folder (Starting from 1 to skip _0 images)
-    for (var i = 1; i <= 9; i++) {
-        
-        // Phase A: Image presentation (5 seconds)
-        var view_trial = {
+    for (var i = 1; i <= 4; i++) {
+        var example_view = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
-                <div style="text-align:center;">
-                    <img src="images/causal_sequence/${folderName}/${folderName}_${i}.png" style="width:500px; border: 2px solid #ccc;">
-                    <div style="height: 100px;"></div> </div>`,
-            choices: "NO_KEYS",
-            trial_duration: 5000 // Display image alone for 5s
+                <div class="stimulus-container">
+                    <img src="images/instructions/movie_${i}.png" class="exp-image">
+                    <div class="question-area"></div> 
+                </div>`,
+            choices: "NO_KEYS", 
+            trial_duration: 4000 
         };
 
-        // Phase B: Image remains + Question appears (3 seconds)
-        var question_trial = {
+        var example_question = {
             type: jsPsychHtmlButtonResponse,
             stimulus: `
-                <div style="text-align:center;">
-                    <img src="images/causal_sequence/${folderName}/${folderName}_${i}.png" style="width:500px; border: 2px solid #ccc;">
-                    <div style="height: 100px; display: flex; align-items: center; justify-content: center;">
-                        <p style="font-size: 24px; font-weight: bold; margin: 0;">Is there a person in this image?</p>
+                <div class="stimulus-container">
+                    <img src="images/instructions/movie_${i}.png" class="exp-image">
+                    <div class="question-area">
+                        <p style="font-size: 20px; font-weight: bold; margin: 0;">Was there a person in this image?</p>
                     </div>
                 </div>`,
             choices: ['Yes', 'No'],
-            trial_duration: 3000, // Question appears for 3s
-            response_ends_trial: true, // Move to next image immediately if they answer
-            data: {
-                task: 'main_causal_task',
-                folder: folderName,
-                image_index: i
-            }
+            trial_duration: 3000, 
+            response_ends_trial: true,
+            data: { task: 'example_question', image_index: i }
         };
-
-        timeline.push(view_trial, question_trial);
-    }
-});
-
-// ----------- END OF PART 1 -----------
-var part1_end = {
-    type: jsPsychInstructions,
-    pages: [
-        '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
-        '<h2>Part 1 Completed</h2>' +
-        '<p>You have finished the first part of the experiment.</p>' +
-        '<p>Click "Next" to continue to Part 2.</p>' +
-        '</div>'
-    ],
-    show_clickable_nav: true
-};
-timeline.push(part1_end);
-
-    // ----------- HELPER FUNCTIONS --------
-    function createImageTrial(imagePath) {
-      return {
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: `<div style="display: flex; justify-content: center; align-items: center;">
-                     <img src="${imagePath}" style="width: 300px; height: 300px;" />
-                   </div>`,
-        choices: "NO_KEYS",
-        trial_duration: 7000
-      };
+        timeline.push(example_view, example_question);
     }
 
-    var choose_next_image = {
-      type: jsPsychHtmlButtonResponse,
-      stimulus: `
-        <div style="display: flex; justify-content: center; align-items: center;">
-          <img src="images/instructions/movie_0.png" style="width: 300px; height: 300px; margin-right: 10px;" />
-          <img src="images/instructions/movie_1.png" style="width: 300px; height: 300px;" />
-        </div>`,
-      choices: ['deck 1', 'deck 2'],
-      on_finish: function(data) {
-        data.choice = data.response;
-      }
-    };
-
-    var clean_deck = [ createImageTrial('images/other/blank.png') ];
-
-    // ----------- BLOCK CREATION (UPDATED STRUCTURE) -----------
-    function createCausalBlock(seriesIndex, semanticIndex) {
-      return [
-        // 1. קלף ראשון
-        createImageTrial(`images/causal/causal_series_${seriesIndex}/causal_series_${seriesIndex}_a.png`),
-
-        // 2. בחירה
-        choose_next_image,
-
-        // 3. שלושה קלפים בהתאם לבחירה
-        {
-          timeline: [
-            {
-              conditional_function: function() {
-                return jsPsych.data.getLastTrialData().values()[0].response == 0;
-              },
-              timeline: [
-                createImageTrial(`images/causal/causal_series_${seriesIndex}/causal_series_${seriesIndex}_b.png`),
-                createImageTrial(`images/causal/causal_series_${seriesIndex}/causal_series_${seriesIndex}_c.png`),
-                createImageTrial(`images/causal/causal_series_${seriesIndex}/causal_series_${seriesIndex}_d.png`)
-              ]
-            },
-            {
-              conditional_function: function() {
-                return jsPsych.data.getLastTrialData().values()[0].response == 1;
-              },
-              timeline: [
-                createImageTrial(`images/semantic/semantic_series_${semanticIndex}/semantic_series_${semanticIndex}_b.png`),
-                createImageTrial(`images/semantic/semantic_series_${semanticIndex}/semantic_series_${semanticIndex}_c.png`),
-                createImageTrial(`images/semantic/semantic_series_${semanticIndex}/semantic_series_${semanticIndex}_d.png`)
-              ]
-            }
-          ]
-        },
-        ...clean_deck
-      ];
-    }
-
-    // ----------- ALL BLOCKS -----------
-    var causal_blocks = [
-      createCausalBlock(1, 1),
-      createCausalBlock(2, 2),
-      createCausalBlock(3, 3),
-      createCausalBlock(4, 4),
-      createCausalBlock(5, 5),
-      createCausalBlock(6, 6),
-      createCausalBlock(7, 7),
-      createCausalBlock(8, 8),
-      createCausalBlock(9, 9),
-      createCausalBlock(10, 10)
-    ];
-
-    function shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
-    }
-
-    var randomized_causal_blocks = shuffleArray(causal_blocks);
-    randomized_causal_blocks.forEach(block => {
-      timeline.push(...block);
+    timeline.push({
+        type: jsPsychInstructions,
+        pages: ['<div style="text-align: center; padding: 50px;"><h3>Example Completed</h3><p>Click Next to start the actual experiment.</p></div>'],
+        show_clickable_nav: true
     });
 
-    // ----------- POST QUESTIONS -----------
-    var trial_difference_between_decks = {
-      type: jsPsychSurveyText,
-      questions: [{prompt: 'Can you describe the difference between the two decks of cards?'}]
+    // ----------- PART 1 MAIN EXPERIMENT -----------
+    var randomized_folders = jsPsych.randomization.shuffle(causal_folders);
+
+    randomized_folders.forEach(function(folderName) {
+        // Inter-block Gray Screen
+        timeline.push({
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: '<div style="background-color: gray; width: 100vw; height: 100vh;"></div>',
+            choices: "NO_KEYS",
+            trial_duration: 1000
+        });
+
+        // Loop through images 1 to 9 (skipping _0)
+        for (var i = 1; i <= 9; i++) {
+            var main_view = {
+                type: jsPsychHtmlKeyboardResponse,
+                stimulus: `
+                    <div class="stimulus-container">
+                        <img src="images/causal_sequence/${folderName}/${folderName}_${i}.png" class="exp-image">
+                        <div class="question-area"></div> 
+                    </div>`,
+                choices: "NO_KEYS",
+                trial_duration: 5000 // 5 seconds image view
+            };
+
+            var main_question = {
+                type: jsPsychHtmlButtonResponse,
+                stimulus: `
+                    <div class="stimulus-container">
+                        <img src="images/causal_sequence/${folderName}/${folderName}_${i}.png" class="exp-image">
+                        <div class="question-area">
+                            <p style="font-size: 20px; font-weight: bold; margin: 0;">Is there a person in this image?</p>
+                        </div>
+                    </div>`,
+                choices: ['Yes', 'No'],
+                trial_duration: 3000, // 3 seconds question
+                response_ends_trial: true,
+                data: {
+                    task: 'main_causal_task',
+                    folder: folderName,
+                    image_index: i
+                }
+            };
+            timeline.push(main_view, main_question);
+        }
+    });
+
+    // ----------- END SURVEY & COMPLETION -----------
+    var part1_end = {
+        type: jsPsychInstructions,
+        pages: ['<div style="text-align: center; padding: 50px;"><h2>Part 1 Completed</h2><p>You have finished the first part of the experiment.</p></div>'],
+        show_clickable_nav: true
     };
+    timeline.push(part1_end);
 
-    var trial_deck_color = {
-      type: jsPsychHtmlButtonResponse,
-      stimulus: 'Which color deck does the following images continue the story from?',
-      choices: ['Blue', 'Red']
-    };
-
-    var trial_deck_color_not_following = {
-      type: jsPsychHtmlButtonResponse,
-      stimulus: 'Which color deck do the following images NOT follow the story from?',
-      choices: ['Blue', 'Red']
-    };
-    
-    var trial_deck_preference = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: 'Which type of deck did you prefer overall?',
-  choices: [
-    'The red deck, which showed a series of unrelated events',
-    'The blue deck, which showed a connected and coherent story'
-  ]
-};
-
-
-    timeline.push(trial_difference_between_decks, trial_deck_color, trial_deck_color_not_following, trial_deck_preference);
-
-    var trial_101 = {
+    var trial_demographics = {
       type: jsPsychSurveyText,
       questions: [
         {prompt: 'Please insert your gender (MALE/ FEMALE/ OTHER)'},
         {prompt: 'Please insert your age'}
       ]
     };
-    timeline.push(trial_101);
+    timeline.push(trial_demographics);
 
-    var trial_102 = {
+    var trial_finish = {
       type: jsPsychInstructions,
       pages: [
         '<span style="color: black; font-size: 24px">You have completed the experiment.' + 
@@ -434,9 +299,9 @@ timeline.push(part1_end);
       ],
       show_clickable_nav: true
     };
-    timeline.push(trial_102);
+    timeline.push(trial_finish);
 
-    // ----------- RUN EXPERIMENT -----------
+    // ----------- RUN -----------
     jsPsych.run(timeline);
 
   </script>
