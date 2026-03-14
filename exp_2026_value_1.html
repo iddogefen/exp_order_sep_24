@@ -139,8 +139,8 @@ timeline.push(preload);
 // --- שלב הבחירה: כאן אנחנו קובעים מה הנבדק יראה לאורך כל הניסוי ---
 var selected_blocks = [
     ...jsPsych.randomization.sampleWithoutReplacement(causal_folders, 1).map(f => ({ name: f, type: 'causal_sequence' })),
-    ...jsPsych.randomization.sampleWithoutReplacement(schematic_folders, 1).map(f => ({ name: f, type: 'schematic_sequence' })),
-    ...jsPsych.randomization.sampleWithoutReplacement(semantic_folders, 1).map(f => ({ name: f, type: 'semantic_sequence' }))
+    ...jsPsych.randomization.sampleWithoutReplacement(schematic_folders, 0).map(f => ({ name: f, type: 'schematic_sequence' })),
+    ...jsPsych.randomization.sampleWithoutReplacement(semantic_folders, 0).map(f => ({ name: f, type: 'semantic_sequence' }))
 ];
 
 // ערבוב הסדר שבו הסדרות יופיעו
