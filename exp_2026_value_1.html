@@ -535,7 +535,8 @@ randomized_folders_part3.forEach(function(block) {
                     var left_idx = left_is_minus ? X - 1 : X + 1;
                     var right_idx = left_is_minus ? X + 1 : X - 1;
 
-                    data_for_current_block = { left: left_idx, right: right_idx, lucky_X: X };
+                    // שימוש ב-window כדי להבטיח שהנתונים נשמרים לכל אורך ה-timeline של הסדרה
+                    window.data_for_current_block = { left: left_idx, right: right_idx, lucky_X: X };
 
                     return `
                         <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
@@ -545,7 +546,7 @@ randomized_folders_part3.forEach(function(block) {
                         </div>`;
                 },
                 choices: "NO_KEYS",
-                trial_duration: 3000 // קיצרתי מעט כדי שלא יהיה מתיש מדי לנבדק
+                trial_duration: 3000 
             },
             {
                 type: jsPsychHtmlButtonResponse,
@@ -553,18 +554,18 @@ randomized_folders_part3.forEach(function(block) {
                     return `
                         <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
                         <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
-                            <img src="images/${block.type}/${block.name}/${block.name}_${data_for_current_block.left}.png" class="exp-image">
-                            <img src="images/${block.type}/${block.name}/${block.name}_${data_for_current_block.right}.png" class="exp-image">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${window.data_for_current_block.left}.png" class="exp-image">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${window.data_for_current_block.right}.png" class="exp-image">
                         </div>`;
                 },
                 choices: ['Left', 'Right'],
                 on_finish: function(data) {
-                    var part2_info = jsPsych.data.get().filter({folder: block.name, task: 'part2_value_learning'}).values()[0];
-                    var X = data_for_current_block.lucky_X;
-                    var chosen_idx = (data.response === 0) ? data_for_current_block.left : data_for_current_block.right;
+                    var X = window.data_for_current_block.lucky_X;
+                    var chosen_idx = (data.response === 0) ? window.data_for_current_block.left : window.data_for_current_block.right;
                     
-                    data.task = 'part3_choice_neighbors'; // הבחירה בין השכנים
+                    data.task = 'part3_choice_neighbors'; 
                     data.folder = block.name;
+                    data.sequence_type = block.type;
                     data.lucky_X = X;
                     data.chosen_image_index = chosen_idx;
                 }
@@ -574,27 +575,27 @@ randomized_folders_part3.forEach(function(block) {
             {
                 type: jsPsychHtmlKeyboardResponse,
                 stimulus: function() {
-                    var X = data_for_current_block.lucky_X;
+                    var X = window.data_for_current_block.lucky_X;
                     
                     // הגרלת אינדקס רנדומלי (1-10) שאינו X
                     var possible_indices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
                     var remaining_indices = possible_indices.filter(idx => idx !== X);
                     var Y = jsPsych.randomization.sampleWithoutReplacement(remaining_indices, 1)[0];
-                    if (Y === 10) { Y = "ten"; } // טיפול במקרה של תמונת הסיום
+                    var Y_path = (Y === 10) ? "ten" : Y;
 
                     var left_is_X = Math.random() < 0.5;
-                    var left_idx = left_is_X ? X : Y;
-                    var right_idx = left_is_X ? Y : X;
+                    var left_idx = left_is_X ? X : Y_path;
+                    var right_idx = left_is_X ? Y_path : X;
 
-                    // עדכון המידע הזמני
-                    data_for_current_block.left_v2 = left_idx;
-                    data_for_current_block.right_v2 = right_idx;
+                    // עדכון המידע הזמני עבור שלב הכפתורים
+                    window.data_for_current_block.left_v2 = left_idx;
+                    window.data_for_current_block.right_v2 = right_idx;
 
                     return `
                         <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
                         <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
-                            <img src="images/${block.type}/${block.name}/${block.name}_${left_idx === 'ten' ? 'ten' : left_idx}.png" class="exp-image">
-                            <img src="images/${block.type}/${block.name}/${block.name}_${right_idx === 'ten' ? 'ten' : right_idx}.png" class="exp-image">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${left_idx}.png" class="exp-image">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${right_idx}.png" class="exp-image">
                         </div>`;
                 },
                 choices: "NO_KEYS",
@@ -606,18 +607,18 @@ randomized_folders_part3.forEach(function(block) {
                     return `
                         <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
                         <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
-                            <img src="images/${block.type}/${block.name}/${block.name}_${data_for_current_block.left_v2}.png" class="exp-image">
-                            <img src="images/${block.type}/${block.name}/${block.name}_${data_for_current_block.right_v2}.png" class="exp-image">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${window.data_for_current_block.left_v2}.png" class="exp-image">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${window.data_for_current_block.right_v2}.png" class="exp-image">
                         </div>`;
                 },
                 choices: ['Left', 'Right'],
                 on_finish: function(data) {
-                    var chosen_idx = (data.response === 0) ? data_for_current_block.left_v2 : data_for_current_block.right_v2;
+                    var chosen_idx = (data.response === 0) ? window.data_for_current_block.left_v2 : window.data_for_current_block.right_v2;
                     
-                    data.task = 'part3_choice_X_vs_Random'; // הבחירה החדשה
+                    data.task = 'part3_choice_X_vs_Random'; 
                     data.folder = block.name;
                     data.sequence_type = block.type;
-                    data.lucky_X = data_for_current_block.lucky_X;
+                    data.lucky_X = window.data_for_current_block.lucky_X;
                     data.chosen_image_index = chosen_idx;
                 }
             }
