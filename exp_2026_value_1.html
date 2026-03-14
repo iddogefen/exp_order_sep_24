@@ -121,15 +121,15 @@ instruction_images.push(`images/instructions/movie_${i}.png`);
         all_experiment_images.push(getImagePath(folder, 10));
     });
 
-    var preload = {
+    var preload = {
  type: jsPsychPreload,
-        images: [
-            'consent_form_2022.png',
-            ...instruction_images,
-            ...all_experiment_images // החלפה של המשתנים הבעייתיים ברשימה המאוחדת
-        ],
-        message: 'Loading experiment assets... Please wait.',
-        continue_after_error: true
+  images: [
+'consent_form_2022.png',
+ ...instruction_images,
+...all_experiment_images // החלפה של המשתנים הבעייתיים ברשימה המאוחדת
+ ],
+ message: 'Loading experiment assets... Please wait.',
+  continue_after_error: true
  };
 timeline.push(preload);
 
