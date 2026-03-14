@@ -134,29 +134,35 @@ var semantic_folders = [
 ];
 // --- RANDOMIZATION & SELECTION SECTION ---
 
-// 1. Define how many sequences to pick from each category
+// --- RANDOMIZATION & SELECTION SECTION (UPDATED) ---
+
+// 1. הגדרת כמות הסדרות מכל סוג
 var n_causal = 6;
 var n_schematic = 6;
-var n_semantic = 0;
+var n_valuable_per_type = 3; // כמה מכל סוג יהיו מתוגמלות
 
-// 2. Randomly sample the folder names from the original lists
-// Using Math.min to prevent errors if n is larger than the number of folders available
+// 2. דגימת הסדרות עצמן
 var sampled_causal = jsPsych.randomization.sampleWithoutReplacement(causal_folders, Math.min(n_causal, causal_folders.length));
 var sampled_schematic = jsPsych.randomization.sampleWithoutReplacement(schematic_folders, Math.min(n_schematic, schematic_folders.length));
-var sampled_semantic = jsPsych.randomization.sampleWithoutReplacement(semantic_folders, Math.min(n_semantic, semantic_folders.length));
 
-// 3. Build the final array of objects for the experiment
+// 3. בחירה אקראית של מי מתוכן יהיו המתוגמלות (3 מכל סוג)
+var valuable_causal = jsPsych.randomization.sampleWithoutReplacement(sampled_causal, n_valuable_per_type);
+var valuable_schematic = jsPsych.randomization.sampleWithoutReplacement(sampled_schematic, n_valuable_per_type);
+
+// 4. יצירת רשימה אחת של כל השמות של הסדרות המתוגמלות
+var valuable_folders_list = [...valuable_causal, ...valuable_schematic];
+
+// 5. בניית מערך הבלוקים הסופי לניסוי
 var selected_blocks = [
     ...sampled_causal.map(f => ({ name: f, type: 'causal_sequence' })),
-    ...sampled_schematic.map(f => ({ name: f, type: 'schematic_sequence' })),
-    ...sampled_semantic.map(f => ({ name: f, type: 'semantic_sequence' }))
+    ...sampled_schematic.map(f => ({ name: f, type: 'schematic_sequence' }))
 ];
 
-// 4. Shuffle the final list so the order of types (causal vs semantic) is randomized
+// ערבוב סדר הבלוקים להצגה
 var experimental_blocks = jsPsych.randomization.shuffle(selected_blocks);
 
-// 5. DEBUG: View the selection in the browser console (Press F12 to see)
-console.log("Experimental Blocks Selected:", experimental_blocks);
+console.log("Valuable Folders (3 Causal + 3 Schematic):", valuable_folders_list);
+
 
 
 console.log("Selected folders for this participant:", experimental_blocks);
