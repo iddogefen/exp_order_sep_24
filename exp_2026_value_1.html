@@ -97,17 +97,42 @@ var jsPsych = initJsPsych({
     });
 
 
- // ----------- PRELOAD SECTION (Updated for Speed) -----------
+// 1. הגדרת התיקיות המקוריות
+var causal_folders = [
+    'coin_causal', 'dog_causal', 'museum_causal', 
+    'package_causal', 'saving_a_cat_causal', 'the_performance_causal'
+];
 
-// תמונות ההוראות
+var schematic_folders = [
+    'dinner_party_scheme', 'flight_scheme', 'hotel_scheme', 
+    'interview_scheme', 'restaurant_scheme', 'supermarket_scheme'
+];
+
+var semantic_folders = [
+    'cat_care_semantic', 'creative_activities_semantic', 'exploring_nature_semantic', 
+    'housework_semantic', 'kitchen_operations_semantic', 'maintaining_a_car_semantic', 
+    'market_semantic', 'physical_activity_semantic', 'redecorating_a_house_semantic', 
+    'self_care_activities_semantic', 'using_technology_semantic', 'visiting_cities_semantic'
+];
+
+// 2. הגרלת הבלוקים - זה חייב לקרות כאן!
+var selected_blocks = [
+    ...jsPsych.randomization.sampleWithoutReplacement(causal_folders, 1).map(f => ({ name: f, type: 'causal_sequence' })),
+    ...jsPsych.randomization.sampleWithoutReplacement(schematic_folders, 1).map(f => ({ name: f, type: 'schematic_sequence' })),
+    ...jsPsych.randomization.sampleWithoutReplacement(semantic_folders, 1).map(f => ({ name: f, type: 'semantic_sequence' }))
+];
+
+var experimental_blocks = jsPsych.randomization.shuffle(selected_blocks);
+
+// 3. הגדרת ה-Preload
 var instruction_images = [];
 for (var i = 0; i <= 4; i++) {
     instruction_images.push(`images/instructions/movie_${i}.png`);
 }
 
-// פונקציה שטוענת רק את הסדרות שנבחרו עבור הנבדק הספציפי
 function generateSelectedPaths(selectedBlocks) {
     var paths = [];
+    // עכשיו selectedBlocks כבר מוגדר ולכן ה-forEach יעבוד
     selectedBlocks.forEach(function(block) {
         for (var i = 1; i <= 9; i++) {
             paths.push(`images/${block.type}/${block.name}/${block.name}_${i}.png`);
@@ -126,7 +151,7 @@ var preload = {
         'images/gray.png',
         'images/dollar.png',
         ...instruction_images,
-        ...selected_images_to_preload // טוען רק את 3 הסדרות שנבחרו
+        ...selected_images_to_preload
     ],
     message: 'Loading experiment assets... Please wait.',
     continue_after_error: true
