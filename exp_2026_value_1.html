@@ -392,86 +392,20 @@ var part2_intro = {
         '<p style="font-size: 20px;">In this part, you will see images from the previous sequences.</p>' +
         '<p style="font-size: 20px;">Some images are <b>worth money</b> (marked with a <span style="color:green">DOLLAR</span> image),<br>' +
         'and others have a <b>neutral value</b> (marked with a <span style="color:grey">GRAY</span> image).</p>' +
-        '<p>Click "Next" to see examples.</p>' +
+        '<p>Click "Next" to begin.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
 };
 timeline.push(part2_intro);
 
-var part2_examples = {
-    timeline: [
-        {
-            type: jsPsychHtmlButtonResponse,
-            stimulus: `
-                <div style="margin-bottom:20px;"><h3>Example: Valuable Image</h3></div>
-                <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 30px;">
-                    <img src="images/instructions/movie_1.png" class="exp-image">
-                    <div style="text-align: center;">
-                        <img src="images/dollar.png" style="width: 120px; height: 120px; border: 5px solid green; border-radius: 15px;">
-                        <p style="color: green; font-weight: bold; font-size: 24px; margin-top: 10px;">WORTH MONEY</p>
-                    </div>
-                </div>
-                <div class="question-area"><p>Was there a person in this image?</p></div>`,
-            choices: ['Yes', 'No']
-        },
-        {
-            type: jsPsychHtmlButtonResponse,
-            stimulus: `
-                <div style="margin-bottom:20px;"><h3>Example: Neutral Image</h3></div>
-                <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 30px;">
-                    <img src="images/instructions/movie_2.png" class="exp-image">
-                    <div style="text-align: center;">
-                        <img src="images/gray.png" style="width: 120px; height: 120px; border: 5px solid grey; border-radius: 15px;">
-                        <p style="color: grey; font-weight: bold; font-size: 24px; margin-top: 10px;">NEUTRAL VALUE</p>
-                    </div>
-                </div>
-                <div class="question-area"><p>Was there a person in this image?</p></div>`,
-            choices: ['Yes', 'No']
-        }
-    ]
-};
-timeline.push(part2_examples);
-// ----------- PART 2: VALUE LEARNING (Corrected) -----------
-
-
-// ----------- מסך מעבר בין דוגמאות לניסוי בחלק 2 -----------
-
-var start_part2_main = {
-    type: jsPsychInstructions,
-    pages: [
-        '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
-        '<h2>Learning Examples Completed</h2>' +
-        '<p style="font-size: 20px;">You will now begin the actual learning phase for the images you saw earlier.</p>' +
-        '<div style="background-color: #f0fff0; border: 1px solid #2e8b57; padding: 20px; margin: 20px 0;">' +
-        '<p>In each trial, you will see an image alongside a label indicating if it is <b>WORTH MONEY</b> or has <b>NEUTRAL VALUE</b>.</p>' +
-        '<p>Try to remember the association between each image and its value.</p>' +
-        '</div>' +
-        '<p>Click "Next" to begin.</p>' +
-        '</div>'
-    ],
-    show_clickable_nav: true,
-    allow_backward: false
-};
-timeline.push(start_part2_main);
-
-// הוספה לציר הזמן
-timeline.push(start_part2_main);
-// 1. הגדרת הפרס: נבחר מתוך ה-3 שהנבדק באמת רואה.
-// כאן למשל, בחרתי שסדרה אחת מתוך ה-3 תהיה שווה כסף. 
-// אם אתה רוצה יותר (למשל 2 מתוך 3), פשוט שנה את ה-1 ל-2.
-var valuable_selected = jsPsych.randomization.sampleWithoutReplacement(experimental_blocks, 1);
-var valuable_folders_list = valuable_selected.map(f => f.name);
-
-console.log("Valuable Assignment (Synchronized):", valuable_folders_list);
-
-// 2. ערבוב הסדר של 3 הסדרות לחלק הלמידה
+// שימוש ב-experimental_blocks שכולל את כל 12 הסדרות
 var shuffled_folders_part2 = jsPsych.randomization.shuffle(experimental_blocks);
 
 shuffled_folders_part2.forEach(function(block) {
+    // הבדיקה מסתמכת על הרשימה המאוזנת (3 קוזאלי ו-3 סכימטי) שהגדרנו למעלה
     var is_valuable = valuable_folders_list.includes(block.name);
     
-    // לוגיקת ה-UI נשארת זהה
     var reward_image = is_valuable ? "images/dollar.png" : "images/gray.png";
     var reward_label = is_valuable ? "WORTH MONEY" : "NEUTRAL VALUE";
     var reward_color = is_valuable ? "green" : "grey";
@@ -494,7 +428,7 @@ shuffled_folders_part2.forEach(function(block) {
             </div>
             <div class="question-area"></div>`,
         choices: "NO_KEYS",
-        trial_duration: 8000 
+        trial_duration: 6000 
     };
 
     var main_question_part2 = {
@@ -524,7 +458,6 @@ shuffled_folders_part2.forEach(function(block) {
     timeline.push(main_view_part2, main_question_part2);
 });
 
-// ----------- PART 3: CHOICE & LUCKY TEST (Corrected) -----------
 // --- PART 3: CHOICE & LUCKY TEST ---
 
 var part3_intro = {
@@ -534,7 +467,7 @@ var part3_intro = {
 };
 timeline.push(part3_intro);
 
-// 1. פאזה ראשונה: השוואת שכנים (X-1 מול X+1) עבור כל אחת מהסדרות
+// 1. פאזה ראשונה: השוואת שכנים (X-1 מול X+1)
 var randomized_folders_part3 = jsPsych.randomization.shuffle(experimental_blocks);
 
 randomized_folders_part3.forEach(function(block) {
@@ -545,11 +478,8 @@ randomized_folders_part3.forEach(function(block) {
                 stimulus: function() {
                     var part2_info = jsPsych.data.get().filter({folder: block.name, task: 'part2_value_learning'}).values()[0];
                     var X = (part2_info) ? part2_info.valuable_image_index : 5;
-                    
-                    var left_is_minus = Math.random() < 0.5;
-                    var left_idx = left_is_minus ? X - 1 : X + 1;
-                    var right_idx = left_is_minus ? X + 1 : X - 1;
-
+                    var left_idx = Math.random() < 0.5 ? X - 1 : X + 1;
+                    var right_idx = left_idx === X - 1 ? X + 1 : X - 1;
                     window.data_for_current_block = { left: left_idx, right: right_idx, lucky_X: X };
 
                     return `
@@ -576,8 +506,6 @@ randomized_folders_part3.forEach(function(block) {
                 on_finish: function(data) {
                     data.task = 'part3_choice_neighbors'; 
                     data.folder = block.name;
-                    data.sequence_type = block.type;
-                    data.lucky_X = window.data_for_current_block.lucky_X;
                     data.chosen_image_index = (data.response === 0) ? window.data_for_current_block.left : window.data_for_current_block.right;
                 }
             }
@@ -587,41 +515,32 @@ randomized_folders_part3.forEach(function(block) {
 });
 
 // 2. פאזה שנייה: השוואה בין-סדרתית (X יקר מול X נייטרלי)
-// אנחנו מבצעים את זה פעם אחת עבור כל סדרה נייטרלית שיש לנו מול הסדרה היקרה
-var valuable_block_info = experimental_blocks.find(b => valuable_folders_list.includes(b.name));
-var neutral_blocks_info = experimental_blocks.filter(b => !valuable_folders_list.includes(b.name));
+var valuable_blocks_list_info = experimental_blocks.filter(b => valuable_folders_list.includes(b.name));
+var neutral_blocks_list_info = experimental_blocks.filter(b => !valuable_folders_list.includes(b.name));
 
-neutral_blocks_info.forEach(function(neutral_block) {
+// נבצע השוואה לכל סדרה יקרה מול סדרה נייטרלית
+valuable_blocks_list_info.forEach(function(v_block, index) {
+    var n_block = neutral_blocks_list_info[index];
+    if(!n_block) return;
+
     var cross_sequence = {
         timeline: [
             {
                 type: jsPsychHtmlKeyboardResponse,
                 stimulus: function() {
-                    // מוצאים את X של הסדרה היקרה
-                    var part2_info = jsPsych.data.get().filter({folder: valuable_block_info.name, task: 'part2_value_learning'}).values()[0];
+                    var part2_info = jsPsych.data.get().filter({folder: v_block.name, task: 'part2_value_learning'}).values()[0];
                     var X = (part2_info) ? part2_info.valuable_image_index : 5;
-                    
-                    var left_is_valuable = Math.random() < 0.5;
-                    
-                    // הגדרת נתיבים: אחד מהסדרה היקרה, אחד מהנייטרלית (באותו אינדקס X)
-                    var v_path = `images/${valuable_block_info.type}/${valuable_block_info.name}/${valuable_block_info.name}_${X}.png`;
-                    var n_path = `images/${neutral_block.type}/${neutral_block.name}/${neutral_block.name}_${X}.png`;
+                    var left_is_v = Math.random() < 0.5;
+                    var v_path = `images/${v_block.type}/${v_block.name}/${v_block.name}_${X}.png`;
+                    var n_path = `images/${n_block.type}/${n_block.name}/${n_block.name}_${X}.png`;
 
-                    window.cross_comp_data = {
-                        left_was_valuable: left_is_valuable,
-                        v_folder: valuable_block_info.name,
-                        n_folder: neutral_block.name,
-                        index_x: X,
-                        left_path: left_is_valuable ? v_path : n_path,
-                        right_path: left_is_valuable ? n_path : v_path
-                    };
+                    window.cross_comp_data = { left_is_v: left_is_v, v_folder: v_block.name, n_folder: n_block.name, X: X };
 
-                    return `
-                        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
-                        <div class="stimulus-container" style="display: flex; width: 800px; justify-content: center; gap: 30px;">
-                            <img src="${window.cross_comp_data.left_path}" class="small-image">
-                            <img src="${window.cross_comp_data.right_path}" class="small-image">
-                        </div>`;
+                    return `<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
+                            <div class="stimulus-container" style="display: flex; width: 800px; justify-content: center; gap: 30px;">
+                                <img src="${left_is_v ? v_path : n_path}" class="small-image">
+                                <img src="${left_is_v ? n_path : v_path}" class="small-image">
+                            </div>`;
                 },
                 choices: "NO_KEYS",
                 trial_duration: 3000
@@ -629,29 +548,25 @@ neutral_blocks_info.forEach(function(neutral_block) {
             {
                 type: jsPsychHtmlButtonResponse,
                 stimulus: function() {
-                    return `
-                        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
-                        <div class="stimulus-container" style="display: flex; width: 800px; justify-content: center; gap: 30px;">
-                            <img src="${window.cross_comp_data.left_path}" class="small-image">
-                            <img src="${window.cross_comp_data.right_path}" class="small-image">
-                        </div>`;
+                    var v_path = `images/${v_block.type}/${v_block.name}/${v_block.name}_${window.cross_comp_data.X}.png`;
+                    var n_path = `images/${n_block.type}/${n_block.name}/${n_block.name}_${window.cross_comp_data.X}.png`;
+                    return `<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
+                            <div class="stimulus-container" style="display: flex; width: 800px; justify-content: center; gap: 30px;">
+                                <img src="${window.cross_comp_data.left_is_v ? v_path : n_path}" class="small-image">
+                                <img src="${window.cross_comp_data.left_is_v ? n_path : v_path}" class="small-image">
+                            </div>`;
                 },
                 choices: ['Left', 'Right'],
                 on_finish: function(data) {
                     data.task = 'part3_valuable_vs_neutral_X';
-                    data.valuable_folder = window.cross_comp_data.v_folder;
-                    data.neutral_folder = window.cross_comp_data.n_folder;
-                    data.image_index = window.cross_comp_data.index_x;
-                    // האם הנבדק בחר בתמונה מהסדרה היקרה?
-                    data.correct_choice = (data.response === 0 && window.cross_comp_data.left_was_valuable) || 
-                                          (data.response === 1 && !window.cross_comp_data.left_was_valuable);
+                    data.correct_choice = (data.response === 0 && window.cross_comp_data.left_is_v) || 
+                                          (data.response === 1 && !window.cross_comp_data.left_is_v);
                 }
             }
         ]
     };
     timeline.push(cross_sequence);
 });
-
 
 var trial_demographics = {
     type: jsPsychSurveyText, 
