@@ -271,6 +271,28 @@ var experimental_blocks = jsPsych.randomization.shuffle(selected_blocks);
         show_clickable_nav: true
     });
 
+
+// ----------- מעבר מהדוגמה לניסוי האמיתי -----------
+var start_main_experiment = {
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
+        '<h2>Practice Completed</h2>' +
+        '<p style="font-size: 20px;">The practice session is now over. We will now begin the <b>main experiment</b>.</p>' +
+        '<div style="background-color: #f9f9f9; border: 1px solid #ccc; padding: 20px; margin: 20px 0;">' +
+        '<p><b>Reminder:</b> Please watch the images carefully and indicate if a <b>person</b> appears in each image.</p>' +
+        '<p>Images will advance automatically, and the response buttons will appear shortly after.</p>' +
+        '</div>' +
+        '<p>Click "Next" to start the first sequence.</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true,
+    allow_backward: false
+};
+timeline.push(start_main_experiment);
+
+// הוספת המסך לציר הזמן מיד אחרי הלופ של הדוגמה
+timeline.push(start_main_experiment);
 // ----------- PART 1 MAIN EXPERIMENT -----------
 // שימוש ב-experimental_blocks מבטיח שנראה רק את 3 הסדרות שנבחרו בתחילת הקוד
 experimental_blocks.forEach(function(block) {
@@ -381,6 +403,29 @@ var part2_examples = {
 timeline.push(part2_examples);
 // ----------- PART 2: VALUE LEARNING (Corrected) -----------
 
+
+// ----------- מסך מעבר בין דוגמאות לניסוי בחלק 2 -----------
+
+var start_part2_main = {
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
+        '<h2>Learning Examples Completed</h2>' +
+        '<p style="font-size: 20px;">You will now begin the actual learning phase for the images you saw earlier.</p>' +
+        '<div style="background-color: #f0fff0; border: 1px solid #2e8b57; padding: 20px; margin: 20px 0;">' +
+        '<p>In each trial, you will see an image alongside a label indicating if it is <b>WORTH MONEY</b> or has <b>NEUTRAL VALUE</b>.</p>' +
+        '<p>Try to remember the association between each image and its value.</p>' +
+        '</div>' +
+        '<p>Click "Next" to begin.</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true,
+    allow_backward: false
+};
+timeline.push(start_part2_main);
+
+// הוספה לציר הזמן
+timeline.push(start_part2_main);
 // 1. הגדרת הפרס: נבחר מתוך ה-3 שהנבדק באמת רואה.
 // כאן למשל, בחרתי שסדרה אחת מתוך ה-3 תהיה שווה כסף. 
 // אם אתה רוצה יותר (למשל 2 מתוך 3), פשוט שנה את ה-1 ל-2.
@@ -456,6 +501,26 @@ var part3_intro = {
     show_clickable_nav: true
 };
 timeline.push(part3_intro);
+
+// ----------- מסך מעבר לפני תחילת הבחירות בחלק 3 -----------
+
+var start_part3_main = {
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
+        '<h2>Instructions Completed</h2>' +
+        '<p style="font-size: 20px;">We will now present you with pairs of images from the previous sequences.</p>' +
+        '<div style="background-color: #fff4e5; border: 1px solid #ff9800; padding: 20px; margin: 20px 0;">' +
+        '<p>In each trial, choose which image you believe is <b>"luckier"</b>.</p>' +
+        '<p>Remember: Correct choices may lead to a higher monetary reward at the end of the study.</p>' +
+        '</div>' +
+        '<p>Click "Next" to start the choice task.</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true,
+    allow_backward: false
+};
+timeline.push(start_part3_main);
 
 // שימוש בבלוקים שנבחרו בלבד (3 סדרות)
 var randomized_folders_part3 = jsPsych.randomization.shuffle(experimental_blocks);
