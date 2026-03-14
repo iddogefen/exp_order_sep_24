@@ -283,12 +283,20 @@ timeline.push(preload);
         show_clickable_nav: true
     });
 
-    // ----------- PART 1 MAIN EXPERIMENT -----------
-// ----------- PART 1 MAIN EXPERIMENT -----------
-var randomized_folders = jsPsych.randomization.shuffle(causal_folders);
+ // ----------- PART 1 MAIN EXPERIMENT -----------
 
-randomized_folders.forEach(function(folderName) {
-    // מסך אפור בין בלוקים
+// 1. Combine all categories into a single list with their sequence types
+var all_blocks = [
+    ...causal_folders.map(f => ({ name: f, type: 'causal_sequence' })),
+    ...semantic_folders.map(f => ({ name: f, type: 'semantic_sequence' })),
+    ...schematic_folders.map(f => ({ name: f, type: 'schematic_sequence' }))
+];
+
+// 2. Shuffle the unified list so categories are interleaved
+var randomized_blocks = jsPsych.randomization.shuffle(all_blocks);
+
+randomized_blocks.forEach(function(block) {
+    // Inter-block interval (Gray screen)
     timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: '<div style="background-color: gray; width: 100vw; height: 100vh;"></div>',
@@ -296,13 +304,15 @@ randomized_folders.forEach(function(folderName) {
         trial_duration: 1000
     });
 
-    // לופ של 10 תמונות (1 עד 10)
+    // Loop through 10 images per sequence
     for (var i = 1; i <= 10; i++) {
         
-        // קביעת שם הקובץ: אם אנחנו באיטרציה ה-10, נשתמש ב-ten
         var image_suffix = (i === 10) ? "ten" : i;
-        var current_image_path = `images/causal_sequence/${folderName}/${folderName}_${image_suffix}.png`;
+        
+        // Dynamically build path: images/[type]/[folder]/[filename]
+        var current_image_path = `images/${block.type}/${block.name}/${block.name}_${image_suffix}.png`;
 
+        // 5-second image viewing
         var main_view = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
@@ -314,6 +324,7 @@ randomized_folders.forEach(function(folderName) {
             trial_duration: 5000 
         };
 
+        // 3-second response window
         var main_question = {
             type: jsPsychHtmlButtonResponse,
             stimulus: `
@@ -327,15 +338,29 @@ randomized_folders.forEach(function(folderName) {
             trial_duration: 3000,
             response_ends_trial: true,
             data: {
-                task: 'main_causal_task',
-                folder: folderName,
-                image_index: image_suffix // יישמר כ-"1", "2" ... או "ten"
+                task: 'main_experiment_trial',
+                folder: block.name,
+                sequence_type: block.type, 
+                image_index: image_suffix
             }
         };
         
         timeline.push(main_view, main_question);
     }
 });
+
+// ----------- END PART 1 -----------
+var part1_end = {
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align: center; padding: 50px;">' +
+        '<h2>Part 1 Completed</h2>' +
+        '<p>You have finished the first part of the experiment.</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
+};
+timeline.push(part1_end);
         // ----------- END SURVEY & COMPLETION -----------
     var part1_end = {
         type: jsPsychInstructions,
@@ -396,28 +421,44 @@ var part2_examples = {
 };
 timeline.push(part2_examples);
 
-// 3. לוגיקת החלוקה של התיקיות (3 יקרות, 3 נטרליות)
-var shuffled_folders = jsPsych.randomization.shuffle(causal_folders);
-var valuable_folders = shuffled_folders.slice(0, 3); // שלוש הראשונות יקרות
+// ----------- PART 2: VALUE LEARNING -----------
 
-// 4. הרצת הלופ של חלק 2
-shuffled_folders.forEach(function(folderName) {
-    var is_valuable = valuable_folders.includes(folderName);
+// 1. Combine all folders and shuffle them
+var all_folders_part2 = [
+    ...causal_folders.map(f => ({ name: f, type: 'causal_sequence' })),
+    ...semantic_folders.map(f => ({ name: f, type: 'semantic_sequence' })),
+    ...schematic_folders.map(f => ({ name: f, type: 'schematic_sequence' }))
+];
+
+var shuffled_folders_part2 = jsPsych.randomization.shuffle(all_folders_part2);
+
+// 2. Split folders: 50% valuable ($1) and 50% neutral
+// Total folders: 24 (6 causal + 6 schematic + 12 semantic). 12 will be valuable.
+var half_length = Math.floor(shuffled_folders_part2.length / 2);
+var valuable_folders = shuffled_folders_part2.slice(0, half_length).map(f => f.name);
+
+// 3. Run Part 2 Loop
+shuffled_folders_part2.forEach(function(block) {
+    var is_valuable = valuable_folders.includes(block.name);
     
-    // הגדרת עיצוב לפי סוג הערך
+    // UI Settings based on value
     var reward_text = is_valuable ? "WORTH<br>$1" : "NEUTRAL<br>VALUE";
     var reward_color = is_valuable ? "green" : "grey";
     var reward_bg = is_valuable ? "#f0fff0" : "#f0f0f0";
     var reward_type_label = is_valuable ? "valuable" : "neutral";
 
+    // Select a random middle image (3-7) to assign value to
     var value_indices = [3, 4, 5, 6, 7];
     var random_valuable_index = jsPsych.randomization.sampleWithReplacement(value_indices, 1)[0];
+    
+    // Construct the correct path
+    var current_image_path = `images/${block.type}/${block.name}/${block.name}_${random_valuable_index}.png`;
 
     var main_view_part2 = {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: `
             <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 30px;">
-                <img src="images/causal_sequence/${folderName}/${folderName}_${random_valuable_index}.png" class="exp-image">
+                <img src="${current_image_path}" class="exp-image">
                 <div style="font-size: 40px; font-weight: bold; color: ${reward_color}; border: 5px solid ${reward_color}; padding: 25px; border-radius: 15px; background-color: ${reward_bg};">
                     ${reward_text}
                 </div>
@@ -431,7 +472,7 @@ shuffled_folders.forEach(function(folderName) {
         type: jsPsychHtmlButtonResponse,
         stimulus: `
             <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 30px;">
-                <img src="images/causal_sequence/${folderName}/${folderName}_${random_valuable_index}.png" class="exp-image">
+                <img src="${current_image_path}" class="exp-image">
                 <div style="font-size: 40px; font-weight: bold; color: ${reward_color}; border: 5px solid ${reward_color}; padding: 25px; border-radius: 15px; background-color: ${reward_bg};">
                     ${reward_text}
                 </div>
@@ -444,14 +485,15 @@ shuffled_folders.forEach(function(folderName) {
         response_ends_trial: true,
         data: {
             task: 'part2_value_learning',
-            folder: folderName,
+            folder: block.name,
+            sequence_type: block.type,
             valuable_image_index: random_valuable_index,
-            reward_type: reward_type_label // תיוג ברור בדאטא: valuable/neutral
+            reward_type: reward_type_label 
         }
     };
+    
     timeline.push(main_view_part2, main_question_part2);
 });
-// ----------- PART 3: CHOICE & VALUATION TEST (Distance 2) -----------
 
 // ----------- PART 3: CHOICE & VALUATION TEST (Distance 1) -----------
 
