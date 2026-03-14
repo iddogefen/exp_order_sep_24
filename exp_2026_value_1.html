@@ -177,14 +177,6 @@ var preload = {
 
 timeline.push(preload);
 
-// ... סוף הגדרת התיקיות (causal_folders, schematic_folders, semantic_folders)
-
-// --- שלב הבחירה: כאן אנחנו קובעים מה הנבדק יראה לאורך כל הניסוי ---
-var selected_blocks = [
-    ...jsPsych.randomization.sampleWithoutReplacement(causal_folders, 1).map(f => ({ name: f, type: 'causal_sequence' })),
-    ...jsPsych.randomization.sampleWithoutReplacement(schematic_folders, 0).map(f => ({ name: f, type: 'schematic_sequence' })),
-    ...jsPsych.randomization.sampleWithoutReplacement(semantic_folders, 0).map(f => ({ name: f, type: 'semantic_sequence' }))
-];
 
 // ערבוב הסדר שבו הסדרות יופיעו
 var experimental_blocks = jsPsych.randomization.shuffle(selected_blocks);
@@ -309,8 +301,6 @@ var start_main_experiment = {
 };
 timeline.push(start_main_experiment);
 
-// הוספת המסך לציר הזמן מיד אחרי הלופ של הדוגמה
-timeline.push(start_main_experiment);
 // ----------- PART 1 MAIN EXPERIMENT -----------
 // שימוש ב-experimental_blocks מבטיח שנראה רק את 3 הסדרות שנבחרו בתחילת הקוד
 experimental_blocks.forEach(function(block) {
