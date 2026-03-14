@@ -159,7 +159,8 @@ var preload = {
     type: jsPsychPreload,
     images: [
         'consent_form_2022.png',
-        'images/other/blank.png',
+        'images/gray.png',
+        'images/dollar.png',
         ...instruction_images,
         ...causal_images,
         ...schematic_images,
@@ -209,7 +210,7 @@ timeline.push(preload);
             '<p>This experiment consists of <b>three parts</b>:</p>' +
             '<div style="background-color: #f9f9f9; border-left: 5px solid #333; padding: 20px; margin: 20px 0;">' +
             '<p><b>Part 1:</b> You will view a series of images depicting different events.</p>' +
-            '<p><b>Part 2:</b> You will be shown specific images that are <b>lucky</b>.</p>' +
+            '<p><b>Part 2:</b> You will be shown specific images that have <b> monetary value</b>.</p>' +
             '<p><b>Part 3:</b> You will choose between two images and estimate which one is luckier. ' +
             'A correct guess will lead to a <b>monetary reward</b>.</p>' +
             '</div>' +
@@ -333,16 +334,17 @@ var part1_end = {
 };
 timeline.push(part1_end);
 
-// ----------- PART 2: VALUE LEARNING -----------
+// ----------- PART 2: VALUE LEARNING (With Image Assets) -----------
+
 var part2_intro = {
     type: jsPsychInstructions,
     pages: [
         '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
         '<h2>Part 2: Value Learning</h2>' +
         '<p style="font-size: 20px;">In this part, you will see images from the previous sequences.</p>' +
-        '<p style="font-size: 20px;">Some images are <b>lucky</b> (marked in <span style="color:green">GREEN</span>),<br>' +
-        'and others have a <b>neutral value</b> (marked in <span style="color:grey">GREY</span>).</p>' +
-        '<p style="font-size: 20px;">Study these images and their values carefully.</p>' +
+        '<p style="font-size: 20px;">Some images are <b>worth money</b> (marked with a <span style="color:green">DOLLAR</span> image),<br>' +
+        'and others have a <b>neutral value</b> (marked with a <span style="color:grey">GRAY</span> image).</p>' +
+        '<p style="font-size: 20px;">Study these images and their values carefully to decide which events are <b>luckier</b>.</p>' +
         '<p>Click "Next" to see examples.</p>' +
         '</div>'
     ],
@@ -355,11 +357,12 @@ var part2_examples = {
         {
             type: jsPsychHtmlButtonResponse,
             stimulus: `
-                <div style="margin-bottom:20px;"><h3>Example: Lucky Image</h3></div>
+                <div style="margin-bottom:20px;"><h3>Example: Valuable Image</h3></div>
                 <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 30px;">
                     <img src="images/instructions/movie_1.png" class="exp-image">
-                    <div style="font-size: 35px; font-weight: bold; color: green; border: 5px solid green; padding: 20px; border-radius: 15px; background-color: #f0fff0;">
-                        LUCKY<br>IMAGE
+                    <div style="text-align: center;">
+                        <img src="images/dollar.png" style="width: 120px; height: 120px; border: 5px solid green; border-radius: 15px;">
+                        <p style="color: green; font-weight: bold; font-size: 24px; margin-top: 10px;">WORTH MONEY</p>
                     </div>
                 </div>
                 <div class="question-area"><p>Was there a person in this image?</p></div>`,
@@ -371,8 +374,9 @@ var part2_examples = {
                 <div style="margin-bottom:20px;"><h3>Example: Neutral Image</h3></div>
                 <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 30px;">
                     <img src="images/instructions/movie_2.png" class="exp-image">
-                    <div style="font-size: 35px; font-weight: bold; color: grey; border: 5px solid grey; padding: 20px; border-radius: 15px; background-color: #f0f0f0;">
-                        NEUTRAL<br>VALUE
+                    <div style="text-align: center;">
+                        <img src="images/gray.png" style="width: 120px; height: 120px; border: 5px solid grey; border-radius: 15px;">
+                        <p style="color: grey; font-weight: bold; font-size: 24px; margin-top: 10px;">NEUTRAL VALUE</p>
                     </div>
                 </div>
                 <div class="question-area"><p>Was there a person in this image?</p></div>`,
@@ -382,7 +386,7 @@ var part2_examples = {
 };
 timeline.push(part2_examples);
 
-// Balanced Assignment for Part 2
+// Balanced Assignment for Part 2 (Crucial Logic from original)
 var valuable_causal = jsPsych.randomization.sampleWithoutReplacement(causal_folders, 3);
 var valuable_schematic = jsPsych.randomization.sampleWithoutReplacement(schematic_folders, 3);
 var valuable_semantic = jsPsych.randomization.sampleWithoutReplacement(semantic_folders, 6);
@@ -400,22 +404,27 @@ var shuffled_folders_part2 = jsPsych.randomization.shuffle(all_folders_part2);
 
 shuffled_folders_part2.forEach(function(block) {
     var is_valuable = valuable_folders_list.includes(block.name);
-    var reward_text = is_valuable ? "LUCKY<br>IMAGE" : "NEUTRAL<br>VALUE";
+    
+    // UI Label logic using your new images
+    var reward_image = is_valuable ? "images/dollar.png" : "images/gray.png";
+    var reward_label = is_valuable ? "WORTH MONEY" : "NEUTRAL VALUE";
     var reward_color = is_valuable ? "green" : "grey";
-    var reward_bg = is_valuable ? "#f0fff0" : "#f0f0f0";
     var reward_type_label = is_valuable ? "valuable" : "neutral";
 
     var value_indices = [3, 4, 5, 6, 7];
     var random_valuable_index = jsPsych.randomization.sampleWithReplacement(value_indices, 1)[0];
+    
+    // Crucial: Dynamic path based on block type
     var current_image_path = `images/${block.type}/${block.name}/${block.name}_${random_valuable_index}.png`;
 
     var main_view_part2 = {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: `
-            <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 30px;">
+            <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 40px;">
                 <img src="${current_image_path}" class="exp-image">
-                <div style="font-size: 40px; font-weight: bold; color: ${reward_color}; border: 5px solid ${reward_color}; padding: 25px; border-radius: 15px; background-color: ${reward_bg};">
-                    ${reward_text}
+                <div style="text-align: center;">
+                    <img src="${reward_image}" style="width: 150px; height: 150px; border: 5px solid ${reward_color}; border-radius: 15px;">
+                    <p style="color: ${reward_color}; font-weight: bold; font-size: 28px; margin-top: 15px;">${reward_label}</p>
                 </div>
             </div>
             <div class="question-area"></div>`,
@@ -426,10 +435,11 @@ shuffled_folders_part2.forEach(function(block) {
     var main_question_part2 = {
         type: jsPsychHtmlButtonResponse,
         stimulus: `
-            <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 30px;">
+            <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 40px;">
                 <img src="${current_image_path}" class="exp-image">
-                <div style="font-size: 40px; font-weight: bold; color: ${reward_color}; border: 5px solid ${reward_color}; padding: 25px; border-radius: 15px; background-color: ${reward_bg};">
-                    ${reward_text}
+                <div style="text-align: center;">
+                    <img src="${reward_image}" style="width: 150px; height: 150px; border: 5px solid ${reward_color}; border-radius: 15px;">
+                    <p style="color: ${reward_color}; font-weight: bold; font-size: 28px; margin-top: 15px;">${reward_label}</p>
                 </div>
             </div>
             <div class="question-area">
