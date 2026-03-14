@@ -519,32 +519,21 @@ shuffled_folders_part2.forEach(function(block) {
 });
 
 // ----------- PART 3: CHOICE & LUCKY TEST (Corrected) -----------
-
-var part3_intro = {
-    type: jsPsychInstructions,
-    pages: ['<div style="text-align: center; padding: 50px;"><h2>Part 3: Final Choice</h2><p>Choose the <b>"luckier"</b> image.</p></div>'],
-    show_clickable_nav: true
-};
-timeline.push(part3_intro);
-
-// ----------- PART 3: CHOICE & LUCKY TEST (Updated with X vs Random) -----------
-
 // --- PART 3: CHOICE & LUCKY TEST ---
 
 var part3_intro = {
     type: jsPsychInstructions,
-    pages: ['<div style="text-align: center; padding: 50px;"><h2>Part 3: Final Choice</h2><p>Choose the <b>"luckier"</b> image.</p></div>'],
+    pages: ['<div style="text-align: center; padding: 50px;"><h2>Part 3: Final Choice</h2><p>In this final part, you will be shown pairs of images.<br>Based on what you learned, please choose the <b>"luckier"</b> image using the buttons.</p></div>'],
     show_clickable_nav: true
 };
 timeline.push(part3_intro);
 
-// Define the folders for Part 3
+// 1. פאזה ראשונה: השוואת שכנים (X-1 מול X+1) עבור כל אחת מהסדרות
 var randomized_folders_part3 = jsPsych.randomization.shuffle(experimental_blocks);
 
 randomized_folders_part3.forEach(function(block) {
-    var part3_sequence = {
+    var neighbors_sequence = {
         timeline: [
-            // --- Phase 1: Neighbors (X-1 vs X+1) ---
             {
                 type: jsPsychHtmlKeyboardResponse,
                 stimulus: function() {
@@ -555,14 +544,13 @@ randomized_folders_part3.forEach(function(block) {
                     var left_idx = left_is_minus ? X - 1 : X + 1;
                     var right_idx = left_is_minus ? X + 1 : X - 1;
 
-                    // Store indices for the next trial in window object
                     window.data_for_current_block = { left: left_idx, right: right_idx, lucky_X: X };
 
                     return `
                         <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
-                        <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
-                            <img src="images/${block.type}/${block.name}/${block.name}_${left_idx}.png" class="exp-image">
-                            <img src="images/${block.type}/${block.name}/${block.name}_${right_idx}.png" class="exp-image">
+                        <div class="stimulus-container" style="display: flex; width: 800px; justify-content: center; gap: 30px;">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${left_idx}.png" class="small-image">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${right_idx}.png" class="small-image">
                         </div>`;
                 },
                 choices: "NO_KEYS",
@@ -573,46 +561,60 @@ randomized_folders_part3.forEach(function(block) {
                 stimulus: function() {
                     return `
                         <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
-                        <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
-                            <img src="images/${block.type}/${block.name}/${block.name}_${window.data_for_current_block.left}.png" class="exp-image">
-                            <img src="images/${block.type}/${block.name}/${block.name}_${window.data_for_current_block.right}.png" class="exp-image">
+                        <div class="stimulus-container" style="display: flex; width: 800px; justify-content: center; gap: 30px;">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${window.data_for_current_block.left}.png" class="small-image">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${window.data_for_current_block.right}.png" class="small-image">
                         </div>`;
                 },
                 choices: ['Left', 'Right'],
                 on_finish: function(data) {
-                    var X = window.data_for_current_block.lucky_X;
-                    var chosen_idx = (data.response === 0) ? window.data_for_current_block.left : window.data_for_current_block.right;
-                    
                     data.task = 'part3_choice_neighbors'; 
                     data.folder = block.name;
                     data.sequence_type = block.type;
-                    data.lucky_X = X;
-                    data.chosen_image_index = chosen_idx;
+                    data.lucky_X = window.data_for_current_block.lucky_X;
+                    data.chosen_image_index = (data.response === 0) ? window.data_for_current_block.left : window.data_for_current_block.right;
                 }
-            },
+            }
+        ]
+    };
+    timeline.push(neighbors_sequence);
+});
 
-            // --- Phase 2: X vs Random Event ---
+// 2. פאזה שנייה: השוואה בין-סדרתית (X יקר מול X נייטרלי)
+// אנחנו מבצעים את זה פעם אחת עבור כל סדרה נייטרלית שיש לנו מול הסדרה היקרה
+var valuable_block_info = experimental_blocks.find(b => valuable_folders_list.includes(b.name));
+var neutral_blocks_info = experimental_blocks.filter(b => !valuable_folders_list.includes(b.name));
+
+neutral_blocks_info.forEach(function(neutral_block) {
+    var cross_sequence = {
+        timeline: [
             {
                 type: jsPsychHtmlKeyboardResponse,
                 stimulus: function() {
-                    var X = window.data_for_current_block.lucky_X;
-                    var possible_indices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-                    var remaining_indices = possible_indices.filter(idx => idx !== X);
-                    var Y = jsPsych.randomization.sampleWithoutReplacement(remaining_indices, 1)[0];
-                    var Y_path = (Y === 10) ? "ten" : Y;
+                    // מוצאים את X של הסדרה היקרה
+                    var part2_info = jsPsych.data.get().filter({folder: valuable_block_info.name, task: 'part2_value_learning'}).values()[0];
+                    var X = (part2_info) ? part2_info.valuable_image_index : 5;
+                    
+                    var left_is_valuable = Math.random() < 0.5;
+                    
+                    // הגדרת נתיבים: אחד מהסדרה היקרה, אחד מהנייטרלית (באותו אינדקס X)
+                    var v_path = `images/${valuable_block_info.type}/${valuable_block_info.name}/${valuable_block_info.name}_${X}.png`;
+                    var n_path = `images/${neutral_block.type}/${neutral_block.name}/${neutral_block.name}_${X}.png`;
 
-                    var left_is_X = Math.random() < 0.5;
-                    var left_idx = left_is_X ? X : Y_path;
-                    var right_idx = left_is_X ? Y_path : X;
-
-                    window.data_for_current_block.left_v2 = left_idx;
-                    window.data_for_current_block.right_v2 = right_idx;
+                    window.cross_comp_data = {
+                        left_was_valuable: left_is_valuable,
+                        v_folder: valuable_block_info.name,
+                        n_folder: neutral_block.name,
+                        index_x: X,
+                        left_path: left_is_valuable ? v_path : n_path,
+                        right_path: left_is_valuable ? n_path : v_path
+                    };
 
                     return `
                         <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
-                        <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
-                            <img src="images/${block.type}/${block.name}/${block.name}_${left_idx}.png" class="exp-image">
-                            <img src="images/${block.type}/${block.name}/${block.name}_${right_idx}.png" class="exp-image">
+                        <div class="stimulus-container" style="display: flex; width: 800px; justify-content: center; gap: 30px;">
+                            <img src="${window.cross_comp_data.left_path}" class="small-image">
+                            <img src="${window.cross_comp_data.right_path}" class="small-image">
                         </div>`;
                 },
                 choices: "NO_KEYS",
@@ -623,26 +625,27 @@ randomized_folders_part3.forEach(function(block) {
                 stimulus: function() {
                     return `
                         <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
-                        <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
-                            <img src="images/${block.type}/${block.name}/${block.name}_${window.data_for_current_block.left_v2}.png" class="exp-image">
-                            <img src="images/${block.type}/${block.name}/${block.name}_${window.data_for_current_block.right_v2}.png" class="exp-image">
+                        <div class="stimulus-container" style="display: flex; width: 800px; justify-content: center; gap: 30px;">
+                            <img src="${window.cross_comp_data.left_path}" class="small-image">
+                            <img src="${window.cross_comp_data.right_path}" class="small-image">
                         </div>`;
                 },
                 choices: ['Left', 'Right'],
                 on_finish: function(data) {
-                    var chosen_idx = (data.response === 0) ? window.data_for_current_block.left_v2 : window.data_for_current_block.right_v2;
-                    
-                    data.task = 'part3_choice_X_vs_Random'; 
-                    data.folder = block.name;
-                    data.sequence_type = block.type;
-                    data.lucky_X = window.data_for_current_block.lucky_X;
-                    data.chosen_image_index = chosen_idx;
+                    data.task = 'part3_valuable_vs_neutral_X';
+                    data.valuable_folder = window.cross_comp_data.v_folder;
+                    data.neutral_folder = window.cross_comp_data.n_folder;
+                    data.image_index = window.cross_comp_data.index_x;
+                    // האם הנבדק בחר בתמונה מהסדרה היקרה?
+                    data.correct_choice = (data.response === 0 && window.cross_comp_data.left_was_valuable) || 
+                                          (data.response === 1 && !window.cross_comp_data.left_was_valuable);
                 }
             }
         ]
     };
-    timeline.push(part3_sequence);
+    timeline.push(cross_sequence);
 });
+
 
 var trial_demographics = {
     type: jsPsychSurveyText, 
