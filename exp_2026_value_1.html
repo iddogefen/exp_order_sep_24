@@ -12,7 +12,7 @@
           margin: 0 auto;
       }
 
-      /* Container to keep everything centered and uniform */
+      /* Container to keep everything centered and unifךךךorm */
       .stimulus-container {
           width: 600px;
           margin: 0 auto;
@@ -103,56 +103,35 @@ var jsPsych = initJsPsych({
 
     // ----------- PRELOAD SECTION -----------
 
-       // Instruction images
-    var instruction_images = [];
-    for (var i = 0; i <= 4; i++) {
-        instruction_images.push(`images/instructions/movie_${i}.png`);
-    }
+  // ----------- PRELOAD SECTION -----------
 
-var causal_folders = ['coin_causal', 'dog_causal', 'museum_causal', 'package_causal', 'saving_a_cat_causal', 'the_performance_causal'];
-var schematic_folders = ['dinner_party_scheme', 'flight_scheme', 'hotel_scheme', 'interview_scheme', 'restaurant_scheme', 'supermarket_scheme'];
-// הוספת התיקיות הסמנטיות
-var semantic_folders = [
-    'cat_care_semantic', 'creative_activities_semantic', 'exploring_nature_semantic', 'housework_semantic', 
-    'kitchen_operations_semantic', 'maintaining_a_car_semantic', 'market_semantic', 'physical_activity_semantic', 
-    'redecorating_a_house_semantic', 'self_care_activities_semantic', 'using_technology_semantic', 'visiting_cities_semantic'
-];
+// Instruction images var instruction_images = [];
+for (var i = 0; i <= 4; i++) {
+instruction_images.push(`images/instructions/movie_${i}.png`);
+ }
 
-var all_folders = [...causal_folders, ...schematic_folders, ...semantic_folders];
+    // יצירת רשימה אוטומטית של כל התמונות םםםםםםםםםםמ-24 התיקיות
+    var all_experiment_images = [];
+    all_folders.forEach(function(folder) {
+        // טעינת תמונות 1 עד 9
+        for (var i = 1; i <= 9; i++) {
+            all_experiment_images.push(getImagePath(folder, i));
+        }
+        // טעינת התמונה העשירית (_ten)
+        all_experiment_images.push(getImagePath(folder, 10));
+    });
 
-// --- הגרלת תגמולים (12 יקירות, 12 ניטרליות) ---
-var valuable_causal = jsPsych.randomization.sampleWithoutReplacement(causal_folders, 3);
-var valuable_schematic = jsPsych.randomization.sampleWithoutReplacement(schematic_folders, 3);
-var valuable_semantic = jsPsych.randomization.sampleWithoutReplacement(semantic_folders, 6);
-
-var all_valuable = [...valuable_causal, ...valuable_schematic, ...valuable_semantic];
-
-// לוג לקונסול למעקב
-console.log("Valuable Folders:", all_valuable);
-
-function getImagePath(folder, index) {
-    var type = causal_folders.includes(folder) ? 'causal_sequence' : 
-               schematic_folders.includes(folder) ? 'schematic_sequence' : 'semantic_sequence';
-    var suffix = (index === 10) ? "ten" : index;
-    return `images/${type}/${folder}/${folder}_${suffix}.png`;
-}
-
-function checkIsValuable(folder) {
-    return all_valuable.includes(folder);
-}
-
- var preload = {
-        type: jsPsychPreload,
-        images: [
-            'consent_form_2022.png',
-            ...instruction_images,
-            ...causal_images,
-            ...semantic_images
-        ],
-        message: 'Loading experiment assets... Please wait.',
-        continue_after_error: true
-    };
-    timeline.push(preload);
+    var preload = {
+ type: jsPsychPreload,
+        images: [
+            'consent_form_2022.png',
+            ...instruction_images,
+            ...all_experiment_images // החלפה של המשתנים הבעייתיים ברשימה המאוחדת
+        ],
+        message: 'Loading experiment assets... Please wait.',
+        continue_after_error: true
+ };
+timeline.push(preload);
 
     // ----------- INTRO / CONSENT -----------
     var trial_0 = {
