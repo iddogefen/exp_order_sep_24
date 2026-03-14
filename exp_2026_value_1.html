@@ -521,6 +521,48 @@ timeline.push(part3_intro);
 
 // ----------- PART 3: CHOICE & LUCKY TEST (Updated with X vs Random) -----------
 
+// ----------- PART 3: CHOICE & LUCKY TEST -----------
+
+var part3_intro = {
+    type: jsPsychInstructions,
+    pages: ['<div style="text-align: center; padding: 50px;"><h2>Part 3: Final Choice</h2><p>Choose the <b>"luckier"</b> image.</p></div>'],
+    show_clickable_nav: true
+};
+timeline.push(part3_intro);
+
+// *** התיקון כאן: הגדרת המשתנה שחסר ***
+// אנחנו לוקחים את experimental_blocks ומערבבים אותם שוב עבור חלק 3
+var randomized_folders_part3 = jsPsych.randomization.shuffle(experimental_blocks);
+
+// כעת הלופ יעבוד ללא שגיאה
+randomized_folders_part3.forEach(function(block) {
+    var part3_sequence = {
+        timeline: [
+            // --- שלב 1: הבחירה המקורית שלך (X-1 לעומת X+1) ---
+            {
+                type: jsPsychHtmlKeyboardResponse,
+                stimulus: function() {
+                    var part2_info = jsPsych.data.get().filter({folder: block.name, task: 'part2_value_learning'}).values()[0];
+                    var X = (part2_info) ? part2_info.valuable_image_index : 5;
+                    
+                    var left_is_minus = Math.random() < 0.5;
+                    var left_idx = left_is_minus ? X - 1 : X + 1;
+                    var right_idx = left_is_minus ? X + 1 : X - 1;
+
+                    window.data_for_current_block = { left: left_idx, right: right_idx, lucky_X: X };
+
+                    return `
+                        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
+                        <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${left_idx}.png" class="exp-image">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${right_idx}.png" class="exp-image">
+                        </div>`;
+                },
+                choices: "NO_KEYS",
+                trial_duration: 3000 
+            },
+            // ... המשך הקוד של כפתורי הבחירה וה-X vs Random כפי שכתבנו קודם
+
 randomized_folders_part3.forEach(function(block) {
     var part3_sequence = {
         timeline: [
