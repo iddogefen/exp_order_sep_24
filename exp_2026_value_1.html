@@ -130,21 +130,27 @@ causal_folders.forEach(function(folder) {
     causal_images.push(`images/causal_sequence/${folder}/${folder}_ten.png`);
 });
 
-    // Semantic folders
-    var semantic_folders = [
-        'cat_care_semantic',
-        'creative_activities_semantic',
-        'exploring_nature_semantic',
-        'housework_semantic',
-        'kitchen_operations_semantic'
-    ];
+// Semantic images preloading
+var semantic_images = [];
+causal_folders.forEach(function(folder) {
+    // טעינת תמונות 1 עד 9
+    for (var i = 1; i <= 9; i++) {
+        semantic_images.push(`images/semantic_sequence/${folder}/${folder}_${i}.png`);
+    }
+    // טעינת התמונה העשירית המיוחדת
+    semantic_images.push(`images/semantic_sequence/${folder}/${folder}_ten.png`);
+});
 
-    var semantic_images = [];
-    semantic_folders.forEach(function(folder) {
-        ['b', 'c', 'd'].forEach(function(letter) {
-            semantic_images.push(`images/semantic_sequence/${folder}/${folder}_${letter}.png`);
-        });
-    });
+// Semantic images preloading
+var schematic_images = [];
+causal_folders.forEach(function(folder) {
+    // טעינת תמונות 1 עד 9
+    for (var i = 1; i <= 9; i++) {
+       schematic_images.push(`images/schematic_sequence/${folder}/${folder}_${i}.png`);
+    }
+    // טעינת התמונה העשירית המיוחדת
+    schematic_images.push(`images/schematic_sequence/${folder}/${folder}_ten.png`);
+});
 
     var preload = {
         type: jsPsychPreload,
