@@ -114,16 +114,34 @@ var semantic_folders = [
     'market_semantic', 'physical_activity_semantic', 'redecorating_a_house_semantic', 
     'self_care_activities_semantic', 'using_technology_semantic', 'visiting_cities_semantic'
 ];
+// --- RANDOMIZATION & SELECTION SECTION ---
 
-// 2. הגרלת הבלוקים - זה חייב לקרות כאן!
+// 1. Define how many sequences to pick from each category
+var n_causal = 1;
+var n_schematic = 0;
+var n_semantic = 0;
+
+// 2. Randomly sample the folder names from the original lists
+// Using Math.min to prevent errors if n is larger than the number of folders available
+var sampled_causal = jsPsych.randomization.sampleWithoutReplacement(causal_folders, Math.min(n_causal, causal_folders.length));
+var sampled_schematic = jsPsych.randomization.sampleWithoutReplacement(schematic_folders, Math.min(n_schematic, schematic_folders.length));
+var sampled_semantic = jsPsych.randomization.sampleWithoutReplacement(semantic_folders, Math.min(n_semantic, semantic_folders.length));
+
+// 3. Build the final array of objects for the experiment
 var selected_blocks = [
-    ...jsPsych.randomization.sampleWithoutReplacement(causal_folders, 1).map(f => ({ name: f, type: 'causal_sequence' })),
-    ...jsPsych.randomization.sampleWithoutReplacement(schematic_folders, 1).map(f => ({ name: f, type: 'schematic_sequence' })),
-    ...jsPsych.randomization.sampleWithoutReplacement(semantic_folders, 1).map(f => ({ name: f, type: 'semantic_sequence' }))
+    ...sampled_causal.map(f => ({ name: f, type: 'causal_sequence' })),
+    ...sampled_schematic.map(f => ({ name: f, type: 'schematic_sequence' })),
+    ...sampled_semantic.map(f => ({ name: f, type: 'semantic_sequence' }))
 ];
 
+// 4. Shuffle the final list so the order of types (causal vs semantic) is randomized
 var experimental_blocks = jsPsych.randomization.shuffle(selected_blocks);
 
+// 5. DEBUG: View the selection in the browser console (Press F12 to see)
+console.log("Experimental Blocks Selected:", experimental_blocks);
+
+
+console.log("Selected folders for this participant:", experimental_blocks);
 // 3. הגדרת ה-Preload
 var instruction_images = [];
 for (var i = 0; i <= 4; i++) {
@@ -360,7 +378,6 @@ var part2_intro = {
         '<p style="font-size: 20px;">In this part, you will see images from the previous sequences.</p>' +
         '<p style="font-size: 20px;">Some images are <b>worth money</b> (marked with a <span style="color:green">DOLLAR</span> image),<br>' +
         'and others have a <b>neutral value</b> (marked with a <span style="color:grey">GRAY</span> image).</p>' +
-        '<p style="font-size: 20px;">Study these images and their values carefully to decide which events are <b>luckier</b>.</p>' +
         '<p>Click "Next" to see examples.</p>' +
         '</div>'
     ],
@@ -502,36 +519,15 @@ var part3_intro = {
 };
 timeline.push(part3_intro);
 
-// ----------- מסך מעבר לפני תחילת הבחירות בחלק 3 -----------
-
-var start_part3_main = {
-    type: jsPsychInstructions,
-    pages: [
-        '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
-        '<h2>Instructions Completed</h2>' +
-        '<p style="font-size: 20px;">We will now present you with pairs of images from the previous sequences.</p>' +
-        '<div style="background-color: #fff4e5; border: 1px solid #ff9800; padding: 20px; margin: 20px 0;">' +
-        '<p>In each trial, choose which image you believe is <b>"luckier"</b>.</p>' +
-        '<p>Remember: Correct choices may lead to a higher monetary reward at the end of the study.</p>' +
-        '</div>' +
-        '<p>Click "Next" to start the choice task.</p>' +
-        '</div>'
-    ],
-    show_clickable_nav: true,
-    allow_backward: false
-};
-timeline.push(start_part3_main);
-
-// שימוש בבלוקים שנבחרו בלבד (3 סדרות)
-var randomized_folders_part3 = jsPsych.randomization.shuffle(experimental_blocks);
+// ----------- PART 3: CHOICE & LUCKY TEST (Updated with X vs Random) -----------
 
 randomized_folders_part3.forEach(function(block) {
     var part3_sequence = {
         timeline: [
+            // --- שלב 1: הבחירה המקורית שלך (X-1 לעומת X+1) ---
             {
                 type: jsPsychHtmlKeyboardResponse,
                 stimulus: function() {
-                    // שליפת המידע על ה-X (התמונה המתוגמלת) מחלק 2 עבור הסדרה הספציפית הזו
                     var part2_info = jsPsych.data.get().filter({folder: block.name, task: 'part2_value_learning'}).values()[0];
                     var X = (part2_info) ? part2_info.valuable_image_index : 5;
                     
@@ -539,8 +535,7 @@ randomized_folders_part3.forEach(function(block) {
                     var left_idx = left_is_minus ? X - 1 : X + 1;
                     var right_idx = left_is_minus ? X + 1 : X - 1;
 
-                    // שמירה זמנית לצורך ה-Trial הבא
-                    data_for_current_block = { left: left_idx, right: right_idx };
+                    data_for_current_block = { left: left_idx, right: right_idx, lucky_X: X };
 
                     return `
                         <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
@@ -550,39 +545,80 @@ randomized_folders_part3.forEach(function(block) {
                         </div>`;
                 },
                 choices: "NO_KEYS",
-                trial_duration: 10000,
-                on_finish: function(data) {
-                    data.left_idx = data_for_current_block.left;
-                    data.right_idx = data_for_current_block.right;
-                }
+                trial_duration: 3000 // קיצרתי מעט כדי שלא יהיה מתיש מדי לנבדק
             },
             {
                 type: jsPsychHtmlButtonResponse,
                 stimulus: function() {
-                    var last_trial = jsPsych.data.get().last(1).values()[0];
                     return `
                         <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
                         <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
-                            <img src="images/${block.type}/${block.name}/${block.name}_${last_trial.left_idx}.png" class="exp-image">
-                            <img src="images/${block.type}/${block.name}/${block.name}_${last_trial.right_idx}.png" class="exp-image">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${data_for_current_block.left}.png" class="exp-image">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${data_for_current_block.right}.png" class="exp-image">
                         </div>`;
                 },
                 choices: ['Left', 'Right'],
                 on_finish: function(data) {
-                    var last_trial = jsPsych.data.get().last(1).values()[0];
                     var part2_info = jsPsych.data.get().filter({folder: block.name, task: 'part2_value_learning'}).values()[0];
-                    var X = (part2_info) ? part2_info.valuable_image_index : 5;
-                    var chosen_idx = (data.response === 0) ? last_trial.left_idx : last_trial.right_idx;
+                    var X = data_for_current_block.lucky_X;
+                    var chosen_idx = (data.response === 0) ? data_for_current_block.left : data_for_current_block.right;
                     
-                    data.task = 'part3_final_choice';
+                    data.task = 'part3_choice_neighbors'; // הבחירה בין השכנים
                     data.folder = block.name;
-                    data.sequence_type = block.type;
-                    data.reward_type = (part2_info) ? part2_info.reward_type : 'unknown';
                     data.lucky_X = X;
                     data.chosen_image_index = chosen_idx;
-                    data.distance_from_X = chosen_idx - X;
-                    data.left_image_index = last_trial.left_idx;
-                    data.right_image_index = last_trial.right_idx;
+                }
+            },
+
+            // --- שלב 2: הבחירה החדשה (X לעומת אירוע רנדומלי אחר) ---
+            {
+                type: jsPsychHtmlKeyboardResponse,
+                stimulus: function() {
+                    var X = data_for_current_block.lucky_X;
+                    
+                    // הגרלת אינדקס רנדומלי (1-10) שאינו X
+                    var possible_indices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+                    var remaining_indices = possible_indices.filter(idx => idx !== X);
+                    var Y = jsPsych.randomization.sampleWithoutReplacement(remaining_indices, 1)[0];
+                    if (Y === 10) { Y = "ten"; } // טיפול במקרה של תמונת הסיום
+
+                    var left_is_X = Math.random() < 0.5;
+                    var left_idx = left_is_X ? X : Y;
+                    var right_idx = left_is_X ? Y : X;
+
+                    // עדכון המידע הזמני
+                    data_for_current_block.left_v2 = left_idx;
+                    data_for_current_block.right_v2 = right_idx;
+
+                    return `
+                        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
+                        <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${left_idx === 'ten' ? 'ten' : left_idx}.png" class="exp-image">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${right_idx === 'ten' ? 'ten' : right_idx}.png" class="exp-image">
+                        </div>`;
+                },
+                choices: "NO_KEYS",
+                trial_duration: 3000
+            },
+            {
+                type: jsPsychHtmlButtonResponse,
+                stimulus: function() {
+                    return `
+                        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
+                        <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${data_for_current_block.left_v2}.png" class="exp-image">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${data_for_current_block.right_v2}.png" class="exp-image">
+                        </div>`;
+                },
+                choices: ['Left', 'Right'],
+                on_finish: function(data) {
+                    var chosen_idx = (data.response === 0) ? data_for_current_block.left_v2 : data_for_current_block.right_v2;
+                    
+                    data.task = 'part3_choice_X_vs_Random'; // הבחירה החדשה
+                    data.folder = block.name;
+                    data.sequence_type = block.type;
+                    data.lucky_X = data_for_current_block.lucky_X;
+                    data.chosen_image_index = chosen_idx;
                 }
             }
         ]
