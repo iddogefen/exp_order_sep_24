@@ -97,63 +97,27 @@ var jsPsych = initJsPsych({
     });
 
 
-    // ----------- PRELOAD SECTION -----------
-// Instruction images
+ // ----------- PRELOAD SECTION (Updated for Speed) -----------
+
+// תמונות ההוראות
 var instruction_images = [];
 for (var i = 0; i <= 4; i++) {
     instruction_images.push(`images/instructions/movie_${i}.png`);
 }
 
-// 1. Causal folders
-var causal_folders = [
-    'coin_causal',
-    'dog_causal',
-    'museum_causal',
-    'package_causal',
-    'saving_a_cat_causal',
-    'the_performance_causal'
-];
-
-// 2. Schematic folders
-var schematic_folders = [
-    'dinner_party_scheme',
-    'flight_scheme',
-    'hotel_scheme',
-    'interview_scheme',
-    'restaurant_scheme',
-    'supermarket_scheme'
-];
-
-// 3. Semantic folders
-var semantic_folders = [
-    'cat_care_semantic',
-    'creative_activities_semantic',
-    'exploring_nature_semantic',
-    'housework_semantic',
-    'kitchen_operations_semantic',
-    'maintaining_a_car_semantic',
-    'market_semantic',
-    'physical_activity_semantic',
-    'redecorating_a_house_semantic',
-    'self_care_activities_semantic',
-    'using_technology_semantic',
-    'visiting_cities_semantic'
-];
-
-function generatePaths(folders, sequenceType) {
+// פונקציה שטוענת רק את הסדרות שנבחרו עבור הנבדק הספציפי
+function generateSelectedPaths(selectedBlocks) {
     var paths = [];
-    folders.forEach(function(folder) {
+    selectedBlocks.forEach(function(block) {
         for (var i = 1; i <= 9; i++) {
-            paths.push(`images/${sequenceType}/${folder}/${folder}_${i}.png`);
+            paths.push(`images/${block.type}/${block.name}/${block.name}_${i}.png`);
         }
-        paths.push(`images/${sequenceType}/${folder}/${folder}_ten.png`);
+        paths.push(`images/${block.type}/${block.name}/${block.name}_ten.png`);
     });
     return paths;
 }
 
-var causal_images = generatePaths(causal_folders, 'causal_sequence');
-var schematic_images = generatePaths(schematic_folders, 'schematic_sequence');
-var semantic_images = generatePaths(semantic_folders, 'semantic_sequence');
+var selected_images_to_preload = generateSelectedPaths(selected_blocks);
 
 var preload = {
     type: jsPsychPreload,
@@ -162,15 +126,25 @@ var preload = {
         'images/gray.png',
         'images/dollar.png',
         ...instruction_images,
-        ...causal_images,
-        ...schematic_images,
-        ...semantic_images
+        ...selected_images_to_preload // טוען רק את 3 הסדרות שנבחרו
     ],
     message: 'Loading experiment assets... Please wait.',
     continue_after_error: true
 };
 
 timeline.push(preload);
+
+// ... סוף הגדרת התיקיות (causal_folders, schematic_folders, semantic_folders)
+
+// --- שלב הבחירה: כאן אנחנו קובעים מה הנבדק יראה לאורך כל הניסוי ---
+var selected_blocks = [
+    ...jsPsych.randomization.sampleWithoutReplacement(causal_folders, 1).map(f => ({ name: f, type: 'causal_sequence' })),
+    ...jsPsych.randomization.sampleWithoutReplacement(schematic_folders, 1).map(f => ({ name: f, type: 'schematic_sequence' })),
+    ...jsPsych.randomization.sampleWithoutReplacement(semantic_folders, 1).map(f => ({ name: f, type: 'semantic_sequence' }))
+];
+
+// ערבוב הסדר שבו הסדרות יופיעו
+var experimental_blocks = jsPsych.randomization.shuffle(selected_blocks);
 
     // ----------- INTRO / CONSENT -----------
     var trial_0 = {
@@ -273,15 +247,10 @@ timeline.push(preload);
     });
 
 // ----------- PART 1 MAIN EXPERIMENT -----------
-var all_blocks = [
-    ...causal_folders.map(f => ({ name: f, type: 'causal_sequence' })),
-    ...semantic_folders.map(f => ({ name: f, type: 'semantic_sequence' })),
-    ...schematic_folders.map(f => ({ name: f, type: 'schematic_sequence' }))
-];
-
-var randomized_blocks = jsPsych.randomization.shuffle(all_blocks);
-
-randomized_blocks.forEach(function(block) {
+// שימוש ב-experimental_blocks מבטיח שנראה רק את 3 הסדרות שנבחרו בתחילת הקוד
+experimental_blocks.forEach(function(block) {
+    
+    // מסך לבן קצר של שנייה בין סדרה לסדרה
     timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
@@ -385,27 +354,23 @@ var part2_examples = {
     ]
 };
 timeline.push(part2_examples);
+// ----------- PART 2: VALUE LEARNING (Corrected) -----------
 
-// Balanced Assignment for Part 2 (Crucial Logic from original)
-var valuable_causal = jsPsych.randomization.sampleWithoutReplacement(causal_folders, 3);
-var valuable_schematic = jsPsych.randomization.sampleWithoutReplacement(schematic_folders, 3);
-var valuable_semantic = jsPsych.randomization.sampleWithoutReplacement(semantic_folders, 6);
-var valuable_folders_list = [...valuable_causal, ...valuable_schematic, ...valuable_semantic];
+// 1. הגדרת הפרס: נבחר מתוך ה-3 שהנבדק באמת רואה.
+// כאן למשל, בחרתי שסדרה אחת מתוך ה-3 תהיה שווה כסף. 
+// אם אתה רוצה יותר (למשל 2 מתוך 3), פשוט שנה את ה-1 ל-2.
+var valuable_selected = jsPsych.randomization.sampleWithoutReplacement(experimental_blocks, 1);
+var valuable_folders_list = valuable_selected.map(f => f.name);
 
-console.log("Valuable Assignment:", valuable_folders_list);
+console.log("Valuable Assignment (Synchronized):", valuable_folders_list);
 
-var all_folders_part2 = [
-    ...causal_folders.map(f => ({ name: f, type: 'causal_sequence' })),
-    ...semantic_folders.map(f => ({ name: f, type: 'semantic_sequence' })),
-    ...schematic_folders.map(f => ({ name: f, type: 'schematic_sequence' }))
-];
-
-var shuffled_folders_part2 = jsPsych.randomization.shuffle(all_folders_part2);
+// 2. ערבוב הסדר של 3 הסדרות לחלק הלמידה
+var shuffled_folders_part2 = jsPsych.randomization.shuffle(experimental_blocks);
 
 shuffled_folders_part2.forEach(function(block) {
     var is_valuable = valuable_folders_list.includes(block.name);
     
-    // UI Label logic using your new images
+    // לוגיקת ה-UI נשארת זהה
     var reward_image = is_valuable ? "images/dollar.png" : "images/gray.png";
     var reward_label = is_valuable ? "WORTH MONEY" : "NEUTRAL VALUE";
     var reward_color = is_valuable ? "green" : "grey";
@@ -414,7 +379,6 @@ shuffled_folders_part2.forEach(function(block) {
     var value_indices = [3, 4, 5, 6, 7];
     var random_valuable_index = jsPsych.randomization.sampleWithReplacement(value_indices, 1)[0];
     
-    // Crucial: Dynamic path based on block type
     var current_image_path = `images/${block.type}/${block.name}/${block.name}_${random_valuable_index}.png`;
 
     var main_view_part2 = {
@@ -459,7 +423,8 @@ shuffled_folders_part2.forEach(function(block) {
     timeline.push(main_view_part2, main_question_part2);
 });
 
-// ----------- PART 3: CHOICE & LUCKY TEST -----------
+// ----------- PART 3: CHOICE & LUCKY TEST (Corrected) -----------
+
 var part3_intro = {
     type: jsPsychInstructions,
     pages: ['<div style="text-align: center; padding: 50px;"><h2>Part 3: Final Choice</h2><p>Choose the <b>"luckier"</b> image.</p></div>'],
@@ -467,13 +432,8 @@ var part3_intro = {
 };
 timeline.push(part3_intro);
 
-var all_folders_part3 = [
-    ...causal_folders.map(f => ({ name: f, type: 'causal_sequence' })),
-    ...semantic_folders.map(f => ({ name: f, type: 'semantic_sequence' })),
-    ...schematic_folders.map(f => ({ name: f, type: 'schematic_sequence' }))
-];
-
-var randomized_folders_part3 = jsPsych.randomization.shuffle(all_folders_part3);
+// שימוש בבלוקים שנבחרו בלבד (3 סדרות)
+var randomized_folders_part3 = jsPsych.randomization.shuffle(experimental_blocks);
 
 randomized_folders_part3.forEach(function(block) {
     var part3_sequence = {
@@ -481,6 +441,7 @@ randomized_folders_part3.forEach(function(block) {
             {
                 type: jsPsychHtmlKeyboardResponse,
                 stimulus: function() {
+                    // שליפת המידע על ה-X (התמונה המתוגמלת) מחלק 2 עבור הסדרה הספציפית הזו
                     var part2_info = jsPsych.data.get().filter({folder: block.name, task: 'part2_value_learning'}).values()[0];
                     var X = (part2_info) ? part2_info.valuable_image_index : 5;
                     
@@ -488,7 +449,7 @@ randomized_folders_part3.forEach(function(block) {
                     var left_idx = left_is_minus ? X - 1 : X + 1;
                     var right_idx = left_is_minus ? X + 1 : X - 1;
 
-                    // Temporary store for this sequence
+                    // שמירה זמנית לצורך ה-Trial הבא
                     data_for_current_block = { left: left_idx, right: right_idx };
 
                     return `
