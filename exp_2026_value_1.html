@@ -504,30 +504,37 @@ var part3_intro = {
 };
 timeline.push(part3_intro);
 
-var randomized_folders_part3 = jsPsych.randomization.shuffle(causal_folders);
+// 1. Combine all categories so Part 3 covers everything seen in Part 1 & 2
+var all_folders_part3 = [
+    ...causal_folders.map(f => ({ name: f, type: 'causal_sequence' })),
+    ...semantic_folders.map(f => ({ name: f, type: 'semantic_sequence' })),
+    ...schematic_folders.map(f => ({ name: f, type: 'schematic_sequence' }))
+];
 
-randomized_folders_part3.forEach(function(folderName) {
+var randomized_folders_part3 = jsPsych.randomization.shuffle(all_folders_part3);
+
+randomized_folders_part3.forEach(function(block) {
     
     var part3_sequence = {
         timeline: [
             {
                 type: jsPsychHtmlKeyboardResponse,
                 stimulus: function() {
-                    // שליפת נתונים מחלק 2 כדי לדעת מה ה-X ומה סוג התגמול
-                    var part2_info = jsPsych.data.get().filter({folder: folderName, task: 'part2_value_learning'}).values()[0];
+                    // Retrieve data from Part 2 to identify X
+                    var part2_info = jsPsych.data.get().filter({folder: block.name, task: 'part2_value_learning'}).values()[0];
                     var X = (part2_info) ? part2_info.valuable_image_index : 5;
                     
-                    var is_left_smaller = (folderName.length % 2 === 0);
+                    var is_left_smaller = (block.name.length % 2 === 0);
                     
-                    // שינוי כאן: מ-X+/-2 ל-X+/-1
+                    // Distance 1 logic
                     var left_idx = is_left_smaller ? X - 1 : X + 1;
                     var right_idx = is_left_smaller ? X + 1 : X - 1;
 
                     return `
                         <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is more valuable?</h3></div>
                         <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
-                            <img src="images/causal_sequence/${folderName}/${folderName}_${left_idx}.png" class="exp-image">
-                            <img src="images/causal_sequence/${folderName}/${folderName}_${right_idx}.png" class="exp-image">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${left_idx}.png" class="exp-image">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${right_idx}.png" class="exp-image">
                         </div>`;
                 },
                 choices: "NO_KEYS",
@@ -536,48 +543,45 @@ randomized_folders_part3.forEach(function(folderName) {
             {
                 type: jsPsychHtmlButtonResponse,
                 stimulus: function() {
-                    var part2_info = jsPsych.data.get().filter({folder: folderName, task: 'part2_value_learning'}).values()[0];
+                    var part2_info = jsPsych.data.get().filter({folder: block.name, task: 'part2_value_learning'}).values()[0];
                     var X = (part2_info) ? part2_info.valuable_image_index : 5;
-                    var is_left_smaller = (folderName.length % 2 === 0);
+                    var is_left_smaller = (block.name.length % 2 === 0);
                     
-                    // שינוי כאן: מ-X+/-2 ל-Xך+/-1
                     var left_idx = is_left_smaller ? X - 1 : X + 1;
                     var right_idx = is_left_smaller ? X + 1 : X - 1;
 
                     return `
                         <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is more valuable?</h3></div>
                         <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
-                            <img src="images/causal_sequence/${folderName}/${folderName}_${left_idx}.png" class="exp-image">
-                            <img src="images/causal_sequence/${folderName}/${folderName}_${right_idx}.png" class="exp-image">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${left_idx}.png" class="exp-image">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${right_idx}.png" class="exp-image">
                         </div>`;
                 },
                 choices: ['Left', 'Right'],
                 on_finish: function(data) {
-                    var part2_info = jsPsych.data.get().filter({folder: folderName, task: 'part2_value_learning'}).values()[0];
+                    var part2_info = jsPsych.data.get().filter({folder: block.name, task: 'part2_value_learning'}).values()[0];
                     var X = (part2_info) ? part2_info.valuable_image_index : 5;
                     var reward_type = (part2_info) ? part2_info.reward_type : 'unknown';
 
-                    var is_left_smaller = (folderName.length % 2 === 0);
-                    
-                    // שינוי כאן: מ-X+/-2 ל-X+/-1
+                    var is_left_smaller = (block.name.length % 2 === 0);
                     var left_idx = is_left_smaller ? X - 1 : X + 1;
                     var right_idx = is_left_smaller ? X + 1 : X - 1;
 
                     var chosen_idx = (data.response === 0) ? left_idx : right_idx;
                     
                     data.task = 'part3_final_choice';
-                    data.folder = folderName;
-                    data.reward_type = reward_type; // תיוג נטרלי/יקר
+                    data.folder = block.name;
+                    data.sequence_type = block.type;
+                    data.reward_type = reward_type; 
                     data.valuable_X = X;
                     data.chosen_image_index = chosen_idx;
-                    data.distance_from_X = chosen_idx - X; // ייתן 1 או -1
+                    data.distance_from_X = chosen_idx - X; // Returns 1 or -1
                 }
             }
         ]
     };
     timeline.push(part3_sequence);
 });
-
 // דמ'וגרפיה וסיום (ללא שינוי)
 var trial_demographics = {
     type: jsPsychSurveyText, 
