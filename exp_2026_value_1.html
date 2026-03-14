@@ -102,35 +102,72 @@ var jsPsych = initJsPsych({
 
 
     // ----------- PRELOAD SECTION -----------
-// Causal images preloading
-var causal_images = [];
-causal_folders.forEach(function(folder) {
-    for (var i = 1; i <= 9; i++) {
-        causal_images.push(`images/causal_sequence/${folder}/${folder}_${i}.png`);
-    }
-    causal_images.push(`images/causal_sequence/${folder}/${folder}_ten.png`);
-});
+// Instruction images
+var instruction_images = [];
+for (var i = 0; i <= 4; i++) {
+    instruction_images.push(`images/instructions/movie_${i}.png`);
+}
 
-// Semantic images preloading - תיקון: רץ על semantic_folders
-var semantic_images = [];
-semantic_folders.forEach(function(folder) {
-    for (var i = 1; i <= 9; i++) {
-        // שים לב: כאן התיקייה היא semantic_sequence
-        semantic_images.push(`images/semantic_sequence/${folder}/${folder}_${i}.png`);
-    }
-    semantic_images.push(`images/semantic_sequence/${folder}/${folder}_ten.png`);
-});
+// 1. Causal folders
+var causal_folders = [
+    'coin_causal',
+    'dog_causal',
+    'museum_causal',
+    'package_causal',
+    'saving_a_cat_causal',
+    'the_performance_causal'
+];
 
-// Schematic images preloading - תיקון: רץ על schematic_folders
-var schematic_images = [];
-schematic_folders.forEach(function(folder) {
-    for (var i = 1; i <= 9; i++) {
-        // שים לב: כאן התיקייה היא schematic_sequence
-        schematic_images.push(`images/schematic_sequence/${folder}/${folder}_${i}.png`);
-    }
-    schematic_images.push(`images/schematic_sequence/${folder}/${folder}_ten.png`);
-});
+// 2. Schematic folders
+var schematic_folders = [
+    'dinner_party_scheme',
+    'flight_scheme',
+    'hotel_scheme',
+    'interview_scheme',
+    'restaurant_scheme',
+    'supermarket_scheme' // Cleaned up the garbled name from the previous snippet
+];
 
+// 3. Semantic folders (Matched to your File Explorer screenshot)
+var semantic_folders = [
+    'cat_care_semantic',
+    'creative_activities_semantic',
+    'exploring_nature_semantic',
+    'housework_semantic',
+    'kitchen_operations_semantic',
+    'maintaining_a_car_semantic',
+    'market_semantic',
+    'physical_activity_semantic',
+    'redecorating_a_house_semantic',
+    'self_care_activities_semantic',
+    'using_technology_semantic',
+    'visiting_cities_semantic'
+];
+
+/**
+ * Helper function to generate image paths for each category
+ * @param {Array} folders - The list of folder names
+ * @param {String} sequenceType - The subfolder name (e.g., 'causal_sequence')
+ */
+function generatePaths(folders, sequenceType) {
+    var paths = [];
+    folders.forEach(function(folder) {
+        // Load images 1 through 9
+        for (var i = 1; i <= 9; i++) {
+            paths.push(`images/${sequenceType}/${folder}/${folder}_${i}.png`);
+        }
+        // Load the special 10th image
+        paths.push(`images/${sequenceType}/${folder}/${folder}_ten.png`);
+    });
+    return paths;
+}
+
+// Generate the specific image arrays
+var causal_images = generatePaths(causal_folders, 'causal_sequence');
+var schematic_images = generatePaths(schematic_folders, 'schematic_sequence');
+var semantic_images = generatePaths(semantic_folders, 'semantic_sequence');
+
+// Initialize jsPsych Preload
 var preload = {
     type: jsPsychPreload,
     images: [
@@ -138,12 +175,13 @@ var preload = {
         'images/other/blank.png',
         ...instruction_images,
         ...causal_images,
-        ...semantic_images,
-        ...schematic_images // אל תשכח להוסיף גם את ה-schematic לכאן
+        ...schematic_images,
+        ...semantic_images
     ],
     message: 'Loading experiment assets... Please wait.',
     continue_after_error: true
 };
+
 timeline.push(preload);
     // ----------- INTRO / CONSENT -----------
     var trial_0 = {
