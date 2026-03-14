@@ -1,0 +1,913 @@
+"success","timeout","failed_images","failed_audio","failed_video","trial_type","trial_index","time_elapsed","internal_node_id","subject_id","study_id","session_id","view_history","rt","stimulus","response","task","image_index","folder","valuable_image_index","reward_type","valuable_X","chosen_image_index","distance_from_X"
+"false","false","[]","[]","[]","preload","0","66804","0.0-0.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","","","","","","","","","","",""
+"","","","","","instructions","1","358301","0.0-1.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","[{""page_index"":0,""viewing_time"":291495}]","291495","","","","","","","","","",""
+"","","","","","instructions","2","361626","0.0-2.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","[{""page_index"":0,""viewing_time"":3325}]","3325","","","","","","","","","",""
+"true","","","","","fullscreen","3","372008","0.0-3.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","9377","","","","","","","","","",""
+"","","","","","instructions","4","472226","0.0-4.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","[{""page_index"":0,""viewing_time"":100217}]","100218","","","","","","","","","",""
+"","","","","","instructions","5","515135","0.0-5.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","[{""page_index"":0,""viewing_time"":42909}]","42909","","","","","","","","","",""
+"","","","","","html-keyboard-response","6","519137","0.0-6.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/instructions/movie_1.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","",""
+"","","","","","html-button-response","7","522138","0.0-7.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/instructions/movie_1.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Was there a person in this image?</p>
+                    </div>
+                </div>","null","example_question","1","","","","","",""
+"","","","","","html-keyboard-response","8","526141","0.0-8.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/instructions/movie_2.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","",""
+"","","","","","html-button-response","9","527199","0.0-9.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1057","
+                <div class=""stimulus-container"">
+                    <img src=""images/instructions/movie_2.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Was there a person in this image?</p>
+                    </div>
+                </div>","0","example_question","2","","","","","",""
+"","","","","","html-keyboard-response","10","531200","0.0-10.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/instructions/movie_3.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","",""
+"","","","","","html-button-response","11","532184","0.0-11.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","983","
+                <div class=""stimulus-container"">
+                    <img src=""images/instructions/movie_3.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Was there a person in this image?</p>
+                    </div>
+                </div>","0","example_question","3","","","","","",""
+"","","","","","html-keyboard-response","12","536186","0.0-12.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/instructions/movie_4.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","",""
+"","","","","","html-button-response","13","537121","0.0-13.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","934","
+                <div class=""stimulus-container"">
+                    <img src=""images/instructions/movie_4.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Was there a person in this image?</p>
+                    </div>
+                </div>","0","example_question","4","","","","","",""
+"","","","","","instructions","14","542694","0.0-14.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","[{""page_index"":0,""viewing_time"":5572}]","5572","","","","","","","","","",""
+"","","","","","html-keyboard-response","15","543696","0.0-15.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","<div style=""background-color: gray; width: 100vw; height: 100vh;""></div>","null","","","","","","","",""
+"","","","","","html-keyboard-response","16","548697","0.0-16.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/package_causal/package_causal_1.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","17","549582","0.0-17.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","884","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/package_causal/package_causal_1.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","1","package_causal","","","","",""
+"","","","","","html-keyboard-response","18","554584","0.0-18.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/package_causal/package_causal_2.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","19","555350","0.0-19.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","765","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/package_causal/package_causal_2.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","2","package_causal","","","","",""
+"","","","","","html-keyboard-response","20","560351","0.0-20.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/package_causal/package_causal_3.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","21","561261","0.0-21.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","910","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/package_causal/package_causal_3.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","3","package_causal","","","","",""
+"","","","","","html-keyboard-response","22","566263","0.0-22.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/package_causal/package_causal_4.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","23","567355","0.0-23.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1091","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/package_causal/package_causal_4.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","1","main_causal_task","4","package_causal","","","","",""
+"","","","","","html-keyboard-response","24","572356","0.0-24.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/package_causal/package_causal_5.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","25","573303","0.0-25.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","946","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/package_causal/package_causal_5.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","5","package_causal","","","","",""
+"","","","","","html-keyboard-response","26","578305","0.0-26.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/package_causal/package_causal_6.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","27","579554","0.0-27.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1249","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/package_causal/package_causal_6.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","6","package_causal","","","","",""
+"","","","","","html-keyboard-response","28","584556","0.0-28.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/package_causal/package_causal_7.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","29","585843","0.0-29.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1287","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/package_causal/package_causal_7.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","7","package_causal","","","","",""
+"","","","","","html-keyboard-response","30","590845","0.0-30.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/package_causal/package_causal_8.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","31","591907","0.0-31.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1061","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/package_causal/package_causal_8.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","8","package_causal","","","","",""
+"","","","","","html-keyboard-response","32","596909","0.0-32.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/package_causal/package_causal_9.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","33","597841","0.0-33.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","931","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/package_causal/package_causal_9.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","9","package_causal","","","","",""
+"","","","","","html-keyboard-response","34","598843","0.0-34.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","<div style=""background-color: gray; width: 100vw; height: 100vh;""></div>","null","","","","","","","",""
+"","","","","","html-keyboard-response","35","603845","0.0-35.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_1.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","36","604923","0.0-36.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1077","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_1.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","1","dog_causal","","","","",""
+"","","","","","html-keyboard-response","37","609924","0.0-37.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_2.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","38","612814","0.0-38.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","2889","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_2.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","2","dog_causal","","","","",""
+"","","","","","html-keyboard-response","39","617815","0.0-39.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_3.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","40","618869","0.0-40.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1053","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_3.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","3","dog_causal","","","","",""
+"","","","","","html-keyboard-response","41","623871","0.0-41.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_4.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","42","625319","0.0-42.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1448","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_4.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","4","dog_causal","","","","",""
+"","","","","","html-keyboard-response","43","630321","0.0-43.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_5.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","44","631261","0.0-44.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","939","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_5.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","5","dog_causal","","","","",""
+"","","","","","html-keyboard-response","45","636263","0.0-45.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_6.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","46","637427","0.0-46.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1163","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_6.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","6","dog_causal","","","","",""
+"","","","","","html-keyboard-response","47","642428","0.0-47.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_7.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","48","643624","0.0-48.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1194","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_7.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","7","dog_causal","","","","",""
+"","","","","","html-keyboard-response","49","648625","0.0-49.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_8.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","50","650034","0.0-50.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1408","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_8.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","8","dog_causal","","","","",""
+"","","","","","html-keyboard-response","51","655036","0.0-51.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_9.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","52","655750","0.0-52.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","713","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/dog_causal/dog_causal_9.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","9","dog_causal","","","","",""
+"","","","","","html-keyboard-response","53","656751","0.0-53.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","<div style=""background-color: gray; width: 100vw; height: 100vh;""></div>","null","","","","","","","",""
+"","","","","","html-keyboard-response","54","661752","0.0-54.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_1.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","55","663164","0.0-55.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1411","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_1.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","1","the_performance_causal","","","","",""
+"","","","","","html-keyboard-response","56","668166","0.0-56.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_2.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","57","669118","0.0-57.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","951","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_2.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","2","the_performance_causal","","","","",""
+"","","","","","html-keyboard-response","58","674119","0.0-58.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_3.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","59","674987","0.0-59.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","866","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_3.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","3","the_performance_causal","","","","",""
+"","","","","","html-keyboard-response","60","679988","0.0-60.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_4.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","61","680840","0.0-61.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","851","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_4.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","4","the_performance_causal","","","","",""
+"","","","","","html-keyboard-response","62","685843","0.0-62.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_5.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","63","686999","0.0-63.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1155","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_5.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","5","the_performance_causal","","","","",""
+"","","","","","html-keyboard-response","64","692000","0.0-64.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_6.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","65","692903","0.0-65.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","902","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_6.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","6","the_performance_causal","","","","",""
+"","","","","","html-keyboard-response","66","697919","0.0-66.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_7.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","67","698642","0.0-67.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","723","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_7.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","7","the_performance_causal","","","","",""
+"","","","","","html-keyboard-response","68","703645","0.0-68.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_8.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","69","704626","0.0-69.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","981","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_8.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","8","the_performance_causal","","","","",""
+"","","","","","html-keyboard-response","70","709628","0.0-70.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_9.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","71","710385","0.0-71.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","756","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_9.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","9","the_performance_causal","","","","",""
+"","","","","","html-keyboard-response","72","711390","0.0-72.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","<div style=""background-color: gray; width: 100vw; height: 100vh;""></div>","null","","","","","","","",""
+"","","","","","html-keyboard-response","73","716391","0.0-73.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_1.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","74","717530","0.0-74.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1138","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_1.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","1","saving_a_cat_causal","","","","",""
+"","","","","","html-keyboard-response","75","722533","0.0-75.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_2.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","76","723963","0.0-76.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1429","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_2.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","1","main_causal_task","2","saving_a_cat_causal","","","","",""
+"","","","","","html-keyboard-response","77","728965","0.0-77.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_3.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","78","731968","0.0-78.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_3.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","null","main_causal_task","3","saving_a_cat_causal","","","","",""
+"","","","","","html-keyboard-response","79","736970","0.0-79.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_4.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","80","737674","0.0-80.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","703","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_4.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","4","saving_a_cat_causal","","","","",""
+"","","","","","html-keyboard-response","81","742675","0.0-81.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_5.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","82","743346","0.0-82.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","670","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_5.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","5","saving_a_cat_causal","","","","",""
+"","","","","","html-keyboard-response","83","748349","0.0-83.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_6.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","84","748961","0.0-84.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","611","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_6.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","6","saving_a_cat_causal","","","","",""
+"","","","","","html-keyboard-response","85","753962","0.0-85.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_7.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","86","754422","0.0-86.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","459","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_7.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","7","saving_a_cat_causal","","","","",""
+"","","","","","html-keyboard-response","87","759425","0.0-87.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_8.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","88","759994","0.0-88.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","568","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_8.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","8","saving_a_cat_causal","","","","",""
+"","","","","","html-keyboard-response","89","764996","0.0-89.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_9.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","90","765455","0.0-90.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","459","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_9.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","9","saving_a_cat_causal","","","","",""
+"","","","","","html-keyboard-response","91","766463","0.0-91.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","<div style=""background-color: gray; width: 100vw; height: 100vh;""></div>","null","","","","","","","",""
+"","","","","","html-keyboard-response","92","771464","0.0-92.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/coin_causal/coin_causal_1.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","93","772164","0.0-93.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","699","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/coin_causal/coin_causal_1.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","1","coin_causal","","","","",""
+"","","","","","html-keyboard-response","94","777166","0.0-94.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/coin_causal/coin_causal_2.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","95","778177","0.0-95.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1011","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/coin_causal/coin_causal_2.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","2","coin_causal","","","","",""
+"","","","","","html-keyboard-response","96","783179","0.0-96.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/coin_causal/coin_causal_3.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","97","783697","0.0-97.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","516","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/coin_causal/coin_causal_3.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","3","coin_causal","","","","",""
+"","","","","","html-keyboard-response","98","788698","0.0-98.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/coin_causal/coin_causal_4.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","99","790058","0.0-99.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1358","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/coin_causal/coin_causal_4.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","4","coin_causal","","","","",""
+"","","","","","html-keyboard-response","100","795059","0.0-100.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/coin_causal/coin_causal_5.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","101","796456","0.0-101.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1396","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/coin_causal/coin_causal_5.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","5","coin_causal","","","","",""
+"","","","","","html-keyboard-response","102","801458","0.0-102.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/coin_causal/coin_causal_6.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","103","801648","0.0-103.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","189","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/coin_causal/coin_causal_6.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","6","coin_causal","","","","",""
+"","","","","","html-keyboard-response","104","806650","0.0-104.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/coin_causal/coin_causal_7.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","105","808029","0.0-105.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1378","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/coin_causal/coin_causal_7.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","1","main_causal_task","7","coin_causal","","","","",""
+"","","","","","html-keyboard-response","106","813030","0.0-106.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/coin_causal/coin_causal_8.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","107","813500","0.0-107.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","469","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/coin_causal/coin_causal_8.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","8","coin_causal","","","","",""
+"","","","","","html-keyboard-response","108","818502","0.0-108.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/coin_causal/coin_causal_9.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","109","819158","0.0-109.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","655","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/coin_causal/coin_causal_9.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","9","coin_causal","","","","",""
+"","","","","","html-keyboard-response","110","820159","0.0-110.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","<div style=""background-color: gray; width: 100vw; height: 100vh;""></div>","null","","","","","","","",""
+"","","","","","html-keyboard-response","111","825161","0.0-111.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/museum_causal/museum_causal_1.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","112","825831","0.0-112.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","669","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/museum_causal/museum_causal_1.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","1","museum_causal","","","","",""
+"","","","","","html-keyboard-response","113","830832","0.0-113.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/museum_causal/museum_causal_2.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","114","832026","0.0-114.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1193","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/museum_causal/museum_causal_2.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","1","main_causal_task","2","museum_causal","","","","",""
+"","","","","","html-keyboard-response","115","837028","0.0-115.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/museum_causal/museum_causal_3.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","116","838133","0.0-116.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1104","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/museum_causal/museum_causal_3.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","3","museum_causal","","","","",""
+"","","","","","html-keyboard-response","117","843147","0.0-117.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/museum_causal/museum_causal_4.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","118","845923","0.0-118.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","2775","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/museum_causal/museum_causal_4.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","1","main_causal_task","4","museum_causal","","","","",""
+"","","","","","html-keyboard-response","119","850924","0.0-119.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/museum_causal/museum_causal_5.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","120","851661","0.0-120.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","736","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/museum_causal/museum_causal_5.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","5","museum_causal","","","","",""
+"","","","","","html-keyboard-response","121","856662","0.0-121.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/museum_causal/museum_causal_6.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","122","857506","0.0-122.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","843","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/museum_causal/museum_causal_6.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","6","museum_causal","","","","",""
+"","","","","","html-keyboard-response","123","862521","0.0-123.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/museum_causal/museum_causal_7.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","124","863135","0.0-124.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","613","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/museum_causal/museum_causal_7.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","1","main_causal_task","7","museum_causal","","","","",""
+"","","","","","html-keyboard-response","125","868137","0.0-125.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/museum_causal/museum_causal_8.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","126","869466","0.0-126.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1328","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/museum_causal/museum_causal_8.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","0","main_causal_task","8","museum_causal","","","","",""
+"","","","","","html-keyboard-response","127","874468","0.0-127.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/museum_causal/museum_causal_9.png"" class=""exp-image"">
+                        <div class=""question-area""></div> 
+                    </div>","null","","","","","","","",""
+"","","","","","html-button-response","128","875044","0.0-128.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","575","
+                    <div class=""stimulus-container"">
+                        <img src=""images/causal_sequence/museum_causal/museum_causal_9.png"" class=""exp-image"">
+                        <div class=""question-area"">
+                            <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                        </div>
+                    </div>","1","main_causal_task","9","museum_causal","","","","",""
+"","","","","","instructions","129","910165","0.0-129.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","[{""page_index"":0,""viewing_time"":35120}]","35121","","","","","","","","","",""
+"","","","","","instructions","130","948464","0.0-130.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","[{""page_index"":0,""viewing_time"":38298}]","38299","","","","","","","","","",""
+"","","","","","html-button-response","131","952737","0.0-131.0-0.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","4272","
+                <div style=""margin-bottom:20px;""><h3>Example: Valuable Image</h3></div>
+                <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 30px;"">
+                    <img src=""images/instructions/movie_1.png"" class=""exp-image"">
+                    <div style=""font-size: 35px; font-weight: bold; color: green; border: 5px solid green; padding: 20px; border-radius: 15px; background-color: #f0fff0;"">
+                        WORTH<br>$1
+                    </div>
+                </div>
+                <div class=""question-area""><p>Was there a person in this image?</p></div>","0","","","","","","","",""
+"","","","","","html-button-response","132","961748","0.0-131.0-1.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","9009","
+                <div style=""margin-bottom:20px;""><h3>Example: Neutral Image</h3></div>
+                <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 30px;"">
+                    <img src=""images/instructions/movie_2.png"" class=""exp-image"">
+                    <div style=""font-size: 35px; font-weight: bold; color: grey; border: 5px solid grey; padding: 20px; border-radius: 15px; background-color: #f0f0f0;"">
+                        NEUTRAL<br>VALUE
+                    </div>
+                </div>
+                <div class=""question-area""><p>Was there a person in this image?</p></div>","0","","","","","","","",""
+"","","","","","html-keyboard-response","133","969750","0.0-132.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 30px;"">
+                <img src=""images/causal_sequence/coin_causal/coin_causal_6.png"" class=""exp-image"">
+                <div style=""font-size: 40px; font-weight: bold; color: green; border: 5px solid green; padding: 25px; border-radius: 15px; background-color: #f0fff0;"">
+                    WORTH<br>$1
+                </div>
+            </div>
+            <div class=""question-area""></div>","null","","","","","","","",""
+"","","","","","html-button-response","134","971066","0.0-133.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1316","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 30px;"">
+                <img src=""images/causal_sequence/coin_causal/coin_causal_6.png"" class=""exp-image"">
+                <div style=""font-size: 40px; font-weight: bold; color: green; border: 5px solid green; padding: 25px; border-radius: 15px; background-color: #f0fff0;"">
+                    WORTH<br>$1
+                </div>
+            </div>
+            <div class=""question-area"">
+                <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Was there a person in this image?</p>
+            </div>","0","part2_value_learning","","coin_causal","6","valuable","","",""
+"","","","","","html-keyboard-response","135","979067","0.0-134.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 30px;"">
+                <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_5.png"" class=""exp-image"">
+                <div style=""font-size: 40px; font-weight: bold; color: green; border: 5px solid green; padding: 25px; border-radius: 15px; background-color: #f0fff0;"">
+                    WORTH<br>$1
+                </div>
+            </div>
+            <div class=""question-area""></div>","null","","","","","","","",""
+"","","","","","html-button-response","136","979915","0.0-135.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","848","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 30px;"">
+                <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_5.png"" class=""exp-image"">
+                <div style=""font-size: 40px; font-weight: bold; color: green; border: 5px solid green; padding: 25px; border-radius: 15px; background-color: #f0fff0;"">
+                    WORTH<br>$1
+                </div>
+            </div>
+            <div class=""question-area"">
+                <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Was there a person in this image?</p>
+            </div>","0","part2_value_learning","","saving_a_cat_causal","5","valuable","","",""
+"","","","","","html-keyboard-response","137","987917","0.0-136.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 30px;"">
+                <img src=""images/causal_sequence/museum_causal/museum_causal_3.png"" class=""exp-image"">
+                <div style=""font-size: 40px; font-weight: bold; color: green; border: 5px solid green; padding: 25px; border-radius: 15px; background-color: #f0fff0;"">
+                    WORTH<br>$1
+                </div>
+            </div>
+            <div class=""question-area""></div>","null","","","","","","","",""
+"","","","","","html-button-response","138","990918","0.0-137.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 30px;"">
+                <img src=""images/causal_sequence/museum_causal/museum_causal_3.png"" class=""exp-image"">
+                <div style=""font-size: 40px; font-weight: bold; color: green; border: 5px solid green; padding: 25px; border-radius: 15px; background-color: #f0fff0;"">
+                    WORTH<br>$1
+                </div>
+            </div>
+            <div class=""question-area"">
+                <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Was there a person in this image?</p>
+            </div>","null","part2_value_learning","","museum_causal","3","valuable","","",""
+"","","","","","html-keyboard-response","139","998919","0.0-138.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 30px;"">
+                <img src=""images/causal_sequence/package_causal/package_causal_6.png"" class=""exp-image"">
+                <div style=""font-size: 40px; font-weight: bold; color: grey; border: 5px solid grey; padding: 25px; border-radius: 15px; background-color: #f0f0f0;"">
+                    NEUTRAL<br>VALUE
+                </div>
+            </div>
+            <div class=""question-area""></div>","null","","","","","","","",""
+"","","","","","html-button-response","140","999820","0.0-139.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","900","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 30px;"">
+                <img src=""images/causal_sequence/package_causal/package_causal_6.png"" class=""exp-image"">
+                <div style=""font-size: 40px; font-weight: bold; color: grey; border: 5px solid grey; padding: 25px; border-radius: 15px; background-color: #f0f0f0;"">
+                    NEUTRAL<br>VALUE
+                </div>
+            </div>
+            <div class=""question-area"">
+                <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Was there a person in this image?</p>
+            </div>","0","part2_value_learning","","package_causal","6","neutral","","",""
+"","","","","","html-keyboard-response","141","1007822","0.0-140.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 30px;"">
+                <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_6.png"" class=""exp-image"">
+                <div style=""font-size: 40px; font-weight: bold; color: grey; border: 5px solid grey; padding: 25px; border-radius: 15px; background-color: #f0f0f0;"">
+                    NEUTRAL<br>VALUE
+                </div>
+            </div>
+            <div class=""question-area""></div>","null","","","","","","","",""
+"","","","","","html-button-response","142","1008665","0.0-141.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","842","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 30px;"">
+                <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_6.png"" class=""exp-image"">
+                <div style=""font-size: 40px; font-weight: bold; color: grey; border: 5px solid grey; padding: 25px; border-radius: 15px; background-color: #f0f0f0;"">
+                    NEUTRAL<br>VALUE
+                </div>
+            </div>
+            <div class=""question-area"">
+                <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Was there a person in this image?</p>
+            </div>","0","part2_value_learning","","the_performance_causal","6","neutral","","",""
+"","","","","","html-keyboard-response","143","1016667","0.0-142.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 30px;"">
+                <img src=""images/causal_sequence/dog_causal/dog_causal_7.png"" class=""exp-image"">
+                <div style=""font-size: 40px; font-weight: bold; color: grey; border: 5px solid grey; padding: 25px; border-radius: 15px; background-color: #f0f0f0;"">
+                    NEUTRAL<br>VALUE
+                </div>
+            </div>
+            <div class=""question-area""></div>","null","","","","","","","",""
+"","","","","","html-button-response","144","1017406","0.0-143.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","738","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 30px;"">
+                <img src=""images/causal_sequence/dog_causal/dog_causal_7.png"" class=""exp-image"">
+                <div style=""font-size: 40px; font-weight: bold; color: grey; border: 5px solid grey; padding: 25px; border-radius: 15px; background-color: #f0f0f0;"">
+                    NEUTRAL<br>VALUE
+                </div>
+            </div>
+            <div class=""question-area"">
+                <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Was there a person in this image?</p>
+            </div>","0","part2_value_learning","","dog_causal","7","neutral","","",""
+"","","","","","instructions","145","1060730","0.0-144.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","[{""page_index"":0,""viewing_time"":43323}]","43323","","","","","","","","","",""
+"","","","","","html-keyboard-response","146","1070731","0.0-145.0-0.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is more valuable?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 1100px; justify-content: center; gap: 50px;"">
+                            <img src=""images/causal_sequence/museum_causal/museum_causal_4.png"" class=""exp-image"">
+                            <img src=""images/causal_sequence/museum_causal/museum_causal_2.png"" class=""exp-image"">
+                        </div>","null","","","","","","","",""
+"","","","","","html-button-response","147","1072166","0.0-145.0-1.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1434","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is more valuable?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 1100px; justify-content: center; gap: 50px;"">
+                            <img src=""images/causal_sequence/museum_causal/museum_causal_4.png"" class=""exp-image"">
+                            <img src=""images/causal_sequence/museum_causal/museum_causal_2.png"" class=""exp-image"">
+                        </div>","1","part3_final_choice","","museum_causal","","valuable","3","2","-1"
+"","","","","","html-keyboard-response","148","1082168","0.0-146.0-0.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is more valuable?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 1100px; justify-content: center; gap: 50px;"">
+                            <img src=""images/causal_sequence/package_causal/package_causal_5.png"" class=""exp-image"">
+                            <img src=""images/causal_sequence/package_causal/package_causal_7.png"" class=""exp-image"">
+                        </div>","null","","","","","","","",""
+"","","","","","html-button-response","149","1092676","0.0-146.0-1.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","10507","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is more valuable?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 1100px; justify-content: center; gap: 50px;"">
+                            <img src=""images/causal_sequence/package_causal/package_causal_5.png"" class=""exp-image"">
+                            <img src=""images/causal_sequence/package_causal/package_causal_7.png"" class=""exp-image"">
+                        </div>","1","part3_final_choice","","package_causal","","neutral","6","7","1"
+"","","","","","html-keyboard-response","150","1102679","0.0-147.0-0.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is more valuable?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 1100px; justify-content: center; gap: 50px;"">
+                            <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_5.png"" class=""exp-image"">
+                            <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_7.png"" class=""exp-image"">
+                        </div>","null","","","","","","","",""
+"","","","","","html-button-response","151","1110018","0.0-147.0-1.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","7338","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is more valuable?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 1100px; justify-content: center; gap: 50px;"">
+                            <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_5.png"" class=""exp-image"">
+                            <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_7.png"" class=""exp-image"">
+                        </div>","1","part3_final_choice","","the_performance_causal","","neutral","6","7","1"
+"","","","","","html-keyboard-response","152","1120021","0.0-148.0-0.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is more valuable?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 1100px; justify-content: center; gap: 50px;"">
+                            <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_6.png"" class=""exp-image"">
+                            <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_4.png"" class=""exp-image"">
+                        </div>","null","","","","","","","",""
+"","","","","","html-button-response","153","1121075","0.0-148.0-1.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1053","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is more valuable?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 1100px; justify-content: center; gap: 50px;"">
+                            <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_6.png"" class=""exp-image"">
+                            <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_4.png"" class=""exp-image"">
+                        </div>","0","part3_final_choice","","saving_a_cat_causal","","valuable","5","6","1"
+"","","","","","html-keyboard-response","154","1131077","0.0-149.0-0.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is more valuable?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 1100px; justify-content: center; gap: 50px;"">
+                            <img src=""images/causal_sequence/coin_causal/coin_causal_7.png"" class=""exp-image"">
+                            <img src=""images/causal_sequence/coin_causal/coin_causal_5.png"" class=""exp-image"">
+                        </div>","null","","","","","","","",""
+"","","","","","html-button-response","155","1132404","0.0-149.0-1.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1327","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is more valuable?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 1100px; justify-content: center; gap: 50px;"">
+                            <img src=""images/causal_sequence/coin_causal/coin_causal_7.png"" class=""exp-image"">
+                            <img src=""images/causal_sequence/coin_causal/coin_causal_5.png"" class=""exp-image"">
+                        </div>","0","part3_final_choice","","coin_causal","","valuable","6","7","1"
+"","","","","","html-keyboard-response","156","1142406","0.0-150.0-0.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","null","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is more valuable?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 1100px; justify-content: center; gap: 50px;"">
+                            <img src=""images/causal_sequence/dog_causal/dog_causal_6.png"" class=""exp-image"">
+                            <img src=""images/causal_sequence/dog_causal/dog_causal_8.png"" class=""exp-image"">
+                        </div>","null","","","","","","","",""
+"","","","","","html-button-response","157","1143442","0.0-150.0-1.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","1035","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is more valuable?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 1100px; justify-content: center; gap: 50px;"">
+                            <img src=""images/causal_sequence/dog_causal/dog_causal_6.png"" class=""exp-image"">
+                            <img src=""images/causal_sequence/dog_causal/dog_causal_8.png"" class=""exp-image"">
+                        </div>","1","part3_final_choice","","dog_causal","","neutral","7","8","1"
+"","","","","","survey-text","158","1322653","0.0-151.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","","179204","","{""gender"":""MALE"",""age"":""31"",""decision_strategy"":""Based on the how important it is in terms of considering human economic value of the activity."",""consistency_check"":""I used the same logic of what matters the most(Importance-based)""}","demographics_and_strategy","","","","","","",""
+"","","","","","instructions","159","1333455","0.0-152.0","EAECFD46E24C4A6F9417F7D347F13975","019ce882-c0ca-7abc-a723-4e94227d53a4","019ce875-66c2-7f0b-b5e8-086c75889f84","[{""page_index"":0,""viewing_time"":10800}]","10801","","","","","","","","","",""
