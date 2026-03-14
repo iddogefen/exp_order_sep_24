@@ -103,6 +103,12 @@ var jsPsych = initJsPsych({
 
     // ----------- PRELOAD SECTION -----------
 
+       // Instruction images
+    var instruction_images = [];
+    for (var i = 0; i <= 4; i++) {
+        instruction_images.push(`images/instructions/movie_${i}.png`);
+    }
+
 var causal_folders = ['coin_causal', 'dog_causal', 'museum_causal', 'package_causal', 'saving_a_cat_causal', 'the_performance_causal'];
 var schematic_folders = ['dinner_party_scheme', 'flight_scheme', 'hotel_scheme', 'interview_scheme', 'restaurant_scheme', 'supermarket_scheme'];
 // הוספת התיקיות הסמנטיות
@@ -135,11 +141,10 @@ function checkIsValuable(folder) {
     return all_valuable.includes(folder);
 }
 
-    var preload = {
+ var preload = {
         type: jsPsychPreload,
         images: [
             'consent_form_2022.png',
-            'images/other/blank.png',
             ...instruction_images,
             ...causal_images,
             ...semantic_images
