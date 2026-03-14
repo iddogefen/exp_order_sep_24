@@ -49,7 +49,8 @@
 
 // Function to save data via POST request
 function saveData(data) {
-    // Your PHP expects JSON with 'filedata' key
+    // ה-PHP שלך מצפה ל-JSON עם המפתח 'filedata'
+    // השם "data.csv" נשלח כאן אבל ה-PHP שלך יתעלם ממנו וייצר שם מבוסס זמן
     fetch('write_data.php', {
         method: 'POST',
         headers: {
@@ -65,6 +66,7 @@ function saveData(data) {
     })
     .then(result => {
         console.log("Success! File saved as: ", result.file);
+        // הצגת קוד הסיום למשתמש רק לאחר וידוא שהנתונים נשמרו
     })
     .catch(error => {
         console.error("Error saving data:", error);
@@ -75,6 +77,8 @@ function saveData(data) {
 // Initialize jsPsych
 var jsPsych = initJsPsych({
     on_finish: function() {
+        // שולח את הנתונים בפורמט CSV. 
+        // ה-PHP שלך כבר מוסיף תאריך, שעה ו-ID ייחודי לשם הקובץ בתיקיית data/
         saveData(jsPsych.data.get().csv());
     }
 });
@@ -85,13 +89,13 @@ var jsPsych = initJsPsych({
     // Initialize experiment timeline
     var timeline = [];
 
-    // Adding subject properties from URL
-    var participant_id = jsPsych.data.getURLVariable('participantId');
+    // Adding subject properties
+    var subject_id = jsPsych.data.getURLVariable('participantId');
     var study_id = jsPsych.data.getURLVariable('assignmentId');
     var session_id = jsPsych.data.getURLVariable('projectId');
 
     jsPsych.data.addProperties({
-      subject_id: participant_id || subject_id,
+      subject_id: subject_id,
       study_id: study_id,
       session_id: session_id,
     });
@@ -121,10 +125,10 @@ var schematic_folders = [
     'hotel_scheme',
     'interview_scheme',
     'restaurant_scheme',
-    'supermarket_scheme'
+    'supermarket_scheme' // Cleaned up the garbled name from the previous snippet
 ];
 
-// 3. Semantic folders
+// 3. Semantic folders (Matched to your File Explorer screenshot)
 var semantic_folders = [
     'cat_care_semantic',
     'creative_activities_semantic',
@@ -140,21 +144,30 @@ var semantic_folders = [
     'visiting_cities_semantic'
 ];
 
+/**
+ * Helper function to generate image paths for each category
+ * @param {Array} folders - The list of folder names
+ * @param {String} sequenceType - The subfolder name (e.g., 'causal_sequence')
+ */
 function generatePaths(folders, sequenceType) {
     var paths = [];
     folders.forEach(function(folder) {
+        // Load images 1 through 9
         for (var i = 1; i <= 9; i++) {
             paths.push(`images/${sequenceType}/${folder}/${folder}_${i}.png`);
         }
+        // Load the special 10th image
         paths.push(`images/${sequenceType}/${folder}/${folder}_ten.png`);
     });
     return paths;
 }
 
+// Generate the specific image arrays
 var causal_images = generatePaths(causal_folders, 'causal_sequence');
 var schematic_images = generatePaths(schematic_folders, 'schematic_sequence');
 var semantic_images = generatePaths(semantic_folders, 'semantic_sequence');
 
+// Initialize jsPsych Preload
 var preload = {
     type: jsPsychPreload,
     images: [
@@ -170,7 +183,6 @@ var preload = {
 };
 
 timeline.push(preload);
-
     // ----------- INTRO / CONSENT -----------
     var trial_0 = {
       type: jsPsychInstructions,
@@ -209,8 +221,8 @@ timeline.push(preload);
             '<p>This experiment consists of <b>three parts</b>:</p>' +
             '<div style="background-color: #f9f9f9; border-left: 5px solid #333; padding: 20px; margin: 20px 0;">' +
             '<p><b>Part 1:</b> You will view a series of images depicting different events.</p>' +
-            '<p><b>Part 2:</b> You will be shown specific images that are <b>lucky</b>.</p>' +
-            '<p><b>Part 3:</b> You will choose between two images and estimate which one is luckier. ' +
+            '<p><b>Part 2:</b> You will be shown specific images that are <b>worth money</b>.</p>' +
+            '<p><b>Part 3:</b> You will choose between two images and estimate which one is more valuable. ' +
             'A correct guess will lead to a <b>monetary reward</b>.</p>' +
             '</div>' +
             '<p>Please pay close attention to the images and follow your intuition. Click "Next" to begin.</p>' +
@@ -271,16 +283,20 @@ timeline.push(preload);
         show_clickable_nav: true
     });
 
-// ----------- PART 1 MAIN EXPERIMENT -----------
+ // ----------- PART 1 MAIN EXPERIMENT -----------
+
+// 1. Combine all categories into a single list with their sequence types
 var all_blocks = [
     ...causal_folders.map(f => ({ name: f, type: 'causal_sequence' })),
     ...semantic_folders.map(f => ({ name: f, type: 'semantic_sequence' })),
     ...schematic_folders.map(f => ({ name: f, type: 'schematic_sequence' }))
 ];
 
+// 2. Shuffle the unified list so categories are interleaved
 var randomized_blocks = jsPsych.randomization.shuffle(all_blocks);
 
 randomized_blocks.forEach(function(block) {
+    // Inter-block interval (Gray screen)
     timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: '<div style="background-color: gray; width: 100vw; height: 100vh;"></div>',
@@ -288,10 +304,15 @@ randomized_blocks.forEach(function(block) {
         trial_duration: 1000
     });
 
+    // Loop through 10 images per sequence
     for (var i = 1; i <= 10; i++) {
+        
         var image_suffix = (i === 10) ? "ten" : i;
+        
+        // Dynamically build path: images/[type]/[folder]/[filename]
         var current_image_path = `images/${block.type}/${block.name}/${block.name}_${image_suffix}.png`;
 
+        // 5-second image viewing
         var main_view = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
@@ -303,6 +324,7 @@ randomized_blocks.forEach(function(block) {
             trial_duration: 5000 
         };
 
+        // 3-second response window
         var main_question = {
             type: jsPsychHtmlButtonResponse,
             stimulus: `
@@ -322,25 +344,41 @@ randomized_blocks.forEach(function(block) {
                 image_index: image_suffix
             }
         };
+        
         timeline.push(main_view, main_question);
     }
 });
 
+// ----------- END PART 1 -----------
 var part1_end = {
     type: jsPsychInstructions,
-    pages: ['<div style="text-align: center; padding: 50px;"><h2>Part 1 Completed</h2><p>You have finished the first part of the experiment.</p></div>'],
+    pages: [
+        '<div style="text-align: center; padding: 50px;">' +
+        '<h2>Part 1 Completed</h2>' +
+        '<p>You have finished the first part of the experiment.</p>' +
+        '</div>'
+    ],
     show_clickable_nav: true
 };
 timeline.push(part1_end);
+        // ----------- END SURVEY & COMPLETION -----------
+    var part1_end = {
+        type: jsPsychInstructions,
+        pages: ['<div style="text-align: center; padding: 50px;"><h2>Part 1 Completed</h2><p>You have finished the first part of the experiment.</p></div>'],
+        show_clickable_nav: true
+    };
+    timeline.push(part1_end);
 
-// ----------- PART 2: VALUE LEARNING -----------
+ // ----------- PART 2: VALUE LEARNING (50% Valuable, 50% Neutral) -----------
+
+// 1. Part 2 Introduction (מעודכן להסבר על שני הסוגים)
 var part2_intro = {
     type: jsPsychInstructions,
     pages: [
         '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
         '<h2>Part 2: Value Learning</h2>' +
         '<p style="font-size: 20px;">In this part, you will see images from the previous sequences.</p>' +
-        '<p style="font-size: 20px;">Some images are <b>lucky</b> (marked in <span style="color:green">GREEN</span>),<br>' +
+        '<p style="font-size: 20px;">Some images are <b>worth $1</b> (marked in <span style="color:green">GREEN</span>),<br>' +
         'and others have a <b>neutral value</b> (marked in <span style="color:grey">GREY</span>).</p>' +
         '<p style="font-size: 20px;">Study these images and their values carefully.</p>' +
         '<p>Click "Next" to see examples.</p>' +
@@ -350,16 +388,17 @@ var part2_intro = {
 };
 timeline.push(part2_intro);
 
+// 2. Part 2 EXAMPLES (הצגת דוגמה של דולר ודוגמה של נטרלי)
 var part2_examples = {
     timeline: [
         {
             type: jsPsychHtmlButtonResponse,
             stimulus: `
-                <div style="margin-bottom:20px;"><h3>Example: Lucky Image</h3></div>
+                <div style="margin-bottom:20px;"><h3>Example: Valuable Image</h3></div>
                 <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 30px;">
                     <img src="images/instructions/movie_1.png" class="exp-image">
                     <div style="font-size: 35px; font-weight: bold; color: green; border: 5px solid green; padding: 20px; border-radius: 15px; background-color: #f0fff0;">
-                        LUCKY<br>IMAGE
+                        WORTH<br>$1
                     </div>
                 </div>
                 <div class="question-area"><p>Was there a person in this image?</p></div>`,
@@ -382,14 +421,9 @@ var part2_examples = {
 };
 timeline.push(part2_examples);
 
-// Balanced Assignment for Part 2
-var valuable_causal = jsPsych.randomization.sampleWithoutReplacement(causal_folders, 3);
-var valuable_schematic = jsPsych.randomization.sampleWithoutReplacement(schematic_folders, 3);
-var valuable_semantic = jsPsych.randomization.sampleWithoutReplacement(semantic_folders, 6);
-var valuable_folders_list = [...valuable_causal, ...valuable_schematic, ...valuable_semantic];
+// ----------- PART 2: VALUE LEARNING -----------
 
-console.log("Valuable Assignment:", valuable_folders_list);
-
+// 1. Combine all folders and shuffle them
 var all_folders_part2 = [
     ...causal_folders.map(f => ({ name: f, type: 'causal_sequence' })),
     ...semantic_folders.map(f => ({ name: f, type: 'semantic_sequence' })),
@@ -398,15 +432,26 @@ var all_folders_part2 = [
 
 var shuffled_folders_part2 = jsPsych.randomization.shuffle(all_folders_part2);
 
+// 2. Split folders: 50% valuable ($1) and 50% neutral
+// Total folders: 24 (6 causal + 6 schematic + 12 semantic). 12 will be valuable.
+var half_length = Math.floor(shuffled_folders_part2.length / 2);
+var valuable_folders = shuffled_folders_part2.slice(0, half_length).map(f => f.name);
+
+// 3. Run Part 2 Loop
 shuffled_folders_part2.forEach(function(block) {
-    var is_valuable = valuable_folders_list.includes(block.name);
-    var reward_text = is_valuable ? "LUCKY<br>IMAGE" : "NEUTRAL<br>VALUE";
+    var is_valuable = valuable_folders.includes(block.name);
+    
+    // UI Settings based on value
+    var reward_text = is_valuable ? "WORTH<br>$1" : "NEUTRAL<br>VALUE";
     var reward_color = is_valuable ? "green" : "grey";
     var reward_bg = is_valuable ? "#f0fff0" : "#f0f0f0";
     var reward_type_label = is_valuable ? "valuable" : "neutral";
 
+    // Select a random middle image (3-7) to assign value to
     var value_indices = [3, 4, 5, 6, 7];
     var random_valuable_index = jsPsych.randomization.sampleWithReplacement(value_indices, 1)[0];
+    
+    // Construct the correct path
     var current_image_path = `images/${block.type}/${block.name}/${block.name}_${random_valuable_index}.png`;
 
     var main_view_part2 = {
@@ -446,17 +491,20 @@ shuffled_folders_part2.forEach(function(block) {
             reward_type: reward_type_label 
         }
     };
+    
     timeline.push(main_view_part2, main_question_part2);
 });
 
-// ----------- PART 3: CHOICE & LUCKY TEST -----------
+// ----------- PART 3: CHOICE & VALUATION TEST (Distance 1) -----------
+
 var part3_intro = {
     type: jsPsychInstructions,
-    pages: ['<div style="text-align: center; padding: 50px;"><h2>Part 3: Final Choice</h2><p>Choose the <b>"luckier"</b> image.</p></div>'],
+    pages: ['<div style="text-align: center; padding: 50px;"><h2>Part 3: Final Choice</h2><p>Choose the "more valuable" image.</p></div>'],
     show_clickable_nav: true
 };
 timeline.push(part3_intro);
 
+// 1. Combine all categories so Part 3 covers everything seen in Part 1 & 2
 var all_folders_part3 = [
     ...causal_folders.map(f => ({ name: f, type: 'causal_sequence' })),
     ...semantic_folders.map(f => ({ name: f, type: 'semantic_sequence' })),
@@ -466,79 +514,108 @@ var all_folders_part3 = [
 var randomized_folders_part3 = jsPsych.randomization.shuffle(all_folders_part3);
 
 randomized_folders_part3.forEach(function(block) {
+    
     var part3_sequence = {
         timeline: [
             {
                 type: jsPsychHtmlKeyboardResponse,
                 stimulus: function() {
+                    // Retrieve data from Part 2 to identify X
                     var part2_info = jsPsych.data.get().filter({folder: block.name, task: 'part2_value_learning'}).values()[0];
                     var X = (part2_info) ? part2_info.valuable_image_index : 5;
                     
-                    var left_is_minus = Math.random() < 0.5;
-                    var left_idx = left_is_minus ? X - 1 : X + 1;
-                    var right_idx = left_is_minus ? X + 1 : X - 1;
-
-                    // Temporary store for this sequence
-                    data_for_current_block = { left: left_idx, right: right_idx };
+                    var is_left_smaller = (block.name.length % 2 === 0);
+                    
+                    // Distance 1 logic
+                    var left_idx = is_left_smaller ? X - 1 : X + 1;
+                    var right_idx = is_left_smaller ? X + 1 : X - 1;
 
                     return `
-                        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
+                        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is more valuable?</h3></div>
                         <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
                             <img src="images/${block.type}/${block.name}/${block.name}_${left_idx}.png" class="exp-image">
                             <img src="images/${block.type}/${block.name}/${block.name}_${right_idx}.png" class="exp-image">
                         </div>`;
                 },
                 choices: "NO_KEYS",
-                trial_duration: 10000,
-                on_finish: function(data) {
-                    data.left_idx = data_for_current_block.left;
-                    data.right_idx = data_for_current_block.right;
-                }
+                trial_duration: 10000
             },
             {
                 type: jsPsychHtmlButtonResponse,
                 stimulus: function() {
-                    var last_trial = jsPsych.data.get().last(1).values()[0];
+                    var part2_info = jsPsych.data.get().filter({folder: block.name, task: 'part2_value_learning'}).values()[0];
+                    var X = (part2_info) ? part2_info.valuable_image_index : 5;
+                    var is_left_smaller = (block.name.length % 2 === 0);
+                    
+                    var left_idx = is_left_smaller ? X - 1 : X + 1;
+                    var right_idx = is_left_smaller ? X + 1 : X - 1;
+
                     return `
-                        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
+                        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is more valuable?</h3></div>
                         <div class="stimulus-container" style="display: flex; width: 1100px; justify-content: center; gap: 50px;">
-                            <img src="images/${block.type}/${block.name}/${block.name}_${last_trial.left_idx}.png" class="exp-image">
-                            <img src="images/${block.type}/${block.name}/${block.name}_${last_trial.right_idx}.png" class="exp-image">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${left_idx}.png" class="exp-image">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${right_idx}.png" class="exp-image">
                         </div>`;
                 },
                 choices: ['Left', 'Right'],
                 on_finish: function(data) {
-                    var last_trial = jsPsych.data.get().last(1).values()[0];
                     var part2_info = jsPsych.data.get().filter({folder: block.name, task: 'part2_value_learning'}).values()[0];
                     var X = (part2_info) ? part2_info.valuable_image_index : 5;
-                    var chosen_idx = (data.response === 0) ? last_trial.left_idx : last_trial.right_idx;
+                    var reward_type = (part2_info) ? part2_info.reward_type : 'unknown';
+
+                    var is_left_smaller = (block.name.length % 2 === 0);
+                    var left_idx = is_left_smaller ? X - 1 : X + 1;
+                    var right_idx = is_left_smaller ? X + 1 : X - 1;
+
+                    var chosen_idx = (data.response === 0) ? left_idx : right_idx;
                     
                     data.task = 'part3_final_choice';
                     data.folder = block.name;
                     data.sequence_type = block.type;
-                    data.reward_type = (part2_info) ? part2_info.reward_type : 'unknown';
-                    data.lucky_X = X;
+                    data.reward_type = reward_type; 
+                    data.valuable_X = X;
                     data.chosen_image_index = chosen_idx;
-                    data.distance_from_X = chosen_idx - X;
-                    data.left_image_index = last_trial.left_idx;
-                    data.right_image_index = last_trial.right_idx;
+                    data.distance_from_X = chosen_idx - X; // Returns 1 or -1
                 }
             }
         ]
     };
     timeline.push(part3_sequence);
 });
-
+// דמ'וגרפיה וסיום (ללא שינוי)
 var trial_demographics = {
     type: jsPsychSurveyText, 
     questions: [
-        {prompt: 'Please insert your gender (MALE / FEMALE / OTHER)', name: 'gender', rows: 1, columns: 20},
-        {prompt: 'Please insert your age', name: 'age', rows: 1, columns: 5},
-        {prompt: 'In the last part, how did you decide which image was luckier?', name: 'decision_strategy', rows: 1, columns: 50},
-        {prompt: 'Did you use the same logic for all pairs? Please explain.', name: 'consistency_check', rows: 1, columns: 50}
+        {
+            prompt: 'Please insert your gender (MALE / FEMALE / OTHER)', 
+            name: 'gender', 
+            rows: 1, 
+            columns: 20
+        },
+        {
+            prompt: 'Please insert your age', 
+            name: 'age', 
+            rows: 1, 
+            columns: 5
+        },
+        {
+            prompt: 'In the last part, how did you decide which image was more valuable?', 
+            name: 'decision_strategy', 
+            rows: 1, 
+            columns: 5
+        },
+        {
+            prompt: 'Did you use the same logic for all pairs of images, or did your reasoning change between different sets? Please explain.', 
+            name: 'consistency_check', 
+            rows: 1, 
+            columns: 5
+        }
     ],
-    data: { task: 'demographics_and_strategy' }
+    data: {
+        task: 'demographics_and_strategy'
+    }
 };
+
 timeline.push(trial_demographics);
 
 var trial_finish = {
@@ -547,7 +624,6 @@ var trial_finish = {
     show_clickable_nav: true
 };
 timeline.push(trial_finish);
-
 jsPsych.run(timeline);
 
   </script>
