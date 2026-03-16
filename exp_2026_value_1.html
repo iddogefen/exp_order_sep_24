@@ -138,19 +138,19 @@ var semantic_folders = [
 // 1. הגדרת כמות הסדרות (0 קאוזאלי, 0 סכימתי, 12 סמנטי)
 var n_causal = 0;
 var n_schematic = 0; 
-var n_semantic = 12; // אנחנו צריכים 12 סדרות סמנטיות סך הכל (6 אקראי, 6 סדר נכון)
-var n_valuable_per_type = 6; 
+var n_semantic = 2; // אנחנו צריכים 12 סדרות סמנטיות סך הכל (6 אקראי, 6 סדר נכון)
+var n_valuable_per_type = 1; 
 
 // 2. דגימת הסדרות הסמנטיות
 var sampled_semantic = jsPsych.randomization.sampleWithoutReplacement(semantic_folders, n_semantic);
 
 // 3. חלוקה ל-6 סדרות שיוצגו בסדר נכון ו-6 בסדר אקראי
-var semantic_ordered = sampled_semantic.slice(0, 6);
-var semantic_shuffled = sampled_semantic.slice(6, 12);
+var semantic_ordered = sampled_semantic.slice(0, 1);
+var semantic_shuffled = sampled_semantic.slice(1, 2);
 
 // 4. בחירת המתוגמלות (3 מכל תת-קבוצה כדי לשמור על איזון)
-var valuable_semantic_ordered = jsPsych.randomization.sampleWithoutReplacement(semantic_ordered, 3);
-var valuable_semantic_shuffled = jsPsych.randomization.sampleWithoutReplacement(semantic_shuffled, 3);
+var valuable_semantic_ordered = jsPsych.randomization.sampleWithoutReplacement(semantic_ordered, 1);
+var valuable_semantic_shuffled = jsPsych.randomization.sampleWithoutReplacement(semantic_shuffled, 1);
 
 var valuable_folders_list = [...valuable_semantic_ordered, ...valuable_semantic_shuffled];
 
