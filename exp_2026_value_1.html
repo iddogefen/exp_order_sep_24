@@ -138,23 +138,29 @@ var semantic_folders = [
 // 1. הגדרת כמות הסדרות (0 קאוזאלי, 0 סכימתי, 12 סמנטי)
 var n_causal = 0;
 var n_schematic = 0; 
-var n_semantic = 2; // אנחנו צריכים 12 סדרות סמנטיות סך הכל (6 אקראי, 6 סדר נכון)
-var n_valuable_per_type = 1; 
+var n_semantic = 4; // אנחנו צריכים 12 סדרות סמנטיות סך הכל (6 אקראי, 6 סדר נכון)
+var n_valuable_per_type = 2; 
 
 // 2. דגימת הסדרות הסמנטיות
+// --- RANDOMIZATION & SELECTION SECTION (FIXED) ---
+
+// 1. הגדרת כמות הסדרות (סך הכל 4 סדרות סמנטיות)
+var n_semantic = 4; 
+
+// 2. דגימת 4 סדרות סמנטיות מהמאגר
 var sampled_semantic = jsPsych.randomization.sampleWithoutReplacement(semantic_folders, n_semantic);
 
-// 3. חלוקה ל-6 סדרות שיוצגו בסדר נכון ו-6 בסדר אקראי
-var semantic_ordered = sampled_semantic.slice(0, 1);
-var semantic_shuffled = sampled_semantic.slice(1, 2);
+// 3. חלוקה ל-2 סדרות שיוצגו בסדר נכון ו-2 בסדר אקראי
+var semantic_ordered = sampled_semantic.slice(0, 2);
+var semantic_shuffled = sampled_semantic.slice(2, 4);
 
-// 4. בחירת המתוגמלות (3 מכל תת-קבוצה כדי לשמור על איזון)
+// 4. בחירת המתוגמלות (1 מסודר ו-1 משובש, כדי שיישארו 2 ניטרליות להשוואה)
 var valuable_semantic_ordered = jsPsych.randomization.sampleWithoutReplacement(semantic_ordered, 1);
 var valuable_semantic_shuffled = jsPsych.randomization.sampleWithoutReplacement(semantic_shuffled, 1);
 
 var valuable_folders_list = [...valuable_semantic_ordered, ...valuable_semantic_shuffled];
 
-// 5. בניית מערך הבלוקים עם סימון של אופן התצוגה (presentation_mode)
+// 5. בניית מערך הבלוקים
 var selected_blocks = [
     ...semantic_ordered.map(f => ({ name: f, type: 'semantic_sequence', presentation_mode: 'ordered' })),
     ...semantic_shuffled.map(f => ({ name: f, type: 'semantic_sequence', presentation_mode: 'shuffled' }))
@@ -476,6 +482,9 @@ timeline.push(part3_intro);
 
 var all_part3_trials = [];
 
+/// משתנה עזר חיצוני למניעת שגיאות Race Condition
+var temp_storage = {};
+
 // 1. יצירת החלטות "שכנים" (Within-Sequence)
 experimental_blocks.forEach(function(block) {
     var neighbors_sequence = {
@@ -483,17 +492,13 @@ experimental_blocks.forEach(function(block) {
             {
                 type: jsPsychHtmlKeyboardResponse,
                 on_start: function(trial) {
-                    // שליפת המידע מחלק 2
                     var part2_info = jsPsych.data.get().filter({folder: block.name, task: 'part2_value_learning'}).values()[0];
                     var X = (part2_info) ? part2_info.valuable_image_index : 5;
-                    
-                    // הגרלת צדדים
                     var left_idx = Math.random() < 0.5 ? X - 1 : X + 1;
                     var right_idx = left_idx === X - 1 ? X + 1 : X - 1;
 
-                    // שמירה מפורשת בתוך ה-data של הטרייל הנוכחי
-                    trial.data = {
-                        task: 'part3_neighbor_view',
+                    // שמירה במחסן חיצוני זמני
+                    temp_storage[block.name] = {
                         left_idx: left_idx,
                         right_idx: right_idx,
                         lucky_X: X,
@@ -502,8 +507,7 @@ experimental_blocks.forEach(function(block) {
                     };
                 },
                 stimulus: function() {
-                    // שליפת הנתונים שנשמרו ב-on_start
-                    var d = jsPsych.getCurrentTrial().data;
+                    var d = temp_storage[block.name];
                     return `
                         <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is worth more money?</h3></div>
                         <div class="stimulus-container" style="display: flex; width: 800px; justify-content: center; gap: 30px;">
@@ -517,26 +521,26 @@ experimental_blocks.forEach(function(block) {
             {
                 type: jsPsychHtmlButtonResponse,
                 stimulus: function() {
-                    // שליפת הנתונים מהטרייל הקודם (התצוגה)
-                    var prev_data = jsPsych.data.get().last(1).values()[0];
+                    // שליפה מהמחסן החיצוני - בטוח לחלוטין
+                    var d = temp_storage[block.name];
                     return `
                         <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is worth more money?</h3></div>
                         <div class="stimulus-container" style="display: flex; width: 800px; justify-content: center; gap: 30px;">
-                            <img src="images/${prev_data.sequence_type}/${prev_data.folder}/${prev_data.folder}_${prev_data.left_idx}.png" class="small-image">
-                            <img src="images/${prev_data.sequence_type}/${prev_data.folder}/${prev_data.folder}_${prev_data.right_idx}.png" class="small-image">
+                            <img src="images/${d.sequence_type}/${d.folder}/${d.folder}_${d.left_idx}.png" class="small-image">
+                            <img src="images/${d.sequence_type}/${d.folder}/${d.folder}_${d.right_idx}.png" class="small-image">
                         </div>`;
                 },
                 choices: ['Left', 'Right'],
                 on_finish: function(data) {
-                    var prev_data = jsPsych.data.get().last(2).values()[0];
+                    var d = temp_storage[block.name];
                     data.task = 'part3_choice_neighbors'; 
-                    data.folder = prev_data.folder;
-                    data.sequence_type = prev_data.sequence_type;
-                    data.left_index = prev_data.left_idx;
-                    data.right_index = prev_data.right_idx;
-                    data.target_X = prev_data.lucky_X;
-                    data.chosen_image_index = (data.response === 0) ? prev_data.left_idx : prev_data.right_idx;
-                    data.is_pre_reward = (data.chosen_image_index === prev_data.lucky_X - 1);
+                    data.folder = d.folder;
+                    data.sequence_type = d.sequence_type;
+                    data.left_index = d.left_idx;
+                    data.right_index = d.right_idx;
+                    data.target_X = d.lucky_X;
+                    data.chosen_image_index = (data.response === 0) ? d.left_idx : d.right_idx;
+                    data.is_pre_reward = (data.chosen_image_index === d.lucky_X - 1);
                 }
             }
         ]
@@ -552,6 +556,8 @@ valuable_blocks_list_info.forEach(function(v_block, index) {
     var n_block = neutral_blocks_list_info[index];
     if(!n_block) return;
 
+    var cross_key = v_block.name + "_vs_" + n_block.name;
+
     var cross_sequence = {
         timeline: [
             {
@@ -561,21 +567,18 @@ valuable_blocks_list_info.forEach(function(v_block, index) {
                     var v_X = (v_info) ? v_info.valuable_image_index : 5;
                     var n_info = jsPsych.data.get().filter({folder: n_block.name, task: 'part2_value_learning'}).values()[0];
                     var n_X = (n_info) ? n_info.valuable_image_index : 5;
-
                     var left_is_v = Math.random() < 0.5;
                     
-                    trial.data = {
-                        task: 'part3_cross_view',
+                    temp_storage[cross_key] = {
                         left_is_v: left_is_v,
                         v_folder: v_block.name, v_type: v_block.type, v_index: v_X,
                         n_folder: n_block.name, n_type: n_block.type, n_index: n_X
                     };
                 },
                 stimulus: function() {
-                    var d = jsPsych.getCurrentTrial().data;
+                    var d = temp_storage[cross_key];
                     var v_path = `images/${d.v_type}/${d.v_folder}/${d.v_folder}_${d.v_index}.png`;
                     var n_path = `images/${d.n_type}/${d.n_folder}/${d.n_folder}_${d.n_index}.png`;
-
                     return `<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is worth more money?</h3></div>
                             <div class="stimulus-container" style="display: flex; width: 800px; justify-content: center; gap: 30px;">
                                 <img src="${d.left_is_v ? v_path : n_path}" class="small-image">
@@ -588,7 +591,7 @@ valuable_blocks_list_info.forEach(function(v_block, index) {
             {
                 type: jsPsychHtmlButtonResponse,
                 stimulus: function() {
-                    var d = jsPsych.data.get().last(1).values()[0];
+                    var d = temp_storage[cross_key];
                     var v_path = `images/${d.v_type}/${d.v_folder}/${d.v_folder}_${d.v_index}.png`;
                     var n_path = `images/${d.n_type}/${d.n_folder}/${d.n_folder}_${d.n_index}.png`;
                     return `<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is worth more money?</h3></div>
@@ -599,7 +602,7 @@ valuable_blocks_list_info.forEach(function(v_block, index) {
                 },
                 choices: ['Left', 'Right'],
                 on_finish: function(data) {
-                    var d = jsPsych.data.get().last(2).values()[0];
+                    var d = temp_storage[cross_key];
                     data.task = 'part3_valuable_vs_neutral_direct';
                     data.v_folder = d.v_folder;
                     data.n_folder = d.n_folder;
