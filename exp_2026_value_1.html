@@ -244,8 +244,8 @@ var experimental_blocks = jsPsych.randomization.shuffle(selected_blocks);
             '<div style="background-color: #f9f9f9; border-left: 5px solid #333; padding: 20px; margin: 20px 0;">' +
             '<p><b>Part 1:</b> You will view a series of images depicting different events.</p>' +
             '<p><b>Part 2:</b> You will be shown specific images that have <b> monetary value</b>.</p>' +
-            '<p><b>Part 3:</b> You will choose between two images and estimate which one is luckier. ' +
-            'A correct guess will lead to a <b>monetary reward</b>.</p>' +
+            '<p><b>Part 3:</b> You will choose between two images and estimate which one is worth more money. ' +
+            'A correct evaluation will lead to a <b>monetary reward</b>.</p>' +
             '</div>' +
             '<p>Please pay close attention to the images and follow your intuition. Click "Next" to begin.</p>' +
             '</div>'
@@ -454,7 +454,14 @@ shuffled_folders_part2.forEach(function(block) {
 
 var part3_intro = {
     type: jsPsychInstructions,
-    pages: ['<div style="text-align: center; padding: 50px;"><h2>Part 3: Final Choice</h2><p>In this final part, you will be shown pairs of images.<br>Based on what you learned, please choose the <b>"luckier"</b> image using the buttons.</p></div>'],
+    pages: [
+        '<div style="text-align: center; padding: 50px;">' +
+        '<h2>Part 3: Final Choice</h2>' +
+        '<p>In this final part, you will be shown pairs of images.<br>' +
+        'Only based on what you learned in the previous part,<br>' + // השורה פוצלה כאן
+        'please choose the image which is worth <b>more money</b> using the buttons.</p>' +
+        '</div>'
+    ],
     show_clickable_nav: true
 };
 timeline.push(part3_intro);
