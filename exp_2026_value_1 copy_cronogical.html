@@ -331,16 +331,10 @@ var start_main_experiment = {
 };
 timeline.push(start_main_experiment);
 
-// ----------- PART 1 MAIN EXPERIMENT (RANDOMIZED WITHIN BLOCKS) -----------
-
+// ----------- PART 1 MAIN EXPERIMENT -----------
+// שימוש ב-experimental_blocks מבטיח שנראה רק את 3 הסדרות שנבחרו בתחילת הקוד
 experimental_blocks.forEach(function(block) {
     
-    // 1. יצירת רשימת אינדקסים מ-1 עד 10
-    var image_indices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    
-    // 2. ערבוב האינדקסים ספציפית עבור הסדרה הנוכחית
-    var randomized_indices = jsPsych.randomization.shuffle(image_indices);
-
     // מסך לבן קצר של שנייה בין סדרה לסדרה
     timeline.push({
         type: jsPsychHtmlKeyboardResponse,
@@ -349,8 +343,7 @@ experimental_blocks.forEach(function(block) {
         trial_duration: 1000
     });
 
-    // 3. לולאה על האינדקסים המעורבבים
-    randomized_indices.forEach(function(i) {
+    for (var i = 1; i <= 10; i++) {
         var image_suffix = (i === 10) ? "ten" : i;
         var current_image_path = `images/${block.type}/${block.name}/${block.name}_${image_suffix}.png`;
 
@@ -381,13 +374,19 @@ experimental_blocks.forEach(function(block) {
                 task: 'main_experiment_trial',
                 folder: block.name,
                 sequence_type: block.type, 
-                image_index: image_suffix,
-                presentation_order: 'randomized' // הוספת תיעוד שהסדר היה אקראי
+                image_index: image_suffix
             }
         };
         timeline.push(main_view, main_question);
-    });
+    }
 });
+
+var part1_end = {
+    type: jsPsychInstructions,
+    pages: ['<div style="text-align: center; padding: 50px;"><h2>Part 1 Completed</h2><p>You have finished the first part of the experiment.</p></div>'],
+    show_clickable_nav: true
+};
+timeline.push(part1_end);
 
 // ----------- PART 2: VALUE LEARNING (Conditioning Phase) - Passive Version -----------
 
@@ -457,7 +456,7 @@ shuffled_folders_part2.forEach(function(block) {
         trial_duration: 1000
     });
 });
-// --- PART 3: CHOICE & LUCKY TEST (MIXED) - FIXED & STABLE VERSION ---
+// --- PART 3: CHOICE & LUCKY TEST (MIXED) ---
 
 var part3_intro = {
     type: jsPsychInstructions,
@@ -465,7 +464,7 @@ var part3_intro = {
         '<div style="text-align: center; padding: 50px;">' +
         '<h2>Part 3: Final Choice</h2>' +
         '<p>In this final part, you will be shown pairs of images.<br>' +
-        'Based on what you learned in the previous part,<br>' +
+        'Only based on what you learned in the previous part,<br>' + // השורה פוצלה כאן
         'please choose the image which is worth <b>more money</b> using the buttons.</p>' +
         '</div>'
     ],
@@ -473,6 +472,7 @@ var part3_intro = {
 };
 timeline.push(part3_intro);
 
+// יצירת מערך זמני שיכיל את כל ההחלטות מכל הסוגים
 var all_part3_trials = [];
 
 // 1. יצירת החלטות "שכנים" (Within-Sequence)
@@ -484,12 +484,9 @@ experimental_blocks.forEach(function(block) {
                 stimulus: function() {
                     var part2_info = jsPsych.data.get().filter({folder: block.name, task: 'part2_value_learning'}).values()[0];
                     var X = (part2_info) ? part2_info.valuable_image_index : 5;
-                    
                     var left_idx = Math.random() < 0.5 ? X - 1 : X + 1;
                     var right_idx = left_idx === X - 1 ? X + 1 : X - 1;
-
-                    // שמירת הנתונים ספציפית לטרייל הזה
-                    jsPsych.getCurrentTrial().data.trial_pair = { left: left_idx, right: right_idx, lucky_X: X };
+                    window.data_for_current_block = { left: left_idx, right: right_idx, lucky_X: X };
 
                     return `
                         <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
@@ -504,23 +501,20 @@ experimental_blocks.forEach(function(block) {
             {
                 type: jsPsychHtmlButtonResponse,
                 stimulus: function() {
-                    // שליפת הנתונים מהשלב הקודם של הטרייל הנוכחי
-                    var pair = jsPsych.data.get().last(1).values()[0].trial_pair;
                     return `
                         <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
                         <div class="stimulus-container" style="display: flex; width: 800px; justify-content: center; gap: 30px;">
-                            <img src="images/${block.type}/${block.name}/${block.name}_${pair.left}.png" class="small-image">
-                            <img src="images/${block.type}/${block.name}/${block.name}_${pair.right}.png" class="small-image">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${window.data_for_current_block.left}.png" class="small-image">
+                            <img src="images/${block.type}/${block.name}/${block.name}_${window.data_for_current_block.right}.png" class="small-image">
                         </div>`;
                 },
                 choices: ['Left', 'Right'],
                 on_finish: function(data) {
-                    var pair = jsPsych.data.get().last(2).values()[0].trial_pair;
                     data.task = 'part3_choice_neighbors'; 
                     data.folder = block.name;
                     data.sequence_type = block.type;
-                    data.chosen_image_index = (data.response === 0) ? pair.left : pair.right;
-                    data.target_X = pair.lucky_X;
+                    data.chosen_image_index = (data.response === 0) ? window.data_for_current_block.left : window.data_for_current_block.right;
+                    data.target_X = window.data_for_current_block.lucky_X;
                 }
             }
         ]
@@ -547,16 +541,13 @@ valuable_blocks_list_info.forEach(function(v_block, index) {
                     var n_X = (n_info) ? n_info.valuable_image_index : 5;
 
                     var left_is_v = Math.random() < 0.5;
+                    window.cross_comp_data = { 
+                        left_is_v: left_is_v, v_folder: v_block.name, n_folder: n_block.name, 
+                        v_index: v_X, n_index: n_X, v_type: v_block.type, n_type: n_block.type 
+                    };
+
                     var v_path = `images/${v_block.type}/${v_block.name}/${v_block.name}_${v_X}.png`;
                     var n_path = `images/${n_block.type}/${n_block.name}/${n_block.name}_${n_X}.png`;
-
-                    // שמירת נתוני ההשוואה לטרייל הזה
-                    jsPsych.getCurrentTrial().data.cross_data = { 
-                        left_is_v: left_is_v, 
-                        v_folder: v_block.name, n_folder: n_block.name, 
-                        v_index: v_X, n_index: n_X, 
-                        v_type: v_block.type, n_type: n_block.type 
-                    };
 
                     return `<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
                             <div class="stimulus-container" style="display: flex; width: 800px; justify-content: center; gap: 30px;">
@@ -570,23 +561,19 @@ valuable_blocks_list_info.forEach(function(v_block, index) {
             {
                 type: jsPsychHtmlButtonResponse,
                 stimulus: function() {
-                    var cd = jsPsych.data.get().last(1).values()[0].cross_data;
-                    var v_path = `images/${cd.v_type}/${cd.v_folder}/${cd.v_folder}_${cd.v_index}.png`;
-                    var n_path = `images/${cd.n_type}/${cd.n_folder}/${cd.n_folder}_${cd.n_index}.png`;
+                    var v_path = `images/${window.cross_comp_data.v_type}/${window.cross_comp_data.v_folder}/${window.cross_comp_data.v_folder}_${window.cross_comp_data.v_index}.png`;
+                    var n_path = `images/${window.cross_comp_data.n_type}/${window.cross_comp_data.n_folder}/${window.cross_comp_data.n_folder}_${window.cross_comp_data.n_index}.png`;
                     return `<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
                             <div class="stimulus-container" style="display: flex; width: 800px; justify-content: center; gap: 30px;">
-                                <img src="${cd.left_is_v ? v_path : n_path}" class="small-image">
-                                <img src="${cd.left_is_v ? n_path : v_path}" class="small-image">
+                                <img src="${window.cross_comp_data.left_is_v ? v_path : n_path}" class="small-image">
+                                <img src="${window.cross_comp_data.left_is_v ? n_path : v_path}" class="small-image">
                             </div>`;
                 },
                 choices: ['Left', 'Right'],
                 on_finish: function(data) {
-                    var cd = jsPsych.data.get().last(2).values()[0].cross_data;
                     data.task = 'part3_valuable_vs_neutral_direct';
-                    data.correct_choice = (data.response === 0 && cd.left_is_v) || 
-                                          (data.response === 1 && !cd.left_is_v);
-                    data.v_folder = cd.v_folder;
-                    data.n_folder = cd.n_folder;
+                    data.correct_choice = (data.response === 0 && window.cross_comp_data.left_is_v) || 
+                                          (data.response === 1 && !window.cross_comp_data.left_is_v);
                 }
             }
         ]
@@ -594,9 +581,10 @@ valuable_blocks_list_info.forEach(function(v_block, index) {
     all_part3_trials.push(cross_sequence);
 });
 
-// ערבוב כל הטריילים יחד (שכנים והשוואות בין סדרות)
+// --- כאן קורה הקסם: ערבוב של כל הטריילים יחד ---
 var shuffled_part3 = jsPsych.randomization.shuffle(all_part3_trials);
 
+// הוספת הטריילים המעורבבים ל-Timeline
 shuffled_part3.forEach(function(trial) {
     timeline.push(trial);
 });
