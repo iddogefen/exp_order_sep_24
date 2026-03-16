@@ -132,39 +132,34 @@ var semantic_folders = [
     'market_semantic', 'physical_activity_semantic', 'redecorating_a_house_semantic', 
     'self_care_activities_semantic', 'using_technology_semantic', 'visiting_cities_semantic'
 ];
-// --- RANDOMIZATION & SELECTION SECTION ---
 
 // --- RANDOMIZATION & SELECTION SECTION (UPDATED) ---
 
-// --- RANDOMIZATION & SELECTION SECTION (UPDATED) ---
-
-// 1. הגדרת כמות הסדרות מכל סוג
+// 1. הגדרת כמות הסדרות (0 קאוזאלי, 0 סכימתי, 12 סמנטי)
 var n_causal = 0;
-var n_schematic = 6;
-var n_semantic = 6; // הוספת כמות לסמנטי
-var n_valuable_per_type = 3; 
+var n_schematic = 0; 
+var n_semantic = 12; // אנחנו צריכים 12 סדרות סמנטיות סך הכל (6 אקראי, 6 סדר נכון)
+var n_valuable_per_type = 6; 
 
-// 2. דגימת הסדרות עצמן
-var sampled_causal = jsPsych.randomization.sampleWithoutReplacement(causal_folders, Math.min(n_causal, causal_folders.length));
-var sampled_schematic = jsPsych.randomization.sampleWithoutReplacement(schematic_folders, Math.min(n_schematic, schematic_folders.length));
-var sampled_semantic = jsPsych.randomization.sampleWithoutReplacement(semantic_folders, Math.min(n_semantic, semantic_folders.length)); // דגימה סמנטית
+// 2. דגימת הסדרות הסמנטיות
+var sampled_semantic = jsPsych.randomization.sampleWithoutReplacement(semantic_folders, n_semantic);
 
-// 3. בחירה אקראית של מי מתוכן יהיו המתוגמלות (3 מכל סוג)
-var valuable_causal = jsPsych.randomization.sampleWithoutReplacement(sampled_causal, n_valuable_per_type);
-var valuable_schematic = jsPsych.randomization.sampleWithoutReplacement(sampled_schematic, n_valuable_per_type);
-var valuable_semantic = jsPsych.randomization.sampleWithoutReplacement(sampled_semantic, n_valuable_per_type); // בחירת מתוגמלות סמנטיות
+// 3. חלוקה ל-6 סדרות שיוצגו בסדר נכון ו-6 בסדר אקראי
+var semantic_ordered = sampled_semantic.slice(0, 6);
+var semantic_shuffled = sampled_semantic.slice(6, 12);
 
-// 4. יצירת רשימה אחת של כל השמות של הסדרות המתוגמלות
-var valuable_folders_list = [...valuable_causal, ...valuable_schematic, ...valuable_semantic];
+// 4. בחירת המתוגמלות (3 מכל תת-קבוצה כדי לשמור על איזון)
+var valuable_semantic_ordered = jsPsych.randomization.sampleWithoutReplacement(semantic_ordered, 3);
+var valuable_semantic_shuffled = jsPsych.randomization.sampleWithoutReplacement(semantic_shuffled, 3);
 
-// 5. בניית מערך הבלוקים הסופי לניסוי
+var valuable_folders_list = [...valuable_semantic_ordered, ...valuable_semantic_shuffled];
+
+// 5. בניית מערך הבלוקים עם סימון של אופן התצוגה (presentation_mode)
 var selected_blocks = [
-    ...sampled_causal.map(f => ({ name: f, type: 'causal_sequence' })),
-    ...sampled_schematic.map(f => ({ name: f, type: 'schematic_sequence' })),
-    ...sampled_semantic.map(f => ({ name: f, type: 'semantic_sequence' })) // הוספה למערך הבלוקים
+    ...semantic_ordered.map(f => ({ name: f, type: 'semantic_sequence', presentation_mode: 'ordered' })),
+    ...semantic_shuffled.map(f => ({ name: f, type: 'semantic_sequence', presentation_mode: 'shuffled' }))
 ];
 
-// ערבוב סדר הבלוקים להצגה
 var experimental_blocks = jsPsych.randomization.shuffle(selected_blocks);
 
 console.log("Valuable Folders (3 Causal + 3 Schematic):", valuable_folders_list);
@@ -331,17 +326,22 @@ var start_main_experiment = {
 };
 timeline.push(start_main_experiment);
 
-// ----------- PART 1 MAIN EXPERIMENT (RANDOMIZED WITHIN BLOCKS) -----------
+// ----------- PART 1 MAIN EXPERIMENT (6 ORDERED, 6 SHUFFLED) -----------
 
 experimental_blocks.forEach(function(block) {
     
-    // 1. יצירת רשימת אינדקסים מ-1 עד 10
+    // 1. יצירת רשימת האינדקסים הבסיסית
     var image_indices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     
-    // 2. ערבוב האינדקסים ספציפית עבור הסדרה הנוכחית
-    var randomized_indices = jsPsych.randomization.shuffle(image_indices);
+    // 2. קביעת סדר ההצגה לפי סוג הבלוק
+    var presentation_indices;
+    if (block.presentation_mode === 'shuffled') {
+        presentation_indices = jsPsych.randomization.shuffle(image_indices);
+    } else {
+        presentation_indices = image_indices; // סדר רץ: 1, 2, 3...
+    }
 
-    // מסך לבן קצר של שנייה בין סדרה לסדרה
+    // מסך לבן קצר של שנייה בין סדרה לסדרה (ITI)
     timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
@@ -349,8 +349,8 @@ experimental_blocks.forEach(function(block) {
         trial_duration: 1000
     });
 
-    // 3. לולאה על האינדקסים המעורבבים
-    randomized_indices.forEach(function(i) {
+    // 3. לולאה על האינדקסים (בסדר שנקבע לעיל)
+    presentation_indices.forEach(function(i) {
         var image_suffix = (i === 10) ? "ten" : i;
         var current_image_path = `images/${block.type}/${block.name}/${block.name}_${image_suffix}.png`;
 
@@ -382,12 +382,13 @@ experimental_blocks.forEach(function(block) {
                 folder: block.name,
                 sequence_type: block.type, 
                 image_index: image_suffix,
-                presentation_order: 'randomized' // הוספת תיעוד שהסדר היה אקראי
+                presentation_mode: block.presentation_mode // תיעוד למחקר: האם הוצג כסדרה או כאקראי
             }
         };
         timeline.push(main_view, main_question);
     });
 });
+
 
 // ----------- PART 2: VALUE LEARNING (Conditioning Phase) - Passive Version -----------
 
