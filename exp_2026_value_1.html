@@ -490,7 +490,7 @@ experimental_blocks.forEach(function(block) {
                     window.data_for_current_block = { left: left_idx, right: right_idx, lucky_X: X };
 
                     return `
-                        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
+                        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is worth <b>more money</b>?</h3></div>
                         <div class="stimulus-container" style="display: flex; width: 800px; justify-content: center; gap: 30px;">
                             <img src="images/${block.type}/${block.name}/${block.name}_${left_idx}.png" class="small-image">
                             <img src="images/${block.type}/${block.name}/${block.name}_${right_idx}.png" class="small-image">
@@ -503,7 +503,7 @@ experimental_blocks.forEach(function(block) {
                 type: jsPsychHtmlButtonResponse,
                 stimulus: function() {
                     return `
-                        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
+                        <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image  is worth <b>more money</b>?</h3></div>
                         <div class="stimulus-container" style="display: flex; width: 800px; justify-content: center; gap: 30px;">
                             <img src="images/${block.type}/${block.name}/${block.name}_${window.data_for_current_block.left}.png" class="small-image">
                             <img src="images/${block.type}/${block.name}/${block.name}_${window.data_for_current_block.right}.png" class="small-image">
@@ -564,7 +564,7 @@ valuable_blocks_list_info.forEach(function(v_block, index) {
                 stimulus: function() {
                     var v_path = `images/${window.cross_comp_data.v_type}/${window.cross_comp_data.v_folder}/${window.cross_comp_data.v_folder}_${window.cross_comp_data.v_index}.png`;
                     var n_path = `images/${window.cross_comp_data.n_type}/${window.cross_comp_data.n_folder}/${window.cross_comp_data.n_folder}_${window.cross_comp_data.n_index}.png`;
-                    return `<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is luckier?</h3></div>
+                    return `<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image  is worth <b>more money</b>?</h3></div>
                             <div class="stimulus-container" style="display: flex; width: 800px; justify-content: center; gap: 30px;">
                                 <img src="${window.cross_comp_data.left_is_v ? v_path : n_path}" class="small-image">
                                 <img src="${window.cross_comp_data.left_is_v ? n_path : v_path}" class="small-image">
@@ -596,7 +596,7 @@ var trial_demographics = {
     questions: [
         {prompt: 'Please insert your gender (MALE / FEMALE / OTHER)', name: 'gender', rows: 1, columns: 20},
         {prompt: 'Please insert your age', name: 'age', rows: 1, columns: 5},
-        {prompt: 'In the last part, how did you decide which image was luckier?', name: 'decision_strategy', rows: 1, columns: 50},
+        {prompt: 'In the last part, how did you decide which image was  worth <b>more money</b>??', name: 'decision_strategy', rows: 1, columns: 50},
         {prompt: 'Did you use the same logic for all pairs? Please explain.', name: 'consistency_check', rows: 1, columns: 50}
     ],
     data: { task: 'demographics_and_strategy' }
