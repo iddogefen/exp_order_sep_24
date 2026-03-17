@@ -1,0 +1,1825 @@
+"success","timeout","failed_images","failed_audio","failed_video","trial_type","trial_index","time_elapsed","internal_node_id","subject_id","study_id","session_id","view_history","rt","stimulus","response","task","image_index","folder","sequence_type","presentation_order","valuable_image_index","reward_type","chosen_image_index","target_X","correct_choice"
+"true","false","[]","[]","[]","preload","0","4893","0.0-0.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","","","","","","","","","","","","",""
+"","","","","","instructions","1","15958","0.0-1.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","[{""page_index"":0,""viewing_time"":11064}]","11064","","","","","","","","","","","",""
+"","","","","","instructions","2","23353","0.0-2.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","[{""page_index"":0,""viewing_time"":7395}]","7395","","","","","","","","","","","",""
+"true","","","","","fullscreen","3","25900","0.0-3.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","1544","","","","","","","","","","","",""
+"","","","","","instructions","4","29039","0.0-4.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","[{""page_index"":0,""viewing_time"":3138}]","3138","","","","","","","","","","","",""
+"","","","","","instructions","5","32273","0.0-5.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","[{""page_index"":0,""viewing_time"":3234}]","3234","","","","","","","","","","","",""
+"","","","","","html-keyboard-response","6","36283","0.0-6.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/instructions/movie_1.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","7","38447","0.0-7.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","2163","
+                <div class=""stimulus-container"">
+                    <img src=""images/instructions/movie_1.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Was there a person in this image?</p>
+                    </div>
+                </div>","0","example_question","1","","","","","","","",""
+"","","","","","html-keyboard-response","8","42451","0.0-8.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/instructions/movie_2.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","9","42940","0.0-9.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","489","
+                <div class=""stimulus-container"">
+                    <img src=""images/instructions/movie_2.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Was there a person in this image?</p>
+                    </div>
+                </div>","0","example_question","2","","","","","","","",""
+"","","","","","html-keyboard-response","10","46941","0.0-10.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/instructions/movie_3.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","11","47330","0.0-11.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","388","
+                <div class=""stimulus-container"">
+                    <img src=""images/instructions/movie_3.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Was there a person in this image?</p>
+                    </div>
+                </div>","0","example_question","3","","","","","","","",""
+"","","","","","html-keyboard-response","12","51334","0.0-12.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/instructions/movie_4.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","13","53069","0.0-13.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","1735","
+                <div class=""stimulus-container"">
+                    <img src=""images/instructions/movie_4.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Was there a person in this image?</p>
+                    </div>
+                </div>","0","example_question","4","","","","","","","",""
+"","","","","","instructions","14","54601","0.0-14.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","[{""page_index"":0,""viewing_time"":1532}]","1532","","","","","","","","","","","",""
+"","","","","","instructions","15","58389","0.0-15.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","[{""page_index"":0,""viewing_time"":3787}]","3787","","","","","","","","","","","",""
+"","","","","","html-keyboard-response","16","63401","0.0-16.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-keyboard-response","17","64415","0.0-17.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/package_causal/package_causal_4.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","18","65761","0.0-18.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","1346","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/package_causal/package_causal_4.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","4","package_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","19","66763","0.0-19.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/package_causal/package_causal_ten.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","20","68353","0.0-20.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","1589","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/package_causal/package_causal_ten.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","ten","package_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","21","69367","0.0-21.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/package_causal/package_causal_9.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","22","69753","0.0-22.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","385","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/package_causal/package_causal_9.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","9","package_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","23","70764","0.0-23.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/package_causal/package_causal_2.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","24","72592","0.0-24.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","1828","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/package_causal/package_causal_2.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","2","package_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","25","73598","0.0-25.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/package_causal/package_causal_7.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","26","74259","0.0-26.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","660","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/package_causal/package_causal_7.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","7","package_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","27","75267","0.0-27.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/package_causal/package_causal_5.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","28","76041","0.0-28.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","774","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/package_causal/package_causal_5.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","5","package_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","29","77047","0.0-29.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/package_causal/package_causal_6.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","30","77632","0.0-30.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","584","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/package_causal/package_causal_6.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","6","package_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","31","78633","0.0-31.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/package_causal/package_causal_3.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","32","79040","0.0-32.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","406","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/package_causal/package_causal_3.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","3","package_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","33","80041","0.0-33.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/package_causal/package_causal_1.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","34","80448","0.0-34.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","406","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/package_causal/package_causal_1.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","1","package_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","35","81450","0.0-35.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/package_causal/package_causal_8.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","36","82105","0.0-36.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","654","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/package_causal/package_causal_8.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","8","package_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","37","87117","0.0-37.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-keyboard-response","38","88117","0.0-38.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_7.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","39","88752","0.0-39.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","634","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_7.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","7","the_performance_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","40","89764","0.0-40.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_5.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","41","90132","0.0-41.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","367","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_5.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","5","the_performance_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","42","91134","0.0-42.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_8.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","43","91522","0.0-43.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","388","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_8.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","8","the_performance_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","44","92525","0.0-44.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_2.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","45","92879","0.0-45.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","354","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_2.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","2","the_performance_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","46","93882","0.0-46.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_3.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","47","94214","0.0-47.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","332","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_3.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","3","the_performance_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","48","95217","0.0-48.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_9.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","49","96650","0.0-49.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","1432","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_9.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","9","the_performance_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","50","97650","0.0-50.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_6.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","51","98181","0.0-51.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","530","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_6.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","6","the_performance_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","52","99183","0.0-52.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_1.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","53","99598","0.0-53.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","415","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_1.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","1","the_performance_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","54","100601","0.0-54.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_ten.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","55","101064","0.0-55.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","462","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_ten.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","ten","the_performance_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","56","102067","0.0-56.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_4.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","57","102435","0.0-57.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","368","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_4.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","4","the_performance_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","58","107449","0.0-58.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-keyboard-response","59","108462","0.0-59.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/dog_causal/dog_causal_1.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","60","109188","0.0-60.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","725","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/dog_causal/dog_causal_1.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","1","dog_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","61","110200","0.0-61.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/dog_causal/dog_causal_2.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","62","110423","0.0-62.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","223","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/dog_causal/dog_causal_2.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","2","dog_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","63","111431","0.0-63.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/dog_causal/dog_causal_ten.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","64","111629","0.0-64.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","197","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/dog_causal/dog_causal_ten.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","ten","dog_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","65","112632","0.0-65.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/dog_causal/dog_causal_4.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","66","112952","0.0-66.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","320","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/dog_causal/dog_causal_4.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","4","dog_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","67","113958","0.0-67.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/dog_causal/dog_causal_6.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","68","114396","0.0-68.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","437","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/dog_causal/dog_causal_6.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","6","dog_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","69","115398","0.0-69.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/dog_causal/dog_causal_7.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","70","115704","0.0-70.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","305","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/dog_causal/dog_causal_7.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","7","dog_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","71","116709","0.0-71.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/dog_causal/dog_causal_9.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","72","117307","0.0-72.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","597","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/dog_causal/dog_causal_9.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","9","dog_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","73","118307","0.0-73.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/dog_causal/dog_causal_5.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","74","118661","0.0-74.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","353","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/dog_causal/dog_causal_5.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","5","dog_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","75","119662","0.0-75.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/dog_causal/dog_causal_3.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","76","120105","0.0-76.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","442","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/dog_causal/dog_causal_3.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","3","dog_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","77","121115","0.0-77.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/dog_causal/dog_causal_8.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","78","121462","0.0-78.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","346","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/dog_causal/dog_causal_8.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","8","dog_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","79","126463","0.0-79.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-keyboard-response","80","127464","0.0-80.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/museum_causal/museum_causal_4.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","81","128127","0.0-81.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","663","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/museum_causal/museum_causal_4.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","4","museum_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","82","129128","0.0-82.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/museum_causal/museum_causal_3.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","83","129999","0.0-83.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","870","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/museum_causal/museum_causal_3.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","3","museum_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","84","131001","0.0-84.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/museum_causal/museum_causal_7.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","85","131356","0.0-85.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","355","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/museum_causal/museum_causal_7.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","7","museum_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","86","132365","0.0-86.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/museum_causal/museum_causal_2.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","87","133240","0.0-87.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","875","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/museum_causal/museum_causal_2.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","2","museum_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","88","134245","0.0-88.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/museum_causal/museum_causal_1.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","89","134631","0.0-89.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","385","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/museum_causal/museum_causal_1.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","1","museum_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","90","135633","0.0-90.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/museum_causal/museum_causal_5.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","91","135890","0.0-91.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","257","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/museum_causal/museum_causal_5.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","5","museum_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","92","136900","0.0-92.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/museum_causal/museum_causal_ten.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","93","137226","0.0-93.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","326","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/museum_causal/museum_causal_ten.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","ten","museum_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","94","138229","0.0-94.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/museum_causal/museum_causal_9.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","95","138593","0.0-95.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","363","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/museum_causal/museum_causal_9.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","9","museum_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","96","139594","0.0-96.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/museum_causal/museum_causal_8.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","97","139987","0.0-97.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","392","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/museum_causal/museum_causal_8.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","8","museum_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","98","140996","0.0-98.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/museum_causal/museum_causal_6.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","99","141284","0.0-99.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","287","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/museum_causal/museum_causal_6.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","6","museum_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","100","146287","0.0-100.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-keyboard-response","101","147297","0.0-101.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_5.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","102","148559","0.0-102.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","1261","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_5.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","5","saving_a_cat_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","103","149563","0.0-103.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_8.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","104","150156","0.0-104.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","593","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_8.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","8","saving_a_cat_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","105","151163","0.0-105.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_9.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","106","151457","0.0-106.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","293","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_9.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","9","saving_a_cat_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","107","152459","0.0-107.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_3.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","108","153053","0.0-108.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","594","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_3.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","3","saving_a_cat_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","109","154054","0.0-109.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_7.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","110","154396","0.0-110.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","342","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_7.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","7","saving_a_cat_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","111","155397","0.0-111.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_4.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","112","156241","0.0-112.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","844","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_4.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","4","saving_a_cat_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","113","157242","0.0-113.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_ten.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","114","157583","0.0-114.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","341","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_ten.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","ten","saving_a_cat_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","115","158590","0.0-115.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_6.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","116","159579","0.0-116.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","988","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_6.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","6","saving_a_cat_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","117","160584","0.0-117.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_1.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","118","161018","0.0-118.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","433","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_1.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","1","saving_a_cat_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","119","162019","0.0-119.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_2.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","120","162362","0.0-120.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","343","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_2.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","2","saving_a_cat_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","121","167366","0.0-121.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-keyboard-response","122","168380","0.0-122.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_9.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","123","169132","0.0-123.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","752","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_9.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","9","redecorating_a_house_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","124","170134","0.0-124.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_1.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","125","170420","0.0-125.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","285","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_1.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","1","redecorating_a_house_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","126","171430","0.0-126.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_4.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","127","171552","0.0-127.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","121","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_4.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","4","redecorating_a_house_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","128","172566","0.0-128.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_8.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","129","173322","0.0-129.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","755","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_8.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","8","redecorating_a_house_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","130","174332","0.0-130.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_5.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","131","174541","0.0-131.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","208","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_5.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","5","redecorating_a_house_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","132","175542","0.0-132.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_7.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","133","175877","0.0-133.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","335","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_7.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","7","redecorating_a_house_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","134","176883","0.0-134.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_6.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","135","177218","0.0-135.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","335","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_6.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","6","redecorating_a_house_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","136","178226","0.0-136.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_3.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","137","178541","0.0-137.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","314","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_3.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","3","redecorating_a_house_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","138","179549","0.0-138.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_2.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","139","179914","0.0-139.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","364","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_2.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","2","redecorating_a_house_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","140","180916","0.0-140.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_ten.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","141","181125","0.0-141.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","209","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_ten.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","ten","redecorating_a_house_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","142","186129","0.0-142.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-keyboard-response","143","187132","0.0-143.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_6.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","144","188858","0.0-144.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","1725","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_6.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","6","visiting_cities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","145","189859","0.0-145.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_ten.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","146","190697","0.0-146.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","837","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_ten.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","ten","visiting_cities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","147","191700","0.0-147.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_9.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","148","192053","0.0-148.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","352","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_9.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","9","visiting_cities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","149","193061","0.0-149.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_1.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","150","193903","0.0-150.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","842","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_1.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","1","visiting_cities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","151","194915","0.0-151.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_4.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","152","195510","0.0-152.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","594","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_4.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","4","visiting_cities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","153","196515","0.0-153.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_2.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","154","196807","0.0-154.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","291","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_2.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","2","visiting_cities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","155","197814","0.0-155.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_5.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","156","198124","0.0-156.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","310","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_5.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","5","visiting_cities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","157","199132","0.0-157.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_7.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","158","199472","0.0-158.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","340","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_7.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","7","visiting_cities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","159","200482","0.0-159.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_8.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","160","200778","0.0-160.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","295","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_8.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","8","visiting_cities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","161","201781","0.0-161.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_3.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","162","202090","0.0-162.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","308","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_3.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","3","visiting_cities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","163","207100","0.0-163.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-keyboard-response","164","208102","0.0-164.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_8.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","165","208679","0.0-165.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","577","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_8.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","8","self_care_activities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","166","209682","0.0-166.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_2.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","167","210008","0.0-167.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","326","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_2.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","2","self_care_activities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","168","211012","0.0-168.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_6.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","169","211347","0.0-169.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","335","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_6.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","6","self_care_activities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","170","212348","0.0-170.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_4.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","171","212666","0.0-171.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","317","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_4.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","4","self_care_activities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","172","213666","0.0-172.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_1.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","173","213939","0.0-173.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","272","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_1.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","1","self_care_activities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","174","214940","0.0-174.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_9.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","175","215234","0.0-175.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","294","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_9.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","9","self_care_activities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","176","216246","0.0-176.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_ten.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","177","216576","0.0-177.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","329","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_ten.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","ten","self_care_activities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","178","217584","0.0-178.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_7.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","179","217783","0.0-179.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","198","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_7.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","7","self_care_activities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","180","218784","0.0-180.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_3.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","181","218994","0.0-181.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","209","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_3.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","3","self_care_activities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","182","219995","0.0-182.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_5.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","183","220324","0.0-183.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","328","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_5.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","5","self_care_activities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","184","225328","0.0-184.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-keyboard-response","185","226329","0.0-185.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_9.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","186","226946","0.0-186.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","617","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_9.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","9","maintaining_a_car_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","187","227948","0.0-187.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_4.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","188","228605","0.0-188.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","657","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_4.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","4","maintaining_a_car_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","189","229607","0.0-189.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_1.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","190","229924","0.0-190.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","317","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_1.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","1","maintaining_a_car_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","191","230930","0.0-191.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_5.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","192","231229","0.0-192.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","298","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_5.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","5","maintaining_a_car_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","193","232233","0.0-193.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_ten.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","194","232558","0.0-194.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","324","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_ten.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","ten","maintaining_a_car_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","195","233562","0.0-195.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_2.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","196","233834","0.0-196.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","271","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_2.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","2","maintaining_a_car_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","197","234835","0.0-197.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_7.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","198","235150","0.0-198.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","315","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_7.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","7","maintaining_a_car_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","199","236157","0.0-199.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_3.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","200","236305","0.0-200.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","148","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_3.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","3","maintaining_a_car_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","201","237311","0.0-201.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_8.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","202","237532","0.0-202.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","221","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_8.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","8","maintaining_a_car_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","203","238534","0.0-203.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_6.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","204","238714","0.0-204.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","180","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_6.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","6","maintaining_a_car_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","205","243724","0.0-205.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-keyboard-response","206","244734","0.0-206.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_7.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","207","245126","0.0-207.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","392","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_7.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","7","creative_activities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","208","246127","0.0-208.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_4.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","209","246527","0.0-209.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","400","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_4.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","4","creative_activities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","210","247533","0.0-210.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_5.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","211","247922","0.0-211.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","389","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_5.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","5","creative_activities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","212","248933","0.0-212.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_3.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","213","249079","0.0-213.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","146","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_3.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","3","creative_activities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","214","250082","0.0-214.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_ten.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","215","250216","0.0-215.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","134","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_ten.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","ten","creative_activities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","216","251230","0.0-216.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_2.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","217","251374","0.0-217.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","144","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_2.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","2","creative_activities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","218","252382","0.0-218.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_8.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","219","252548","0.0-219.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","166","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_8.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","8","creative_activities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","220","253549","0.0-220.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_1.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","221","254306","0.0-221.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","756","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_1.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","1","creative_activities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","222","255309","0.0-222.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_9.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","223","256105","0.0-223.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","795","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_9.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","9","creative_activities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","224","257114","0.0-224.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_6.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","225","257439","0.0-225.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","324","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_6.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","6","creative_activities_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","226","262440","0.0-226.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-keyboard-response","227","263440","0.0-227.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/market_semantic/market_semantic_8.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","228","266448","0.0-228.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/market_semantic/market_semantic_8.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","null","main_experiment_trial","8","market_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","229","267448","0.0-229.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/market_semantic/market_semantic_7.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","230","268161","0.0-230.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","712","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/market_semantic/market_semantic_7.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","7","market_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","231","269165","0.0-231.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/market_semantic/market_semantic_9.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","232","270065","0.0-232.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","900","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/market_semantic/market_semantic_9.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","9","market_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","233","271073","0.0-233.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/market_semantic/market_semantic_ten.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","234","271381","0.0-234.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","307","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/market_semantic/market_semantic_ten.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","ten","market_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","235","272381","0.0-235.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/market_semantic/market_semantic_2.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","236","273958","0.0-236.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","1576","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/market_semantic/market_semantic_2.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","2","market_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","237","274962","0.0-237.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/market_semantic/market_semantic_5.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","238","275158","0.0-238.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","195","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/market_semantic/market_semantic_5.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","5","market_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","239","276162","0.0-239.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/market_semantic/market_semantic_4.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","240","276465","0.0-240.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","302","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/market_semantic/market_semantic_4.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","4","market_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","241","277467","0.0-241.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/market_semantic/market_semantic_6.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","242","277750","0.0-242.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","283","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/market_semantic/market_semantic_6.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","6","market_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","243","278764","0.0-243.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/market_semantic/market_semantic_1.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","244","279008","0.0-244.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","243","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/market_semantic/market_semantic_1.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","1","market_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","245","280009","0.0-245.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/market_semantic/market_semantic_3.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","246","280527","0.0-246.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","517","
+                <div class=""stimulus-container"">
+                    <img src=""images/semantic_sequence/market_semantic/market_semantic_3.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","3","market_semantic","semantic_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","247","285532","0.0-247.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-keyboard-response","248","286541","0.0-248.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/coin_causal/coin_causal_7.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","249","287147","0.0-249.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","605","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/coin_causal/coin_causal_7.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","1","main_experiment_trial","7","coin_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","250","288148","0.0-250.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/coin_causal/coin_causal_4.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","251","288502","0.0-251.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","354","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/coin_causal/coin_causal_4.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","4","coin_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","252","289503","0.0-252.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/coin_causal/coin_causal_2.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","253","289709","0.0-253.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","205","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/coin_causal/coin_causal_2.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","2","coin_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","254","290714","0.0-254.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/coin_causal/coin_causal_5.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","255","291019","0.0-255.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","304","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/coin_causal/coin_causal_5.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","5","coin_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","256","292025","0.0-256.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/coin_causal/coin_causal_9.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","257","292210","0.0-257.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","184","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/coin_causal/coin_causal_9.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","9","coin_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","258","293215","0.0-258.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/coin_causal/coin_causal_8.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","259","293381","0.0-259.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","165","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/coin_causal/coin_causal_8.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","8","coin_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","260","294382","0.0-260.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/coin_causal/coin_causal_3.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","261","294561","0.0-261.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","179","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/coin_causal/coin_causal_3.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","3","coin_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","262","295565","0.0-262.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/coin_causal/coin_causal_6.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","263","295913","0.0-263.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","348","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/coin_causal/coin_causal_6.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","6","coin_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","264","296915","0.0-264.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/coin_causal/coin_causal_1.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","265","297111","0.0-265.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","196","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/coin_causal/coin_causal_1.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","1","coin_causal","causal_sequence","randomized","","","","",""
+"","","","","","html-keyboard-response","266","298115","0.0-266.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/coin_causal/coin_causal_ten.png"" class=""exp-image"">
+                    <div class=""question-area""></div> 
+                </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","267","298423","0.0-267.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","308","
+                <div class=""stimulus-container"">
+                    <img src=""images/causal_sequence/coin_causal/coin_causal_ten.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold; margin: 0;"">Is there a person in this image?</p>
+                    </div>
+                </div>","0","main_experiment_trial","ten","coin_causal","causal_sequence","randomized","","","","",""
+"","","","","","instructions","268","306158","0.0-268.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","[{""page_index"":0,""viewing_time"":7734}]","7735","","","","","","","","","","","",""
+"","","","","","html-keyboard-response","269","312160","0.0-269.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 40px;"">
+                <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_4.png"" class=""exp-image"">
+                <div style=""text-align: center;"">
+                    <img src=""images/gray.png"" style=""width: 150px; height: 150px; border: 5px solid grey; border-radius: 15px;"">
+                    <p style=""color: grey; font-weight: bold; font-size: 28px; margin-top: 15px;"">NEUTRAL VALUE</p>
+                </div>
+            </div>","null","part2_value_learning","","creative_activities_semantic","semantic_sequence","","4","neutral","","",""
+"","","","","","html-keyboard-response","270","313160","0.0-270.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-keyboard-response","271","319162","0.0-271.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 40px;"">
+                <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_4.png"" class=""exp-image"">
+                <div style=""text-align: center;"">
+                    <img src=""images/dollar.png"" style=""width: 150px; height: 150px; border: 5px solid green; border-radius: 15px;"">
+                    <p style=""color: green; font-weight: bold; font-size: 28px; margin-top: 15px;"">WORTH MONEY</p>
+                </div>
+            </div>","null","part2_value_learning","","maintaining_a_car_semantic","semantic_sequence","","4","valuable","","",""
+"","","","","","html-keyboard-response","272","320164","0.0-272.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-keyboard-response","273","326174","0.0-273.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 40px;"">
+                <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_3.png"" class=""exp-image"">
+                <div style=""text-align: center;"">
+                    <img src=""images/gray.png"" style=""width: 150px; height: 150px; border: 5px solid grey; border-radius: 15px;"">
+                    <p style=""color: grey; font-weight: bold; font-size: 28px; margin-top: 15px;"">NEUTRAL VALUE</p>
+                </div>
+            </div>","null","part2_value_learning","","self_care_activities_semantic","semantic_sequence","","3","neutral","","",""
+"","","","","","html-keyboard-response","274","327182","0.0-274.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-keyboard-response","275","333189","0.0-275.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 40px;"">
+                <img src=""images/causal_sequence/museum_causal/museum_causal_6.png"" class=""exp-image"">
+                <div style=""text-align: center;"">
+                    <img src=""images/gray.png"" style=""width: 150px; height: 150px; border: 5px solid grey; border-radius: 15px;"">
+                    <p style=""color: grey; font-weight: bold; font-size: 28px; margin-top: 15px;"">NEUTRAL VALUE</p>
+                </div>
+            </div>","null","part2_value_learning","","museum_causal","causal_sequence","","6","neutral","","",""
+"","","","","","html-keyboard-response","276","334198","0.0-276.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-keyboard-response","277","340210","0.0-277.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 40px;"">
+                <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_6.png"" class=""exp-image"">
+                <div style=""text-align: center;"">
+                    <img src=""images/gray.png"" style=""width: 150px; height: 150px; border: 5px solid grey; border-radius: 15px;"">
+                    <p style=""color: grey; font-weight: bold; font-size: 28px; margin-top: 15px;"">NEUTRAL VALUE</p>
+                </div>
+            </div>","null","part2_value_learning","","redecorating_a_house_semantic","semantic_sequence","","6","neutral","","",""
+"","","","","","html-keyboard-response","278","341216","0.0-278.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-keyboard-response","279","347230","0.0-279.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 40px;"">
+                <img src=""images/causal_sequence/dog_causal/dog_causal_3.png"" class=""exp-image"">
+                <div style=""text-align: center;"">
+                    <img src=""images/dollar.png"" style=""width: 150px; height: 150px; border: 5px solid green; border-radius: 15px;"">
+                    <p style=""color: green; font-weight: bold; font-size: 28px; margin-top: 15px;"">WORTH MONEY</p>
+                </div>
+            </div>","null","part2_value_learning","","dog_causal","causal_sequence","","3","valuable","","",""
+"","","","","","html-keyboard-response","280","348232","0.0-280.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-keyboard-response","281","354246","0.0-281.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 40px;"">
+                <img src=""images/semantic_sequence/market_semantic/market_semantic_6.png"" class=""exp-image"">
+                <div style=""text-align: center;"">
+                    <img src=""images/dollar.png"" style=""width: 150px; height: 150px; border: 5px solid green; border-radius: 15px;"">
+                    <p style=""color: green; font-weight: bold; font-size: 28px; margin-top: 15px;"">WORTH MONEY</p>
+                </div>
+            </div>","null","part2_value_learning","","market_semantic","semantic_sequence","","6","valuable","","",""
+"","","","","","html-keyboard-response","282","355247","0.0-282.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-keyboard-response","283","361259","0.0-283.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 40px;"">
+                <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_5.png"" class=""exp-image"">
+                <div style=""text-align: center;"">
+                    <img src=""images/dollar.png"" style=""width: 150px; height: 150px; border: 5px solid green; border-radius: 15px;"">
+                    <p style=""color: green; font-weight: bold; font-size: 28px; margin-top: 15px;"">WORTH MONEY</p>
+                </div>
+            </div>","null","part2_value_learning","","saving_a_cat_causal","causal_sequence","","5","valuable","","",""
+"","","","","","html-keyboard-response","284","362265","0.0-284.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-keyboard-response","285","368266","0.0-285.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 40px;"">
+                <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_4.png"" class=""exp-image"">
+                <div style=""text-align: center;"">
+                    <img src=""images/gray.png"" style=""width: 150px; height: 150px; border: 5px solid grey; border-radius: 15px;"">
+                    <p style=""color: grey; font-weight: bold; font-size: 28px; margin-top: 15px;"">NEUTRAL VALUE</p>
+                </div>
+            </div>","null","part2_value_learning","","the_performance_causal","causal_sequence","","4","neutral","","",""
+"","","","","","html-keyboard-response","286","369277","0.0-286.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-keyboard-response","287","375281","0.0-287.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 40px;"">
+                <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_6.png"" class=""exp-image"">
+                <div style=""text-align: center;"">
+                    <img src=""images/dollar.png"" style=""width: 150px; height: 150px; border: 5px solid green; border-radius: 15px;"">
+                    <p style=""color: green; font-weight: bold; font-size: 28px; margin-top: 15px;"">WORTH MONEY</p>
+                </div>
+            </div>","null","part2_value_learning","","visiting_cities_semantic","semantic_sequence","","6","valuable","","",""
+"","","","","","html-keyboard-response","288","376296","0.0-288.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-keyboard-response","289","382298","0.0-289.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 40px;"">
+                <img src=""images/causal_sequence/coin_causal/coin_causal_6.png"" class=""exp-image"">
+                <div style=""text-align: center;"">
+                    <img src=""images/gray.png"" style=""width: 150px; height: 150px; border: 5px solid grey; border-radius: 15px;"">
+                    <p style=""color: grey; font-weight: bold; font-size: 28px; margin-top: 15px;"">NEUTRAL VALUE</p>
+                </div>
+            </div>","null","part2_value_learning","","coin_causal","causal_sequence","","6","neutral","","",""
+"","","","","","html-keyboard-response","290","383313","0.0-290.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-keyboard-response","291","389315","0.0-291.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 40px;"">
+                <img src=""images/causal_sequence/package_causal/package_causal_3.png"" class=""exp-image"">
+                <div style=""text-align: center;"">
+                    <img src=""images/dollar.png"" style=""width: 150px; height: 150px; border: 5px solid green; border-radius: 15px;"">
+                    <p style=""color: green; font-weight: bold; font-size: 28px; margin-top: 15px;"">WORTH MONEY</p>
+                </div>
+            </div>","null","part2_value_learning","","package_causal","causal_sequence","","3","valuable","","",""
+"","","","","","html-keyboard-response","292","390326","0.0-292.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","instructions","293","394813","0.0-293.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","[{""page_index"":0,""viewing_time"":4486}]","4487","","","","","","","","","","","",""
+"","","","","","html-keyboard-response","294","397816","0.0-294.0-0.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                            <img src=""images/causal_sequence/package_causal/package_causal_4.png"" class=""small-image"">
+                            <img src=""images/causal_sequence/package_causal/package_causal_2.png"" class=""small-image"">
+                        </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","295","400943","0.0-294.0-1.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","3127","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image  is worth <b>more money</b>?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                            <img src=""images/causal_sequence/package_causal/package_causal_4.png"" class=""small-image"">
+                            <img src=""images/causal_sequence/package_causal/package_causal_2.png"" class=""small-image"">
+                        </div>","1","part3_choice_neighbors","","package_causal","causal_sequence","","","","2","3",""
+"","","","","","html-keyboard-response","296","403945","0.0-295.0-0.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/coin_causal/coin_causal_6.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/market_semantic/market_semantic_6.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","297","404432","0.0-295.0-1.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","487","<div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image  is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/coin_causal/coin_causal_6.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/market_semantic/market_semantic_6.png"" class=""small-image"">
+                            </div>","0","part3_valuable_vs_neutral_direct","","","","","","","","","false"
+"","","","","","html-keyboard-response","298","407444","0.0-296.0-0.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                            <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_5.png"" class=""small-image"">
+                            <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_3.png"" class=""small-image"">
+                        </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","299","407799","0.0-296.0-1.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","354","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image  is worth <b>more money</b>?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                            <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_5.png"" class=""small-image"">
+                            <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_3.png"" class=""small-image"">
+                        </div>","0","part3_choice_neighbors","","creative_activities_semantic","semantic_sequence","","","","5","4",""
+"","","","","","html-keyboard-response","300","410810","0.0-297.0-0.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                            <img src=""images/causal_sequence/museum_causal/museum_causal_7.png"" class=""small-image"">
+                            <img src=""images/causal_sequence/museum_causal/museum_causal_5.png"" class=""small-image"">
+                        </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","301","411133","0.0-297.0-1.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","322","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image  is worth <b>more money</b>?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                            <img src=""images/causal_sequence/museum_causal/museum_causal_7.png"" class=""small-image"">
+                            <img src=""images/causal_sequence/museum_causal/museum_causal_5.png"" class=""small-image"">
+                        </div>","1","part3_choice_neighbors","","museum_causal","causal_sequence","","","","5","6",""
+"","","","","","html-keyboard-response","302","414134","0.0-298.0-0.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                            <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_5.png"" class=""small-image"">
+                            <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_3.png"" class=""small-image"">
+                        </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","303","414469","0.0-298.0-1.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","334","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image  is worth <b>more money</b>?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                            <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_5.png"" class=""small-image"">
+                            <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_3.png"" class=""small-image"">
+                        </div>","0","part3_choice_neighbors","","the_performance_causal","causal_sequence","","","","5","4",""
+"","","","","","html-keyboard-response","304","417473","0.0-299.0-0.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                            <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_2.png"" class=""small-image"">
+                            <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_4.png"" class=""small-image"">
+                        </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","305","418197","0.0-299.0-1.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","723","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image  is worth <b>more money</b>?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                            <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_2.png"" class=""small-image"">
+                            <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_4.png"" class=""small-image"">
+                        </div>","1","part3_choice_neighbors","","self_care_activities_semantic","semantic_sequence","","","","4","3",""
+"","","","","","html-keyboard-response","306","421204","0.0-300.0-0.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                            <img src=""images/causal_sequence/coin_causal/coin_causal_7.png"" class=""small-image"">
+                            <img src=""images/causal_sequence/coin_causal/coin_causal_5.png"" class=""small-image"">
+                        </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","307","421550","0.0-300.0-1.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","346","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image  is worth <b>more money</b>?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                            <img src=""images/causal_sequence/coin_causal/coin_causal_7.png"" class=""small-image"">
+                            <img src=""images/causal_sequence/coin_causal/coin_causal_5.png"" class=""small-image"">
+                        </div>","0","part3_choice_neighbors","","coin_causal","causal_sequence","","","","7","6",""
+"","","","","","html-keyboard-response","308","424560","0.0-301.0-0.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_6.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_3.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","309","424891","0.0-301.0-1.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","330","<div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image  is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_6.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_3.png"" class=""small-image"">
+                            </div>","0","part3_valuable_vs_neutral_direct","","","","","","","","","true"
+"","","","","","html-keyboard-response","310","427893","0.0-302.0-0.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/dog_causal/dog_causal_3.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/museum_causal/museum_causal_6.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","311","428061","0.0-302.0-1.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","168","<div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image  is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/dog_causal/dog_causal_3.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/museum_causal/museum_causal_6.png"" class=""small-image"">
+                            </div>","0","part3_valuable_vs_neutral_direct","","","","","","","","","true"
+"","","","","","html-keyboard-response","312","431063","0.0-303.0-0.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                            <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_5.png"" class=""small-image"">
+                            <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_3.png"" class=""small-image"">
+                        </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","313","431388","0.0-303.0-1.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","325","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image  is worth <b>more money</b>?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                            <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_5.png"" class=""small-image"">
+                            <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_3.png"" class=""small-image"">
+                        </div>","1","part3_choice_neighbors","","maintaining_a_car_semantic","semantic_sequence","","","","3","4",""
+"","","","","","html-keyboard-response","314","434390","0.0-304.0-0.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_4.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_4.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","315","434924","0.0-304.0-1.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","533","<div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image  is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_4.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/creative_activities_semantic/creative_activities_semantic_4.png"" class=""small-image"">
+                            </div>","0","part3_valuable_vs_neutral_direct","","","","","","","","","true"
+"","","","","","html-keyboard-response","316","437929","0.0-305.0-0.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_4.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/package_causal/package_causal_3.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","317","438471","0.0-305.0-1.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","541","<div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image  is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_4.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/package_causal/package_causal_3.png"" class=""small-image"">
+                            </div>","1","part3_valuable_vs_neutral_direct","","","","","","","","","true"
+"","","","","","html-keyboard-response","318","441473","0.0-306.0-0.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                            <img src=""images/semantic_sequence/market_semantic/market_semantic_7.png"" class=""small-image"">
+                            <img src=""images/semantic_sequence/market_semantic/market_semantic_5.png"" class=""small-image"">
+                        </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","319","441819","0.0-306.0-1.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","346","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image  is worth <b>more money</b>?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                            <img src=""images/semantic_sequence/market_semantic/market_semantic_7.png"" class=""small-image"">
+                            <img src=""images/semantic_sequence/market_semantic/market_semantic_5.png"" class=""small-image"">
+                        </div>","1","part3_choice_neighbors","","market_semantic","semantic_sequence","","","","5","6",""
+"","","","","","html-keyboard-response","320","444826","0.0-307.0-0.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                            <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_7.png"" class=""small-image"">
+                            <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_5.png"" class=""small-image"">
+                        </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","321","444970","0.0-307.0-1.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","143","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image  is worth <b>more money</b>?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                            <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_7.png"" class=""small-image"">
+                            <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_5.png"" class=""small-image"">
+                        </div>","1","part3_choice_neighbors","","redecorating_a_house_semantic","semantic_sequence","","","","5","6",""
+"","","","","","html-keyboard-response","322","447971","0.0-308.0-0.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                            <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_4.png"" class=""small-image"">
+                            <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_6.png"" class=""small-image"">
+                        </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","323","448272","0.0-308.0-1.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","300","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image  is worth <b>more money</b>?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                            <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_4.png"" class=""small-image"">
+                            <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_6.png"" class=""small-image"">
+                        </div>","1","part3_choice_neighbors","","saving_a_cat_causal","causal_sequence","","","","6","5",""
+"","","","","","html-keyboard-response","324","451273","0.0-309.0-0.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                            <img src=""images/causal_sequence/dog_causal/dog_causal_4.png"" class=""small-image"">
+                            <img src=""images/causal_sequence/dog_causal/dog_causal_2.png"" class=""small-image"">
+                        </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","325","451639","0.0-309.0-1.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","365","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image  is worth <b>more money</b>?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                            <img src=""images/causal_sequence/dog_causal/dog_causal_4.png"" class=""small-image"">
+                            <img src=""images/causal_sequence/dog_causal/dog_causal_2.png"" class=""small-image"">
+                        </div>","1","part3_choice_neighbors","","dog_causal","causal_sequence","","","","2","3",""
+"","","","","","html-keyboard-response","326","454640","0.0-310.0-0.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","<div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_6.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_5.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","327","454993","0.0-310.0-1.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","353","<div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image  is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/redecorating_a_house_semantic/redecorating_a_house_semantic_6.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_5.png"" class=""small-image"">
+                            </div>","1","part3_valuable_vs_neutral_direct","","","","","","","","","true"
+"","","","","","html-keyboard-response","328","457997","0.0-311.0-0.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","null","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                            <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_5.png"" class=""small-image"">
+                            <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_7.png"" class=""small-image"">
+                        </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","329","458342","0.0-311.0-1.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","344","
+                        <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image  is worth <b>more money</b>?</h3></div>
+                        <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                            <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_5.png"" class=""small-image"">
+                            <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_7.png"" class=""small-image"">
+                        </div>","0","part3_choice_neighbors","","visiting_cities_semantic","semantic_sequence","","","","5","6",""
+"","","","","","survey-text","330","499914","0.0-312.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","","41568","","{""gender"":""FEMALE"",""age"":""20"",""decision_strategy"":""remember what tasks were worth money then deciding which task seemed more productive, as i thought thats how \""worth money\"" was being determined"",""consistency_check"":""yes, i used that same logic for all the pairs.""}","demographics_and_strategy","","","","","","","","",""
+"","","","","","instructions","331","505453","0.0-313.0","018FD328B4474A719637795341CEC1FB","019cf99e-cdca-7bb4-94f7-4f34826eec04","019cf974-7aee-7bc9-8ea4-9f55741b365d","[{""page_index"":0,""viewing_time"":5539}]","5539","","","","","","","","","","","",""
