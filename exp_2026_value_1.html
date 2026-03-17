@@ -139,10 +139,10 @@ var semantic_folders = [
 // --- RANDOMIZATION & SELECTION SECTION (UPDATED) ---
 
 // 1. הגדרת כמות הסדרות מכל סוג
-var n_causal = 0;
+var n_causal = 6;
 var n_schematic = 0;
-var n_semantic = 1; // הוספת כמות לסמנטי
-var n_valuable_per_type = 1; 
+var n_semantic = 6; // הוספת כמות לסמנטי
+var n_valuable_per_type = 3; 
 
 // 2. דגימת הסדרות עצמן
 var sampled_causal = jsPsych.randomization.sampleWithoutReplacement(causal_folders, Math.min(n_causal, causal_folders.length));
@@ -596,7 +596,7 @@ var trial_demographics = {
     questions: [
         {prompt: 'Please insert your gender (MALE / FEMALE / OTHER)', name: 'gender', rows: 1, columns: 20},
         {prompt: 'Please insert your age', name: 'age', rows: 1, columns: 5},
-        {prompt: 'In the last part, how did you decide which image was  worth <b>more money</b>??', name: 'decision_strategy', rows: 1, columns: 50},
+        {prompt: 'In the last part, how did you decide which image was  worth <b>more money</b>?', name: 'decision_strategy', rows: 1, columns: 50},
         {prompt: 'Did you use the same logic for all pairs? Please explain.', name: 'consistency_check', rows: 1, columns: 50}
     ],
     data: { task: 'demographics_and_strategy' }
