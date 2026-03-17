@@ -331,14 +331,17 @@ var start_main_experiment = {
 };
 timeline.push(start_main_experiment);
 
-// ----------- PART 1 MAIN EXPERIMENT (CHRONOLOGICAL ORDER) -----------
+// ----------- PART 1 MAIN EXPERIMENT (RANDOMIZED WITHIN BLOCKS) -----------
 
 experimental_blocks.forEach(function(block) {
     
-    // 1. יצירת רשימת אינדקסים קבועה מ-1 עד 10 (ללא ערבוב)
+    // 1. יצירת רשימת אינדקסים מ-1 עד 10
     var image_indices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     
-    // מסך לבן קצר בין סדרה לסדרה
+    // 2. ערבוב האינדקסים ספציפית עבור הסדרה הנוכחית
+    var randomized_indices = jsPsych.randomization.shuffle(image_indices);
+
+    // מסך לבן קצר של שנייה בין סדרה לסדרה
     timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
@@ -346,8 +349,8 @@ experimental_blocks.forEach(function(block) {
         trial_duration: 1000
     });
 
-    // 2. לולאה על האינדקסים לפי סדר הופעתם במערך
-    image_indices.forEach(function(i) {
+    // 3. לולאה על האינדקסים המעורבבים
+    randomized_indices.forEach(function(i) {
         var image_suffix = (i === 10) ? "ten" : i;
         var current_image_path = `images/${block.type}/${block.name}/${block.name}_${image_suffix}.png`;
 
@@ -379,7 +382,7 @@ experimental_blocks.forEach(function(block) {
                 folder: block.name,
                 sequence_type: block.type, 
                 image_index: image_suffix,
-                presentation_order: 'chronological' // עדכון התיעוד לצורך ניתוח ב-R
+                presentation_order: 'randomized' // הוספת תיעוד שהסדר היה אקראי
             }
         };
         timeline.push(main_view, main_question);
