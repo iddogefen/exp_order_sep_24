@@ -141,7 +141,7 @@ var semantic_folders = [
 // 1. הגדרת כמות הסדרות מכל סוג
 var n_causal = 1;
 var n_schematic = 0;
-var n_semantic = 6; // הוספת כמות לסמנטי
+var n_semantic = 0; // הוספת כמות לסמנטי
 var n_valuable_per_type = 1; 
 
 // 2. דגימת הסדרות עצמן
@@ -346,7 +346,7 @@ experimental_blocks.forEach(function(block) {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
         choices: "NO_KEYS",
-        trial_duration: 5000
+        trial_duration: 1000
     });
 
     // 3. לולאה על האינדקסים המעורבבים
