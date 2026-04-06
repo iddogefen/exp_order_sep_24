@@ -221,7 +221,7 @@
         });
     });
 
-// ----------- PART 3: PAIRED CHOICE TEST (FULL GRADIENT VERSION) -----------
+// ----------- PART 3: PAIRED CHOICE TEST (REFINED) -----------
     timeline.push({
         type: jsPsychInstructions,
         pages: ['<div style="font-size: 24px;">Part 3: Final Choice.<br>Choose the image you think is worth MORE money.</div>'],
@@ -229,91 +229,85 @@
     });
 
     var all_part3_trials = [];
+    var distances = [0, 1, 2];
 
     paired_blocks.forEach(pair => {
-        // רשימה מלאה של כל המרחקים לבדיקה עבור כל צמד
-        // 0 = המטרה, חיובי = קדימה בזמן, שלילי = אחורה בזמן
-        let distances_to_test = [0, 1, 2, 3, -1, -2, -3];
-
-        distances_to_test.forEach(dist => {
+        distances.forEach(dist => {
             let target_idx = pair.shared_x + dist;
-            
-            // וידוא שהאינדקס נשאר בטווח התמונות הקיים (1 עד 10)
-            if (target_idx >= 1 && target_idx <= 10) {
-                
-                all_part3_trials.push({
-                    timeline: [
-                        {
-                            type: jsPsychHtmlKeyboardResponse,
-                            stimulus: function() {
-                                let suffix = (target_idx === 10) ? "ten" : target_idx;
-                                let left_is_v = Math.random() < 0.5;
-                                
-                                let v_p = `images/${pair.v.type}/${pair.v.name}/${pair.v.name}_${suffix}.png`;
-                                let n_p = `images/${pair.n.type}/${pair.n.name}/${pair.n.name}_${suffix}.png`;
-                                
-                                // שמירת נתונים זמנית לצורך ה-Button Response הבא
-                                window.curr = { 
-                                    left_is_v: left_is_v, 
-                                    pair: pair, 
-                                    dist: dist, 
-                                    idx: target_idx,
-                                    suffix: suffix 
-                                };
+            if (target_idx > 10) return; 
 
-                                return `<div style="margin-bottom:20px;"><h3>Which image is worth <b>more money</b>?</h3></div>
-                                        <div class="stimulus-container" style="display: flex; gap: 40px; justify-content: center;">
-                                            <img src="${left_is_v ? v_p : n_p}" class="small-image">
-                                            <img src="${left_is_v ? n_p : v_p}" class="small-image">
-                                        </div>`;
-                            },
-                            choices: "NO_KEYS", 
-                            trial_duration: 3000
+            all_part3_trials.push({
+                timeline: [
+                    {
+                        type: jsPsychHtmlKeyboardResponse,
+                        stimulus: function() {
+                            let target_idx = pair.shared_x + dist;
+                            let suffix = (target_idx === 10) ? "ten" : target_idx;
+                            let left_is_v = Math.random() < 0.5;
+                            
+                            let v_p = `images/${pair.v.type}/${pair.v.name}/${pair.v.name}_${suffix}.png`;
+                            let n_p = `images/${pair.n.type}/${pair.n.name}/${pair.n.name}_${suffix}.png`;
+                            
+                            window.curr = { 
+                                left_is_v: left_is_v, 
+                                pair: pair, 
+                                dist: dist, 
+                                idx: target_idx,
+                                suffix: suffix 
+                            };
+
+                            return `<div style="margin-bottom:20px;"><h3>Which image is worth <b>more money</b>?</h3></div>
+                                    <div class="stimulus-container" style="display: flex; gap: 40px; justify-content: center;">
+                                        <img src="${left_is_v ? v_p : n_p}" class="small-image">
+                                        <img src="${left_is_v ? n_p : v_p}" class="small-image">
+                                    </div>`;
                         },
-                        {
-                            type: jsPsychHtmlButtonResponse,
-                            stimulus: function() {
-                                let d = window.curr;
-                                let v_p = `images/${d.pair.v.type}/${d.pair.v.name}/${d.pair.v.name}_${d.suffix}.png`;
-                                let n_p = `images/${d.pair.n.type}/${d.pair.n.name}/${d.pair.n.name}_${d.suffix}.png`;
-                                
-                                return `<div style="margin-bottom:20px;"><h3>Which image is worth <b>more money</b>?</h3></div>
-                                        <div class="stimulus-container" style="display: flex; gap: 40px; justify-content: center;">
-                                            <img src="${d.left_is_v ? v_p : n_p}" class="small-image">
-                                            <img src="${d.left_is_v ? n_p : v_p}" class="small-image">
-                                        </div>`;
-                            },
-                            choices: ['Left', 'Right'],
-                            on_finish: function(data) {
-                                let d = window.curr;
-                                data.task = 'part3_value_spread_test';
-                                data.distance_from_x = d.dist; 
-                                data.v_index = d.idx;
-                                data.n_index = d.idx;
-                                data.sequence_type = d.pair.v.type;
-                                data.valuable_folder = d.pair.v.name;
-                                data.neutral_folder = d.pair.n.name;
-                                
-                                // חישוב האם הנבדק בחר בתמונה מהרצף המתוגמל
-                                var chose_v = (data.response === 0 && d.left_is_v) || (data.response === 1 && !d.left_is_v);
-                                data.chosen_valuable = chose_v ? 1 : 0;
-                            }
+                        choices: "NO_KEYS", 
+                        trial_duration: 3000
+                    },
+                    {
+                        type: jsPsychHtmlButtonResponse,
+                        stimulus: function() {
+                            let d = window.curr;
+                            let v_p = `images/${d.pair.v.type}/${d.pair.v.name}/${d.pair.v.name}_${d.suffix}.png`;
+                            let n_p = `images/${d.pair.n.type}/${d.pair.n.name}/${d.pair.n.name}_${d.suffix}.png`;
+                            
+                            return `<div style="margin-bottom:20px;"><h3>Which image is worth <b>more money</b>?</h3></div>
+                                    <div class="stimulus-container" style="display: flex; gap: 40px; justify-content: center;">
+                                        <img src="${d.left_is_v ? v_p : n_p}" class="small-image">
+                                        <img src="${d.left_is_v ? n_p : v_p}" class="small-image">
+                                    </div>`;
                         },
-                        {
-                            type: jsPsychHtmlKeyboardResponse,
-                            stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
-                            choices: "NO_KEYS",
-                            trial_duration: 1000
+                        choices: ['Left', 'Right'],
+                        on_finish: function(data) {
+                            let d = window.curr;
+                            data.task = 'part3_value_spread_test';
+                            data.distance_from_x = d.dist;
+                            data.v_index = d.idx;
+                            data.n_index = d.idx;
+                            data.sequence_type = d.pair.v.type;
+                            data.valuable_folder = d.pair.v.name;
+                            data.neutral_folder = d.pair.n.name;
+                            
+                            var chose_v = (data.response === 0 && d.left_is_v) || (data.response === 1 && !d.left_is_v);
+                            data.chosen_valuable = chose_v ? 1 : 0;
                         }
-                    ]
-                });
-            }
+                    },
+                    {
+                        type: jsPsychHtmlKeyboardResponse,
+                        stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
+                        choices: "NO_KEYS",
+                        trial_duration: 1000
+                    }
+                ]
+            });
         });
     });
 
-    // ערבוב אקראי של כל 63 הניסיונות כדי למנוע הטיות סדר
+    // ערבוב סופי והוספה ל-Timeline (פעם אחת בלבד!)
     var shuffled_part3 = jsPsych.randomization.shuffle(all_part3_trials);
     shuffled_part3.forEach(t => timeline.push(t));
+
 
     // --- FINISH ---
     timeline.push({
