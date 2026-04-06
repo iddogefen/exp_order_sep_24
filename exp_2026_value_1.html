@@ -152,10 +152,14 @@
         }
     });
 
-    // ----------- PART 2: VALUE LEARNING (Yoked Shared X) -----------
+// ----------- PART 2: ACTIVE VALUE LEARNING (Yoked Shared X) -----------
     timeline.push({
         type: jsPsychInstructions,
-        pages: ['<div style="font-size: 24px;">Part 2: Value Learning.<br>Learn which images are worth money.</div>'],
+        pages: [
+            '<div style="font-size: 24px;">Part 2: Value Learning.<br><br>' +
+            'In this part, you will see images from the sequences.<br>' +
+            'For each image, <b>click the button</b> to reveal if it is worth money or not.</div>'
+        ],
         show_clickable_nav: true
     });
 
@@ -169,7 +173,22 @@
         let suffix = (trial.x === 10) ? "ten" : trial.x;
         let path = `images/${trial.block.type}/${trial.block.name}/${trial.block.name}_${suffix}.png`;
         
-        timeline.push({
+        // שלב א: הצגת התמונה לבדה עם בקשה ללחוץ
+        var reveal_step = {
+            type: jsPsychHtmlButtonResponse,
+            stimulus: `
+                <div class="stimulus-container">
+                    <img src="${path}" class="exp-image">
+                    <div style="margin-top: 20px;">
+                        <p style="font-size: 18px;">Click the button to see the value of this image</p>
+                    </div>
+                </div>`,
+            choices: ['Reveal Value'],
+            data: { task: 'part2_reveal_click', folder: trial.block.name }
+        };
+
+        // שלב ב: הצגת התמונה יחד עם הערך (הדולר/עיגול) ל-4 שניות
+        var feedback_step = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
                 <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 40px;">
@@ -181,14 +200,24 @@
                         </p>
                     </div>
                 </div>`,
-            choices: "NO_KEYS", trial_duration: 6000,
-            data: { task: 'part2_value_learning', folder: trial.block.name, valuable_image_index: trial.x }
-        });
+            choices: "NO_KEYS",
+            trial_duration: 4000,
+            data: { 
+                task: 'part2_value_learning', 
+                folder: trial.block.name, 
+                valuable_image_index: trial.x,
+                reward_type: trial.val ? 'valuable' : 'neutral'
+            }
+        };
 
+        timeline.push(reveal_step, feedback_step);
+
+        // מסך לבן קצר (ITI)
         timeline.push({
             type: jsPsychHtmlKeyboardResponse,
-            stimulus: '<div style="background-color: white;"></div>',
-            choices: "NO_KEYS", trial_duration: 2000
+            stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
+            choices: "NO_KEYS",
+            trial_duration: 1500
         });
     });
 
