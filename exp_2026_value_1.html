@@ -114,40 +114,30 @@ var causal_folders = [
     'coin_causal', 'dog_causal', 'museum_causal', 
     'package_causal', 'saving_a_cat_causal', 'the_performance_causal'
 ];
-
-var schematic_folders = [
-    'dinner_party_scheme', 'flight_scheme', 'hotel_scheme', 
-    'interview_scheme', 'restaurant_scheme', 'supermarket_scheme'
-];
-
 var semantic_folders = [
     'household_objects_semantic',
     'fruits_semantic',
     'transportation_semantic',
     'clothing_semantic',
     'animals_semantic',
-    'kitchen_operations_semantic' // שמרתי על השישי כדי להשלים ל-6 סדרות כפי שמוגדר ב-n_semantic
+    'professions_semantic' // שמרתי על השישי כדי להשלים ל-6 סדרות כפי שמוגדר ב-n_semantic
 ];
 
 // --- RANDOMIZATION & SELECTION SECTION ---
-var n_causal = 6;
-var n_schematic = 6;
-var n_semantic = 6; 
-var n_valuable_per_type = 3; 
+var n_causal = 2;
+var n_semantic = 2; 
+var n_valuable_per_type = 1; 
 
 var sampled_causal = jsPsych.randomization.sampleWithoutReplacement(causal_folders, Math.min(n_causal, causal_folders.length));
-var sampled_schematic = jsPsych.randomization.sampleWithoutReplacement(schematic_folders, Math.min(n_schematic, schematic_folders.length));
 var sampled_semantic = jsPsych.randomization.sampleWithoutReplacement(semantic_folders, Math.min(n_semantic, semantic_folders.length));
 
 var valuable_causal = jsPsych.randomization.sampleWithoutReplacement(sampled_causal, n_valuable_per_type);
-var valuable_schematic = jsPsych.randomization.sampleWithoutReplacement(sampled_schematic, n_valuable_per_type);
 var valuable_semantic = jsPsych.randomization.sampleWithoutReplacement(sampled_semantic, n_valuable_per_type);
 
-var valuable_folders_list = [...valuable_causal, ...valuable_schematic, ...valuable_semantic];
+var valuable_folders_list = [...valuable_causal, ...valuable_semantic];
 
 var selected_blocks = [
     ...sampled_causal.map(f => ({ name: f, type: 'causal_sequence' })),
-    ...sampled_schematic.map(f => ({ name: f, type: 'schematic_sequence' })),
     ...sampled_semantic.map(f => ({ name: f, type: 'semantic_sequence_notimeline' })) 
 ];
 
