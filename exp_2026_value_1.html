@@ -124,7 +124,7 @@ var semantic_folders = [
 ];
 
 // --- RANDOMIZATION & SELECTION SECTION ---
-var n_causal = 2;
+var n_causal = 0;
 var n_semantic = 2; 
 var n_valuable_per_type = 1; 
 
@@ -356,7 +356,7 @@ experimental_blocks.forEach(function(block) {
     });
 });
 
-// ----------- PART 2: VALUE LEARNING -----------
+// ----------- PART 2: VALUE LEARNING (ACTIVE VERSION) -----------
 
 var part2_intro = {
     type: jsPsychInstructions,
@@ -386,7 +386,26 @@ shuffled_folders_part2.forEach(function(block) {
     var random_valuable_index = jsPsych.randomization.sampleWithReplacement(value_indices, 1)[0];
     var current_image_path = getImagePath(block.type, block.name, random_valuable_index);
 
-    var passive_learning_trial = {
+    // שלב אקטיבי 1: הצגת התמונה ובקשה מהנבדק ללחוץ כדי לחשוף את הערך
+    var active_reveal_step = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: `
+            <div class="stimulus-container">
+                <img src="${current_image_path}" class="exp-image">
+                <div class="question-area">
+                    <p style="font-size: 20px; font-weight: bold;">Click the button to reveal the image value</p>
+                </div>
+            </div>`,
+        choices: ['Reveal Value'],
+        data: {
+            task: 'part2_active_reveal',
+            folder: block.name
+        }
+    };
+    timeline.push(active_reveal_step);
+
+    // שלב אקטיבי 2: הצגת הערך ל-10 שניות לאחר הלחיצה
+    var show_value_step = {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: `
             <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 40px;">
@@ -397,7 +416,7 @@ shuffled_folders_part2.forEach(function(block) {
                 </div>
             </div>`,
         choices: "NO_KEYS",
-        trial_duration: 6000,
+        trial_duration: 10000, // 10 שניות כפי שביקשת
         data: {
             task: 'part2_value_learning',
             folder: block.name,
@@ -406,9 +425,9 @@ shuffled_folders_part2.forEach(function(block) {
             reward_type: reward_type_label 
         }
     };
-    
-    timeline.push(passive_learning_trial);
+    timeline.push(show_value_step);
 
+    // מסך לבן קצר בין תמונות
     timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
@@ -416,7 +435,6 @@ shuffled_folders_part2.forEach(function(block) {
         trial_duration: 5000
     });
 });
-
 // --- PART 3: CHOICE ---
 
 var part3_intro = {
