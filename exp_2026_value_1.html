@@ -58,16 +58,21 @@
     var subject_id = jsPsych.randomization.randomID(15);
     jsPsych.data.addProperties({ subject_id: subject_id });
 
-    // הגדרת סדרות
+    // --- הגדרות ניתנות לשינוי (CONTROL PANEL) ---
+    var n_causal = 2;
+    var n_semantic = 6;
+    var n_valuable_per_type = 0; 
+
     var causal_folders = ['coin_causal', 'dog_causal', 'museum_causal', 'package_causal', 'saving_a_cat_causal', 'the_performance_causal'];
     var semantic_folders = ['household_objects_semantic', 'fruits_semantic', 'transportation_semantic', 'clothing_semantic', 'animals_semantic', 'professions_semantic'];
 
-    var sampled_causal = jsPsych.randomization.sampleWithoutReplacement(causal_folders, 6);
-    var sampled_semantic = jsPsych.randomization.sampleWithoutReplacement(semantic_folders, 6);
-    var valuable_folders_list = [
-        ...jsPsych.randomization.sampleWithoutReplacement(sampled_causal, 3),
-        ...jsPsych.randomization.sampleWithoutReplacement(sampled_semantic, 3)
-    ];
+    // דגימה לפי הכמויות שהוגדרו
+    var sampled_causal = jsPsych.randomization.sampleWithoutReplacement(causal_folders, Math.min(n_causal, causal_folders.length));
+    var sampled_semantic = jsPsych.randomization.sampleWithoutReplacement(semantic_folders, Math.min(n_semantic, semantic_folders.length));
+    
+    var valuable_causal = jsPsych.randomization.sampleWithoutReplacement(sampled_causal, n_valuable_per_type);
+    var valuable_semantic = jsPsych.randomization.sampleWithoutReplacement(sampled_semantic, n_valuable_per_type);
+    var valuable_folders_list = [...valuable_causal, ...valuable_semantic];
 
     var selected_blocks = [
         ...sampled_causal.map(f => ({ name: f, type: 'causal_sequence' })),
@@ -75,7 +80,6 @@
     ];
     var experimental_blocks = jsPsych.randomization.shuffle(selected_blocks);
 
-    // פונקציית ניתוב תמונות מקורית
     function getImagePath(blockType, folderName, suffix) {
         if (blockType === 'semantic_sequence_notimeline') {
             return `${blockType}/${folderName}/${folderName}_${suffix}.png`;
@@ -96,7 +100,7 @@
         images: ['consent_form_2022.png', 'images/gray.png', 'images/dollar.png', ...selected_images_to_preload]
     });
 
-    // --- PART 1: ENCODING (כל הניסוחים המקוריים) ---
+    // --- PART 1: ENCODING ---
     timeline.push({
       type: jsPsychInstructions,
       pages: ['<div style="font-family: Arial; padding: 100px; padding-top: 5%; text-align: left;"><h2>Thank you for participating in this experiment!</h2><p>By clicking the "Begin Study" button, you will be taken to the study, including complete instructions and an informed consent agreement.</p></div>'],
@@ -164,7 +168,7 @@
         });
     });
 
-    // --- PART 2: ACTIVE VALUE LEARNING (ניסוחים מקוריים) ---
+    // --- PART 2: ACTIVE VALUE LEARNING ---
     timeline.push({
         type: jsPsychInstructions,
         pages: ['<div style="font-family: Arial; text-align: center; padding: 50px;"><h2>Part 2: Value Learning</h2><p style="font-size: 20px;">In this part, you will see images from the previous sequences.</p><p style="font-size: 20px;">Some images are <b>worth money</b> (marked with a <span style="color:green">DOLLAR</span> image),<br>and others have a <b>neutral value</b> (marked with a <span style="color:grey">GRAY</span> image).</p><p>Please watch the images carefully. Click "Next" to begin.</p></div>'],
