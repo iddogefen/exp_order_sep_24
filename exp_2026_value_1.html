@@ -397,6 +397,16 @@ experimental_blocks.forEach(function(block) {
 
 // ----------- PART 2: VALUE LEARNING (Conditioning Phase) - Active Version -----------
 
+// פונקציית עזר לניתוב התמונות - מוודאת שכל תמונה נמשכת מהתיקייה הנכונה
+function getImagePath(blockType, folderName, suffix) {
+    // אם מדובר בסדרה סמנטית, הנתיב מעט שונה לפי הקוד שלך
+    if (blockType === 'semantic_sequence') {
+        return `images/${blockType}/${folderName}/${folderName}_${suffix}.png`;
+    } else {
+        return `images/${blockType}/${folderName}/${folderName}_${suffix}.png`;
+    }
+}
+
 var part2_intro = {
     type: jsPsychInstructions,
     pages: [
