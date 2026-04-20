@@ -148,10 +148,10 @@ var semantic_folders = [
 // --- RANDOMIZATION & SELECTION SECTION (UPDATED) ---
 
 // 1. הגדרת כמות הסדרות מכל סוג
-var n_causal = 2;
-var n_schematic = 0;
-var n_semantic = 0; // הוספת כמות לסמנטי
-var n_valuable_per_type = 1; 
+var n_causal = 6;
+var n_schematic = 6;
+var n_semantic = 6; // הוספת כמות לסמנטי
+var n_valuable_per_type = 3; 
 
 // 2. דגימת הסדרות עצמן
 var sampled_causal = jsPsych.randomization.sampleWithoutReplacement(causal_folders, Math.min(n_causal, causal_folders.length));
@@ -395,7 +395,7 @@ experimental_blocks.forEach(function(block) {
     });
 });
 
-// ----------- PART 2: VALUE LEARNING (ACTIVE VERSION) -----------
+// ----------- PART 2: VALUE LEARNING (Conditioning Phase) - Active Version -----------
 
 var part2_intro = {
     type: jsPsychInstructions,
@@ -412,20 +412,27 @@ var part2_intro = {
 };
 timeline.push(part2_intro);
 
+// Shuffle all experimental blocks for the conditioning phase
 var shuffled_folders_part2 = jsPsych.randomization.shuffle(experimental_blocks);
 
 shuffled_folders_part2.forEach(function(block) {
+    // 1. Determine if this specific folder is in the "Valuable" list
     var is_valuable = valuable_folders_list.includes(block.name);
-    var reward_image = "images/" + (is_valuable ? "dollar.png" : "gray.png");
+    
+    // 2. Set visual assets based on value condition
+    var reward_image = is_valuable ? "images/dollar.png" : "images/gray.png";
     var reward_label = is_valuable ? "WORTH MONEY" : "NEUTRAL VALUE";
     var reward_color = is_valuable ? "green" : "grey";
     var reward_type_label = is_valuable ? "valuable" : "neutral";
 
+    // 3. Randomly select the "Target Image" (X)
     var value_indices = [4, 5, 6, 7];
     var random_valuable_index = jsPsych.randomization.sampleWithReplacement(value_indices, 1)[0];
+    
+    // שימוש בפונקציית getImagePath כדי להבטיח תאימות לנתיבים (כולל semantic_sequence_notimeline)
     var current_image_path = getImagePath(block.type, block.name, random_valuable_index);
 
-    // שלב אקטיבי 1: הצגת התמונה ובקשה מהנבדק ללחוץ כדי לחשוף את הערך
+    // 4. שלב אקטיבי - הצגת התמונה ובקשה לחשוף ערך
     var active_reveal_step = {
         type: jsPsychHtmlButtonResponse,
         stimulus: `
@@ -437,13 +444,13 @@ shuffled_folders_part2.forEach(function(block) {
             </div>`,
         choices: ['Reveal Value'],
         data: {
-            task: 'part2_active_reveal',
+            task: 'part2_active_reveal_click',
             folder: block.name
         }
     };
     timeline.push(active_reveal_step);
 
-    // שלב אקטיבי 2: הצגת הערך ל-10 שניות לאחר הלחיצה
+    // 5. שלב החשיפה - הצגת התמונה יחד עם הערך למשך 10 שניות
     var show_value_step = {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: `
@@ -455,7 +462,7 @@ shuffled_folders_part2.forEach(function(block) {
                 </div>
             </div>`,
         choices: "NO_KEYS",
-        trial_duration: 8000, // 8 שניות כפי שביקשת
+        trial_duration: 10000, // חשיפה ל-10 שניות
         data: {
             task: 'part2_value_learning',
             folder: block.name,
@@ -466,7 +473,7 @@ shuffled_folders_part2.forEach(function(block) {
     };
     timeline.push(show_value_step);
 
-    // מסך לבן קצר בין תמונות
+    // Short inter-trial interval (ITI) - מסך לבן בין הבלוקים
     timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
@@ -474,8 +481,6 @@ shuffled_folders_part2.forEach(function(block) {
         trial_duration: 5000
     });
 });
-
-
 // --- PART 3: CHOICE & LUCKY TEST (MIXED) ---
 
 var part3_intro = {
