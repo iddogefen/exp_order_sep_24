@@ -1,0 +1,694 @@
+"success","timeout","failed_images","failed_audio","failed_video","trial_type","trial_index","time_elapsed","internal_node_id","subject_id","study_id","session_id","view_history","rt","stimulus","response","task","folder","sequence_type","valuable_image_index","reward_type","distance_from_x","target_X","chosen_image_index","is_x_plus_dist","correct_choice"
+"true","false","[]","[]","[]","preload","0","552","0.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","","","","","","","","","","","","",""
+"","","","","","instructions","1","4332","0.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","[{""page_index"":0,""viewing_time"":3779}]","3779","","","","","","","","","","","",""
+"","","","","","instructions","2","7671","0.0-2.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","[{""page_index"":0,""viewing_time"":3339}]","3339","","","","","","","","","","","",""
+"true","","","","","fullscreen","3","22975","0.0-3.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","14284","","","","","","","","","","","",""
+"","","","","","instructions","4","25903","0.0-4.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","[{""page_index"":0,""viewing_time"":2926}]","2926","","","","","","","","","","","",""
+"","","","","","instructions","5","30875","0.0-5.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","[{""page_index"":0,""viewing_time"":4972}]","4972","","","","","","","","","","","",""
+"","","","","","html-button-response","6","34227","0.0-6.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","3351","
+            <div class=""stimulus-container"">
+                <img src=""images/semantic_sequence/housework_semantic/housework_semantic_6.png"" class=""exp-image"">
+                <div class=""question-area"">
+                    <p style=""font-size: 20px; font-weight: bold;"">Click the button to reveal the image value</p>
+                </div>
+            </div>","0","part2_active_reveal_click","housework_semantic","","","","","","","",""
+"","","","","","html-keyboard-response","7","42230","0.0-7.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 40px;"">
+                <img src=""images/semantic_sequence/housework_semantic/housework_semantic_6.png"" class=""exp-image"">
+                <div style=""text-align: center;"">
+                    <img src=""images/gray.png"" style=""width: 150px; height: 150px; border: 5px solid grey; border-radius: 15px;"">
+                    <p style=""color: grey; font-weight: bold; font-size: 28px; margin-top: 15px;"">NEUTRAL VALUE</p>
+                </div>
+            </div>","null","part2_value_learning","housework_semantic","semantic_sequence","6","neutral","","","","",""
+"","","","","","html-keyboard-response","8","47235","0.0-8.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-button-response","9","49303","0.0-9.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","2066","
+            <div class=""stimulus-container"">
+                <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_6.png"" class=""exp-image"">
+                <div class=""question-area"">
+                    <p style=""font-size: 20px; font-weight: bold;"">Click the button to reveal the image value</p>
+                </div>
+            </div>","0","part2_active_reveal_click","self_care_activities_semantic","","","","","","","",""
+"","","","","","html-keyboard-response","10","57305","0.0-10.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 40px;"">
+                <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_6.png"" class=""exp-image"">
+                <div style=""text-align: center;"">
+                    <img src=""images/gray.png"" style=""width: 150px; height: 150px; border: 5px solid grey; border-radius: 15px;"">
+                    <p style=""color: grey; font-weight: bold; font-size: 28px; margin-top: 15px;"">NEUTRAL VALUE</p>
+                </div>
+            </div>","null","part2_value_learning","self_care_activities_semantic","semantic_sequence","6","neutral","","","","",""
+"","","","","","html-keyboard-response","11","62314","0.0-11.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-button-response","12","63937","0.0-12.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","1621","
+            <div class=""stimulus-container"">
+                <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_7.png"" class=""exp-image"">
+                <div class=""question-area"">
+                    <p style=""font-size: 20px; font-weight: bold;"">Click the button to reveal the image value</p>
+                </div>
+            </div>","0","part2_active_reveal_click","saving_a_cat_causal","","","","","","","",""
+"","","","","","html-keyboard-response","13","71945","0.0-13.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 40px;"">
+                <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_7.png"" class=""exp-image"">
+                <div style=""text-align: center;"">
+                    <img src=""images/dollar.png"" style=""width: 150px; height: 150px; border: 5px solid green; border-radius: 15px;"">
+                    <p style=""color: green; font-weight: bold; font-size: 28px; margin-top: 15px;"">WORTH MONEY</p>
+                </div>
+            </div>","null","part2_value_learning","saving_a_cat_causal","causal_sequence","7","valuable","","","","",""
+"","","","","","html-keyboard-response","14","76960","0.0-14.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-button-response","15","81051","0.0-15.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","4089","
+            <div class=""stimulus-container"">
+                <img src=""images/causal_sequence/museum_causal/museum_causal_5.png"" class=""exp-image"">
+                <div class=""question-area"">
+                    <p style=""font-size: 20px; font-weight: bold;"">Click the button to reveal the image value</p>
+                </div>
+            </div>","0","part2_active_reveal_click","museum_causal","","","","","","","",""
+"","","","","","html-keyboard-response","16","89057","0.0-16.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 40px;"">
+                <img src=""images/causal_sequence/museum_causal/museum_causal_5.png"" class=""exp-image"">
+                <div style=""text-align: center;"">
+                    <img src=""images/gray.png"" style=""width: 150px; height: 150px; border: 5px solid grey; border-radius: 15px;"">
+                    <p style=""color: grey; font-weight: bold; font-size: 28px; margin-top: 15px;"">NEUTRAL VALUE</p>
+                </div>
+            </div>","null","part2_value_learning","museum_causal","causal_sequence","5","neutral","","","","",""
+"","","","","","html-keyboard-response","17","94073","0.0-17.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-button-response","18","97234","0.0-18.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","3160","
+            <div class=""stimulus-container"">
+                <img src=""images/causal_sequence/package_causal/package_causal_7.png"" class=""exp-image"">
+                <div class=""question-area"">
+                    <p style=""font-size: 20px; font-weight: bold;"">Click the button to reveal the image value</p>
+                </div>
+            </div>","0","part2_active_reveal_click","package_causal","","","","","","","",""
+"","","","","","html-keyboard-response","19","105236","0.0-19.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 40px;"">
+                <img src=""images/causal_sequence/package_causal/package_causal_7.png"" class=""exp-image"">
+                <div style=""text-align: center;"">
+                    <img src=""images/dollar.png"" style=""width: 150px; height: 150px; border: 5px solid green; border-radius: 15px;"">
+                    <p style=""color: green; font-weight: bold; font-size: 28px; margin-top: 15px;"">WORTH MONEY</p>
+                </div>
+            </div>","null","part2_value_learning","package_causal","causal_sequence","7","valuable","","","","",""
+"","","","","","html-keyboard-response","20","110252","0.0-20.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-button-response","21","115206","0.0-21.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","4953","
+            <div class=""stimulus-container"">
+                <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_7.png"" class=""exp-image"">
+                <div class=""question-area"">
+                    <p style=""font-size: 20px; font-weight: bold;"">Click the button to reveal the image value</p>
+                </div>
+            </div>","0","part2_active_reveal_click","maintaining_a_car_semantic","","","","","","","",""
+"","","","","","html-keyboard-response","22","123215","0.0-22.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 40px;"">
+                <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_7.png"" class=""exp-image"">
+                <div style=""text-align: center;"">
+                    <img src=""images/dollar.png"" style=""width: 150px; height: 150px; border: 5px solid green; border-radius: 15px;"">
+                    <p style=""color: green; font-weight: bold; font-size: 28px; margin-top: 15px;"">WORTH MONEY</p>
+                </div>
+            </div>","null","part2_value_learning","maintaining_a_car_semantic","semantic_sequence","7","valuable","","","","",""
+"","","","","","html-keyboard-response","23","128230","0.0-23.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-button-response","24","146412","0.0-24.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","18180","
+            <div class=""stimulus-container"">
+                <img src=""images/semantic_sequence/kitchen_operations_semantic/kitchen_operations_semantic_5.png"" class=""exp-image"">
+                <div class=""question-area"">
+                    <p style=""font-size: 20px; font-weight: bold;"">Click the button to reveal the image value</p>
+                </div>
+            </div>","0","part2_active_reveal_click","kitchen_operations_semantic","","","","","","","",""
+"","","","","","html-keyboard-response","25","154423","0.0-25.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 40px;"">
+                <img src=""images/semantic_sequence/kitchen_operations_semantic/kitchen_operations_semantic_5.png"" class=""exp-image"">
+                <div style=""text-align: center;"">
+                    <img src=""images/dollar.png"" style=""width: 150px; height: 150px; border: 5px solid green; border-radius: 15px;"">
+                    <p style=""color: green; font-weight: bold; font-size: 28px; margin-top: 15px;"">WORTH MONEY</p>
+                </div>
+            </div>","null","part2_value_learning","kitchen_operations_semantic","semantic_sequence","5","valuable","","","","",""
+"","","","","","html-keyboard-response","26","159438","0.0-26.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-button-response","27","161154","0.0-27.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","1714","
+            <div class=""stimulus-container"">
+                <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_6.png"" class=""exp-image"">
+                <div class=""question-area"">
+                    <p style=""font-size: 20px; font-weight: bold;"">Click the button to reveal the image value</p>
+                </div>
+            </div>","0","part2_active_reveal_click","visiting_cities_semantic","","","","","","","",""
+"","","","","","html-keyboard-response","28","169170","0.0-28.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 40px;"">
+                <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_6.png"" class=""exp-image"">
+                <div style=""text-align: center;"">
+                    <img src=""images/gray.png"" style=""width: 150px; height: 150px; border: 5px solid grey; border-radius: 15px;"">
+                    <p style=""color: grey; font-weight: bold; font-size: 28px; margin-top: 15px;"">NEUTRAL VALUE</p>
+                </div>
+            </div>","null","part2_value_learning","visiting_cities_semantic","semantic_sequence","6","neutral","","","","",""
+"","","","","","html-keyboard-response","29","174185","0.0-29.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-button-response","30","190593","0.0-30.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","16407","
+            <div class=""stimulus-container"">
+                <img src=""images/semantic_sequence/physical_activity_semantic/physical_activity_semantic_5.png"" class=""exp-image"">
+                <div class=""question-area"">
+                    <p style=""font-size: 20px; font-weight: bold;"">Click the button to reveal the image value</p>
+                </div>
+            </div>","0","part2_active_reveal_click","physical_activity_semantic","","","","","","","",""
+"","","","","","html-keyboard-response","31","198595","0.0-31.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 40px;"">
+                <img src=""images/semantic_sequence/physical_activity_semantic/physical_activity_semantic_5.png"" class=""exp-image"">
+                <div style=""text-align: center;"">
+                    <img src=""images/dollar.png"" style=""width: 150px; height: 150px; border: 5px solid green; border-radius: 15px;"">
+                    <p style=""color: green; font-weight: bold; font-size: 28px; margin-top: 15px;"">WORTH MONEY</p>
+                </div>
+            </div>","null","part2_value_learning","physical_activity_semantic","semantic_sequence","5","valuable","","","","",""
+"","","","","","html-keyboard-response","32","203610","0.0-32.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-button-response","33","209741","0.0-33.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","6129","
+            <div class=""stimulus-container"">
+                <img src=""images/causal_sequence/dog_causal/dog_causal_4.png"" class=""exp-image"">
+                <div class=""question-area"">
+                    <p style=""font-size: 20px; font-weight: bold;"">Click the button to reveal the image value</p>
+                </div>
+            </div>","0","part2_active_reveal_click","dog_causal","","","","","","","",""
+"","","","","","html-keyboard-response","34","217757","0.0-34.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 40px;"">
+                <img src=""images/causal_sequence/dog_causal/dog_causal_4.png"" class=""exp-image"">
+                <div style=""text-align: center;"">
+                    <img src=""images/dollar.png"" style=""width: 150px; height: 150px; border: 5px solid green; border-radius: 15px;"">
+                    <p style=""color: green; font-weight: bold; font-size: 28px; margin-top: 15px;"">WORTH MONEY</p>
+                </div>
+            </div>","null","part2_value_learning","dog_causal","causal_sequence","4","valuable","","","","",""
+"","","","","","html-keyboard-response","35","222772","0.0-35.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-button-response","36","225791","0.0-36.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","3017","
+            <div class=""stimulus-container"">
+                <img src=""images/causal_sequence/coin_causal/coin_causal_5.png"" class=""exp-image"">
+                <div class=""question-area"">
+                    <p style=""font-size: 20px; font-weight: bold;"">Click the button to reveal the image value</p>
+                </div>
+            </div>","0","part2_active_reveal_click","coin_causal","","","","","","","",""
+"","","","","","html-keyboard-response","37","233802","0.0-37.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 40px;"">
+                <img src=""images/causal_sequence/coin_causal/coin_causal_5.png"" class=""exp-image"">
+                <div style=""text-align: center;"">
+                    <img src=""images/gray.png"" style=""width: 150px; height: 150px; border: 5px solid grey; border-radius: 15px;"">
+                    <p style=""color: grey; font-weight: bold; font-size: 28px; margin-top: 15px;"">NEUTRAL VALUE</p>
+                </div>
+            </div>","null","part2_value_learning","coin_causal","causal_sequence","5","neutral","","","","",""
+"","","","","","html-keyboard-response","38","238818","0.0-38.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","html-button-response","39","241546","0.0-39.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","2727","
+            <div class=""stimulus-container"">
+                <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_4.png"" class=""exp-image"">
+                <div class=""question-area"">
+                    <p style=""font-size: 20px; font-weight: bold;"">Click the button to reveal the image value</p>
+                </div>
+            </div>","0","part2_active_reveal_click","the_performance_causal","","","","","","","",""
+"","","","","","html-keyboard-response","40","249548","0.0-40.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+            <div class=""stimulus-container"" style=""display: flex; align-items: center; justify-content: center; gap: 40px;"">
+                <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_4.png"" class=""exp-image"">
+                <div style=""text-align: center;"">
+                    <img src=""images/gray.png"" style=""width: 150px; height: 150px; border: 5px solid grey; border-radius: 15px;"">
+                    <p style=""color: grey; font-weight: bold; font-size: 28px; margin-top: 15px;"">NEUTRAL VALUE</p>
+                </div>
+            </div>","null","part2_value_learning","the_performance_causal","causal_sequence","4","neutral","","","","",""
+"","","","","","html-keyboard-response","41","254563","0.0-41.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","<div style=""background-color: white; width: 100vw; height: 100vh;""></div>","null","","","","","","","","","",""
+"","","","","","instructions","42","258400","0.0-42.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","[{""page_index"":0,""viewing_time"":3836}]","3836","","","","","","","","","","","",""
+"","","","","","html-keyboard-response","43","261410","0.0-43.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_7.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_5.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","44","264892","0.0-43.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","3480","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_7.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_5.png"" class=""small-image"">
+                            </div>","1","part3_choice_neighbors","self_care_activities_semantic","semantic_sequence","","","1","6","5","0",""
+"","","","","","html-keyboard-response","45","267894","0.0-44.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","<div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/coin_causal/coin_causal_5.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_7.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","46","278892","0.0-44.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","10996","<div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/coin_causal/coin_causal_5.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_7.png"" class=""small-image"">
+                            </div>","1","part3_valuable_vs_neutral_direct","","","","","","","","","true"
+"","","","","","html-keyboard-response","47","281906","0.0-45.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/package_causal/package_causal_4.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/package_causal/package_causal_ten.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","48","282430","0.0-45.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","523","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/package_causal/package_causal_4.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/package_causal/package_causal_ten.png"" class=""small-image"">
+                            </div>","1","part3_choice_neighbors","package_causal","causal_sequence","","","3","7","10","1",""
+"","","","","","html-keyboard-response","49","285432","0.0-46.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_5.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_7.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","50","286390","0.0-46.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","957","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_5.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_7.png"" class=""small-image"">
+                            </div>","1","part3_choice_neighbors","visiting_cities_semantic","semantic_sequence","","","1","6","7","1",""
+"","","","","","html-keyboard-response","51","289404","0.0-47.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/housework_semantic/housework_semantic_7.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/housework_semantic/housework_semantic_5.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","52","293242","0.0-47.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","3836","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/housework_semantic/housework_semantic_7.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/housework_semantic/housework_semantic_5.png"" class=""small-image"">
+                            </div>","0","part3_choice_neighbors","housework_semantic","semantic_sequence","","","1","6","7","1",""
+"","","","","","html-keyboard-response","53","296244","0.0-48.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/package_causal/package_causal_6.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/package_causal/package_causal_8.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","54","307342","0.0-48.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","11097","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/package_causal/package_causal_6.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/package_causal/package_causal_8.png"" class=""small-image"">
+                            </div>","0","part3_choice_neighbors","package_causal","causal_sequence","","","1","7","6","0",""
+"","","","","","html-keyboard-response","55","310349","0.0-49.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/housework_semantic/housework_semantic_4.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/housework_semantic/housework_semantic_8.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","56","325012","0.0-49.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","14661","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/housework_semantic/housework_semantic_4.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/housework_semantic/housework_semantic_8.png"" class=""small-image"">
+                            </div>","0","part3_choice_neighbors","housework_semantic","semantic_sequence","","","2","6","4","0",""
+"","","","","","html-keyboard-response","57","328027","0.0-50.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_ten.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_4.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","58","342647","0.0-50.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","14619","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_ten.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_4.png"" class=""small-image"">
+                            </div>","0","part3_choice_neighbors","maintaining_a_car_semantic","semantic_sequence","","","3","7","10","1",""
+"","","","","","html-keyboard-response","59","345655","0.0-51.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/coin_causal/coin_causal_7.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/coin_causal/coin_causal_3.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","60","350267","0.0-51.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","4611","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/coin_causal/coin_causal_7.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/coin_causal/coin_causal_3.png"" class=""small-image"">
+                            </div>","0","part3_choice_neighbors","coin_causal","causal_sequence","","","2","5","7","1",""
+"","","","","","html-keyboard-response","61","353271","0.0-52.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/physical_activity_semantic/physical_activity_semantic_3.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/physical_activity_semantic/physical_activity_semantic_7.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","62","356907","0.0-52.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","3635","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/physical_activity_semantic/physical_activity_semantic_3.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/physical_activity_semantic/physical_activity_semantic_7.png"" class=""small-image"">
+                            </div>","0","part3_choice_neighbors","physical_activity_semantic","semantic_sequence","","","2","5","3","0",""
+"","","","","","html-keyboard-response","63","359919","0.0-53.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/physical_activity_semantic/physical_activity_semantic_4.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/physical_activity_semantic/physical_activity_semantic_6.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","64","363529","0.0-53.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","3609","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/physical_activity_semantic/physical_activity_semantic_4.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/physical_activity_semantic/physical_activity_semantic_6.png"" class=""small-image"">
+                            </div>","1","part3_choice_neighbors","physical_activity_semantic","semantic_sequence","","","1","5","6","1",""
+"","","","","","html-keyboard-response","65","366534","0.0-54.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/kitchen_operations_semantic/kitchen_operations_semantic_7.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/kitchen_operations_semantic/kitchen_operations_semantic_3.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","66","371009","0.0-54.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","4474","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/kitchen_operations_semantic/kitchen_operations_semantic_7.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/kitchen_operations_semantic/kitchen_operations_semantic_3.png"" class=""small-image"">
+                            </div>","1","part3_choice_neighbors","kitchen_operations_semantic","semantic_sequence","","","2","5","3","0",""
+"","","","","","html-keyboard-response","67","374015","0.0-55.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_9.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_3.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","68","374925","0.0-55.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","909","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_9.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_3.png"" class=""small-image"">
+                            </div>","1","part3_choice_neighbors","visiting_cities_semantic","semantic_sequence","","","3","6","3","0",""
+"","","","","","html-keyboard-response","69","377931","0.0-56.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/museum_causal/museum_causal_6.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/museum_causal/museum_causal_4.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","70","385385","0.0-56.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","7453","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/museum_causal/museum_causal_6.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/museum_causal/museum_causal_4.png"" class=""small-image"">
+                            </div>","1","part3_choice_neighbors","museum_causal","causal_sequence","","","1","5","4","0",""
+"","","","","","html-keyboard-response","71","388395","0.0-57.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_1.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_7.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","72","396715","0.0-57.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","8319","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_1.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_7.png"" class=""small-image"">
+                            </div>","0","part3_choice_neighbors","the_performance_causal","causal_sequence","","","3","4","1","0",""
+"","","","","","html-keyboard-response","73","399725","0.0-58.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_3.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_9.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","74","404025","0.0-58.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","4298","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_3.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_9.png"" class=""small-image"">
+                            </div>","1","part3_choice_neighbors","self_care_activities_semantic","semantic_sequence","","","3","6","9","1",""
+"","","","","","html-keyboard-response","75","407029","0.0-59.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/museum_causal/museum_causal_2.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/museum_causal/museum_causal_8.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","76","407894","0.0-59.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","865","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/museum_causal/museum_causal_2.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/museum_causal/museum_causal_8.png"" class=""small-image"">
+                            </div>","0","part3_choice_neighbors","museum_causal","causal_sequence","","","3","5","2","0",""
+"","","","","","html-keyboard-response","77","410906","0.0-60.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_8.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_6.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","78","418668","0.0-60.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","7761","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_8.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_6.png"" class=""small-image"">
+                            </div>","1","part3_choice_neighbors","saving_a_cat_causal","causal_sequence","","","1","7","6","0",""
+"","","","","","html-keyboard-response","79","421670","0.0-61.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/kitchen_operations_semantic/kitchen_operations_semantic_4.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/kitchen_operations_semantic/kitchen_operations_semantic_6.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","80","431544","0.0-61.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","9873","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/kitchen_operations_semantic/kitchen_operations_semantic_4.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/kitchen_operations_semantic/kitchen_operations_semantic_6.png"" class=""small-image"">
+                            </div>","0","part3_choice_neighbors","kitchen_operations_semantic","semantic_sequence","","","1","5","4","0",""
+"","","","","","html-keyboard-response","81","434549","0.0-62.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","<div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_6.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/dog_causal/dog_causal_4.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","82","440444","0.0-62.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","5894","<div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_6.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/dog_causal/dog_causal_4.png"" class=""small-image"">
+                            </div>","1","part3_valuable_vs_neutral_direct","","","","","","","","","true"
+"","","","","","html-keyboard-response","83","443447","0.0-63.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/dog_causal/dog_causal_2.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/dog_causal/dog_causal_6.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","84","450676","0.0-63.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","7227","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/dog_causal/dog_causal_2.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/dog_causal/dog_causal_6.png"" class=""small-image"">
+                            </div>","0","part3_choice_neighbors","dog_causal","causal_sequence","","","2","4","2","0",""
+"","","","","","html-keyboard-response","85","453677","0.0-64.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/dog_causal/dog_causal_5.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/dog_causal/dog_causal_3.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","86","454260","0.0-64.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","582","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/dog_causal/dog_causal_5.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/dog_causal/dog_causal_3.png"" class=""small-image"">
+                            </div>","1","part3_choice_neighbors","dog_causal","causal_sequence","","","1","4","3","0",""
+"","","","","","html-keyboard-response","87","457276","0.0-65.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/museum_causal/museum_causal_3.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/museum_causal/museum_causal_7.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","88","461828","0.0-65.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","4550","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/museum_causal/museum_causal_3.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/museum_causal/museum_causal_7.png"" class=""small-image"">
+                            </div>","0","part3_choice_neighbors","museum_causal","causal_sequence","","","2","5","3","0",""
+"","","","","","html-keyboard-response","89","464841","0.0-66.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_6.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_8.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","90","466006","0.0-66.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","1163","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_6.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_8.png"" class=""small-image"">
+                            </div>","0","part3_choice_neighbors","maintaining_a_car_semantic","semantic_sequence","","","1","7","6","0",""
+"","","","","","html-keyboard-response","91","469008","0.0-67.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_4.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_ten.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","92","469722","0.0-67.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","713","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_4.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_ten.png"" class=""small-image"">
+                            </div>","0","part3_choice_neighbors","saving_a_cat_causal","causal_sequence","","","3","7","4","0",""
+"","","","","","html-keyboard-response","93","472723","0.0-68.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","<div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_4.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/package_causal/package_causal_7.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","94","475928","0.0-68.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","3203","<div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_4.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/package_causal/package_causal_7.png"" class=""small-image"">
+                            </div>","1","part3_valuable_vs_neutral_direct","","","","","","","","","true"
+"","","","","","html-keyboard-response","95","478937","0.0-69.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/physical_activity_semantic/physical_activity_semantic_8.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/physical_activity_semantic/physical_activity_semantic_2.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","96","486701","0.0-69.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","7763","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/physical_activity_semantic/physical_activity_semantic_8.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/physical_activity_semantic/physical_activity_semantic_2.png"" class=""small-image"">
+                            </div>","0","part3_choice_neighbors","physical_activity_semantic","semantic_sequence","","","3","5","8","1",""
+"","","","","","html-keyboard-response","97","489718","0.0-70.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_5.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_9.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","98","494166","0.0-70.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","4447","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_5.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/saving_a_cat_causal/saving_a_cat_causal_9.png"" class=""small-image"">
+                            </div>","1","part3_choice_neighbors","saving_a_cat_causal","causal_sequence","","","2","7","9","1",""
+"","","","","","html-keyboard-response","99","497183","0.0-71.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","<div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_6.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/kitchen_operations_semantic/kitchen_operations_semantic_5.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","100","500401","0.0-71.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","3217","<div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_6.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/kitchen_operations_semantic/kitchen_operations_semantic_5.png"" class=""small-image"">
+                            </div>","1","part3_valuable_vs_neutral_direct","","","","","","","","","true"
+"","","","","","html-keyboard-response","101","503414","0.0-72.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","<div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/museum_causal/museum_causal_5.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_7.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","102","504737","0.0-72.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","1322","<div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/museum_causal/museum_causal_5.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_7.png"" class=""small-image"">
+                            </div>","1","part3_valuable_vs_neutral_direct","","","","","","","","","true"
+"","","","","","html-keyboard-response","103","507746","0.0-73.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/coin_causal/coin_causal_8.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/coin_causal/coin_causal_2.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","104","512237","0.0-73.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","4490","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/coin_causal/coin_causal_8.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/coin_causal/coin_causal_2.png"" class=""small-image"">
+                            </div>","0","part3_choice_neighbors","coin_causal","causal_sequence","","","3","5","8","1",""
+"","","","","","html-keyboard-response","105","515239","0.0-74.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/coin_causal/coin_causal_6.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/coin_causal/coin_causal_4.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","106","515851","0.0-74.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","611","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/coin_causal/coin_causal_6.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/coin_causal/coin_causal_4.png"" class=""small-image"">
+                            </div>","1","part3_choice_neighbors","coin_causal","causal_sequence","","","1","5","4","0",""
+"","","","","","html-keyboard-response","107","518860","0.0-75.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_6.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_2.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","108","523745","0.0-75.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","4883","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_6.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_2.png"" class=""small-image"">
+                            </div>","0","part3_choice_neighbors","the_performance_causal","causal_sequence","","","2","4","6","1",""
+"","","","","","html-keyboard-response","109","526758","0.0-76.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_3.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_5.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","110","527247","0.0-76.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","488","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_3.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/the_performance_causal/the_performance_causal_5.png"" class=""small-image"">
+                            </div>","1","part3_choice_neighbors","the_performance_causal","causal_sequence","","","1","4","5","1",""
+"","","","","","html-keyboard-response","111","530257","0.0-77.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","<div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/housework_semantic/housework_semantic_6.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/physical_activity_semantic/physical_activity_semantic_5.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","112","541407","0.0-77.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","11148","<div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/housework_semantic/housework_semantic_6.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/physical_activity_semantic/physical_activity_semantic_5.png"" class=""small-image"">
+                            </div>","0","part3_valuable_vs_neutral_direct","","","","","","","","","false"
+"","","","","","html-keyboard-response","113","544420","0.0-78.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_8.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_4.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","114","545501","0.0-78.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","1080","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_8.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/visiting_cities_semantic/visiting_cities_semantic_4.png"" class=""small-image"">
+                            </div>","0","part3_choice_neighbors","visiting_cities_semantic","semantic_sequence","","","2","6","8","1",""
+"","","","","","html-keyboard-response","115","548502","0.0-79.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/housework_semantic/housework_semantic_3.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/housework_semantic/housework_semantic_9.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","116","555671","0.0-79.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","7167","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/housework_semantic/housework_semantic_3.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/housework_semantic/housework_semantic_9.png"" class=""small-image"">
+                            </div>","0","part3_choice_neighbors","housework_semantic","semantic_sequence","","","3","6","3","0",""
+"","","","","","html-keyboard-response","117","558683","0.0-80.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/kitchen_operations_semantic/kitchen_operations_semantic_8.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/kitchen_operations_semantic/kitchen_operations_semantic_2.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","118","568987","0.0-80.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","10302","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/kitchen_operations_semantic/kitchen_operations_semantic_8.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/kitchen_operations_semantic/kitchen_operations_semantic_2.png"" class=""small-image"">
+                            </div>","0","part3_choice_neighbors","kitchen_operations_semantic","semantic_sequence","","","3","5","8","1",""
+"","","","","","html-keyboard-response","119","571996","0.0-81.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/dog_causal/dog_causal_1.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/dog_causal/dog_causal_7.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","120","577632","0.0-81.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","5635","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/dog_causal/dog_causal_1.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/dog_causal/dog_causal_7.png"" class=""small-image"">
+                            </div>","0","part3_choice_neighbors","dog_causal","causal_sequence","","","3","4","1","0",""
+"","","","","","html-keyboard-response","121","580644","0.0-82.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_8.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_4.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","122","584418","0.0-82.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","3773","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_8.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/self_care_activities_semantic/self_care_activities_semantic_4.png"" class=""small-image"">
+                            </div>","0","part3_choice_neighbors","self_care_activities_semantic","semantic_sequence","","","2","6","8","1",""
+"","","","","","html-keyboard-response","123","587425","0.0-83.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/package_causal/package_causal_9.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/package_causal/package_causal_5.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","124","589132","0.0-83.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","1706","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/causal_sequence/package_causal/package_causal_9.png"" class=""small-image"">
+                                <img src=""images/causal_sequence/package_causal/package_causal_5.png"" class=""small-image"">
+                            </div>","0","part3_choice_neighbors","package_causal","causal_sequence","","","2","7","9","1",""
+"","","","","","html-keyboard-response","125","592141","0.0-84.0-0.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","null","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_9.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_5.png"" class=""small-image"">
+                            </div>","null","","","","","","","","","",""
+"","","","","","html-button-response","126","594236","0.0-84.0-1.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","2094","
+                            <div style=""font-family: Arial; margin-bottom: 20px;""><h3>Which image is worth <b>more money</b>?</h3></div>
+                            <div class=""stimulus-container"" style=""display: flex; width: 800px; justify-content: center; gap: 30px;"">
+                                <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_9.png"" class=""small-image"">
+                                <img src=""images/semantic_sequence/maintaining_a_car_semantic/maintaining_a_car_semantic_5.png"" class=""small-image"">
+                            </div>","1","part3_choice_neighbors","maintaining_a_car_semantic","semantic_sequence","","","2","7","5","0",""
+"","","","","","survey-text","127","690022","0.0-85.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","","95778","","{""gender"":""female"",""age"":""31"",""decision_strategy"":""picked the ones with less mistakes"",""consistency_check"":""yes, spelling, limbs not right, doesnt match title""}","demographics_and_strategy","","","","","","","","",""
+"","","","","","instructions","128","694783","0.0-86.0","302BB11D1B5743CB94A5A6788B369C28","019dad1e-941c-7b4c-ab1e-ef8e3ee8de2b","019dacfd-3d5e-7f0e-9535-61b14ca20378","[{""page_index"":0,""viewing_time"":4759}]","4760","","","","","","","","","","","",""
