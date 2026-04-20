@@ -58,21 +58,14 @@
     var subject_id = jsPsych.randomization.randomID(15);
     jsPsych.data.addProperties({ subject_id: subject_id });
 
-    // --- הגדרות ניתנות לשינוי (CONTROL PANEL) ---
+    // --- CONTROL PANEL ---
     var n_causal = 2;
-    var n_semantic = 6;
-    var n_valuable_per_type = 0; 
+    var n_semantic = 0;
+    var n_valuable_per_type = 1; 
 
     var causal_folders = ['coin_causal', 'dog_causal', 'museum_causal', 'package_causal', 'saving_a_cat_causal', 'the_performance_causal'];
-var semantic_folders = [
-    'housework_semantic', 
-    'kitchen_operations_semantic', 
-    'maintaining_a_car_semantic', 
-    'physical_activity_semantic', 
-    'self_care_activities_semantic', 
-    'visiting_cities_semantic'
-];
-    // דגימה לפי הכמויות שהוגדרו
+    var semantic_folders = ['household_objects_semantic', 'fruits_semantic', 'transportation_semantic', 'clothing_semantic', 'animals_semantic', 'professions_semantic'];
+
     var sampled_causal = jsPsych.randomization.sampleWithoutReplacement(causal_folders, Math.min(n_causal, causal_folders.length));
     var sampled_semantic = jsPsych.randomization.sampleWithoutReplacement(semantic_folders, Math.min(n_semantic, semantic_folders.length));
     
@@ -82,16 +75,13 @@ var semantic_folders = [
 
     var selected_blocks = [
         ...sampled_causal.map(f => ({ name: f, type: 'causal_sequence' })),
-        ...sampled_semantic.map(f => ({ name: f, type: 'semantic_sequence' }))
+        ...sampled_semantic.map(f => ({ name: f, type: 'semantic_sequence' })) // שינוי שם לסטנדרטי
     ];
     var experimental_blocks = jsPsych.randomization.shuffle(selected_blocks);
 
+    // פונקציית ניתוב תמונות אחידה (כולן תחת images)
     function getImagePath(blockType, folderName, suffix) {
-        if (blockType === 'semantic_sequence') {
-            return `${blockType}/${folderName}/${folderName}_${suffix}.png`;
-        } else {
-            return `images/${blockType}/${folderName}/${folderName}_${suffix}.png`;
-        }
+        return `images/${blockType}/${folderName}/${folderName}_${suffix}.png`;
     }
 
     // Preload
