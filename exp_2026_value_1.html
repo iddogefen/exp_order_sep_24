@@ -40,7 +40,7 @@
 /* הגודל הקטן יותר במיוחד לשלב 3 */
 .small-image {
     width: 350px; /* הקטנה ל-350 פיקסלים */
-    height: 280px; /* שמירה על ;יחס גובה-רוחב דומה */
+    height: 280px; /* שמירה על יחס גובה-רוחב דומה */
     object-fit: contain;
     border: 2px solid #ccc;
 }
@@ -142,8 +142,6 @@ var semantic_folders = [
     'self_care_activities_semantic', 'using_technology_semantic', 'visiting_cities_semantic'
 ];*/
 // --- RANDOMIZATION & SELECTION SECTION ---
-
-// --- RANDOMIZATION & SELECTION SECTION (UPDATED) ---
 
 // --- RANDOMIZATION & SELECTION SECTION (UPDATED) ---
 
@@ -250,150 +248,25 @@ var experimental_blocks = jsPsych.randomization.shuffle(selected_blocks);
     timeline.push(trial_0, trial_consent, trial_01);
 
     // ----------- OVERVIEW INSTRUCTIONS -----------
-    var instructions_overview = {
-        type: jsPsychInstructions,
-        pages: [
-            '<div style="font-family: Arial; text-align: left; padding: 50px; line-height: 1.6;">' +
-            '<h2>Experiment Overview</h2>' +
-            '<p>This experiment consists of <b>three parts</b>:</p>' +
-            '<div style="background-color: #f9f9f9; border-left: 5px solid #333; padding: 20px; margin: 20px 0;">' +
-            '<p><b>Part 1:</b> You will view a series of images depicting different events.</p>' +
-            '<p><b>Part 2:</b> You will be shown specific images that have <b> monetary value</b>.</p>' +
-            '<p><b>Part 3:</b> You will choose between two images and estimate which one is worth more money. ' +
-            'A correct evaluation will lead to a <b>monetary reward</b>.</p>' +
-            '</div>' +
-            '<p>Please pay close attention to the images and follow your intuition. Click "Next" to begin.</p>' +
-            '</div>'
-        ],
-        show_clickable_nav: true
-    };
-    timeline.push(instructions_overview);
-
-    // ----------- PART 1 EXAMPLE SEQUENCE -----------
-    var part1_example_intro = {
-        type: jsPsychInstructions,
-        pages: [
-            '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
-            '<h2>Part 1 Example</h2>' +
-            '<p style="font-size: 20px;">You will now see a sequence of images as an example.</p>' +
-            '<p style="font-size: 20px;">First, you will view the image, and then a question will appear below it.</p>' +
-            '<p style="color: #d9534f;"><b>Your Task:</b> Answer if there is a person in the image using the buttons provided.</p>' +
-            '<p>Click "Next" to start the example.</p>' +
-            '</div>'
-        ],
-        show_clickable_nav: true
-    };
-    timeline.push(part1_example_intro);
-
-    for (var i = 1; i <= 4; i++) {
-        var example_view = {
-            type: jsPsychHtmlKeyboardResponse,
-            stimulus: `
-                <div class="stimulus-container">
-                    <img src="images/instructions/movie_${i}.png" class="exp-image">
-                    <div class="question-area"></div> 
-                </div>`,
-            choices: "NO_KEYS", 
-            trial_duration: 4000 
-        };
-
-        var example_question = {
-            type: jsPsychHtmlButtonResponse,
-            stimulus: `
-                <div class="stimulus-container">
-                    <img src="images/instructions/movie_${i}.png" class="exp-image">
-                    <div class="question-area">
-                        <p style="font-size: 20px; font-weight: bold; margin: 0;">Was there a person in this image?</p>
-                    </div>
-                </div>`,
-            choices: ['Yes', 'No'],
-            trial_duration: 3000, 
-            response_ends_trial: true,
-            data: { task: 'example_question', image_index: i }
-        };
-        timeline.push(example_view, example_question);
-    }
-
-    timeline.push({
-        type: jsPsychInstructions,
-        pages: ['<div style="text-align: center; padding: 50px;"><h3>Example Completed</h3><p>Click Next to start the actual experiment.</p></div>'],
-        show_clickable_nav: true
-    });
-
-
-// ----------- מעבר מהדוגמה לניסוי האמיתי -----------
-var start_main_experiment = {
+var instructions_overview = {
     type: jsPsychInstructions,
     pages: [
-        '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
-        '<h2>Practice Completed</h2>' +
-        '<p style="font-size: 20px;">The practice session is now over. We will now begin the <b>main experiment</b>.</p>' +
-        '<div style="background-color: #f9f9f9; border: 1px solid #ccc; padding: 20px; margin: 20px 0;">' +
-        '<p><b>Reminder:</b> Please watch the images carefully and indicate if a <b>person</b> appears in each image.</p>' +
-        '<p>Images will advance automatically, and the response buttons will appear shortly after.</p>' +
+        '<div style="font-family: Arial; text-align: left; padding: 50px; line-height: 1.6;">' +
+        '<h2>Experiment Overview</h2>' +
+        '<p>This experiment consists of <b>two parts</b>:</p>' + // שיניתי מ-3 ל-2
+        '<div style="background-color: #f9f9f9; border-left: 5px solid #333; padding: 20px; margin: 20px 0;">' +
+        '<p><b>Part 1:</b> You will be shown specific images that have <b>monetary value</b>.</p>' +
+        '<p><b>Part 2:</b> You will choose between two images and estimate which one is worth more money.</p>' +
         '</div>' +
-        '<p>Click "Next" to start the first sequence.</p>' +
+        '<p>Please pay close attention. Click "Next" to begin.</p>' +
         '</div>'
     ],
-    show_clickable_nav: true,
-    allow_backward: false
+    show_clickable_nav: true
 };
-timeline.push(start_main_experiment);
 
-// ----------- PART 1 MAIN EXPERIMENT (CHRONOLOGICAL ORDER) -----------
+    timeline.push(instructions_overview);
 
-experimental_blocks.forEach(function(block) {
-    
-    // 1. יצירת רשימת אינדקסים קבועה מ-1 עד 10 (ללא ערבוב)
-    var image_indices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    
-    // מסך לבן קצר בין סדרה לסדרה
-    timeline.push({
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
-        choices: "NO_KEYS",
-        trial_duration: 5000
-    });
 
-    // 2. לולאה על האינדקסים לפי סדר הופעתם במערך
-    image_indices.forEach(function(i) {
-        var image_suffix = (i === 10) ? "ten" : i;
-        var current_image_path = `images/${block.type}/${block.name}/${block.name}_${image_suffix}.png`;
-
-        var main_view = {
-            type: jsPsychHtmlKeyboardResponse,
-            stimulus: `
-                <div class="stimulus-container">
-                    <img src="${current_image_path}" class="exp-image">
-                    <div class="question-area"></div> 
-                </div>`,
-            choices: "NO_KEYS",
-            trial_duration: 5000 
-        };
-
-        var main_question = {
-            type: jsPsychHtmlButtonResponse,
-            stimulus: `
-                <div class="stimulus-container">
-                    <img src="${current_image_path}" class="exp-image">
-                    <div class="question-area">
-                        <p style="font-size: 20px; font-weight: bold; margin: 0;">Is there a person in this image?</p>
-                    </div>
-                </div>`,
-            choices: ['Yes', 'No'],
-            trial_duration: 3000,
-            response_ends_trial: true,
-            data: {
-                task: 'main_experiment_trial',
-                folder: block.name,
-                sequence_type: block.type, 
-                image_index: image_suffix,
-                presentation_order: 'chronological' // עדכון התיעוד לצורך ניתוח ב-R
-            }
-        };
-        timeline.push(main_view, main_question);
-    });
-});
 
 // ----------- PART 2: VALUE LEARNING (Conditioning Phase) - Active Version -----------
 
@@ -411,7 +284,7 @@ var part2_intro = {
     type: jsPsychInstructions,
     pages: [
         '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
-        '<h2>Part 2: Value Learning</h2>' +
+        '<h2>Part 1: Value Learning</h2>' +
         '<p style="font-size: 20px;">In this part, you will see images from the previous sequences.</p>' +
         '<p style="font-size: 20px;">Some images are <b>worth money</b> (marked with a <span style="color:green">DOLLAR</span> image),<br>' +
         'and others have a <b>neutral value</b> (marked with a <span style="color:grey">GRAY</span> image).</p>' +
@@ -492,16 +365,16 @@ shuffled_folders_part2.forEach(function(block) {
     });
 });
 // --- PART 3: CHOICE & LUCKY TEST (MIXED) ---
-
 var part3_intro = {
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: center; padding: 50px;">' +
-        '<h2>Part 3: Final Choice</h2>' +
-        '<p>In this final part, you will be shown pairs of images.<br>' +
-        'Only based on what you learned in the previous part,<br>' +
+        '<h2>Part 2: Final Choice</h2>' +
+        '<p style="font-size: 20px;">In this final part, you will be shown pairs of images.</p>' +
+        '<p style="font-size: 20px;">Only based on what you learned in the previous part,<br>' +
         'please choose the image which is worth <b>more money</b> using the buttons.</p>' +
-        '</div>'
+        '<p style="font-size: 20px; margin-top: 25px;">If you are not sure which image to choose, please follow your intuition.</p>' +
+
     ],
     show_clickable_nav: true
 };

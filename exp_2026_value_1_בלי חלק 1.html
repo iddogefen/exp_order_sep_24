@@ -146,10 +146,10 @@ var semantic_folders = [
 // --- RANDOMIZATION & SELECTION SECTION (UPDATED) ---
 
 // 1. הגדרת כמות הסדרות מכל סוג
-var n_causal = 2;
+var n_causal = 6;
 var n_schematic = 0;
-var n_semantic = 0; // הוספת כמות לסמנטי
-var n_valuable_per_type = 1; 
+var n_semantic = 6; // הוספת כמות לסמנטי
+var n_valuable_per_type = 3; 
 
 // 2. דגימת הסדרות עצמן
 var sampled_causal = jsPsych.randomization.sampleWithoutReplacement(causal_folders, Math.min(n_causal, causal_folders.length));
