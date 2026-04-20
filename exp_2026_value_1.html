@@ -145,8 +145,6 @@ var semantic_folders = [
 
 // --- RANDOMIZATION & SELECTION SECTION (UPDATED) ---
 
-// --- RANDOMIZATION & SELECTION SECTION (UPDATED) ---
-
 // 1. הגדרת כמות הסדרות מכל סוג
 var n_causal = 2;
 var n_schematic = 0;
@@ -266,6 +264,9 @@ var instructions_overview = {
     show_clickable_nav: true
 };
 
+    timeline.push(instructions_overview);
+
+
 
 // ----------- PART 2: VALUE LEARNING (Conditioning Phase) - Active Version -----------
 
@@ -283,7 +284,7 @@ var part2_intro = {
     type: jsPsychInstructions,
     pages: [
         '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
-        '<h2>Part 2: Value Learning</h2>' +
+        '<h2>Part 1: Value Learning</h2>' +
         '<p style="font-size: 20px;">In this part, you will see images from the previous sequences.</p>' +
         '<p style="font-size: 20px;">Some images are <b>worth money</b> (marked with a <span style="color:green">DOLLAR</span> image),<br>' +
         'and others have a <b>neutral value</b> (marked with a <span style="color:grey">GRAY</span> image).</p>' +
@@ -369,7 +370,7 @@ var part3_intro = {
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: center; padding: 50px;">' +
-        '<h2>Part 3: Final Choice</h2>' +
+        '<h2>Part 2: Final Choice</h2>' +
         '<p>In this final part, you will be shown pairs of images.<br>' +
         'Only based on what you learned in the previous part,<br>' +
         'please choose the image which is worth <b>more money</b> using the buttons.</p>' +
