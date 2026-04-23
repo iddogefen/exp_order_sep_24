@@ -107,7 +107,7 @@ var jsPsych = initJsPsych({
       session_id: session_id,
     });
 
-// --- הגדרות התיקיות החדשות ---
+// --- הגדרות הסדרות ---
 var story_folders = ['story_1', 'story_2', 'story_3', 'story_4'];
 var info_folders = ['info_1', 'info_2', 'info_3', 'info_4'];
 
@@ -128,10 +128,10 @@ var selected_blocks = [
 
 var experimental_blocks = jsPsych.randomization.shuffle(selected_blocks);
 
-// פונקציית עזר לנתיבי התמונות החדשים
+// פונקציית עזר לנתיבי התמונות - כל התמונות ישירות תחת images_story_vs_info
 function getImagePath(folderName, i) {
     var suffix = (i === 6) ? "6_a" : i;
-    return `images_story_vs_info/${folderName}/${folderName}_${suffix}.png`;
+    return `images_story_vs_info/${folderName}_${suffix}.png`;
 }
 
 // Preload
@@ -362,7 +362,7 @@ timeline.push(preload);
 
     var all_part3_trials = [];
 
-    // Neighbors Choice (Dist 1, 2)
+    // Neighbors Choice
     experimental_blocks.forEach(function(block) {
         var offsets = [1, 2];
         offsets.forEach(function(dist) {
@@ -376,11 +376,10 @@ timeline.push(preload);
                             var left_idx = Math.random() < 0.5 ? X - dist : X + dist;
                             var right_idx = left_idx === X - dist ? X + dist : X - dist;
                             
-                            // Bounds check
                             if (left_idx < 1) left_idx = 1; if (left_idx > 6) left_idx = 6;
                             if (right_idx < 1) right_idx = 1; if (right_idx > 6) right_idx = 6;
 
-                            window.data_for_current_block = { left: left_idx, right: right_idx, lucky_X: X, distance: dist };
+                            window.data_for_current_block = { left: left_idx, right: right_idx };
                             return `<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is worth <b>more money</b>?</h3></div>
                                     <div class="stimulus-container" style="display: flex; width: 800px; justify-content: center; gap: 30px;">
                                         <img src="${getImagePath(block.name, left_idx)}" class="small-image">
@@ -404,7 +403,6 @@ timeline.push(preload);
                             data.task = 'part3_choice_neighbors'; 
                             data.folder = block.name;
                             data.sequence_type = block.type;
-                            data.distance_from_x = window.data_for_current_block.distance;
                             var chosen_idx = (data.response === 0) ? window.data_for_current_block.left : window.data_for_current_block.right;
                             data.chosen_image_index = chosen_idx;
                         }
@@ -416,11 +414,11 @@ timeline.push(preload);
     });
 
     // Cross-Sequence
-    var valuable_blocks_list_info = experimental_blocks.filter(b => valuable_folders_list.includes(b.name));
-    var neutral_blocks_list_info = experimental_blocks.filter(b => !valuable_folders_list.includes(b.name));
+    var v_blocks = experimental_blocks.filter(b => valuable_folders_list.includes(b.name));
+    var n_blocks = experimental_blocks.filter(b => !valuable_folders_list.includes(b.name));
 
-    valuable_blocks_list_info.forEach(function(v_block, index) {
-        var n_block = neutral_blocks_list_info[index];
+    v_blocks.forEach(function(v_block, index) {
+        var n_block = n_blocks[index];
         if(!n_block) return;
         all_part3_trials.push({
             timeline: [{
