@@ -28,7 +28,7 @@
           border: 2px solid #ccc;
       }
     </style>
-    <title>My experiment</title>
+    <title>Psychology Experiment</title>
     <script src="jspsych/plugins/jspsych.js"></script>
     <script src="jspsych/plugins/plugin-instructions.js"></script>
     <script src="jspsych/plugins/plugin-html-button-response.js"></script>
@@ -43,6 +43,7 @@
 
 var jsPsych = initJsPsych({
     on_finish: function() {
+        // פונקציה לשמירת הנתונים בסיום
         saveData(jsPsych.data.get().csv());
     }
 });
@@ -63,27 +64,25 @@ var timeline = [];
 
 jsPsych.data.addProperties({
     subject_id: jsPsych.data.getURLVariable('participantId') || subject_id,
-    study_id: jsPsych.data.getURLVariable('assignmentId'),
-    session_id: jsPsych.data.getURLVariable('projectId'),
 });
 
 // --- הגדרת שמות הסדרות ---
 var story_prefixes = ['story_1', 'story_2', 'story_3', 'story_4'];
 var info_prefixes = ['info_1', 'info_2', 'info_3', 'info_4'];
 
-// הגרלה של גרסה a או b עבור התמונה השישית
+// הגרלה של גרסה a או b עבור התמונה השישית (לפי הלוגיקה שלך)
 var version_map = {};
 [...story_prefixes, ...info_prefixes].forEach(p => {
     version_map[p] = Math.random() < 0.5 ? 'a' : 'b';
 });
 
-// פונקציה לשליפת נתיב התמונה ללא תיקיות משנה (Flat structure)
+// פונקציית הנתיב המרכזית - שולפת ישירות מהתיקייה ללא תתי-תיקיות
 function getImagePath(prefix, i) {
     var suffix = (i === 6) ? `6_${version_map[prefix]}` : i;
     return `images_story_vs_info/${prefix}_${suffix}.png`;
 }
 
-// בחירת התיקיות שיהיו בעלות ערך כספי
+// הגדרת הבלוקים וערכם הכספי
 var n_valuable_per_type = 2; 
 var sampled_story = jsPsych.randomization.shuffle(story_prefixes);
 var sampled_info = jsPsych.randomization.shuffle(info_prefixes);
@@ -99,15 +98,13 @@ var selected_blocks = [
 
 var experimental_blocks = jsPsych.randomization.shuffle(selected_blocks);
 
-// Preload assets
+// Preload: טעינת כל הנכסים מראש מהתיקייה המרכזית
 function generateAllImages() {
-    // נתיבים בסיסיים - ודא שהקבצים קיימים בתיקייה שצוינה
     var paths = [
-        'consent_form_2022.png', 
+        'images_story_vs_info/consent_form_2022.png', 
         'images_story_vs_info/gray.png', 
         'images_story_vs_info/dollar.png'
     ];
-    
     selected_blocks.forEach(block => {
         for (var i = 1; i <= 6; i++) {
             paths.push(getImagePath(block.name, i));
@@ -122,23 +119,13 @@ timeline.push({
     continue_after_error: true
 });
 
-// ----------- שלב הפתיחה -----------
-var trial_0 = {
-    type: jsPsychInstructions,
-    pages: [
-        '<div style="font-family: Arial; padding: 100px; padding-top: 5%; text-align: left;">' +
-        '<h2>Thank you for participating in this experiment!</h2>' +
-        '<p>By clicking the "Begin Study" button, you will be taken to the study, including complete instructions and an informed consent agreement.</p>'
-    ],
-    show_clickable_nav: true
-};
-
+// ----------- הוראות וחתימה -----------
 var trial_consent = {
     type: jsPsychInstructions,
     pages: [
-        '<div style="text-align:center; font-family:Arial; font-size: 22px; padding-top:20px;">' +
-        '<p>Please carefully read the consent form below before proceeding.</p>' +
-        '<img src="consent_form_2022.png" style="max-width:80%; padding:20px;"></img>' +
+        '<div style="text-align:center; font-family:Arial; padding-top:20px;">' +
+        '<p>Please carefully read the consent form below.</p>' +
+        '<img src="images_story_vs_info/consent_form_2022.png" style="max-width:80%; border:1px solid #000;"></img>' +
         '</div>'
     ],
     show_clickable_nav: true
@@ -146,44 +133,29 @@ var trial_consent = {
 
 var trial_fullscreen = { type: jsPsychFullscreen, fullscreen_mode: true };
 
-var instructions_overview = {
-    type: jsPsychInstructions,
-    pages: [
-        '<div style="font-family: Arial; text-align: left; padding: 50px; line-height: 1.6;">' +
-        '<h2>Experiment Overview</h2>' +
-        '<p>This experiment consists of <b>three parts</b>:</p>' +
-        '<div style="background-color: #f9f9f9; border-left: 5px solid #333; padding: 20px; margin: 20px 0;">' +
-        '<p><b>Part 1:</b> You will view a series of images depicting different events.</p>' +
-        '<p><b>Part 2:</b> You will be shown specific images that have <b>monetary value</b>.</p>' +
-        '<p><b>Part 3:</b> You will choose between two images and estimate which one is worth more money. ' +
-        'A correct evaluation will lead to a <b>monetary reward</b>.</p>' +
-        '</div>' +
-        '<p>Please pay close attention to the images and follow your intuition. Click "Next" to begin.</p>' +
-        '</div>'
-    ],
-    show_clickable_nav: true
-};
+timeline.push(trial_consent, trial_fullscreen);
 
-timeline.push(trial_0, trial_consent, trial_fullscreen, instructions_overview);
-
-// ----------- שלב הצפייה (Part 1) -----------
+// ----------- שלב 1: צפייה ומשימת הסחת דעת -----------
 experimental_blocks.forEach(function(block) {
+    // מסך לבן קצר בין סדרות
     timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
-        choices: "NO_KEYS", trial_duration: 2000 // קיצור קל לשיפור החוויה
+        choices: "NO_KEYS", trial_duration: 2000
     });
 
     for (var i = 1; i <= 6; i++) {
         var path = getImagePath(block.name, i);
+        // הצגת התמונה ל-5 שניות
         timeline.push({
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `<div class="stimulus-container"><img src="${path}" class="exp-image"><div class="question-area"></div></div>`,
             choices: "NO_KEYS", trial_duration: 5000 
         });
+        // שאלה על התמונה (Disruption Task)
         timeline.push({
             type: jsPsychHtmlButtonResponse,
-            stimulus: `<div class="stimulus-container"><img src="${path}" class="exp-image"><div class="question-area"><p style="font-size: 20px; font-weight: bold; margin: 0;">Is there a person in this image?</p></div></div>`,
+            stimulus: `<div class="stimulus-container"><img src="${path}" class="exp-image"><div class="question-area"><p style="font-size: 20px; font-weight: bold;">Is there a person in this image?</p></div></div>`,
             choices: ['Yes', 'No'],
             trial_duration: 3000,
             data: { task: 'observation', folder: block.name, sequence_type: block.type, img_idx: i }
@@ -191,18 +163,10 @@ experimental_blocks.forEach(function(block) {
     }
 });
 
-// ----------- הוראות חלק 2 -----------
+// ----------- שלב 2: למידת ערך (Value Learning) -----------
 var part2_intro = {
     type: jsPsychInstructions,
-    pages: [
-        '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
-        '<h2>Part 2: Value Learning</h2>' +
-        '<p style="font-size: 20px;">In this part, you will see images from the previous sequences.</p>' +
-        '<p style="font-size: 20px;">Some images are <b>worth money</b> (marked with a <span style="color:green">DOLLAR</span> image),<br>' +
-        'and others have a <b>neutral value</b> (marked with a <span style="color:grey">GRAY</span> image).</p>' +
-        '<p>Please watch the images carefully. Click "Next" to begin.</p>' +
-        '</div>'
-    ],
+    pages: ['<div style="text-align:center; padding:50px;"><h2>Part 2: Value Learning</h2><p>Click Next to begin learning the values of the images.</p></div>'],
     show_clickable_nav: true
 };
 timeline.push(part2_intro);
@@ -225,7 +189,7 @@ shuffled_part2.forEach(function(block) {
             <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 40px;">
                 <img src="${path}" class="exp-image">
                 <div style="text-align: center;">
-                    <img src="${is_valuable ? 'images_story_vs_info/dollar.png' : 'images_story_vs_info/gray.png'}" style="width: 150px; height: 150px; border: 5px solid ${is_valuable ? 'green' : 'grey'}; border-radius: 15px;">
+                    <img src="images_story_vs_info/${is_valuable ? 'dollar.png' : 'gray.png'}" style="width: 150px; height: 150px; border: 5px solid ${is_valuable ? 'green' : 'grey'}; border-radius: 15px;">
                     <p style="color: ${is_valuable ? 'green' : 'grey'}; font-weight: bold; font-size: 28px; margin-top: 15px;">${is_valuable ? 'WORTH MONEY' : 'NEUTRAL VALUE'}</p>
                 </div>
             </div>`,
@@ -234,22 +198,14 @@ shuffled_part2.forEach(function(block) {
     });
 });
 
-// ----------- הוראות חלק 3 -----------
+// ----------- שלב 3: בחירה סופית (Generalization) -----------
 var part3_intro = {
     type: jsPsychInstructions,
-    pages: [
-        '<div style="text-align: center; padding: 50px;">' +
-        '<h2>Part 3: Final Choice</h2>' +
-        '<p>In this final part, you will be shown pairs of images.<br>' +
-        'Only based on what you learned in the previous part,<br>' +
-        'please choose the image which is worth <b>more money</b> using the buttons.</p>' +
-        '</div>'
-    ],
+    pages: ['<div style="text-align:center; padding:50px;"><h2>Part 3: Final Choice</h2><p>Choose the image you think is worth more money.</p></div>'],
     show_clickable_nav: true
 };
 timeline.push(part3_intro);
 
-// יצירת מטלות הבחירה (Part 3)
 experimental_blocks.forEach(function(block) {
     [1, 2].forEach(function(dist) {
         timeline.push({
@@ -258,9 +214,8 @@ experimental_blocks.forEach(function(block) {
                 var X = 4;
                 var left_idx = Math.random() < 0.5 ? X - dist : X + dist;
                 var right_idx = (left_idx === X - dist) ? X + dist : X - dist;
-                // אחסון זמני כדי שנוכל לשמור ב-data
-                window.current_left = left_idx;
-                window.current_right = right_idx;
+                window.last_left = left_idx;
+                window.last_right = right_idx;
                 
                 return `<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is worth <b>more money</b>?</h3></div>
                         <div class="stimulus-container" style="display: flex; width: 800px; justify-content: center; gap: 30px;">
@@ -273,9 +228,8 @@ experimental_blocks.forEach(function(block) {
                 return { 
                     task: 'choice', 
                     folder: block.name, 
-                    distance: dist,
-                    img_left: window.current_left,
-                    img_right: window.current_right
+                    img_left: window.last_left, 
+                    img_right: window.last_right 
                 };
             }
         });
@@ -285,15 +239,12 @@ experimental_blocks.forEach(function(block) {
 // דמוגרפיה וסיום
 timeline.push({
     type: jsPsychSurveyText, 
-    questions: [
-        {prompt: 'Please insert your gender', name: 'gender'},
-        {prompt: 'Please insert your age', name: 'age'}
-    ]
+    questions: [{prompt: 'Gender:', name: 'gender'}, {prompt: 'Age:', name: 'age'}]
 });
 
 timeline.push({
     type: jsPsychInstructions,
-    pages: ['<span style="font-size: 24px">You have completed the experiment. Code: DACB971D74</span>'],
+    pages: ['<span style="font-size: 24px">Experiment Finished. Your Code: DACB971D74</span>'],
     show_clickable_nav: true
 });
 
