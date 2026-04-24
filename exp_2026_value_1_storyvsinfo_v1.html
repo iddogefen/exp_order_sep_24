@@ -6,6 +6,7 @@
       .stimulus-container { width: 600px; margin: 0 auto; text-align: center; }
       .question-area { height: 100px; display: flex; align-items: center; justify-content: center; }
       .small-image { width: 350px; height: 280px; object-fit: contain; border: 2px solid #ccc; }
+      /* עיצוב הריבוע התכלת למעבר */
       .transition-square { 
           width: 200px; 
           height: 200px; 
@@ -15,9 +16,6 @@
           align-items: center;
           justify-content: center;
       }
-      .value-tag { font-size: 32px; font-weight: bold; margin-top: 20px; font-family: Arial; }
-      .val-high { color: green; }
-      .val-low { color: gray; }
     </style>
     <title>My experiment</title>
     <script src="jspsych/plugins/jspsych.js"></script>
@@ -52,23 +50,29 @@ function saveData(data) {
 var subject_id = jsPsych.randomization.randomID(15);
 var timeline = [];
 
-// --- הגדרת סדרות (תמיד משתמשים בגרסה b) ---
+// --- הגרלת סדרות ייחודיות ואיזון (A=Valuable, B=Neutral) ---
 var all_numbers = [1, 2, 3, 4];
 var shuffled_numbers = jsPsych.randomization.shuffle(all_numbers);
 
 var story_nums = [shuffled_numbers[0], shuffled_numbers[1]];
 var info_nums = [shuffled_numbers[2], shuffled_numbers[3]];
 
-var s_val_idx = Math.random() < 0.5 ? 0 : 1;
-var i_val_idx = Math.random() < 0.5 ? 0 : 1;
+var s_versions = jsPsych.randomization.shuffle(['a', 'b']);
+var i_versions = jsPsych.randomization.shuffle(['a', 'b']);
+
+var version_map = {};
+version_map['story_' + story_nums[0]] = s_versions[0];
+version_map['story_' + story_nums[1]] = s_versions[1];
+version_map['info_' + info_nums[0]] = i_versions[0];
+version_map['info_' + info_nums[1]] = i_versions[1];
 
 var story_val, story_neut, info_val, info_neut;
 
 var all_blocks = [
-    { name: 'story_' + story_nums[0], type: 'story', is_valuable: (s_val_idx === 0) },
-    { name: 'story_' + story_nums[1], type: 'story', is_valuable: (s_val_idx === 1) },
-    { name: 'info_' + info_nums[0], type: 'info', is_valuable: (i_val_idx === 0) },
-    { name: 'info_' + info_nums[1], type: 'info', is_valuable: (i_val_idx === 1) }
+    { name: 'story_' + story_nums[0], type: 'story', is_valuable: (s_versions[0] === 'a') },
+    { name: 'story_' + story_nums[1], type: 'story', is_valuable: (s_versions[1] === 'a') },
+    { name: 'info_' + info_nums[0], type: 'info', is_valuable: (i_versions[0] === 'a') },
+    { name: 'info_' + info_nums[1], type: 'info', is_valuable: (i_versions[1] === 'a') }
 ];
 
 all_blocks.forEach(b => {
@@ -80,7 +84,7 @@ all_blocks.forEach(b => {
 });
 
 function getImagePath(prefix, i) {
-    var suffix = (i === 6) ? `6_b` : i; // תמיד גרסה b
+    var suffix = (i === 6) ? `6_${version_map[prefix]}` : i;
     return `images_story_vs_info/${prefix}_${suffix}.png`;
 }
 
@@ -135,6 +139,7 @@ timeline.push({
 var observation_order = jsPsych.randomization.shuffle(all_blocks);
 
 observation_order.forEach(function(block) {
+    // מסך מעבר - ריבוע תכלת
     timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: '<div class="transition-square"></div>',
@@ -160,47 +165,12 @@ observation_order.forEach(function(block) {
     }
 });
 
-// ----------- חלק 2: למידה אקטיבית (הוראות מקוריות) -----------
+// ----------- הוראות חלק 2 (מופיעות רק כאן) -----------
 timeline.push({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: center; padding: 50px; font-family: Arial;">' +
-        '<h2>Part 2: Value Discovery</h2>' +
-        '<p>You will now see some images again.</p>' +
-        '<p>For each image, you must <b>click the button to reveal its monetary value</b>.</p>' +
-        '<p>Try to remember the value of each image type.</p></div>'
-    ],
-    show_clickable_nav: true
-});
-
-var learning_X = jsPsych.randomization.sampleWithoutReplacement([3, 4], 1)[0];
-var learning_order = jsPsych.randomization.shuffle(all_blocks);
-
-learning_order.forEach(function(block) {
-    var path = getImagePath(block.name, learning_X);
-    var val_text = block.is_valuable ? "$100" : "$0";
-    var val_class = block.is_valuable ? "val-high" : "val-low";
-
-    timeline.push({
-        type: jsPsychHtmlButtonResponse,
-        stimulus: `<div class="stimulus-container"><p style="font-family:Arial; font-size:20px;">How much is this image worth?</p><img src="${path}" class="exp-image"><div class="value-tag">???</div></div>`,
-        choices: ['Click to reveal value']
-    });
-
-    timeline.push({
-        type: jsPsychHtmlButtonResponse,
-        stimulus: `<div class="stimulus-container"><p style="font-family:Arial; font-size:20px;">Remember this value:</p><img src="${path}" class="exp-image"><div class="value-tag ${val_class}">This image is worth: ${val_text}</div></div>`,
-        choices: ['Next'],
-        data: { task: 'learning', folder: block.name, learned_X: learning_X, value: val_text }
-    });
-});
-
-// ----------- חלק 3: בחירה סופית (הוראות מקוריות) -----------
-timeline.push({
-    type: jsPsychInstructions,
-    pages: [
-        '<div style="text-align: center; padding: 50px; font-family: Arial;">' +
-        '<h2>Part 3: Final Choice</h2>' +
+        '<h2>Part 2: Final Choice</h2>' +
         '<p>In this final part, you will be shown pairs of images that you saw earlier.</p>' +
         '<p>Based on your impression of the events, please choose the image which you think is worth <b>more money</b>.</p>' +
         '<p>A correct evaluation of the images will lead to a <b>monetary reward</b>.</p></div>'
@@ -208,44 +178,63 @@ timeline.push({
     show_clickable_nav: true
 });
 
+// ----------- חלק 2: בחירה (4 בחירות לזוג: 6 קבוע + 3 רנדומליות) -----------
 var comparison_pairs = [
-    { name: 'Valuable_Story_vs_Info', b1: story_val, b2: info_val },
-    { name: 'Neutral_Story_vs_Info', b1: story_neut, b2: info_neut }
+    { name: 'Valuable_Story_vs_Info', block1: story_val, block2: info_val },
+    { name: 'Neutral_Story_vs_Info', block1: story_neut, block2: info_neut }
 ];
 
-var choice_trials = [];
+var all_choice_trials = [];
+
 comparison_pairs.forEach(function(pair) {
-    choice_trials.push({ pair: pair, idx: learning_X - 1 });
-    choice_trials.push({ pair: pair, idx: learning_X + 1 });
+    // הוספת כל האינדקסים 1-6 לכל זוג השוואה
+    [1, 2, 3, 4, 5, 6].forEach(function(idx) {
+        all_choice_trials.push({ pair: pair, idx: idx });
+    });
 });
 
-jsPsych.randomization.shuffle(choice_trials).forEach(function(t) {
+// ערבוב כלל 12 הבחירות
+jsPsych.randomization.shuffle(all_choice_trials).forEach(function(trial_info) {
     timeline.push({
         type: jsPsychHtmlButtonResponse,
         on_start: function(trial) {
-            var p1 = getImagePath(t.pair.b1.name, t.idx);
-            var p2 = getImagePath(t.pair.b2.name, t.idx);
-            var left_is_story = Math.random() < 0.5;
-            trial.data.left_path = left_is_story ? p1 : p2;
-            trial.data.right_path = left_is_story ? p2 : p1;
+            var path1 = getImagePath(trial_info.pair.block1.name, trial_info.idx);
+            var path2 = getImagePath(trial_info.pair.block2.name, trial_info.idx);
+            
+            var left_is_block1 = Math.random() < 0.5;
+            trial.data.left_img_path = left_is_block1 ? path1 : path2;
+            trial.data.right_img_path = left_is_block1 ? path2 : path1;
 
             trial.stimulus = `
                 <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is worth <b>more money</b>?</h3></div>
                 <div class="stimulus-container" style="display: flex; flex-direction: row; width: 800px; justify-content: center; gap: 30px;">
-                    <img src="${trial.data.left_path}" class="small-image">
-                    <img src="${trial.data.right_path}" class="small-image">
+                    <img src="${trial.data.left_img_path}" class="small-image">
+                    <img src="${trial.data.right_img_path}" class="small-image">
                 </div>`;
         },
         choices: ['Left', 'Right'],
-        data: { task: 'choice', comp_type: t.pair.name, img_idx: t.idx, learned_X: learning_X }
+        data: { 
+            task: 'choice_comparison', 
+            comparison_type: trial_info.pair.name,
+            img_index: trial_info.idx,
+            block_story: trial_info.pair.block1.name,
+            block_info: trial_info.pair.block2.name
+        }
     });
 });
 
-// ----------- שאלון סופי (הוראות מקוריות) -----------
+// ----------- שאלת אסטרטגיה ודמוגרפיה -----------
 timeline.push({
     type: jsPsychSurveyText, 
     questions: [
-        {prompt: '<div style="font-family: Arial; font-size: 18px; margin-bottom: 10px;">On what basis did you make your choices? What was your strategy?</div>', name: 'choice_strategy', rows: 5, columns: 60},
+        {
+            prompt: '<div style="font-family: Arial; font-size: 18px; margin-bottom: 10px;">' +
+                    'In the previous part, you had to choose which image is worth more money. ' +
+                    '<b>On what basis did you make your choices? What was your strategy?</b></div>', 
+            name: 'choice_strategy', 
+            rows: 5, 
+            columns: 60
+        },
         {prompt: 'Please insert your gender', name: 'gender'},
         {prompt: 'Please insert your age', name: 'age'}
     ]
