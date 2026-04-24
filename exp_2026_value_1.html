@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <style>
-        .hide_cursor { cursor: none; }
-        .jspsych-btn { margin: 20px; padding: 10px 20px; font-size: 18px; }
-        .stim-img { width: 300px; border: 2px solid #ccc; border-radius: 8px; }
-        .choice-container { display: flex; justify-content: center; gap: 30px; margin-top: 20px; }
-    </style>
     <title>Causal Memory Experiment</title>
     <script src="jspsych/jspsych.js"></script>
     <script src="jspsych/plugin-instructions.js"></script>
@@ -17,38 +11,43 @@
     <script src="jspsych/plugin-preload.js"></script>
     <script src="Tools/Functions1.js"></script>
     <link rel="stylesheet" href="jspsych/css/jspsych.css">
+    <style>
+        .jspsych-btn img { width: 300px; border: 2px solid #ccc; border-radius: 8px; transition: transform 0.2s; }
+        .jspsych-btn:hover img { border-color: #007bff; transform: scale(1.05); }
+    </style>
 </head>
-<body></body>
+<body>
 <script>
     const jsPsych = initJsPsych({
         on_finish: function() {
-            jsPsych.data.get().localSave('csv', `subject_${subject_id}_results.csv`);
+            // שמירה מקומית של הקובץ בסיום
+            jsPsych.data.get().localSave('csv', `subject_${subject_id}.csv`);
         }
     });
 
     const subject_id = jsPsych.data.getURLVariable('participantId') || "user_" + Math.floor(Math.random()*1000000);
     
-    // Generating sequences (using your existing function)
+    // יצירת הרצפים (באמצעות הפונקציה הקיימת שלך)
     const groups = [{ name: "causal", n: 10, random: "false" }];
     const all_seq = getAllSequences(groups); 
     let timeline = [];
 
-    // --- 1. PRELOAD & FULLSCREEN ---
+    // 1. טעינה מראש ומסך מלא
     timeline.push({ type: jsPsychPreload, auto_preload: true });
     timeline.push({ type: jsPsychFullscreen, fullscreen_mode: true });
 
-    // --- 2. INSTRUCTIONS ---
+    // 2. הוראות (Instructions)
     timeline.push({
         type: jsPsychInstructions,
         pages: [
-            '<div style="font-size: 24px;">Welcome to the experiment.<br>You will view several sequences of images. Please observe them carefully.</div>',
-            '<div style="font-size: 24px;">During the task, we will ask you brief questions to ensure you are paying attention.<br>Click "Next" to begin.</div>'
+            'Welcome! You will view several sequences of images. Please observe them carefully.',
+            'Occasionally, we will ask brief questions to ensure you are paying attention.'
         ],
         show_clickable_nav: true,
         button_label_next: "Next"
     });
 
-    // --- 3. PART 1: ENCODING (Image sequences + 75%/25% Attention Checks) ---
+    // 3. שלב הקידוד (Encoding) + שאלות ערנות (75% Story/Fact, 25% Person)
     all_seq.forEach((sequence, s_idx) => {
         const images = Array.isArray(sequence) ? sequence : sequence.images;
 
@@ -58,118 +57,121 @@
                 stimulus: img_path,
                 choices: "NO_KEYS",
                 trial_duration: 2000,
-                data: { phase: 'encoding', sequence_index: s_idx, image_index: i_idx }
+                data: { 
+                    phase: 'encoding', 
+                    sequence_index: s_idx, 
+                    img_idx: i_idx + 1 
+                }
             });
 
-            // Random Attention Checks during encoding
+            // שאלות ערנות רנדומליות
             let rand = Math.random();
             if (rand < 0.75) {
-                // 75% Question: Story or Fact?
                 timeline.push({
                     type: jsPsychImageButtonResponse,
                     stimulus: img_path,
                     choices: ['Story', 'Fact'],
-                    prompt: "<p>Is this image part of a Story or a list of Facts?</p>",
+                    prompt: "<p>Is this image part of a Story or a Fact?</p>",
                     data: { task: 'attention_type' }
                 });
             } else {
-                // 25% Question: Person?
                 timeline.push({
                     type: jsPsychImageButtonResponse,
                     stimulus: img_path,
                     choices: ['Yes', 'No'],
-                    prompt: "<p>Is there a person or a description of a person in this image?</p>",
+                    prompt: "<p>Is there a person in this image?</p>",
                     data: { task: 'attention_person' }
                 });
             }
         });
     });
 
-    // --- 4. PART 2: VALUE CHOICE PHASE (14 Total Choices) ---
+    // 4. שלב הבחירה (Value Choice) - סה"כ 14 שלבים
     timeline.push({
         type: jsPsychInstructions,
-        pages: [
-            '<div style="font-size: 24px;">Part 2: Value Comparison.<br>You will see two images. Please select the one you believe is worth <b>MORE MONEY</b>.</div>'
-        ],
-        show_clickable_nav: true,
-        button_label_next: "Next"
+        pages: ['Select the image you believe is worth <b>MORE MONEY</b>.'],
+        show_clickable_nav: true
     });
 
-    /** * Logic for 14 trials:
-     * - 12 Story vs Fact comparisons (using image 6 from different sequences)
-     * - 2 Attention checks (6_a vs 6_b)
-     */
     let choice_trials = [];
 
-    // Adding 12 Story vs Fact Comparisons
-    // (This assumes you have at least 12 pairs of images available/reused)
-    for (let i = 0; i < 12; i++) {
-        // Example: logic to select image 6 from a story seq and image 6 from a fact seq
-        // Using placeholders - replace with your specific path logic
+    // א. 12 בחירות ישירות (תמונה 6 מול תמונה 6)
+    for (let i = 1; i <= 6; i++) {
+        // זוג ראשון
         choice_trials.push({
-            img_left: `images/story_seq_${i}_img6.png`, 
-            img_right: `images/fact_seq_${i}_img6.png`,
-            type: 'choice_comparison'
+            left: `images_story_vs_info/story_${i}_6.png`, 
+            right: `images_story_vs_info/info_${i}_6.png`,
+            type: 'choice_comparison',
+            comp_type: 'Valuable_Story_vs_Info'
+        });
+        // זוג שני (למשל רצפים אחרים או חזרה)
+        choice_trials.push({
+            left: `images_story_vs_info/story_${i+1}_6.png`, 
+            right: `images_story_vs_info/info_${i+1}_6.png`,
+            type: 'choice_comparison',
+            comp_type: 'Neutral_Story_vs_Info'
         });
     }
 
-    // Adding 2 Attention Checks (6_a vs 6_b)
-    for (let i = 0; i < 2; i++) {
-        choice_trials.push({
-            img_left: `images/seq_${i}_img6_a.png`, // The "money" one
-            img_right: `images/seq_${i}_img6_b.png`, // The "neutral" one
-            type: 'attention_money_check',
-            correct_img: `images/seq_${i}_img6_a.png`
-        });
-    }
+    // ב. 2 בדיקות ערנות (6_a מול 6_b)
+    choice_trials.push({
+        left: `images_story_vs_info/story_1_6_a.png`, // התמונה הנכונה (כסף)
+        right: `images_story_vs_info/story_1_6_b.png`,
+        type: 'choice_comparison',
+        is_attention: true,
+        correct: `images_story_vs_info/story_1_6_a.png`
+    });
+    choice_trials.push({
+        left: `images_story_vs_info/info_1_6_a.png`, // התמונה הנכונה (כסף)
+        right: `images_story_vs_info/info_1_6_b.png`,
+        type: 'choice_comparison',
+        is_attention: true,
+        correct: `images_story_vs_info/info_1_6_a.png`
+    });
 
-    // Shuffle the 14 trials
-    const shuffled_choices = jsPsych.randomization.shuffle(choice_trials);
+    // ערבוב של כל 14 הניסויים
+    const shuffled_trials = jsPsych.randomization.shuffle(choice_trials);
 
-    shuffled_choices.forEach((trial) => {
-        const current_choices = jsPsych.randomization.shuffle([trial.img_left, trial.img_right]);
+    shuffled_trials.forEach((t) => {
+        const display_order = jsPsych.randomization.shuffle([t.left, t.right]);
         
         timeline.push({
             type: jsPsychImageButtonResponse,
             stimulus: '',
-            choices: current_choices,
-            button_html: '<button class="jspsych-btn"><img src="%choice%" class="stim-img"/></button>',
-            prompt: "<p style='font-size: 20px;'>Which image is worth <b>MORE MONEY</b>?</p>",
+            choices: display_order,
+            button_html: '<button class="jspsych-btn"><img src="%choice%"/></button>',
+            prompt: "<p>Which image is worth <b>more money</b>?</p>",
             data: { 
-                task: trial.type,
-                correct_img: trial.correct_img || null
+                task: 'choice_comparison',
+                left_path: display_order[0],
+                right_path: display_order[1],
+                is_attention_check: t.is_attention || false,
+                expected_correct_path: t.correct || null,
+                comparison_type: t.comp_type || 'Attention_Check'
             },
             on_finish: function(data) {
-                if (data.correct_img) {
-                    const choice_made = current_choices[data.response];
-                    data.correct = (choice_made === data.correct_img);
+                if (data.expected_correct_path) {
+                    const chosen_path = display_order[data.response];
+                    data.is_correct = (chosen_path === data.expected_correct_path);
+                    data.expected_correct = (display_order[0] === data.expected_correct_path) ? 'Left' : 'Right';
                 }
             }
         });
     });
 
-    // --- 5. FINAL MANDATORY QUESTION ---
+    // 5. שאלת סיום חובה (Mandatory Feedback)
     timeline.push({
         type: jsPsychSurveyText,
-        questions: [
-            {
-                prompt: "Did you notice any connection between the type of information (Story vs Fact) and the monetary value of the images? Please explain in detail.",
-                rows: 5,
-                columns: 60,
-                required: true,
-                name: 'causal_feedback'
-            }
-        ],
-        button_label: "Complete Experiment",
-        on_finish: function(data) {
-            const val = data.response.causal_feedback;
-            if (val.length < 10) {
-                // Basic check to ensure they didn't just type one word
-                alert("Please provide a more detailed explanation before finishing.");
-            }
-        }
+        questions: [{
+            prompt: "Did you notice any connection between Stories/Facts and the money value? Please explain (this is required to finish):",
+            required: true,
+            rows: 5,
+            name: 'causal_feedback'
+        }],
+        button_label: "Finish"
     });
 
     jsPsych.run(timeline);
 </script>
+</body>
 </html>
