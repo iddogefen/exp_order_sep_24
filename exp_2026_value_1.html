@@ -160,7 +160,7 @@ observation_order.forEach(function(block) {
     }
 });
 
-// ----------- חלק 2: למידה אקטיבית (עם המתנה של 6 שניות) -----------
+// ----------- חלק 2: למידה אקטיבית -----------
 timeline.push({
     type: jsPsychInstructions,
     pages: [
@@ -173,6 +173,7 @@ timeline.push({
     show_clickable_nav: true
 });
 
+// הגרלת תמונה X שתמיד תהיה 3 או 4 כדי לאפשר מרווח של +/- 2 (בתוך הטווח 1-6)
 var learning_X = jsPsych.randomization.sampleWithoutReplacement([3, 4], 1)[0];
 var learning_order = jsPsych.randomization.shuffle(all_blocks);
 
@@ -181,30 +182,23 @@ learning_order.forEach(function(block) {
     var val_text = block.is_valuable ? "$100" : "$0";
     var val_class = block.is_valuable ? "val-high" : "val-low";
 
-    // שלב א': גילוי
     timeline.push({
         type: jsPsychHtmlButtonResponse,
         stimulus: `<div class="stimulus-container"><p style="font-family:Arial; font-size:20px;">How much is this image worth?</p><img src="${path}" class="exp-image"><div class="value-tag">???</div></div>`,
         choices: ['Click to reveal value']
     });
 
-    // שלב ב': הצגת הערך - כפתור "הבא" מנוטרל ל-6 שניות
     timeline.push({
         type: jsPsychHtmlButtonResponse,
         stimulus: `<div class="stimulus-container"><p style="font-family:Arial; font-size:20px;">Remember this value:</p><img src="${path}" class="exp-image"><div class="value-tag ${val_class}">This image is worth: ${val_text}</div></div>`,
         choices: ['Next'],
         on_load: function() {
-            // מוצאים את הכפתור ומנטרלים אותו
             var btn = document.querySelector('.jspsych-btn');
             btn.disabled = true;
             btn.style.opacity = '0.5';
-            btn.style.cursor = 'not-allowed';
-            
-            // מחזירים אותו לפעולה אחרי 6000 מילישניות
             setTimeout(function() {
                 btn.disabled = false;
                 btn.style.opacity = '1';
-                btn.style.cursor = 'pointer';
             }, 6000);
         },
         data: { task: 'learning', folder: block.name, learned_X: learning_X, value: val_text }
@@ -230,8 +224,13 @@ var comparison_pairs = [
 
 var choice_trials = [];
 comparison_pairs.forEach(function(pair) {
-    choice_trials.push({ pair: pair, idx: learning_X - 1 });
-    choice_trials.push({ pair: pair, idx: learning_X + 1 });
+    // השוואות X-2, X-1, X+1, X+2
+    [learning_X - 2, learning_X - 1, learning_X + 1, learning_X + 2].forEach(function(offset_idx) {
+        // וודא שאנחנו בטווח התמונות הקיים (1-6)
+        if (offset_idx >= 1 && offset_idx <= 6) {
+            choice_trials.push({ pair: pair, idx: offset_idx });
+        }
+    });
 });
 
 jsPsych.randomization.shuffle(choice_trials).forEach(function(t) {
