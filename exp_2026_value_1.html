@@ -2,10 +2,14 @@
 <html>
   <head>
     <style>
+      /* עיצוב כללי ותמונות */
       .exp-image { width: 500px; height: 400px; object-fit: contain; border: 2px solid #ccc; display: block; margin: 0 auto; }
       .stimulus-container { width: 600px; margin: 0 auto; text-align: center; }
       .question-area { height: 120px; display: flex; align-items: center; justify-content: center; }
-      .small-image { width: 350px; height: 280px; object-fit: contain; border: 2px solid #ccc; }
+      .small-image { width: 350px; height: 280px; object-fit: contain; border: 2px solid #ccc; transition: transform 0.2s; }
+      .small-image:hover { transform: scale(1.05); border-color: #007bff; }
+      
+      /* ריבועי מעבר בין סוגי תוכן (Story vs Facts) */
       .transition-square { 
           width: 250px; height: 250px; margin: 0 auto; 
           display: flex; align-items: center; justify-content: center;
@@ -13,12 +17,13 @@
       }
       .bg-story { background-color: #ffcccb; color: #8b0000; } 
       .bg-info { background-color: #add8e6; color: #00008b; }  
+      
       .value-tag { font-size: 32px; font-weight: bold; margin-top: 20px; font-family: Arial; }
       .val-high { color: green; }
       .val-low { color: gray; }
       .instruction-text { font-family: Arial; text-align: left; padding: 50px; line-height: 1.6; font-size: 18px; }
     </style>
-    <title>Story vs Facts Experiment</title>
+    <title>Causal Memory Experiment</title>
     <script src="jspsych/plugins/jspsych.js"></script>
     <script src="jspsych/plugins/plugin-instructions.js"></script>
     <script src="jspsych/plugins/plugin-html-button-response.js"></script>
@@ -46,9 +51,10 @@ function saveData(data) {
     .catch(error => console.error("Error saving data:", error));
 }
 
+var subject_id = jsPsych.randomization.randomID(15);
 var timeline = [];
 
-// --- הגדרת סדרות ---
+// --- הגדרת בלוקים (2 סיפורים, 2 עובדות) ---
 var all_numbers = [1, 2, 3, 4];
 var shuffled_numbers = jsPsych.randomization.shuffle(all_numbers);
 
@@ -70,8 +76,8 @@ timeline.push({ type: jsPsychPreload, auto_preload: true });
 timeline.push({
     type: jsPsychInstructions,
     pages: [
-        '<div class="instruction-text"><h2>Welcome!</h2>' +
-        '<p>Thank you for participating in this study. By clicking "Next", you will see the informed consent agreement.</p></div>',
+        '<div class="instruction-text"><h2>Thank you for participating!</h2>' +
+        '<p>By clicking "Next", you will begin the study, which includes instructions and an informed consent agreement.</p></div>',
         '<div style="text-align:center; font-family:Arial; font-size: 18px; padding: 20px;">' +
         '<p>Please read the consent form carefully before proceeding.</p>' +
         '<img src="consent_form_2022.png" style="max-width:80%; border:1px solid #000;"></img></div>'
@@ -81,27 +87,19 @@ timeline.push({
 
 timeline.push({ type: jsPsychFullscreen, fullscreen_mode: true });
 
-// ---------------------------------------------------------
-// שלב 1: הוראות מפורטות לפני תחילת הניסוי
-// ---------------------------------------------------------
+// ----------- PART 1: OBSERVATION -----------
 timeline.push({
     type: jsPsychInstructions,
     pages: [
-        '<div class="instruction-text"><h2>Part 1: Observation Phase</h2>' +
-        '<p>In this first part, you will be shown 4 different sequences of events.</p>' +
-        '<p>It is important to notice that there are two types of sequences:</p>' +
-        '<ul>' +
-        '<li><b>Stories:</b> Images that describe a narrative story.</li>' +
-        '<li><b>Facts:</b> Images that present a list of facts or information.</li>' +
-        '</ul>' +
-        '<p>Before each sequence starts, a colored screen will appear to tell you if the next images belong to a <b>Story</b> or <b>Facts</b>.</p>' +
-        '<p><b>Your Task:</b> Watch the images carefully. You will be asked questions to ensure you are paying attention.</p>' +
-        '<p>Click "Next" to begin Part 1.</p></div>'
+        '<div class="instruction-text"><h2>Part 1: Observation</h2>' +
+        '<p>In this part, you will view 4 different sequences of events.</p>' +
+        '<p>Some sequences are <b>Stories</b>, and some are <b>Facts</b>.</p>' +
+        '<p>Before each sequence, a colored screen will show you which type you are about to see.</p>' +
+        '<p><b>Your task:</b> Observe the images carefully. You will be asked periodic questions to ensure you are paying attention.</p></div>'
     ],
     show_clickable_nav: true
 });
 
-// לוגיקת שלב 1
 var observation_order = jsPsych.randomization.shuffle(all_blocks);
 observation_order.forEach(function(block) {
     var label = block.type === 'story' ? 'STORY' : 'FACTS';
@@ -134,16 +132,13 @@ observation_order.forEach(function(block) {
     }
 });
 
-// ---------------------------------------------------------
-// שלב 2: הוראות ולמידה
-// ---------------------------------------------------------
+// ----------- PART 2: VALUE DISCOVERY -----------
 timeline.push({
     type: jsPsychInstructions,
     pages: [
         '<div class="instruction-text"><h2>Part 2: Value Discovery</h2>' +
-        '<p>Now you will see the same sequences again, but we will focus on their <b>outcome</b>.</p>' +
-        '<p>For each sequence, you will find out how much money it is worth: <b>$100</b> or <b>$0</b>.</p>' +
-        '<p>Try to remember which types of sequences lead to which values.</p></div>'
+        '<p>Now you will see the outcomes (6th image) of each sequence and find out its monetary value: <b>$100</b> or <b>$0</b>.</p>' +
+        '<p>Try to learn which sequences are valuable.</p></div>'
     ],
     show_clickable_nav: true
 });
@@ -156,13 +151,13 @@ all_blocks.forEach(function(block) {
 
     timeline.push({
         type: jsPsychHtmlButtonResponse,
-        stimulus: `<div class="stimulus-container"><p style="font-family:Arial; font-size:20px;">Ending of the sequence...</p><img src="${path5}" class="exp-image"></div>`,
-        choices: ['Click to see the outcome']
+        stimulus: `<div class="stimulus-container"><p style="font-family:Arial; font-size:20px;">The sequence is ending...</p><img src="${path5}" class="exp-image"></div>`,
+        choices: ['Reveal Outcome']
     });
 
     timeline.push({
         type: jsPsychHtmlButtonResponse,
-        stimulus: `<div class="stimulus-container"><img src="${path6}" class="exp-image"><div class="value-tag ${val_class}">Worth: ${val_text}</div></div>`,
+        stimulus: `<div class="stimulus-container"><img src="${path6}" class="exp-image"><div class="value-tag ${val_class}">Value: ${val_text}</div></div>`,
         choices: ['Next'],
         on_load: function() {
             var btn = document.querySelector('.jspsych-btn');
@@ -171,31 +166,34 @@ all_blocks.forEach(function(block) {
     });
 });
 
-// ---------------------------------------------------------
-// שלב 3: הוראות ובחירה
-// ---------------------------------------------------------
+// ----------- PART 3: FINAL CHOICE (12 TRIALS) -----------
 timeline.push({
     type: jsPsychInstructions,
     pages: [
         '<div class="instruction-text"><h2>Part 3: Final Choice</h2>' +
-        '<p>This is the final part. You will see pairs of images.</p>' +
-        '<p><b>Your Task:</b> Choose the image that you think belongs to a sequence worth <b>MORE MONEY</b>.</p>' +
-        '<p>Think back: Was it a <b>Story</b> or <b>Facts</b>? Was it valuable?</p>' +
-        '<p>Correct choices will earn you a bonus reward.</p></div>'
+        '<p>You will now see pairs of images from the sequences. Choose the one that belongs to a sequence worth <b>MORE MONEY</b>.</p>' +
+        '<p>Correct choices lead to a bonus reward.</p></div>'
     ],
     show_clickable_nav: true
 });
 
 var choice_trials = [];
+// 12 השוואות בין המיקומים השונים (1-6) - ללא שאלות ערנות בסוף
 [1, 2, 3, 4, 5, 6].forEach(idx => {
-    choice_trials.push({ img1: getImagePath(all_blocks[0].name, idx), img2: getImagePath(all_blocks[2].name, idx), type: 'choice' });
-    choice_trials.push({ img1: getImagePath(all_blocks[1].name, idx), img2: getImagePath(all_blocks[3].name, idx), type: 'choice' });
+    // השוואה בין סיפור יקר לעובדה יקרה
+    choice_trials.push({ img1: getImagePath(all_blocks[0].name, idx), img2: getImagePath(all_blocks[2].name, idx), name: 'Valuable_Story_vs_Fact', idx: idx });
+    // השוואה בין סיפור ניטרלי לעובדה ניטרלית
+    choice_trials.push({ img1: getImagePath(all_blocks[1].name, idx), img2: getImagePath(all_blocks[3].name, idx), name: 'Neutral_Story_vs_Fact', idx: idx });
 });
 
 jsPsych.randomization.shuffle(choice_trials).forEach(function(t) {
     var left_first = Math.random() < 0.5;
     timeline.push({
         type: jsPsychHtmlButtonResponse,
+        on_start: function(trial) {
+            trial.data.left_path = left_first ? t.img1 : t.img2;
+            trial.data.right_path = left_first ? t.img2 : t.img1;
+        },
         stimulus: `
             <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which is worth <b>more money</b>?</h3></div>
             <div class="stimulus-container" style="display: flex; flex-direction: row; width: 800px; justify-content: center; gap: 30px;">
@@ -203,14 +201,23 @@ jsPsych.randomization.shuffle(choice_trials).forEach(function(t) {
                 <img src="${left_first ? t.img2 : t.img1}" class="small-image">
             </div>`,
         choices: ['Left', 'Right'],
-        data: { task: 'final_choice' }
+        data: { task: 'choice_comparison', comparison_type: t.name, img_idx: t.idx }
     });
 });
 
-// שאלון סופי
+// ----------- שאלון סופי -----------
 timeline.push({
     type: jsPsychSurveyText,
-    questions: [{prompt: "Did you notice any connection between the type (Story/Facts) and the value? Explain.", name: 'link', required: true}]
+    questions: [
+        {prompt: "Did you notice any connection between the type (Story/Facts) and the money value? Explain.", name: 'causal_link', required: true, rows: 5},
+        {prompt: "What was your strategy for making your choices?", name: 'strategy', required: true, rows: 5}
+    ]
+});
+
+timeline.push({
+    type: jsPsychInstructions,
+    pages: ['<div style="text-align: center;"><h2>Done!</h2><p>Thank you! Your completion code: <b>DACB971D74</b></p></div>'],
+    show_clickable_nav: true
 });
 
 jsPsych.run(timeline);
