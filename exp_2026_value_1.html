@@ -1,242 +1,175 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <style>
-      .exp-image { width: 500px; height: 400px; object-fit: contain; border: 2px solid #ccc; display: block; margin: 0 auto; }
-      .stimulus-container { width: 600px; margin: 0 auto; text-align: center; }
-      .question-area { height: 100px; display: flex; align-items: center; justify-content: center; }
-      .small-image { width: 350px; height: 280px; object-fit: contain; border: 2px solid #ccc; }
-      
-      .transition-square { 
-          width: 250px; height: 250px; margin: 0 auto; 
-          display: flex; flex-direction: column; align-items: center; justify-content: center; 
-          border-radius: 15px; color: white; font-family: Arial; font-size: 28px; font-weight: bold;
-      }
-      .bg-story { background-color: #4A90E2; } 
-      .bg-info { background-color: #F5A623; }  
-
-      .value-tag { font-size: 32px; font-weight: bold; margin-top: 20px; font-family: Arial; }
-      .val-high { color: green; }
-      .val-low { color: gray; }
+        .hide_cursor { cursor: none; }
+        .jspsych-btn { margin: 20px; padding: 10px 20px; font-size: 18px; }
+        .stim-img { width: 300px; border: 2px solid #ccc; border-radius: 8px; }
+        .choice-container { display: flex; justify-content: center; gap: 30px; margin-top: 20px; }
     </style>
-    <title>My experiment</title>
-    <script src="jspsych/plugins/jspsych.js"></script>
-    <script src="jspsych/plugins/plugin-instructions.js"></script>
-    <script src="jspsych/plugins/plugin-html-button-response.js"></script>
-    <script src="jspsych/plugins/plugin-survey-text.js"></script>
-    <script src="jspsych/plugins/plugin-html-keyboard-response.js"></script>
-    <script src="jspsych/plugins/plugin-fullscreen.js"></script>
-    <script src="jspsych/plugins/plugin-preload.js"></script>
+    <title>Causal Memory Experiment</title>
+    <script src="jspsych/jspsych.js"></script>
+    <script src="jspsych/plugin-instructions.js"></script>
+    <script src="jspsych/plugin-image-keyboard-response.js"></script>
+    <script src="jspsych/plugin-image-button-response.js"></script>
+    <script src="jspsych/plugin-survey-text.js"></script>
+    <script src="jspsych/plugin-fullscreen.js"></script>
+    <script src="jspsych/plugin-preload.js"></script>
+    <script src="Tools/Functions1.js"></script>
     <link rel="stylesheet" href="jspsych/css/jspsych.css">
-  </head>
-  <body></body>
-  <script>
-
-var jsPsych = initJsPsych({
-    on_finish: function() { saveData(jsPsych.data.get().csv()); }
-});
-
-function saveData(data) {
-    fetch('write_data.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ filedata: data })
-    })
-    .then(response => response.json())
-    .catch(error => console.error("Error saving data:", error));
-}
-
-var subject_id = jsPsych.randomization.randomID(15);
-var timeline = [];
-
-// --- Block Definitions ---
-var all_numbers = [1, 2, 3, 4];
-var shuffled_numbers = jsPsych.randomization.shuffle(all_numbers);
-
-var story_nums = [shuffled_numbers[0], shuffled_numbers[1]];
-var info_nums = [shuffled_numbers[2], shuffled_numbers[3]];
-
-var s_val_idx = Math.random() < 0.5 ? 0 : 1;
-var i_val_idx = Math.random() < 0.5 ? 0 : 1;
-
-var story_val = { name: 'story_' + story_nums[s_val_idx], type: 'Story', is_valuable: true };
-var story_neut = { name: 'story_' + story_nums[1-s_val_idx], type: 'Story', is_valuable: false };
-var info_val = { name: 'info_' + info_nums[i_val_idx], type: 'Fact', is_valuable: true };
-var info_neut = { name: 'info_' + info_nums[1-i_val_idx], type: 'Fact', is_valuable: false };
-
-var all_blocks = [story_val, story_neut, info_val, info_neut];
-
-function getImagePath(prefix, i, version = 'b') {
-    return i === 6 ? `images_story_vs_info/${prefix}_6_${version}.png` : `images_story_vs_info/${prefix}_${i}.png`;
-}
-
-// Preload
-timeline.push({
-    type: jsPsychPreload,
-    images: function() {
-        var paths = ['consent_form_2022.png'];
-        all_blocks.forEach(block => {
-            for (var i = 1; i <= 5; i++) paths.push(getImagePath(block.name, i));
-            paths.push(getImagePath(block.name, 6, 'a'));
-            paths.push(getImagePath(block.name, 6, 'b'));
-        });
-        return paths;
-    }
-});
-
-// ----------- Part 1: Intro -----------
-timeline.push({
-    type: jsPsychInstructions,
-    pages: [
-        '<div style="font-family: Arial; padding: 50px; text-align: left;">' +
-        '<h2>Welcome!</h2>' +
-        '<p>In this study, you will see sequences of images. Some sequences represent <b>Stories</b> and some represent <b>Facts</b>.</p>' +
-        '<p>Please follow the instructions on each screen carefully.</p></div>'
-    ],
-    show_clickable_nav: true
-});
-
-timeline.push({
-    type: jsPsychInstructions,
-    pages: ['<div style="text-align:center;"><p>Please read the consent form carefully.</p><img src="consent_form_2022.png" style="max-width:80%;"></img></div>'],
-    show_clickable_nav: true
-});
-
-timeline.push({ type: jsPsychFullscreen, fullscreen_mode: true });
-
-// ----------- Phase 1: Observation -----------
-var observation_order = jsPsych.randomization.shuffle(all_blocks);
-observation_order.forEach(function(block) {
-    var bgColor = (block.type === 'Story') ? 'bg-story' : 'bg-info';
-    timeline.push({
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: `<div class="transition-square ${bgColor}"><div>${block.type}</div></div>`,
-        choices: "NO_KEYS", trial_duration: 2000 
+</head>
+<body></body>
+<script>
+    const jsPsych = initJsPsych({
+        on_finish: function() {
+            jsPsych.data.get().localSave('csv', `subject_${subject_id}_results.csv`);
+        }
     });
 
-    for (var i = 1; i <= 5; i++) {
-        var path = getImagePath(block.name, i, 'b');
-        timeline.push({
-            type: jsPsychHtmlKeyboardResponse,
-            stimulus: `<div class="stimulus-container"><img src="${path}" class="exp-image"></div>`,
-            choices: "NO_KEYS", trial_duration: 5000 
-        });
-        timeline.push({
-            type: jsPsychHtmlButtonResponse,
-            stimulus: `<div class="stimulus-container"><img src="${path}" class="exp-image"><div class="question-area"><p style="font-size: 20px; font-weight: bold;">Is there a person in the description or image?</p></div></div>`,
-            choices: ['Yes', 'No'], trial_duration: 3000,
-            data: { task: 'observation', folder: block.name, sequence_type: block.type, img_idx: i }
-        });
-    }
-});
+    const subject_id = jsPsych.data.getURLVariable('participantId') || "user_" + Math.floor(Math.random()*1000000);
+    
+    // Generating sequences (using your existing function)
+    const groups = [{ name: "causal", n: 10, random: "false" }];
+    const all_seq = getAllSequences(groups); 
+    let timeline = [];
 
-// ----------- Phase 2: Learning -----------
-timeline.push({
-    type: jsPsychInstructions,
-    pages: ['<div style="text-align: center; padding: 50px;"><h2>Part 2: Value Discovery</h2><p>Now you will see the outcome and monetary value associated with each event.</p></div>'],
-    show_clickable_nav: true
-});
+    // --- 1. PRELOAD & FULLSCREEN ---
+    timeline.push({ type: jsPsychPreload, auto_preload: true });
+    timeline.push({ type: jsPsychFullscreen, fullscreen_mode: true });
 
-var learning_order = jsPsych.randomization.shuffle(all_blocks);
-learning_order.forEach(function(block) {
-    var path5 = getImagePath(block.name, 5);
-    var version6 = block.is_valuable ? 'a' : 'b';
-    var path6 = getImagePath(block.name, 6, version6);
-    var val_text = block.is_valuable ? "$100" : "$0";
-
+    // --- 2. INSTRUCTIONS ---
     timeline.push({
-        type: jsPsychHtmlButtonResponse,
-        stimulus: `<div class="stimulus-container"><p>The <b>${block.type}</b> outcome is next...</p><img src="${path5}" class="exp-image"></div>`,
-        choices: ['Reveal Outcome']
+        type: jsPsychInstructions,
+        pages: [
+            '<div style="font-size: 24px;">Welcome to the experiment.<br>You will view several sequences of images. Please observe them carefully.</div>',
+            '<div style="font-size: 24px;">During the task, we will ask you brief questions to ensure you are paying attention.<br>Click "Next" to begin.</div>'
+        ],
+        show_clickable_nav: true,
+        button_label_next: "Next"
     });
 
-    timeline.push({
-        type: jsPsychHtmlButtonResponse,
-        stimulus: `<div class="stimulus-container"><img src="${path6}" class="exp-image"><div class="value-tag">Value: ${val_text}</div></div>`,
-        choices: ['Next'],
-        on_load: function() {
-            var btn = document.querySelector('.jspsych-btn');
-            btn.disabled = true;
-            setTimeout(() => { btn.disabled = false; }, 4000);
-        },
-        data: { task: 'learning', folder: block.name, value: val_text }
-    });
-});
+    // --- 3. PART 1: ENCODING (Image sequences + 75%/25% Attention Checks) ---
+    all_seq.forEach((sequence, s_idx) => {
+        const images = Array.isArray(sequence) ? sequence : sequence.images;
 
-// ----------- Phase 3: Choice -----------
-timeline.push({
-    type: jsPsychInstructions,
-    pages: [
-        '<div style="text-align: center; padding: 50px;">' +
-        '<h2>Part 3: Final Choice</h2>' +
-        '<p>Choose the image worth <b>more money</b>.</p>' +
-        '<p><b>Take into account</b> whether the image came from a "Story" or a "Fact" when making your decision.</p></div>'
-    ],
-    show_clickable_nav: true
-});
+        images.forEach((img_path, i_idx) => {
+            timeline.push({
+                type: jsPsychImageKeyboardResponse,
+                stimulus: img_path,
+                choices: "NO_KEYS",
+                trial_duration: 2000,
+                data: { phase: 'encoding', sequence_index: s_idx, image_index: i_idx }
+            });
 
-var pairs = [
-    { name: 'Valuable_Story_vs_Info', b1: story_val, b2: info_val, is_check: false },
-    { name: 'Neutral_Story_vs_Info', b1: story_neut, b2: info_neut, is_check: false },
-    { name: 'Check_Story_Val_vs_Neut', b1: story_val, b2: story_neut, is_check: true },
-    { name: 'Check_Info_Val_vs_Neut', b1: info_val, b2: info_neut, is_check: true }
-];
-
-var choice_trials = [];
-pairs.forEach(p => {
-    var indices = p.is_check ? [3, 6] : [1, 2, 3, 4, 5, 6]; 
-    indices.forEach(idx => choice_trials.push({ pair: p, idx: idx }));
-});
-
-jsPsych.randomization.shuffle(choice_trials).forEach(t => {
-    timeline.push({
-        type: jsPsychHtmlButtonResponse,
-        on_start: function(trial) {
-            var p1 = getImagePath(t.pair.b1.name, t.idx, 'b');
-            var p2 = getImagePath(t.pair.b2.name, t.idx, 'b');
-            var left_is_b1 = Math.random() < 0.5;
-            
-            trial.data.left_path = left_is_b1 ? p1 : p2;
-            trial.data.right_path = left_is_b1 ? p2 : p1;
-            trial.data.is_attention_check = t.pair.is_check;
-            
-            if(t.pair.is_check) {
-                trial.data.expected_correct = left_is_b1 ? 'Left' : 'Right';
+            // Random Attention Checks during encoding
+            let rand = Math.random();
+            if (rand < 0.75) {
+                // 75% Question: Story or Fact?
+                timeline.push({
+                    type: jsPsychImageButtonResponse,
+                    stimulus: img_path,
+                    choices: ['Story', 'Fact'],
+                    prompt: "<p>Is this image part of a Story or a list of Facts?</p>",
+                    data: { task: 'attention_type' }
+                });
+            } else {
+                // 25% Question: Person?
+                timeline.push({
+                    type: jsPsychImageButtonResponse,
+                    stimulus: img_path,
+                    choices: ['Yes', 'No'],
+                    prompt: "<p>Is there a person or a description of a person in this image?</p>",
+                    data: { task: 'attention_person' }
+                });
             }
+        });
+    });
 
-            trial.stimulus = `
-                <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which is worth <b>more money</b>?</h3></div>
-                <div class="stimulus-container" style="display: flex; flex-direction: row; width: 800px; justify-content: center; gap: 30px;">
-                    <img src="${trial.data.left_path}" class="small-image">
-                    <img src="${trial.data.right_path}" class="small-image">
-                </div>`;
-        },
-        choices: ['Left', 'Right'],
-        data: { task: 'choice', comparison: t.pair.name, img_idx: t.idx },
+    // --- 4. PART 2: VALUE CHOICE PHASE (14 Total Choices) ---
+    timeline.push({
+        type: jsPsychInstructions,
+        pages: [
+            '<div style="font-size: 24px;">Part 2: Value Comparison.<br>You will see two images. Please select the one you believe is worth <b>MORE MONEY</b>.</div>'
+        ],
+        show_clickable_nav: true,
+        button_label_next: "Next"
+    });
+
+    /** * Logic for 14 trials:
+     * - 12 Story vs Fact comparisons (using image 6 from different sequences)
+     * - 2 Attention checks (6_a vs 6_b)
+     */
+    let choice_trials = [];
+
+    // Adding 12 Story vs Fact Comparisons
+    // (This assumes you have at least 12 pairs of images available/reused)
+    for (let i = 0; i < 12; i++) {
+        // Example: logic to select image 6 from a story seq and image 6 from a fact seq
+        // Using placeholders - replace with your specific path logic
+        choice_trials.push({
+            img_left: `images/story_seq_${i}_img6.png`, 
+            img_right: `images/fact_seq_${i}_img6.png`,
+            type: 'choice_comparison'
+        });
+    }
+
+    // Adding 2 Attention Checks (6_a vs 6_b)
+    for (let i = 0; i < 2; i++) {
+        choice_trials.push({
+            img_left: `images/seq_${i}_img6_a.png`, // The "money" one
+            img_right: `images/seq_${i}_img6_b.png`, // The "neutral" one
+            type: 'attention_money_check',
+            correct_img: `images/seq_${i}_img6_a.png`
+        });
+    }
+
+    // Shuffle the 14 trials
+    const shuffled_choices = jsPsych.randomization.shuffle(choice_trials);
+
+    shuffled_choices.forEach((trial) => {
+        const current_choices = jsPsych.randomization.shuffle([trial.img_left, trial.img_right]);
+        
+        timeline.push({
+            type: jsPsychImageButtonResponse,
+            stimulus: '',
+            choices: current_choices,
+            button_html: '<button class="jspsych-btn"><img src="%choice%" class="stim-img"/></button>',
+            prompt: "<p style='font-size: 20px;'>Which image is worth <b>MORE MONEY</b>?</p>",
+            data: { 
+                task: trial.type,
+                correct_img: trial.correct_img || null
+            },
+            on_finish: function(data) {
+                if (data.correct_img) {
+                    const choice_made = current_choices[data.response];
+                    data.correct = (choice_made === data.correct_img);
+                }
+            }
+        });
+    });
+
+    // --- 5. FINAL MANDATORY QUESTION ---
+    timeline.push({
+        type: jsPsychSurveyText,
+        questions: [
+            {
+                prompt: "Did you notice any connection between the type of information (Story vs Fact) and the monetary value of the images? Please explain in detail.",
+                rows: 5,
+                columns: 60,
+                required: true,
+                name: 'causal_feedback'
+            }
+        ],
+        button_label: "Complete Experiment",
         on_finish: function(data) {
-            if(data.is_attention_check) {
-                var response_label = data.response === 0 ? 'Left' : 'Right';
-                data.is_correct = (response_label === data.expected_correct);
+            const val = data.response.causal_feedback;
+            if (val.length < 10) {
+                // Basic check to ensure they didn't just type one word
+                alert("Please provide a more detailed explanation before finishing.");
             }
         }
     });
-});
 
-timeline.push({
-    type: jsPsychSurveyText, 
-    questions: [
-        {prompt: 'On what basis did you make your choices?', name: 'strategy', rows: 5},
-        {prompt: 'Gender:', name: 'gender'},
-        {prompt: 'Age:', name: 'age'}
-    ]
-});
-
-timeline.push({
-    type: jsPsychInstructions,
-    pages: ['<div style="text-align: center;"><h2>You have completed the experiment. Code: DACB971D74</h2></div>'],
-    show_clickable_nav: true
-});
-
-jsPsych.run(timeline);
-  </script>
+    jsPsych.run(timeline);
+</script>
 </html>
