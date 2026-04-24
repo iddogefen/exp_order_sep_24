@@ -2,29 +2,34 @@
 <html>
   <head>
     <style>
+      /* עיצוב כללי ותמונות */
       .exp-image { width: 500px; height: 400px; object-fit: contain; border: 2px solid #ccc; display: block; margin: 0 auto; }
       .stimulus-container { width: 600px; margin: 0 auto; text-align: center; }
       .question-area { height: 120px; display: flex; align-items: center; justify-content: center; }
-      .small-image { width: 350px; height: 280px; object-fit: contain; border: 2px solid #ccc; }
+      .small-image { width: 350px; height: 280px; object-fit: contain; border: 2px solid #ccc; transition: transform 0.2s; }
+      .small-image:hover { transform: scale(1.05); border-color: #007bff; }
+      
+      /* ריבועי מעבר בין סוגי תוכן */
       .transition-square { 
           width: 250px; height: 250px; margin: 0 auto; 
           display: flex; align-items: center; justify-content: center;
           font-family: Arial; font-size: 32px; font-weight: bold; border-radius: 15px;
       }
-      .bg-story { background-color: #ffcccb; color: #8b0000; } 
-      .bg-info { background-color: #add8e6; color: #00008b; }  
+      .bg-story { background-color: #ffcccb; color: #8b0000; } /* אדום לסיפור */
+      .bg-info { background-color: #add8e6; color: #00008b; }  /* כחול לעובדות */
+      
       .value-tag { font-size: 32px; font-weight: bold; margin-top: 20px; font-family: Arial; }
       .val-high { color: green; }
       .val-low { color: gray; }
     </style>
-    <title>Story vs Facts Experiment</title>
-    <script src="jspsych/jspsych.js"></script>
-    <script src="jspsych/plugin-instructions.js"></script>
-    <script src="jspsych/plugin-html-button-response.js"></script>
-    <script src="jspsych/plugin-survey-text.js"></script>
-    <script src="jspsych/plugin-html-keyboard-response.js"></script>
-    <script src="jspsych/plugin-fullscreen.js"></script>
-    <script src="jspsych/plugin-preload.js"></script>
+    <title>Causal Memory Experiment</title>
+    <script src="jspsych/plugins/jspsych.js"></script>
+    <script src="jspsych/plugins/plugin-instructions.js"></script>
+    <script src="jspsych/plugins/plugin-html-button-response.js"></script>
+    <script src="jspsych/plugins/plugin-survey-text.js"></script>
+    <script src="jspsych/plugins/plugin-html-keyboard-response.js"></script>
+    <script src="jspsych/plugins/plugin-fullscreen.js"></script>
+    <script src="jspsych/plugins/plugin-preload.js"></script>
     <link rel="stylesheet" href="jspsych/css/jspsych.css">
   </head>
   <body></body>
@@ -32,17 +37,28 @@
 
 var jsPsych = initJsPsych({
     on_finish: function() {
-        jsPsych.data.get().localSave('csv', 'experiment_data.csv');
+        saveData(jsPsych.data.get().csv());
     }
 });
+
+// פונקציית שמירת נתונים (PHP)
+function saveData(data) {
+    fetch('write_data.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filedata: data })
+    })
+    .catch(error => console.error("Error saving data:", error));
+}
 
 var subject_id = jsPsych.randomization.randomID(15);
 var timeline = [];
 
-// --- הגדרת סדרות (Story vs Fact) ---
+// --- 1. הגדרת סדרות (Story vs Facts) ---
 var story_nums = jsPsych.randomization.shuffle([1, 2]);
 var info_nums = jsPsych.randomization.shuffle([3, 4]);
 
+// הגדרת בלוקים: 2 סיפורים ו-2 עובדות. אחד מכל סוג יהיה "יקר" (Valuable)
 var all_blocks = [
     { name: 'story_' + story_nums[0], type: 'story', is_valuable: true }, 
     { name: 'story_' + story_nums[1], type: 'story', is_valuable: false },
@@ -54,44 +70,48 @@ function getImagePath(prefix, i, version = 'b') {
     return `images_story_vs_info/${prefix}_${i}${i===6 ? '_'+version : ''}.png`;
 }
 
-// 1. PRELOAD
-timeline.push({ type: jsPsychPreload, auto_preload: true });
-timeline.push({ type: jsPsychFullscreen, fullscreen_mode: true });
+// Preload
+timeline.push({
+    type: jsPsychPreload,
+    auto_preload: true
+});
 
-// 2. פתיחה והסכמה
+// --- 2. שלב הפתיחה והוראות כלליות ---
 timeline.push({
     type: jsPsychInstructions,
     pages: [
-        '<h2>Welcome to the experiment</h2><p>Please read the instructions carefully before each part.</p>',
-        '<p>By clicking "Next", you agree to participate in this study.</p>'
+        '<h2>Welcome!</h2><p>In this study, you will view several sequences of images depicting different events.</p>' +
+        '<p>Please follow the instructions before each part carefully.</p>',
+        'By clicking "Next", you agree to participate in the study.'
     ],
     show_clickable_nav: true
 });
 
-// ----------- הוראות לחלק 1 -----------
+timeline.push({ type: jsPsychFullscreen, fullscreen_mode: true });
+
+// ----------- PART 1: OBSERVATION -----------
 timeline.push({
     type: jsPsychInstructions,
     pages: [
         '<h2>Part 1: Observation Phase</h2>' +
-        '<p>In this part, you will see 4 different sequences of images.</p>' +
-        '<p>Some sequences represent a <b>Story</b>, while others represent a list of <b>Facts</b>.</p>' +
-        '<p>Before each sequence, a screen will show you whether it is a "Story" or "Facts".</p>' +
-        '<p><b>Your task:</b> Observe the images and answer periodic questions about them.</p>'
+        '<p>You will view 4 sequences of images. Some sequences tell a <b>Story</b>, while others present a list of <b>Facts</b>.</p>' +
+        '<p>Before each sequence, a screen will show you if it is a "Story" or "Facts".</p>' +
+        '<p><b>Your Task:</b> Observe the images carefully. We will ask you questions to ensure you are paying attention.</p>'
     ],
     show_clickable_nav: true
 });
 
-// שלב 1: צפייה
 var observation_order = jsPsych.randomization.shuffle(all_blocks);
+
 observation_order.forEach(function(block) {
     var label = block.type === 'story' ? 'STORY' : 'FACTS';
     var cssClass = block.type === 'story' ? 'bg-story' : 'bg-info';
 
+    // מסך מעבר בין בלוקים
     timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: `<div class="transition-square ${cssClass}"><div>${label}</div></div>`,
-        choices: "NO_KEYS", 
-        trial_duration: 2000 
+        choices: "NO_KEYS", trial_duration: 2000 
     });
 
     for (var i = 1; i <= 5; i++) {
@@ -99,37 +119,35 @@ observation_order.forEach(function(block) {
         timeline.push({
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `<div class="stimulus-container"><img src="${path}" class="exp-image"></div>`,
-            choices: "NO_KEYS", 
-            trial_duration: 3000 
+            choices: "NO_KEYS", trial_duration: 3000 
         });
 
-        // שאלות ערנות רנדומליות (75% סוג תוכן, 25% אדם)
+        // שאלת ערנות (75% סוג תוכן, 25% תוכן ויזואלי)
         var rand = Math.random();
-        var question = rand < 0.75 ? "Is this part of a Story or Facts?" : "Is there a person in this image?";
-        var choices = rand < 0.75 ? ['Story', 'Facts'] : ['Yes', 'No'];
+        var qText = (rand < 0.75) ? "Is this image part of a Story or Facts?" : "Is there a person in this image?";
+        var qChoices = (rand < 0.75) ? ['Story', 'Facts'] : ['Yes', 'No'];
 
         timeline.push({
             type: jsPsychHtmlButtonResponse,
-            stimulus: `<div class="stimulus-container"><img src="${path}" class="exp-image"><div class="question-area"><p style="font-size: 20px; font-weight: bold;">${question}</p></div></div>`,
-            choices: choices,
+            stimulus: `<div class="stimulus-container"><img src="${path}" class="exp-image"><div class="question-area"><p style="font-size: 20px; font-weight: bold;">${qText}</p></div></div>`,
+            choices: qChoices,
             data: { task: 'observation', block_type: block.type, img_idx: i }
         });
     }
 });
 
-// ----------- הוראות לחלק 2 -----------
+// ----------- PART 2: VALUE DISCOVERY -----------
 timeline.push({
     type: jsPsychInstructions,
     pages: [
         '<h2>Part 2: Value Discovery Phase</h2>' +
-        '<p>Now you will see the <b>final outcome</b> of each sequence (the 6th image).</p>' +
-        '<p>For each sequence, we will reveal how much money it is worth: <b>$100</b> or <b>$0</b>.</p>' +
-        '<p>Please try to remember which sequences are valuable and which are not.</p>'
+        '<p>Now you will see how each sequence ended (the 6th image).</p>' +
+        '<p>Each sequence has a monetary value: <b>$100</b> or <b>$0</b>.</p>' +
+        '<p>Please try to remember which types of events are more valuable.</p>'
     ],
     show_clickable_nav: true
 });
 
-// שלב 2: למידה
 all_blocks.forEach(function(block) {
     var path6 = getImagePath(block.name, 6, block.is_valuable ? 'a' : 'b');
     var val_text = block.is_valuable ? "$100" : "$0";
@@ -141,37 +159,33 @@ all_blocks.forEach(function(block) {
         choices: ['Continue'],
         on_load: function() {
             var btn = document.querySelector('.jspsych-btn');
-            btn.disabled = true;
-            setTimeout(() => { btn.disabled = false; }, 4000);
+            btn.disabled = true; setTimeout(() => { btn.disabled = false; }, 4000);
         }
     });
 });
 
-// ----------- הוראות לחלק 3 -----------
+// ----------- PART 3: FINAL CHOICE (14 Trials) -----------
 timeline.push({
     type: jsPsychInstructions,
     pages: [
-        '<h2>Part 3: Choice Phase</h2>' +
-        '<p>This is the final and most important part.</p>' +
-        '<p>You will see pairs of images. One is from a sequence you saw earlier, and the other is from a different sequence.</p>' +
-        '<p><b>Your task:</b> Choose the image that you think belongs to a sequence worth <b>MORE MONEY</b>.</p>' +
-        '<p>Correct choices will increase your bonus reward!</p>'
+        '<h2>Part 3: Final Choice Phase</h2>' +
+        '<p>You will now see pairs of images. Choose the one that belongs to a sequence worth <b>MORE MONEY</b>.</p>' +
+        '<p>Correct choices will lead to a <b>bonus reward</b>.</p>'
     ],
     show_clickable_nav: true
 });
 
-// שלב 3: בחירה (14 שלבים: 12 השוואות + 2 בדיקות ערנות)
-var comparison_pairs = [];
-[1, 2, 3, 4, 5, 6].forEach(idx => {
-    // השוואות סיפור מול עובדה
-    comparison_pairs.push({ img1: getImagePath(all_blocks[0].name, idx), img2: getImagePath(all_blocks[2].name, idx), type: 'choice' });
-    comparison_pairs.push({ img1: getImagePath(all_blocks[1].name, idx), img2: getImagePath(all_blocks[3].name, idx), type: 'choice' });
+var choice_trials = [];
+// 12 השוואות (6 אינדקסים * 2 סוגי השוואה: יקרים מול יקרים וניטרליים מול ניטרליים)
+[1, 2, 3, 4, 5, 6].forEach(function(idx) {
+    choice_trials.push({ img1: getImagePath(all_blocks[0].name, idx), img2: getImagePath(all_blocks[2].name, idx), type: 'comparison' });
+    choice_trials.push({ img1: getImagePath(all_blocks[1].name, idx), img2: getImagePath(all_blocks[3].name, idx), type: 'comparison' });
 });
-// 2 בדיקות ערנות (6a מול 6b)
-comparison_pairs.push({ img1: getImagePath(all_blocks[0].name, 6, 'a'), img2: getImagePath(all_blocks[0].name, 6, 'b'), type: 'attention' });
-comparison_pairs.push({ img1: getImagePath(all_blocks[2].name, 6, 'a'), img2: getImagePath(all_blocks[2].name, 6, 'b'), type: 'attention' });
+// 2 בדיקות ערנות (6_a מול 6_b)
+choice_trials.push({ img1: getImagePath(all_blocks[0].name, 6, 'a'), img2: getImagePath(all_blocks[0].name, 6, 'b'), type: 'attention_check', correct: 'Left' });
+choice_trials.push({ img1: getImagePath(all_blocks[2].name, 6, 'a'), img2: getImagePath(all_blocks[2].name, 6, 'b'), type: 'attention_check', correct: 'Left' });
 
-jsPsych.randomization.shuffle(comparison_pairs).forEach(function(t) {
+jsPsych.randomization.shuffle(choice_trials).forEach(function(t) {
     var left_first = Math.random() < 0.5;
     timeline.push({
         type: jsPsychHtmlButtonResponse,
@@ -182,18 +196,26 @@ jsPsych.randomization.shuffle(comparison_pairs).forEach(function(t) {
                 <img src="${left_first ? t.img2 : t.img1}" class="small-image">
             </div>`,
         choices: ['Left', 'Right'],
-        data: { task: 'final_choice', type: t.type }
+        data: { task: 'choice_comparison', trial_type: t.type }
     });
 });
 
-// שאלון סופי
+// ----------- FINAL SURVEY -----------
 timeline.push({
     type: jsPsychSurveyText,
     questions: [
-        {prompt: "Did you notice any connection between the Story/Fact type and the value? Please explain.", name: 'causal_link', required: true}
+        {prompt: "Did you notice a connection between the Story/Facts and the value? Explain.", name: 'causal_link', required: true},
+        {prompt: "What was your strategy for making choices?", name: 'strategy'}
     ]
 });
 
+timeline.push({
+    type: jsPsychInstructions,
+    pages: ['<div style="text-align: center;"><h2>Done!</h2><p>Your data has been saved. Thank you!</p></div>'],
+    show_clickable_nav: true
+});
+
 jsPsych.run(timeline);
-</script>
+
+  </script>
 </html>
