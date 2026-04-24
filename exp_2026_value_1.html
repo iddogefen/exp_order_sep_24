@@ -77,7 +77,7 @@ var version_map = {};
     version_map[p] = Math.random() < 0.5 ? 'a' : 'b';
 });
 
-// פונקציה לשליפת נתיב התמונה ללא תיקיות משנה
+// פונקציה לשליפת נתיב התמונה ללא תיקיות משנה (Flat structure)
 function getImagePath(prefix, i) {
     var suffix = (i === 6) ? `6_${version_map[prefix]}` : i;
     return `images_story_vs_info/${prefix}_${suffix}.png`;
@@ -101,10 +101,17 @@ var experimental_blocks = jsPsych.randomization.shuffle(selected_blocks);
 
 // Preload assets
 function generateAllImages() {
-    var paths = ['consent_form_2022.png', 'images/gray.png', 'images/dollar.png'];
-    for (var i = 0; i <= 4; i++) paths.push(`images/instructions/movie_${i}.png`);
+    // נתיבים בסיסיים - ודא שהקבצים קיימים בתיקייה שצוינה
+    var paths = [
+        'consent_form_2022.png', 
+        'images_story_vs_info/gray.png', 
+        'images_story_vs_info/dollar.png'
+    ];
+    
     selected_blocks.forEach(block => {
-        for (var i = 1; i <= 6; i++) paths.push(getImagePath(block.name, i));
+        for (var i = 1; i <= 6; i++) {
+            paths.push(getImagePath(block.name, i));
+        }
     });
     return paths;
 }
@@ -115,7 +122,7 @@ timeline.push({
     continue_after_error: true
 });
 
-// ----------- הוראות חלק 1 - בדיוק כמו בקוד הקודם -----------
+// ----------- שלב הפתיחה -----------
 var trial_0 = {
     type: jsPsychInstructions,
     pages: [
@@ -164,7 +171,7 @@ experimental_blocks.forEach(function(block) {
     timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
-        choices: "NO_KEYS", trial_duration: 3000
+        choices: "NO_KEYS", trial_duration: 2000 // קיצור קל לשיפור החוויה
     });
 
     for (var i = 1; i <= 6; i++) {
@@ -218,11 +225,11 @@ shuffled_part2.forEach(function(block) {
             <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 40px;">
                 <img src="${path}" class="exp-image">
                 <div style="text-align: center;">
-                    <img src="${is_valuable ? 'images/dollar.png' : 'images/gray.png'}" style="width: 150px; height: 150px; border: 5px solid ${is_valuable ? 'green' : 'grey'}; border-radius: 15px;">
+                    <img src="${is_valuable ? 'images_story_vs_info/dollar.png' : 'images_story_vs_info/gray.png'}" style="width: 150px; height: 150px; border: 5px solid ${is_valuable ? 'green' : 'grey'}; border-radius: 15px;">
                     <p style="color: ${is_valuable ? 'green' : 'grey'}; font-weight: bold; font-size: 28px; margin-top: 15px;">${is_valuable ? 'WORTH MONEY' : 'NEUTRAL VALUE'}</p>
                 </div>
             </div>`,
-        choices: "NO_KEYS", trial_duration: 8000,
+        choices: "NO_KEYS", trial_duration: 6000,
         data: { task: 'value_learning', folder: block.name, sequence_type: block.type, reward: is_valuable }
     });
 });
@@ -248,10 +255,13 @@ experimental_blocks.forEach(function(block) {
         timeline.push({
             type: jsPsychHtmlButtonResponse,
             stimulus: function() {
-                var X = 4; // נקודת המרכז הדיפולטית
+                var X = 4;
                 var left_idx = Math.random() < 0.5 ? X - dist : X + dist;
                 var right_idx = (left_idx === X - dist) ? X + dist : X - dist;
-                window.last_pair = {l: left_idx, r: right_idx};
+                // אחסון זמני כדי שנוכל לשמור ב-data
+                window.current_left = left_idx;
+                window.current_right = right_idx;
+                
                 return `<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is worth <b>more money</b>?</h3></div>
                         <div class="stimulus-container" style="display: flex; width: 800px; justify-content: center; gap: 30px;">
                             <img src="${getImagePath(block.name, left_idx)}" class="small-image">
@@ -259,7 +269,15 @@ experimental_blocks.forEach(function(block) {
                         </div>`;
             },
             choices: ['Left', 'Right'],
-            data: { task: 'choice', folder: block.name, distance: dist }
+            data: function() {
+                return { 
+                    task: 'choice', 
+                    folder: block.name, 
+                    distance: dist,
+                    img_left: window.current_left,
+                    img_right: window.current_right
+                };
+            }
         });
     });
 });
