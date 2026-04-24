@@ -1,40 +1,25 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <style>
-      /* עיצוב כללי ותמונות */
-      .exp-image { width: 500px; height: 400px; object-fit: contain; border: 2px solid #ccc; display: block; margin: 0 auto; }
-      .stimulus-container { width: 600px; margin: 0 auto; text-align: center; }
-      .question-area { height: 120px; display: flex; align-items: center; justify-content: center; }
-      .small-image { width: 350px; height: 280px; object-fit: contain; border: 2px solid #ccc; transition: transform 0.2s; }
-      .small-image:hover { transform: scale(1.05); border-color: #007bff; }
-      
-      /* ריבועי מעבר בין סוגי תוכן (Story vs Facts) */
-      .transition-square { 
-          width: 250px; height: 250px; margin: 0 auto; 
-          display: flex; align-items: center; justify-content: center;
-          font-family: Arial; font-size: 32px; font-weight: bold; border-radius: 15px;
-      }
-      .bg-story { background-color: #ffcccb; color: #8b0000; } 
-      .bg-info { background-color: #add8e6; color: #00008b; }  
-      
-      .value-tag { font-size: 32px; font-weight: bold; margin-top: 20px; font-family: Arial; }
-      .val-high { color: green; }
-      .val-low { color: gray; }
-      .instruction-text { font-family: Arial; text-align: left; padding: 50px; line-height: 1.6; font-size: 18px; }
+        .experiment-container { text-align: center; font-family: Arial; margin-top: 50px; }
+        .color-box { 
+            width: 200px; height: 200px; margin: 20px auto; 
+            border: 5px solid #333; border-radius: 20px; 
+            transition: background-color 0.3s;
+        }
+        .instruction-text { font-family: Arial; padding: 40px; line-height: 1.6; font-size: 20px; text-align: left; }
+        .reward-text { font-size: 48px; font-weight: bold; color: green; margin-top: 20px; }
+        .intervention-alert { color: #dc3545; font-weight: bold; font-size: 24px; border: 2px solid red; padding: 10px; display: inline-block; }
     </style>
-    <title>Causal Memory Experiment</title>
     <script src="jspsych/plugins/jspsych.js"></script>
-    <script src="jspsych/plugins/plugin-instructions.js"></script>
     <script src="jspsych/plugins/plugin-html-button-response.js"></script>
-    <script src="jspsych/plugins/plugin-survey-text.js"></script>
-    <script src="jspsych/plugins/plugin-html-keyboard-response.js"></script>
-    <script src="jspsych/plugins/plugin-fullscreen.js"></script>
+    <script src="jspsych/plugins/plugin-instructions.js"></script>
     <script src="jspsych/plugins/plugin-preload.js"></script>
     <link rel="stylesheet" href="jspsych/css/jspsych.css">
-  </head>
-  <body></body>
-  <script>
+</head>
+<body></body>
+<script>
 
 var jsPsych = initJsPsych({
     on_finish: function() {
@@ -51,176 +36,113 @@ function saveData(data) {
     .catch(error => console.error("Error saving data:", error));
 }
 
-var subject_id = jsPsych.randomization.randomID(15);
+const TARGET_SEQUENCE = ['Blue', 'Yellow', 'Green', 'Purple'];
+const COLORS = {
+    'Blue': '#007bff', 'Yellow': '#ffc107', 'Green': '#28a745', 
+    'Purple': '#6f42c1', 'Red': '#dc3545'
+};
+
 var timeline = [];
 
-// --- הגדרת בלוקים (2 סיפורים, 2 עובדות) ---
-var all_numbers = [1, 2, 3, 4];
-var shuffled_numbers = jsPsych.randomization.shuffle(all_numbers);
-
-var all_blocks = [
-    { name: 'story_' + shuffled_numbers[0], type: 'story', is_valuable: true }, 
-    { name: 'story_' + shuffled_numbers[1], type: 'story', is_valuable: false },
-    { name: 'info_' + shuffled_numbers[2], type: 'info', is_valuable: true },
-    { name: 'info_' + shuffled_numbers[3], type: 'info', is_valuable: false }
-];
-
-function getImagePath(prefix, i, version = 'b') {
-    return `images_story_vs_info/${prefix}_${i}${i===6 ? '_'+version : ''}.png`;
-}
-
-// 1. Preload
-timeline.push({ type: jsPsychPreload, auto_preload: true });
-
-// 2. פתיחה והסכמה מדעת
+// 1. Instructions (English)
 timeline.push({
     type: jsPsychInstructions,
     pages: [
-        '<div class="instruction-text"><h2>Thank you for participating!</h2>' +
-        '<p>By clicking "Next", you will begin the study, which includes instructions and an informed consent agreement.</p></div>',
-        '<div style="text-align:center; font-family:Arial; font-size: 18px; padding: 20px;">' +
-        '<p>Please read the consent form carefully before proceeding.</p>' +
-        '<img src="consent_form_2022.png" style="max-width:80%; border:1px solid #000;"></img></div>'
+        '<div class="instruction-text"><h2>Causal Inference Task</h2>' +
+        '<p>In this experiment, your goal is to discover a sequence of <b>4 colors</b> that leads to a $100 reward.</p>' +
+        '<p><b>Important:</b> The reward is only granted if <u>you</u> correctly triggered the sequence from start to finish.</p>' +
+        '<p>Sometimes, the system will activate itself without your input. You must determine if a reward is still expected in these cases.</p></div>'
     ],
     show_clickable_nav: true
 });
 
-timeline.push({ type: jsPsychFullscreen, fullscreen_mode: true });
+function create_causal_trial(is_intervention) {
+    let was_broken = is_intervention; 
 
-// ----------- PART 1: OBSERVATION -----------
-timeline.push({
-    type: jsPsychInstructions,
-    pages: [
-        '<div class="instruction-text"><h2>Part 1: Observation</h2>' +
-        '<p>In this part, you will view 4 different sequences of events.</p>' +
-        '<p>Some sequences are <b>Stories</b>, and some are <b>Facts</b>.</p>' +
-        '<p>Before each sequence, a colored screen will show you which type you are about to see.</p>' +
-        '<p><b>Your task:</b> Observe the images carefully. You will be asked periodic questions to ensure you are paying attention.</p></div>'
-    ],
-    show_clickable_nav: true
-});
+    for (let step = 0; step < 4; step++) {
+        if (step === 0 && is_intervention) {
+            // Intervention Trial: Computer starts the sequence
+            timeline.push({
+                type: jsPsychHtmlButtonResponse,
+                stimulus: `
+                    <div class="experiment-container">
+                        <div class="intervention-alert">The system activated automatically!</div>
+                        <div class="color-box" style="background-color: ${COLORS[TARGET_SEQUENCE[0]]};"></div>
+                        <p>The color <b>${TARGET_SEQUENCE[0]}</b> appeared without your choice.</p>
+                    </div>`,
+                choices: ['Continue'],
+                data: { trial_type: 'computer_intervention', step: step }
+            });
+        } else {
+            // Normal Choice Trial
+            timeline.push({
+                type: jsPsychHtmlButtonResponse,
+                stimulus: `<div class="experiment-container"><h3>Step ${step + 1} of 4</h3><p>Select a button:</p></div>`,
+                choices: ['Option A', 'Option B'],
+                on_finish: function(data) {
+                    let correct = (data.response === 0);
+                    data.revealed_color = correct ? TARGET_SEQUENCE[step] : 'Red';
+                    data.is_correct = correct;
+                    data.trial_type = 'user_choice';
+                    if (!correct) was_broken = true;
+                }
+            });
 
-var observation_order = jsPsych.randomization.shuffle(all_blocks);
-observation_order.forEach(function(block) {
-    var label = block.type === 'story' ? 'STORY' : 'FACTS';
-    var cssClass = block.type === 'story' ? 'bg-story' : 'bg-info';
-
-    timeline.push({
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: `<div class="transition-square ${cssClass}"><div>${label}</div></div>`,
-        choices: "NO_KEYS", trial_duration: 2000 
-    });
-
-    for (var i = 1; i <= 5; i++) {
-        var path = getImagePath(block.name, i);
-        timeline.push({
-            type: jsPsychHtmlKeyboardResponse,
-            stimulus: `<div class="stimulus-container"><img src="${path}" class="exp-image"></div>`,
-            choices: "NO_KEYS", trial_duration: 3000 
-        });
-
-        var rand = Math.random();
-        var qText = rand < 0.75 ? "Is this image part of a Story or Facts?" : "Is there a person in this image?";
-        var qChoices = rand < 0.75 ? ['Story', 'Facts'] : ['Yes', 'No'];
-
-        timeline.push({
-            type: jsPsychHtmlButtonResponse,
-            stimulus: `<div class="stimulus-container"><img src="${path}" class="exp-image"><div class="question-area"><p style="font-size: 20px; font-weight: bold;">${qText}</p></div></div>`,
-            choices: qChoices,
-            data: { task: 'observation', block_type: block.type, img_idx: i }
-        });
+            timeline.push({
+                type: jsPsychHtmlButtonResponse,
+                stimulus: function() {
+                    let last_data = jsPsych.data.get().last(1).values()[0];
+                    return `
+                        <div class="experiment-container">
+                            <div class="color-box" style="background-color: ${COLORS[last_data.revealed_color]};"></div>
+                            <p>Revealed: <b>${last_data.revealed_color}</b></p>
+                        </div>`;
+                },
+                choices: ['Next'],
+                trial_duration: 1200
+            });
+        }
     }
-});
 
-// ----------- PART 2: VALUE DISCOVERY -----------
-timeline.push({
-    type: jsPsychInstructions,
-    pages: [
-        '<div class="instruction-text"><h2>Part 2: Value Discovery</h2>' +
-        '<p>Now you will see the outcomes (6th image) of each sequence and find out its monetary value: <b>$100</b> or <b>$0</b>.</p>' +
-        '<p>Try to learn which sequences are valuable.</p></div>'
-    ],
-    show_clickable_nav: true
-});
-
-all_blocks.forEach(function(block) {
-    var path5 = getImagePath(block.name, 5);
-    var path6 = getImagePath(block.name, 6, block.is_valuable ? 'a' : 'b');
-    var val_text = block.is_valuable ? "$100" : "$0";
-    var val_class = block.is_valuable ? "val-high" : "val-low";
-
+    // Causal Judgment - Check if user understands the mechanism
     timeline.push({
         type: jsPsychHtmlButtonResponse,
-        stimulus: `<div class="stimulus-container"><p style="font-family:Arial; font-size:20px;">The sequence is ending...</p><img src="${path5}" class="exp-image"></div>`,
-        choices: ['Reveal Outcome']
-    });
-
-    timeline.push({
-        type: jsPsychHtmlButtonResponse,
-        stimulus: `<div class="stimulus-container"><img src="${path6}" class="exp-image"><div class="value-tag ${val_class}">Value: ${val_text}</div></div>`,
-        choices: ['Next'],
-        on_load: function() {
-            var btn = document.querySelector('.jspsych-btn');
-            btn.disabled = true; setTimeout(() => { btn.disabled = false; }, 4000);
+        stimulus: `<div class="experiment-container"><h2>End of Sequence</h2><p>Do you believe you will receive $100 now?</p></div>`,
+        choices: ['Yes, Reward Expected', 'No, Sequence Interrupted'],
+        on_finish: function(data) {
+            // Logic: if was_broken is true, the correct answer is "No" (index 1)
+            data.correct_causal_judgment = (data.response === (was_broken ? 1 : 0));
         }
     });
-});
 
-// ----------- PART 3: FINAL CHOICE (12 TRIALS) -----------
-timeline.push({
-    type: jsPsychInstructions,
-    pages: [
-        '<div class="instruction-text"><h2>Part 3: Final Choice</h2>' +
-        '<p>You will now see pairs of images from the sequences. Choose the one that belongs to a sequence worth <b>MORE MONEY</b>.</p>' +
-        '<p>Correct choices lead to a bonus reward.</p></div>'
-    ],
-    show_clickable_nav: true
-});
-
-var choice_trials = [];
-// 12 השוואות בין המיקומים השונים (1-6) - ללא שאלות ערנות בסוף
-[1, 2, 3, 4, 5, 6].forEach(idx => {
-    // השוואה בין סיפור יקר לעובדה יקרה
-    choice_trials.push({ img1: getImagePath(all_blocks[0].name, idx), img2: getImagePath(all_blocks[2].name, idx), name: 'Valuable_Story_vs_Fact', idx: idx });
-    // השוואה בין סיפור ניטרלי לעובדה ניטרלית
-    choice_trials.push({ img1: getImagePath(all_blocks[1].name, idx), img2: getImagePath(all_blocks[3].name, idx), name: 'Neutral_Story_vs_Fact', idx: idx });
-});
-
-jsPsych.randomization.shuffle(choice_trials).forEach(function(t) {
-    var left_first = Math.random() < 0.5;
+    // Final Outcome Feedback
     timeline.push({
         type: jsPsychHtmlButtonResponse,
-        on_start: function(trial) {
-            trial.data.left_path = left_first ? t.img1 : t.img2;
-            trial.data.right_path = left_first ? t.img2 : t.img1;
+        stimulus: function() {
+            if (!was_broken) {
+                return '<div class="experiment-container"><div class="reward-text">$100 🎉</div><p>Your actions caused the outcome!</p></div>';
+            } else {
+                return '<div class="experiment-container"><div class="reward-text" style="color:gray;">$0</div><p>The causal chain was not completed by you.</p></div>';
+            }
         },
-        stimulus: `
-            <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which is worth <b>more money</b>?</h3></div>
-            <div class="stimulus-container" style="display: flex; flex-direction: row; width: 800px; justify-content: center; gap: 30px;">
-                <img src="${left_first ? t.img1 : t.img2}" class="small-image">
-                <img src="${left_first ? t.img2 : t.img1}" class="small-image">
-            </div>`,
-        choices: ['Left', 'Right'],
-        data: { task: 'choice_comparison', comparison_type: t.name, img_idx: t.idx }
+        choices: ['Next Round'],
+        trial_duration: 2000
     });
-});
+}
 
-// ----------- שאלון סופי -----------
-timeline.push({
-    type: jsPsychSurveyText,
-    questions: [
-        {prompt: "Did you notice any connection between the type (Story/Facts) and the money value? Explain.", name: 'causal_link', required: true, rows: 5},
-        {prompt: "What was your strategy for making your choices?", name: 'strategy', required: true, rows: 5}
-    ]
+// Build Experiment: 6 Choice trials and 4 Intervention trials
+let trial_types = [false, false, false, false, false, false, true, true, true, true];
+jsPsych.randomization.shuffle(trial_types).forEach(type => {
+    create_causal_trial(type);
 });
 
 timeline.push({
     type: jsPsychInstructions,
-    pages: ['<div style="text-align: center;"><h2>Done!</h2><p>Thank you! Your completion code: <b>DACB971D74</b></p></div>'],
+    pages: ['<div class="experiment-container"><h2>Task Completed</h2><p>Thank you for your participation!</p></div>'],
     show_clickable_nav: true
 });
 
 jsPsych.run(timeline);
 
-  </script>
+</script>
 </html>
