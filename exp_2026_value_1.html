@@ -52,7 +52,7 @@ function saveData(data) {
 var subject_id = jsPsych.randomization.randomID(15);
 var timeline = [];
 
-// --- הגדרת סדרות (תמיד משתמשים בגרסה b) ---
+// --- הגדרת סדרות (גרסה b בלבד) ---
 var all_numbers = [1, 2, 3, 4];
 var shuffled_numbers = jsPsych.randomization.shuffle(all_numbers);
 
@@ -80,7 +80,7 @@ all_blocks.forEach(b => {
 });
 
 function getImagePath(prefix, i) {
-    var suffix = (i === 6) ? `6_b` : i; // תמיד גרסה b
+    var suffix = (i === 6) ? `6_b` : i;
     return `images_story_vs_info/${prefix}_${suffix}.png`;
 }
 
@@ -96,7 +96,7 @@ timeline.push({
     }
 });
 
-// ----------- שלב הפתיחה (הוראות מקוריות) -----------
+// ----------- שלב הפתיחה -----------
 timeline.push({
     type: jsPsychInstructions,
     pages: [
@@ -125,13 +125,13 @@ timeline.push({
         '<div style="font-family: Arial; text-align: left; padding: 50px; line-height: 1.6;">' +
         '<h2>Experiment Overview</h2>' +
         '<p>In this experiment, you will view a series of images depicting different events.</p>' +
-        '<p>Please pay close attention to the images as they appear on the screen. You will be asked simple questions about them during the process.</p>' +
+        '<p><b>Please read the text carefully and then answer if there is a person in the description or image.</b></p>' +
         '<p>Follow your intuition and click "Next" to begin Part 1.</p></div>'
     ],
     show_clickable_nav: true
 });
 
-// ----------- חלק 1: צפייה (בסדר רנדומלי עם ריבוע תכלת) -----------
+// ----------- חלק 1: צפייה -----------
 var observation_order = jsPsych.randomization.shuffle(all_blocks);
 
 observation_order.forEach(function(block) {
@@ -160,7 +160,7 @@ observation_order.forEach(function(block) {
     }
 });
 
-// ----------- חלק 2: למידה אקטיבית (הוראות מקוריות) -----------
+// ----------- חלק 2: למידה אקטיבית (עם המתנה של 6 שניות) -----------
 timeline.push({
     type: jsPsychInstructions,
     pages: [
@@ -181,28 +181,43 @@ learning_order.forEach(function(block) {
     var val_text = block.is_valuable ? "$100" : "$0";
     var val_class = block.is_valuable ? "val-high" : "val-low";
 
+    // שלב א': גילוי
     timeline.push({
         type: jsPsychHtmlButtonResponse,
         stimulus: `<div class="stimulus-container"><p style="font-family:Arial; font-size:20px;">How much is this image worth?</p><img src="${path}" class="exp-image"><div class="value-tag">???</div></div>`,
         choices: ['Click to reveal value']
     });
 
+    // שלב ב': הצגת הערך - כפתור "הבא" מנוטרל ל-6 שניות
     timeline.push({
         type: jsPsychHtmlButtonResponse,
         stimulus: `<div class="stimulus-container"><p style="font-family:Arial; font-size:20px;">Remember this value:</p><img src="${path}" class="exp-image"><div class="value-tag ${val_class}">This image is worth: ${val_text}</div></div>`,
         choices: ['Next'],
+        on_load: function() {
+            // מוצאים את הכפתור ומנטרלים אותו
+            var btn = document.querySelector('.jspsych-btn');
+            btn.disabled = true;
+            btn.style.opacity = '0.5';
+            btn.style.cursor = 'not-allowed';
+            
+            // מחזירים אותו לפעולה אחרי 6000 מילישניות
+            setTimeout(function() {
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.style.cursor = 'pointer';
+            }, 6000);
+        },
         data: { task: 'learning', folder: block.name, learned_X: learning_X, value: val_text }
     });
 });
 
-// ----------- חלק 3: בחירה סופית (הוראות מקוריות) -----------
+// ----------- חלק 3: בחירה -----------
 timeline.push({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: center; padding: 50px; font-family: Arial;">' +
         '<h2>Part 3: Final Choice</h2>' +
-        '<p>In this final part, you will be shown pairs of images that you saw earlier.</p>' +
-        '<p>Based on your impression of the events, please choose the image which you think is worth <b>more money</b>.</p>' +
+        '<p><b>Now you will see different images, try to think about their relation to the image with the value of 100 or 0 that you saw in the previous stage and based on that, evaluate which of the two images is worth more.</b></p>' +
         '<p>A correct evaluation of the images will lead to a <b>monetary reward</b>.</p></div>'
     ],
     show_clickable_nav: true
@@ -241,7 +256,7 @@ jsPsych.randomization.shuffle(choice_trials).forEach(function(t) {
     });
 });
 
-// ----------- שאלון סופי (הוראות מקוריות) -----------
+// ----------- שאלון סופי -----------
 timeline.push({
     type: jsPsychSurveyText, 
     questions: [
