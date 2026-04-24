@@ -39,35 +39,28 @@ function saveData(data) {
     .catch(error => console.error("Error saving data:", error));
 }
 
-// פונקציה לבניית נתיב תמונה
-function imgPath(prefix, index) {
-    if (index === 6) {
-        return "images_story_vs_info/" + prefix + "/" + prefix + "_6_a.png";
-    }
-    return "images_story_vs_info/" + prefix + "/" + prefix + "_" + index + ".png";
-}
-
-function staticPath(filename) {
-    return "images_story_vs_info/" + filename;
-}
-
 var timeline = [];
+var main_folder = "images_story_vs_info/"; // התיקייה המרכזית בלבד
 
+// הגדרת הסדרות
 var story_prefixes = ['story_1', 'story_2', 'story_3', 'story_4'];
 var info_prefixes = ['info_1', 'info_2', 'info_3', 'info_4'];
 var all_prefixes = [...story_prefixes, ...info_prefixes];
 
-// בניית רשימת Preload
+// הגרלת גרסאות (a/b) לתמונה האחרונה בכל סדרה
+var versions = {};
+all_prefixes.forEach(p => { versions[p] = Math.random() < 0.5 ? 'a' : 'b'; });
+
+// בניית רשימת Preload - מוודא שכל התמונות נטענות מהתיקייה המרכזית
 var preload_images = [
-    staticPath('consent_form_2022.png'),
-    staticPath('gray.png'),
-    staticPath('dollar.png')
+    main_folder + 'consent_form_2022.png',
+    main_folder + 'gray.png',
+    main_folder + 'dollar.png'
 ];
 
 all_prefixes.forEach(p => {
-    for (var i = 1; i <= 6; i++) {
-        preload_images.push(imgPath(p, i));
-    }
+    for (var i = 1; i <= 5; i++) { preload_images.push(main_folder + p + "_" + i + ".png"); }
+    preload_images.push(main_folder + p + "_6_" + versions[p] + ".png");
 });
 
 timeline.push({
@@ -78,6 +71,7 @@ timeline.push({
     continue_after_error: true
 });
 
+// הגרלת בלוקים בעלי ערך (2 מכל סוג)
 var valuable_list = jsPsych.randomization.sampleWithoutReplacement(story_prefixes, 2)
     .concat(jsPsych.randomization.sampleWithoutReplacement(info_prefixes, 2));
 
@@ -98,7 +92,7 @@ var consent = {
         `<div class="instruction-box">
             <h2>Consent Form</h2>
             <p>Please read the following consent form carefully before beginning the study.</p>
-            <img src="${staticPath('consent_form_2022.png')}" style="width:100%; border:1px solid #ccc;">
+            <img src="${main_folder}consent_form_2022.png" style="width:100%; border:1px solid #ccc;">
          </div>`
     ],
     show_clickable_nav: true,
@@ -126,6 +120,7 @@ timeline.push(consent, overview);
 
 // --- PART 1: OBSERVATION ---
 experimental_setup.forEach(block => {
+    // מרווח לבן בין בלוקים
     timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: '<div style="background:white; width:100vw; height:100vh;"></div>',
@@ -133,14 +128,17 @@ experimental_setup.forEach(block => {
     });
 
     for (var i = 1; i <= 6; i++) {
-        var path = imgPath(block.name, i);
+        var img_file = (i === 6) ? `${block.name}_6_${versions[block.name]}.png` : `${block.name}_${i}.png`;
+        var path = main_folder + img_file;
 
+        // הצגת תמונה
         timeline.push({
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `<div class="stimulus-container"><img src="${path}" class="exp-image"><div class="question-area"></div></div>`,
             choices: "NO_KEYS", trial_duration: 4000
         });
 
+        // שאלת הסחת דעת
         timeline.push({
             type: jsPsychHtmlButtonResponse,
             stimulus: `<div class="stimulus-container"><img src="${path}" class="exp-image"><div class="question-area"><p>Is there a person in this image?</p></div></div>`,
@@ -160,7 +158,7 @@ timeline.push({
 var learning_order = jsPsych.randomization.shuffle(experimental_setup);
 learning_order.forEach(block => {
     var target_img = jsPsych.randomization.sampleWithReplacement([3, 4, 5], 1)[0];
-    var path = imgPath(block.name, target_img);
+    var path = main_folder + block.name + "_" + target_img + ".png";
 
     timeline.push({
         type: jsPsychHtmlButtonResponse,
@@ -174,8 +172,8 @@ learning_order.forEach(block => {
             <div class="stimulus-container" style="display:flex; align-items:center; justify-content:center; gap:30px;">
                 <img src="${path}" class="exp-image">
                 <div style="text-align:center;">
-                    <img src="${staticPath(block.is_valuable ? 'dollar.png' : 'gray.png')}" style="width:120px;">
-                    <h2 style="color:${block.is_valuable ? 'green' : 'gray'}">${block.is_valuable ? 'WORTH MONEY' : 'NEUTRAL'}</h2>
+                    <img src="${main_folder + (block.is_valuable ? 'dollar.png' : 'gray.png')}" style="width:120px;">
+                    <h2 style="color:${block.is_valuable ? 'green':'gray'}">${block.is_valuable ? 'WORTH MONEY' : 'NEUTRAL'}</h2>
                 </div>
             </div>`,
         choices: "NO_KEYS", trial_duration: 5000,
@@ -198,12 +196,13 @@ experimental_setup.forEach(block => {
                 var center = 4;
                 var left_i = Math.random() < 0.5 ? center - dist : center + dist;
                 var right_i = left_i === center - dist ? center + dist : center - dist;
-
+                
+                // שמירת נתונים זמנית
                 window.l_img = left_i; window.r_img = right_i;
 
                 return `<div class="stimulus-container" style="display:flex; width:800px; gap:20px;">
-                            <img src="${imgPath(block.name, left_i)}" class="small-image">
-                            <img src="${imgPath(block.name, right_i)}" class="small-image">
+                            <img src="${main_folder + block.name + '_' + left_i}.png" class="small-image">
+                            <img src="${main_folder + block.name + '_' + right_i}.png" class="small-image">
                         </div>`;
             },
             choices: ['Left Image', 'Right Image'],
