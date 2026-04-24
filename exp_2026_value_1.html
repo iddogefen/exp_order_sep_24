@@ -40,41 +40,31 @@ function saveData(data) {
 var subject_id = jsPsych.randomization.randomID(15);
 var timeline = [];
 
-// --- הגדרות סדרות וגרסאות (2 סטורי, 2 אינפו, אחד a ואחד b מכל סוג) ---
-var story_prefixes = ['story_1', 'story_2', 'story_3', 'story_4'];
-var info_prefixes = ['info_1', 'info_2', 'info_3', 'info_4'];
+// --- הגדרת המאגרים ובחירת רשימות ייחודיות ---
+var story_pool = ['story_1', 'story_2', 'story_3', 'story_4'];
+var info_pool = ['info_1', 'info_2', 'info_3', 'info_4'];
 
-var selected_story_names = jsPsych.randomization.sampleWithoutReplacement(story_prefixes, 2);
-var selected_info_names = jsPsych.randomization.sampleWithoutReplacement(info_prefixes, 2);
+var selected_stories = jsPsych.randomization.sampleWithoutReplacement(story_pool, 2);
+var selected_infos = jsPsych.randomization.sampleWithoutReplacement(info_pool, 2);
 
-var story_versions = jsPsych.randomization.shuffle(['a', 'b']);
-var info_versions = jsPsych.randomization.shuffle(['a', 'b']);
+var story_v = jsPsych.randomization.shuffle(['a', 'b']);
+var info_v = jsPsych.randomization.shuffle(['a', 'b']);
 
 var version_map = {};
-version_map[selected_story_names[0]] = story_versions[0];
-version_map[selected_story_names[1]] = story_versions[1];
-version_map[selected_info_names[0]] = info_versions[0];
-version_map[selected_info_names[1]] = info_versions[1];
+version_map[selected_stories[0]] = story_v[0];
+version_map[selected_stories[1]] = story_v[1];
+version_map[selected_infos[0]] = info_v[0];
+version_map[selected_infos[1]] = info_v[1];
 
-// הגדרת בלוקים: גרסה a היא בעלת ערך כספי
-var selected_blocks = [
-    { name: selected_story_names[0], type: 'story', is_valuable: (version_map[selected_story_names[0]] === 'a') },
-    { name: selected_story_names[1], type: 'story', is_valuable: (version_map[selected_story_names[1]] === 'a') },
-    { name: selected_info_names[0], type: 'info', is_valuable: (version_map[selected_info_names[0]] === 'a') },
-    { name: selected_info_names[1], type: 'info', is_valuable: (version_map[selected_info_names[1]] === 'a') }
+var all_blocks = [
+    { name: selected_stories[0], type: 'story', is_valuable: (version_map[selected_stories[0]] === 'a') },
+    { name: selected_stories[1], type: 'story', is_valuable: (version_map[selected_stories[1]] === 'a') },
+    { name: selected_infos[0], type: 'info', is_valuable: (version_map[selected_infos[0]] === 'a') },
+    { name: selected_infos[1], type: 'info', is_valuable: (version_map[selected_infos[1]] === 'a') }
 ];
 
-console.log("--- EXPERIMENT CONFIG (A=Valuable, B=Neutral) ---");
-selected_blocks.forEach(b => {
-    console.log(`Block: ${b.name} (6_${version_map[b.name]}) | Value: ${b.is_valuable ? 'YES' : 'NO'}`);
-});
-
-var experimental_blocks = jsPsych.randomization.shuffle(selected_blocks);
-
-jsPsych.data.addProperties({
-    subject_id: jsPsych.data.getURLVariable('participantId') || subject_id,
-    version_config: JSON.stringify(version_map)
-});
+console.log("--- EXPERIMENT SETUP (A=Valuable) ---");
+all_blocks.forEach(b => console.log(`List: ${b.name} | Ver: 6_${version_map[b.name]} | Valuable: ${b.is_valuable}`));
 
 function getImagePath(prefix, i) {
     var suffix = (i === 6) ? `6_${version_map[prefix]}` : i;
@@ -86,14 +76,14 @@ timeline.push({
     type: jsPsychPreload,
     images: function() {
         var paths = ['consent_form_2022.png'];
-        selected_blocks.forEach(block => {
+        all_blocks.forEach(block => {
             for (var i = 1; i <= 6; i++) { paths.push(getImagePath(block.name, i)); }
         });
         return paths;
     }
 });
 
-// ----------- הוראות פתיחה -----------
+// ----------- שלב הפתיחה (הוראות לחלק 1 בלבד) -----------
 var trial_0 = {
     type: jsPsychInstructions,
     pages: [
@@ -122,13 +112,9 @@ var instructions_overview = {
     pages: [
         '<div style="font-family: Arial; text-align: left; padding: 50px; line-height: 1.6;">' +
         '<h2>Experiment Overview</h2>' +
-        '<p>This experiment consists of <b>two parts</b>:</p>' +
-        '<div style="background-color: #f9f9f9; border-left: 5px solid #333; padding: 20px; margin: 20px 0;">' +
-        '<p><b>Part 1:</b> You will view a series of images depicting different events.</p>' +
-        '<p><b>Part 2:</b> You will choose between two images and estimate which one is worth more money. ' +
-        'A correct evaluation will lead to a <b>monetary reward</b>.</p>' +
-        '</div>' +
-        '<p>Please pay close attention to the images and follow your intuition. Click "Next" to begin.</p>' +
+        '<p>In this experiment, you will view a series of images depicting different events.</p>' +
+        '<p>Please pay close attention to the images as they appear on the screen. You will be asked simple questions about them during the process.</p>' +
+        '<p>Follow your intuition and click "Next" to begin Part 1.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
@@ -136,12 +122,14 @@ var instructions_overview = {
 
 timeline.push(trial_0, trial_consent, trial_fullscreen, instructions_overview);
 
-// ----------- שלב 1: צפייה (Part 1) -----------
-experimental_blocks.forEach(function(block) {
+// ----------- חלק 1: צפייה -----------
+var observation_order = jsPsych.randomization.shuffle(all_blocks);
+
+observation_order.forEach(function(block) {
     timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
-        choices: "NO_KEYS", trial_duration: 2000 
+        choices: "NO_KEYS", trial_duration: 1500 
     });
 
     for (var i = 1; i <= 6; i++) {
@@ -156,43 +144,41 @@ experimental_blocks.forEach(function(block) {
             stimulus: `<div class="stimulus-container"><img src="${path}" class="exp-image"><div class="question-area"><p style="font-size: 20px; font-weight: bold; margin: 0;">Is there a person in this image?</p></div></div>`,
             choices: ['Yes', 'No'],
             trial_duration: 3000,
-            data: { 
-                task: 'observation', 
-                folder: block.name, 
-                sequence_type: block.type, 
-                img_idx: i,
-                is_valuable: block.is_valuable
-            }
+            data: { task: 'observation', folder: block.name, sequence_type: block.type, img_idx: i }
         });
     }
 });
 
-// ----------- שלב 2: בחירה (Part 2) -----------
+// ----------- הוראות חלק 2 (מופיעות רק כאן) -----------
 var part2_intro = {
     type: jsPsychInstructions,
     pages: [
-        '<div style="text-align: center; padding: 50px;">' +
+        '<div style="text-align: center; padding: 50px; font-family: Arial;">' +
         '<h2>Part 2: Final Choice</h2>' +
-        '<p>In this final part, you will be shown pairs of images.<br>' +
-        'Please choose the image which is worth <b>more money</b> using the buttons.</p>' +
+        '<p>In this final part, you will be shown pairs of images that you saw earlier.</p>' +
+        '<p>Based on your impression of the events, please choose the image which you think is worth <b>more money</b>.</p>' +
+        '<p>A correct evaluation of the images will lead to a <b>monetary reward</b>.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
 };
 timeline.push(part2_intro);
 
-experimental_blocks.forEach(function(block) {
-    var distances = [1, 2, 3]; // השוואה של תמונה 6 מול 5, 4, 3
+// ----------- חלק 2: בחירה (X מול X-1, X-2, X-3) -----------
+var choice_order = jsPsych.randomization.shuffle(all_blocks);
+
+choice_order.forEach(function(block) {
+    var distances = [1, 2, 3]; // השוואה של 6 מול 5, 4, 3
     
     distances.forEach(function(dist) {
         timeline.push({
             type: jsPsychHtmlButtonResponse,
             on_start: function(trial) {
-                var img_6 = 6;
-                var comparison_img = 6 - dist;
+                var img_X = 6;
+                var img_comp = 6 - dist;
                 
-                var left = Math.random() < 0.5 ? img_6 : comparison_img;
-                var right = (left === img_6) ? comparison_img : img_6;
+                var left = Math.random() < 0.5 ? img_X : img_comp;
+                var right = (left === img_X) ? img_comp : img_X;
                 
                 trial.data.img_left = left;
                 trial.data.img_right = right;
@@ -207,17 +193,17 @@ experimental_blocks.forEach(function(block) {
             },
             choices: ['Left', 'Right'],
             data: { 
-                task: 'choice_vs_6', 
+                task: 'choice', 
                 folder: block.name, 
                 sequence_type: block.type,
-                version_6: version_map[block.name],
-                is_valuable_block: block.is_valuable
+                is_valuable_block: block.is_valuable,
+                version_6: version_map[block.name]
             }
         });
     });
 });
 
-// דמוגרפיה וסיום
+// סיום
 timeline.push({
     type: jsPsychSurveyText, 
     questions: [
