@@ -40,7 +40,7 @@ function saveData(data) {
 var subject_id = jsPsych.randomization.randomID(15);
 var timeline = [];
 
-// --- הגרלת סדרות ייחודיות ואיזון (A=Valuable) ---
+// --- הגרלת סדרות ייחודיות ואיזון (A=Valuable, B=Neutral) ---
 var all_numbers = [1, 2, 3, 4];
 var shuffled_numbers = jsPsych.randomization.shuffle(all_numbers);
 
@@ -76,7 +76,7 @@ function getImagePath(prefix, i) {
     return `images_story_vs_info/${prefix}_${suffix}.png`;
 }
 
-// Preload
+// Preload images
 timeline.push({
     type: jsPsychPreload,
     images: function() {
@@ -88,7 +88,7 @@ timeline.push({
     }
 });
 
-// ----------- שלב הפתיחה (טקסטים מקוריים) -----------
+// ----------- שלב הפתיחה (הוראות מקוריות) -----------
 timeline.push({
     type: jsPsychInstructions,
     pages: [
@@ -163,21 +163,28 @@ timeline.push({
     show_clickable_nav: true
 });
 
-// ----------- חלק 2: בחירה (רנדומיזציה בין ובתור הסדרות) -----------
+// ----------- חלק 2: בחירה (4 בחירות לסדרה, 6 קבוע + 3 רנדומליות) -----------
 var comparison_pairs = [
     { val: valuable_blocks[0], neut: neutral_blocks[0] },
     { val: valuable_blocks[1], neut: neutral_blocks[1] }
 ];
 
-var choice_trials = [];
+var all_choice_trials = [];
+
 comparison_pairs.forEach(function(pair) {
-    [1, 2, 3, 4, 5].forEach(function(idx) {
-        choice_trials.push({ pair: pair, idx: idx });
+    // תמיד כוללים את תמונה 6
+    all_choice_trials.push({ pair: pair, idx: 6 });
+    
+    // בוחרים עוד 3 אינדקסים רנדומליים מתוך 1-5 ללא חזרה
+    var other_indices = jsPsych.randomization.sampleWithoutReplacement([1, 2, 3, 4, 5], 3);
+    
+    other_indices.forEach(function(idx) {
+        all_choice_trials.push({ pair: pair, idx: idx });
     });
 });
 
-// ערבוב כלל ההשוואות (גם בין הזוגות וגם בין האינדקסים)
-jsPsych.randomization.shuffle(choice_trials).forEach(function(trial_info) {
+// ערבוב כלל 8 הבחירות (4 לכל זוג)
+jsPsych.randomization.shuffle(all_choice_trials).forEach(function(trial_info) {
     timeline.push({
         type: jsPsychHtmlButtonResponse,
         on_start: function(trial) {
@@ -201,7 +208,8 @@ jsPsych.randomization.shuffle(choice_trials).forEach(function(trial_info) {
             task: 'choice_comparison', 
             img_index: trial_info.idx,
             valuable_folder: trial_info.pair.val.name,
-            neutral_folder: trial_info.pair.neut.name
+            neutral_folder: trial_info.pair.neut.name,
+            is_index_6: (trial_info.idx === 6)
         }
     });
 });
@@ -223,7 +231,7 @@ timeline.push({
 
 timeline.push({
     type: jsPsychInstructions,
-    pages: ['<span style="font-size: 24px">You have completed the experiment. Code: DACB971D74</span>'],
+    pages: ['<div style="text-align: center;"><span style="font-size: 24px">You have completed the experiment. Code: DACB971D74</span></div>'],
     show_clickable_nav: true
 });
 
