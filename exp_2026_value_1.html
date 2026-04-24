@@ -187,17 +187,13 @@ var comparison_pairs = [
 var all_choice_trials = [];
 
 comparison_pairs.forEach(function(pair) {
-    // תמיד כוללים את אינדקס 6
-    all_choice_trials.push({ pair: pair, idx: 6 });
-    
-    // בוחרים עוד 3 אינדקסים רנדומליים מתוך 1-5
-    var other_indices = jsPsych.randomization.sampleWithoutReplacement([1, 2, 3, 4, 5], 3);
-    other_indices.forEach(function(idx) {
+    // הוספת כל האינדקסים 1-6 לכל זוג השוואה
+    [1, 2, 3, 4, 5, 6].forEach(function(idx) {
         all_choice_trials.push({ pair: pair, idx: idx });
     });
 });
 
-// ערבוב כלל 8 הבחירות
+// ערבוב כלל 12 הבחירות
 jsPsych.randomization.shuffle(all_choice_trials).forEach(function(trial_info) {
     timeline.push({
         type: jsPsychHtmlButtonResponse,
