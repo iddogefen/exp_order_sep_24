@@ -49,7 +49,7 @@ function saveData(data) {
 var subject_id = jsPsych.randomization.randomID(15);
 var timeline = [];
 
-// --- הגדרת סדרות ---
+// --- Block Definitions ---
 var all_numbers = [1, 2, 3, 4];
 var shuffled_numbers = jsPsych.randomization.shuffle(all_numbers);
 
@@ -84,13 +84,13 @@ timeline.push({
     }
 });
 
-// ----------- שלב הפתיחה -----------
+// ----------- Part 1: Intro -----------
 timeline.push({
     type: jsPsychInstructions,
     pages: [
         '<div style="font-family: Arial; padding: 50px; text-align: left;">' +
         '<h2>Welcome!</h2>' +
-        '<p>In this study, you will see sequences of images. Some are <b>Stories</b> and some are <b>Facts</b>.</p>' +
+        '<p>In this study, you will see sequences of images. Some sequences represent <b>Stories</b> and some represent <b>Facts</b>.</p>' +
         '<p>Please follow the instructions on each screen carefully.</p></div>'
     ],
     show_clickable_nav: true
@@ -98,13 +98,13 @@ timeline.push({
 
 timeline.push({
     type: jsPsychInstructions,
-    pages: ['<div style="text-align:center;"><img src="consent_form_2022.png" style="max-width:80%;"></img></div>'],
+    pages: ['<div style="text-align:center;"><p>Please read the consent form carefully.</p><img src="consent_form_2022.png" style="max-width:80%;"></img></div>'],
     show_clickable_nav: true
 });
 
 timeline.push({ type: jsPsychFullscreen, fullscreen_mode: true });
 
-// ----------- חלק 1: צפייה -----------
+// ----------- Phase 1: Observation -----------
 var observation_order = jsPsych.randomization.shuffle(all_blocks);
 observation_order.forEach(function(block) {
     var bgColor = (block.type === 'Story') ? 'bg-story' : 'bg-info';
@@ -123,17 +123,17 @@ observation_order.forEach(function(block) {
         });
         timeline.push({
             type: jsPsychHtmlButtonResponse,
-            stimulus: `<div class="stimulus-container"><img src="${path}" class="exp-image"><div class="question-area"><p>Is there a person in the description or image?</p></div></div>`,
+            stimulus: `<div class="stimulus-container"><img src="${path}" class="exp-image"><div class="question-area"><p style="font-size: 20px; font-weight: bold;">Is there a person in the description or image?</p></div></div>`,
             choices: ['Yes', 'No'], trial_duration: 3000,
             data: { task: 'observation', folder: block.name, sequence_type: block.type, img_idx: i }
         });
     }
 });
 
-// ----------- חלק 2: למידה אקטיבית -----------
+// ----------- Phase 2: Learning -----------
 timeline.push({
     type: jsPsychInstructions,
-    pages: ['<div style="text-align: center; padding: 50px;"><h2>Part 2: Value Discovery</h2><p>Now you will see the outcome and monetary value of each event.</p></div>'],
+    pages: ['<div style="text-align: center; padding: 50px;"><h2>Part 2: Value Discovery</h2><p>Now you will see the outcome and monetary value associated with each event.</p></div>'],
     show_clickable_nav: true
 });
 
@@ -163,19 +163,18 @@ learning_order.forEach(function(block) {
     });
 });
 
-// ----------- חלק 3: בחירה סופית -----------
+// ----------- Phase 3: Choice -----------
 timeline.push({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: center; padding: 50px;">' +
         '<h2>Part 3: Final Choice</h2>' +
         '<p>Choose the image worth <b>more money</b>.</p>' +
-        '<p><b>התחשבו בכך</b> אם התמונה הגיעה מתוך "סיפור" או "עובדה" בזמן שאתם בוחרים.</p></div>'
+        '<p><b>Take into account</b> whether the image came from a "Story" or a "Fact" when making your decision.</p></div>'
     ],
     show_clickable_nav: true
 });
 
-// הגדרת זוגות: 2 השוואות בין סוגים, ו-2 השוואות בדיקת ערנות (ערך מול ניטרלי)
 var pairs = [
     { name: 'Valuable_Story_vs_Info', b1: story_val, b2: info_val, is_check: false },
     { name: 'Neutral_Story_vs_Info', b1: story_neut, b2: info_neut, is_check: false },
@@ -185,7 +184,7 @@ var pairs = [
 
 var choice_trials = [];
 pairs.forEach(p => {
-    var indices = p.is_check ? [3, 6] : [1, 2, 3, 4, 5, 6]; // בדיקת ערנות על תמונות נבחרות
+    var indices = p.is_check ? [3, 6] : [1, 2, 3, 4, 5, 6]; 
     indices.forEach(idx => choice_trials.push({ pair: p, idx: idx }));
 });
 
@@ -201,7 +200,6 @@ jsPsych.randomization.shuffle(choice_trials).forEach(t => {
             trial.data.right_path = left_is_b1 ? p2 : p1;
             trial.data.is_attention_check = t.pair.is_check;
             
-            // הגדרת הציפייה (אמת/שקר) לבדיקת ערנות
             if(t.pair.is_check) {
                 trial.data.expected_correct = left_is_b1 ? 'Left' : 'Right';
             }
@@ -217,8 +215,8 @@ jsPsych.randomization.shuffle(choice_trials).forEach(t => {
         data: { task: 'choice', comparison: t.pair.name, img_idx: t.idx },
         on_finish: function(data) {
             if(data.is_attention_check) {
-                data.is_correct = (jsPsych.pluginAPI.compareKeys(data.response, 0) && data.expected_correct === 'Left') || 
-                                  (jsPsych.pluginAPI.compareKeys(data.response, 1) && data.expected_correct === 'Right');
+                var response_label = data.response === 0 ? 'Left' : 'Right';
+                data.is_correct = (response_label === data.expected_correct);
             }
         }
     });
@@ -226,12 +224,16 @@ jsPsych.randomization.shuffle(choice_trials).forEach(t => {
 
 timeline.push({
     type: jsPsychSurveyText, 
-    questions: [{prompt: 'On what basis did you make your choices?', name: 'strategy', rows: 5}]
+    questions: [
+        {prompt: 'On what basis did you make your choices?', name: 'strategy', rows: 5},
+        {prompt: 'Gender:', name: 'gender'},
+        {prompt: 'Age:', name: 'age'}
+    ]
 });
 
 timeline.push({
     type: jsPsychInstructions,
-    pages: ['<div style="text-align: center;"><h2>Done! Code: DACB971D74</h2></div>'],
+    pages: ['<div style="text-align: center;"><h2>You have completed the experiment. Code: DACB971D74</h2></div>'],
     show_clickable_nav: true
 });
 
