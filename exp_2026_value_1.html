@@ -100,9 +100,18 @@ timeline.push({
         <p>Before each sequence starts, a colored screen will appear to notify you that a new series is starting.</p>
         <p>Your Task: Watch the images carefully and answer the question appearing after each image.</p>
         <p>Important: Please pay close attention. Making too many errors on these questions will lead to disqualification from the study.</p>
-        <p>Click Next to begin Part 1.</p></div>`
+        <p>Please note: You will be able to click Next only after 10 seconds.</p></div>`
     ],
-    show_clickable_nav: true
+    show_clickable_nav: true,
+    on_load: function() {
+        var btn = document.querySelector('#jspsych-instructions-next');
+        btn.disabled = true;
+        btn.style.opacity = "0.5";
+        setTimeout(function() {
+            btn.disabled = false;
+            btn.style.opacity = "1";
+        }, 10000);
+    }
 });
 
 // Observation Phase Logic
