@@ -268,12 +268,27 @@ jsPsych.randomization.shuffle(choice_trials).forEach(function(t) {
 // ---------------------------------------------------------
 // Final Questionnaire
 // ---------------------------------------------------------
+// ---------------------------------------------------------
+// Final Questionnaire (Updated with specific mechanism questions)
+// ---------------------------------------------------------
 timeline.push({
     type: jsPsychSurveyText,
     questions: [
         {
             prompt: "Did you notice any pattern or rule that helped you predict which images would lead to a financial profit? Please explain.", 
-            name: 'strategy', 
+            name: 'general_strategy', 
+            required: true,
+            rows: 5
+        },
+        {
+            prompt: "In your opinion, was there a connection between how the images in a sequence related to one another and the final financial value? Please explain.",
+            name: 'connection_logic',
+            required: true,
+            rows: 5
+        },
+        {
+            prompt: "Were there specific images that you felt were more 'telling' or provided more information about the upcoming profit than others?",
+            name: 'specific_cues',
             required: true,
             rows: 5
         }
