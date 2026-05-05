@@ -48,15 +48,22 @@ function saveData(data) {
 
 var timeline = [];
 
-// --- הגדרת סדרות ---
-var all_numbers = [1, 2, 3, 4,5,6,7,8];
+// --- הגדרת סדרות (8 סדרות סה"כ - מאוחד) ---
+var all_numbers = [1, 2, 3, 4, 5, 6, 7, 8];
 var shuffled_numbers = jsPsych.randomization.shuffle(all_numbers);
 
 var all_blocks = [
+    // 4 סדרות סיפור (2 יקרות, 2 זולות)
     { name: 'story_' + shuffled_numbers[0], type: 'story', is_valuable: true }, 
-    { name: 'story_' + shuffled_numbers[1], type: 'story', is_valuable: false },
-    { name: 'info_' + shuffled_numbers[2], type: 'info', is_valuable: true },
-    { name: 'info_' + shuffled_numbers[3], type: 'info', is_valuable: false }
+    { name: 'story_' + shuffled_numbers[1], type: 'story', is_valuable: true },
+    { name: 'story_' + shuffled_numbers[2], type: 'story', is_valuable: false },
+    { name: 'story_' + shuffled_numbers[3], type: 'story', is_valuable: false },
+
+    // 4 סדרות מידע (2 יקרות, 2 זולות)
+    { name: 'info_' + shuffled_numbers[4], type: 'info', is_valuable: true },
+    { name: 'info_' + shuffled_numbers[5], type: 'info', is_valuable: true },
+    { name: 'info_' + shuffled_numbers[6], type: 'info', is_valuable: false },
+    { name: 'info_' + shuffled_numbers[7], type: 'info', is_valuable: false }
 ];
 
 function getImagePath(prefix, i, version = 'b') {
@@ -101,11 +108,9 @@ timeline.push({
 var observation_order = jsPsych.randomization.shuffle(all_blocks);
 
 observation_order.forEach(function(block) {
-    // Label updated to English: "New series starting"
     var label = "New series starting"; 
     var cssClass = block.type === 'story' ? 'bg-story' : 'bg-info';
 
-    // Transition screen (2 seconds)
     timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: `<div class="transition-square ${cssClass}"><div style="text-align: center;">${label}</div></div>`,
@@ -116,7 +121,6 @@ observation_order.forEach(function(block) {
     for (var i = 1; i <= 5; i++) {
         var path = getImagePath(block.name, i);
 
-        // Display image for 3 seconds
         timeline.push({
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `<div class="stimulus-container"><img src="${path}" class="exp-image"></div>`,
@@ -124,15 +128,12 @@ observation_order.forEach(function(block) {
             trial_duration: 3000 
         });
 
-        // Connectivity question in English
         var qText = "Is this image related to the previous image?";
         var qChoices;
         
         if (i === 1) {
-            // Options for the very first image of a block
             qChoices = ['Yes', 'No', 'There was no previous image in this sequence'];
         } else {
-            // Options for images 2-5
             qChoices = ['Yes', 'No'];
         }
 
@@ -155,6 +156,7 @@ observation_order.forEach(function(block) {
         });
     }
 });
+
 // ---------------------------------------------------------
 // Part 2: Value Discovery (Updated)
 // ---------------------------------------------------------
@@ -176,7 +178,6 @@ all_blocks.forEach(function(block) {
     var val_text = block.is_valuable ? "$100" : "$0";
     var val_class = block.is_valuable ? "val-high" : "val-low";
 
-    // תמונה אחרונה בסדרה (תמונה 5)
     timeline.push({
         type: jsPsychHtmlButtonResponse,
         stimulus: `
@@ -187,7 +188,6 @@ all_blocks.forEach(function(block) {
         choices: ['Click to see the outcome image']
     });
 
-    // תמונת התוצאה (תמונה 6) והערך הכספי
     timeline.push({
         type: jsPsychHtmlButtonResponse,
         stimulus: `
@@ -198,7 +198,6 @@ all_blocks.forEach(function(block) {
             </div>`,
         choices: ['Next'],
         on_load: function() {
-            // השהיית הכפתור ל-4 שניות כדי להבטיח למידה
             var btn = document.querySelector('.jspsych-btn');
             btn.disabled = true; 
             setTimeout(() => { btn.disabled = false; }, 4000);
@@ -219,26 +218,42 @@ timeline.push({
     pages: [
         `<div class="instruction-text"><h2>Part 3: Final Choice</h2>
         <p>This is the final part. You will see pairs of images.</p>
-        <p><b>Your Task:</b> Choose the image that you think will <b>lead to a financial profit.</p>
+        <p><b>Your Task:</b> Choose the image that you think will <b>lead to a financial profit.</b></p>
         <p>Correct choices will earn you a bonus reward.</p></div>`
     ],
     show_clickable_nav: true
 });
 
 var choice_trials = [];
-// Comparison between high-value and low-value images
+
 [1, 2, 3, 4, 5, 6].forEach(idx => {
+    // 1. Story vs Story
     choice_trials.push({ 
         img1: getImagePath(all_blocks[0].name, idx), 
         img2: getImagePath(all_blocks[2].name, idx), 
-        val1: all_blocks[0].is_valuable,
-        val2: all_blocks[2].is_valuable
+        pair_type: 'story_vs_story',
+        idx: idx
     });
+    // 2. Info vs Info
+    choice_trials.push({ 
+        img1: getImagePath(all_blocks[4].name, idx), 
+        img2: getImagePath(all_blocks[6].name, idx), 
+        pair_type: 'info_vs_info',
+        idx: idx
+    });
+    // 3. Story vs Info Cross
     choice_trials.push({ 
         img1: getImagePath(all_blocks[1].name, idx), 
-        img2: getImagePath(all_blocks[3].name, idx),
-        val1: all_blocks[1].is_valuable,
-        val2: all_blocks[3].is_valuable
+        img2: getImagePath(all_blocks[7].name, idx), 
+        pair_type: 'story_vs_info_cross',
+        idx: idx
+    });
+    // 4. Info vs Story Cross
+    choice_trials.push({ 
+        img1: getImagePath(all_blocks[5].name, idx), 
+        img2: getImagePath(all_blocks[3].name, idx), 
+        pair_type: 'info_vs_story_cross',
+        idx: idx
     });
 });
 
@@ -256,19 +271,15 @@ jsPsych.randomization.shuffle(choice_trials).forEach(function(t) {
         choices: ['Left', 'Right'],
         data: { 
             task: 'final_choice',
-            left_img: left_first ? t.img1 : t.img2,
-            right_img: left_first ? t.img2 : t.img1,
-            // Records which side was actually the profitable one
-            correct_side: (left_first && t.val1) || (!left_first && t.val2) ? 'Left' : 'Right'
+            img_index: t.idx,
+            pair_type: t.pair_type,
+            correct_side: left_first ? 'Left' : 'Right'
         }
     });
 });
 
 // ---------------------------------------------------------
 // Final Questionnaire
-// ---------------------------------------------------------
-// ---------------------------------------------------------
-// Final Questionnaire (Updated with specific mechanism questions)
 // ---------------------------------------------------------
 timeline.push({
     type: jsPsychSurveyText,
