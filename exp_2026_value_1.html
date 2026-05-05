@@ -97,9 +97,10 @@ timeline.push({
     pages: [
         `<div class="instruction-text"><h2>Part 1: Observation Phase</h2>
         <p>In this first part, you will be shown different sequences of events.</p>
-        <p>Before each sequence starts, a colored screen will appear to notify you that <b>a new series is starting.</b></p>
-        <p><b>Your Task:</b> Watch the images carefully and answer the question appearing after each image.</p>
-        <p>Click "Next" to begin Part 1.</p></div>`
+        <p>Before each sequence starts, a colored screen will appear to notify you that a new series is starting.</p>
+        <p>Your Task: Watch the images carefully and answer the question appearing after each image.</p>
+        <p>Important: Please pay close attention. Making too many errors on these questions will lead to disqualification from the study.</p>
+        <p>Click Next to begin Part 1.</p></div>`
     ],
     show_clickable_nav: true
 });
@@ -160,12 +161,17 @@ observation_order.forEach(function(block) {
 // ---------------------------------------------------------
 // Part 2: Value Discovery (Updated)
 // ---------------------------------------------------------
+// ---------------------------------------------------------
+// Part 2: Value Discovery (Updated with 5-Second Delay)
+// ---------------------------------------------------------
 timeline.push({
     type: jsPsychInstructions,
     pages: [
         `<div class="instruction-text"><h2>Part 2: Value Discovery</h2>
         <p>In this part, you will see the <b>last image</b> of each sequence again, followed by the <b>outcome image</b> that comes after it.</p>
         <p>For each image, you will find out how much money it is worth.</p>
+        <p><b>Please note:</b> You will be able to click "Next" only after 5 seconds.</p>
+        <p>Try to remember which images lead to which values.</p>
         <p>Click "Next" to continue.</p></div>`
     ],
     show_clickable_nav: true
@@ -177,6 +183,7 @@ all_blocks.forEach(function(block) {
     var val_text = block.is_valuable ? "$100" : "$0";
     var val_class = block.is_valuable ? "val-high" : "val-low";
 
+    // תמונה אחרונה בסדרה (תמונה 5) - עם השהיה של 5 שניות
     timeline.push({
         type: jsPsychHtmlButtonResponse,
         stimulus: `
@@ -184,9 +191,19 @@ all_blocks.forEach(function(block) {
                 <p style="font-family:Arial; font-size:20px;">Last image of the sequence...</p>
                 <img src="${path5}" class="exp-image">
             </div>`,
-        choices: ['Click to see the outcome image']
+        choices: ['Click to see the outcome image'],
+        on_load: function() {
+            var btn = document.querySelector('.jspsych-btn');
+            btn.disabled = true; 
+            btn.style.opacity = "0.5";
+            setTimeout(() => { 
+                btn.disabled = false; 
+                btn.style.opacity = "1";
+            }, 5000);
+        }
     });
 
+    // תמונת התוצאה (תמונה 6) והערך הכספי - עם השהיה של 5 שניות
     timeline.push({
         type: jsPsychHtmlButtonResponse,
         stimulus: `
@@ -199,7 +216,11 @@ all_blocks.forEach(function(block) {
         on_load: function() {
             var btn = document.querySelector('.jspsych-btn');
             btn.disabled = true; 
-            setTimeout(() => { btn.disabled = false; }, 4000);
+            btn.style.opacity = "0.5";
+            setTimeout(() => { 
+                btn.disabled = false; 
+                btn.style.opacity = "1";
+            }, 5000);
         },
         data: {
             task: 'value_learning',
@@ -208,7 +229,6 @@ all_blocks.forEach(function(block) {
         }
     });
 });
-
 // ---------------------------------------------------------
 // Part 3: Final Choice (Updated with Profit Focus)
 // ---------------------------------------------------------
