@@ -82,54 +82,80 @@ timeline.push({
 timeline.push({ type: jsPsychFullscreen, fullscreen_mode: true });
 
 // ---------------------------------------------------------
-// שלב 1: הוראות מפורטות לפני תחילת הניסוי
+// Part 1: Observation Phase (Updated with Connectivity Questions)
 // ---------------------------------------------------------
+
 timeline.push({
     type: jsPsychInstructions,
     pages: [
-        '<div class="instruction-text"><h2>Part 1: Observation Phase</h2>' +
-        '<p>In this first part, you will be shown 4 different sequences of events.</p>' +
-        '<p>It is important to notice that there are two types of sequences:</p>' +
-        '<ul>' +
-        '<li><b>Stories:</b> Images that describe a narrative story.</li>' +
-        '<li><b>Facts:</b> Images that present a list of facts or information.</li>' +
-        '</ul>' +
-        '<p>Before each sequence starts, a colored screen will appear to tell you if the next images belong to a <b>Story</b> or <b>Facts</b>.</p>' +
-        '<p><b>Your Task:</b> Watch the images carefully. You will be asked questions to ensure you are paying attention.</p>' +
-        '<p>Click "Next" to begin Part 1.</p></div>'
+        `<div class="instruction-text"><h2>Part 1: Observation Phase</h2>
+        <p>In this first part, you will be shown 4 different sequences of events.</p>
+        <p>It is important to notice that there are two types of sequences:</p>
+        <ul>
+            <li><b>Stories:</b> Images that describe a narrative story.</li>
+            <li><b>Facts:</b> Images that present a list of facts or information.</li>
+        </ul>
+        <p>Before each sequence starts, a colored screen will appear to tell you if the next images belong to a <b>Story</b> or <b>Facts</b>.</p>
+        <p><b>Your Task:</b> Watch the images carefully and answer the question appearing after each image.</p>
+        <p>Click "Next" to begin Part 1.</p></div>`
     ],
     show_clickable_nav: true
 });
 
-// לוגיקת שלב 1
+// Observation Phase Logic
 var observation_order = jsPsych.randomization.shuffle(all_blocks);
+
 observation_order.forEach(function(block) {
     var label = block.type === 'story' ? 'STORY' : 'FACTS';
     var cssClass = block.type === 'story' ? 'bg-story' : 'bg-info';
 
+    // Transition screen (2 seconds)
     timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: `<div class="transition-square ${cssClass}"><div>${label}</div></div>`,
-        choices: "NO_KEYS", trial_duration: 2000 
+        choices: "NO_KEYS", 
+        trial_duration: 2000 
     });
 
     for (var i = 1; i <= 5; i++) {
         var path = getImagePath(block.name, i);
+
+        // Display image for 3 seconds
         timeline.push({
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `<div class="stimulus-container"><img src="${path}" class="exp-image"></div>`,
-            choices: "NO_KEYS", trial_duration: 3000 
+            choices: "NO_KEYS", 
+            trial_duration: 3000 
         });
 
-        var rand = Math.random();
-        var qText = rand < 0.75 ? "Is this image part of a Story or Facts?" : "Is there a person in this image?";
-        var qChoices = rand < 0.75 ? ['Story', 'Facts'] : ['Yes', 'No'];
+        // Question Logic: Context-aware choices
+        var qText = "Is this image related to the previous image?";
+        var qChoices;
+        
+        if (i === 1) {
+            // First image in the sequence has no predecessor
+            qChoices = ['Yes', 'No', 'There was no previous image in this sequence'];
+        } else {
+            // Images 2 through 5
+            qChoices = ['Yes', 'No'];
+        }
 
         timeline.push({
             type: jsPsychHtmlButtonResponse,
-            stimulus: `<div class="stimulus-container"><img src="${path}" class="exp-image"><div class="question-area"><p style="font-size: 20px; font-weight: bold;">${qText}</p></div></div>`,
+            stimulus: `
+                <div class="stimulus-container">
+                    <img src="${path}" class="exp-image">
+                    <div class="question-area">
+                        <p style="font-size: 20px; font-weight: bold;">${qText}</p>
+                    </div>
+                </div>`,
             choices: qChoices,
-            data: { task: 'observation', block_type: block.type, img_idx: i }
+            data: { 
+                task: 'observation', 
+                block_type: block.type, 
+                img_idx: i,
+                block_id: block.name 
+            }
         });
     }
 });
