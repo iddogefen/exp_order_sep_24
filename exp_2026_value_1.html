@@ -82,7 +82,7 @@ timeline.push({
 timeline.push({ type: jsPsychFullscreen, fullscreen_mode: true });
 
 // ---------------------------------------------------------
-// Part 1: Observation Phase (Updated Instructions & Question Logic)
+// Part 1: Observation Phase (Full English Version)
 // ---------------------------------------------------------
 
 timeline.push({
@@ -90,7 +90,7 @@ timeline.push({
     pages: [
         `<div class="instruction-text"><h2>Part 1: Observation Phase</h2>
         <p>In this first part, you will be shown different sequences of events.</p>
-        <p>Before each sequence starts, a colored screen will appear to tell you שמתחילה סדרה חדשה</p>
+        <p>Before each sequence starts, a colored screen will appear to notify you that <b>a new series is starting.</b></p>
         <p><b>Your Task:</b> Watch the images carefully and answer the question appearing after each image.</p>
         <p>Click "Next" to begin Part 1.</p></div>`
     ],
@@ -101,14 +101,14 @@ timeline.push({
 var observation_order = jsPsych.randomization.shuffle(all_blocks);
 
 observation_order.forEach(function(block) {
-    // Label updated to reflect a "New Series" starting
-    var label = "סדרה חדשה מתחילה"; 
+    // Label updated to English: "New series starting"
+    var label = "New series starting"; 
     var cssClass = block.type === 'story' ? 'bg-story' : 'bg-info';
 
     // Transition screen (2 seconds)
     timeline.push({
         type: jsPsychHtmlKeyboardResponse,
-        stimulus: `<div class="transition-square ${cssClass}"><div style="direction: rtl; text-align: center;">${label}</div></div>`,
+        stimulus: `<div class="transition-square ${cssClass}"><div style="text-align: center;">${label}</div></div>`,
         choices: "NO_KEYS", 
         trial_duration: 2000 
     });
@@ -124,15 +124,15 @@ observation_order.forEach(function(block) {
             trial_duration: 3000 
         });
 
-        // Question: Is this image related to the previous one?
+        // Connectivity question in English
         var qText = "Is this image related to the previous image?";
         var qChoices;
         
         if (i === 1) {
-            // Special case for the first image in a sequence
+            // Options for the very first image of a block
             qChoices = ['Yes', 'No', 'There was no previous image in this sequence'];
         } else {
-            // Standard case for images 2-5
+            // Options for images 2-5
             qChoices = ['Yes', 'No'];
         }
 
@@ -155,7 +155,6 @@ observation_order.forEach(function(block) {
         });
     }
 });
-
 // ---------------------------------------------------------
 // Part 2: Value Discovery (Updated)
 // ---------------------------------------------------------
