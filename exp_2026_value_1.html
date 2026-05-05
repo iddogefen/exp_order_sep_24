@@ -49,7 +49,7 @@ function saveData(data) {
 var timeline = [];
 
 // --- הגדרת סדרות ---
-var all_numbers = [1, 2, 3, 4];
+var all_numbers = [1, 2, 3, 4,5,6,7,8];
 var shuffled_numbers = jsPsych.randomization.shuffle(all_numbers);
 
 var all_blocks = [
@@ -60,7 +60,7 @@ var all_blocks = [
 ];
 
 function getImagePath(prefix, i, version = 'b') {
-    return `images_story_vs_info/${prefix}_${i}${i===6 ? '_'+version : ''}.png`;
+    return `images_story_vs_info_2/${prefix}_${i}${i===6 ? '_'+version : ''}.png`;
 }
 
 // 1. Preload
