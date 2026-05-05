@@ -1,0 +1,505 @@
+"success","timeout","failed_images","failed_audio","failed_video","trial_type","trial_index","time_elapsed","internal_node_id","completion_code","view_history","rt","stimulus","response","task","block_type","img_idx","block_id","value","pair_type","trial_value","chosen_type"
+"true","false","[]","[]","[]","preload","0","3","0.0-0.0","202499","","","","","","","","","","","",""
+"","","","","","instructions","1","38999","0.0-1.0","202499","[{""page_index"":0,""viewing_time"":4799},{""page_index"":1,""viewing_time"":34196}]","38995","","","","","","","","","",""
+"true","","","","","fullscreen","2","42645","0.0-2.0","202499","","2641","","","","","","","","","",""
+"","","","","","instructions","3","79131","0.0-3.0","202499","[{""page_index"":0,""viewing_time"":36485}]","36485","","","","","","","","","",""
+"","","","","","html-keyboard-response","4","81137","0.0-4.0","202499","","null","<div class=""transition-square bg-info"">New series starting</div>","null","","","","","","","",""
+"","","","","","html-keyboard-response","5","84153","0.0-5.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/info_7_1.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","6","113216","0.0-6.0","202499","","29061","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/info_7_1.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","2","observation","info","1","info_7","","","",""
+"","","","","","html-keyboard-response","7","116220","0.0-7.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/info_7_2.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","8","134199","0.0-8.0","202499","","17978","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/info_7_2.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","1","observation","info","2","info_7","","","",""
+"","","","","","html-keyboard-response","9","137213","0.0-9.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/info_7_3.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","10","153176","0.0-10.0","202499","","15962","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/info_7_3.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","1","observation","info","3","info_7","","","",""
+"","","","","","html-keyboard-response","11","156186","0.0-11.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/info_7_4.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","12","179056","0.0-12.0","202499","","22869","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/info_7_4.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","0","observation","info","4","info_7","","","",""
+"","","","","","html-keyboard-response","13","182070","0.0-13.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/info_7_5.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","14","199138","0.0-14.0","202499","","17067","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/info_7_5.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","1","observation","info","5","info_7","","","",""
+"","","","","","html-keyboard-response","15","201142","0.0-15.0","202499","","null","<div class=""transition-square bg-story"">New series starting</div>","null","","","","","","","",""
+"","","","","","html-keyboard-response","16","204158","0.0-16.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/story_2_1.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","17","216254","0.0-17.0","202499","","12095","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/story_2_1.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","2","observation","story","1","story_2","","","",""
+"","","","","","html-keyboard-response","18","219257","0.0-18.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/story_2_2.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","19","226483","0.0-19.0","202499","","7225","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/story_2_2.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","0","observation","story","2","story_2","","","",""
+"","","","","","html-keyboard-response","20","229500","0.0-20.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/story_2_3.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","21","239768","0.0-21.0","202499","","10268","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/story_2_3.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","0","observation","story","3","story_2","","","",""
+"","","","","","html-keyboard-response","22","242771","0.0-22.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/story_2_4.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","23","249845","0.0-23.0","202499","","7073","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/story_2_4.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","0","observation","story","4","story_2","","","",""
+"","","","","","html-keyboard-response","24","252861","0.0-24.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/story_2_5.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","25","254684","0.0-25.0","202499","","1822","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/story_2_5.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","0","observation","story","5","story_2","","","",""
+"","","","","","html-keyboard-response","26","256685","0.0-26.0","202499","","null","<div class=""transition-square bg-info"">New series starting</div>","null","","","","","","","",""
+"","","","","","html-keyboard-response","27","259695","0.0-27.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/info_8_1.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","28","270039","0.0-28.0","202499","","10343","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/info_8_1.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","2","observation","info","1","info_8","","","",""
+"","","","","","html-keyboard-response","29","273046","0.0-29.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/info_8_2.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","30","282153","0.0-30.0","202499","","9105","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/info_8_2.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","0","observation","info","2","info_8","","","",""
+"","","","","","html-keyboard-response","31","285158","0.0-31.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/info_8_3.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","32","294485","0.0-32.0","202499","","9326","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/info_8_3.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","1","observation","info","3","info_8","","","",""
+"","","","","","html-keyboard-response","33","297492","0.0-33.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/info_8_4.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","34","305992","0.0-34.0","202499","","8499","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/info_8_4.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","1","observation","info","4","info_8","","","",""
+"","","","","","html-keyboard-response","35","308999","0.0-35.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/info_8_5.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","36","318963","0.0-36.0","202499","","9963","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/info_8_5.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","1","observation","info","5","info_8","","","",""
+"","","","","","html-keyboard-response","37","320967","0.0-37.0","202499","","null","<div class=""transition-square bg-story"">New series starting</div>","null","","","","","","","",""
+"","","","","","html-keyboard-response","38","323976","0.0-38.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/story_3_1.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","39","336370","0.0-39.0","202499","","12393","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/story_3_1.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","2","observation","story","1","story_3","","","",""
+"","","","","","html-keyboard-response","40","339381","0.0-40.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/story_3_2.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","41","346586","0.0-41.0","202499","","7204","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/story_3_2.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","0","observation","story","2","story_3","","","",""
+"","","","","","html-keyboard-response","42","349597","0.0-42.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/story_3_3.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","43","355711","0.0-43.0","202499","","6113","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/story_3_3.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","0","observation","story","3","story_3","","","",""
+"","","","","","html-keyboard-response","44","358718","0.0-44.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/story_3_4.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","45","361089","0.0-45.0","202499","","2370","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/story_3_4.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","0","observation","story","4","story_3","","","",""
+"","","","","","html-keyboard-response","46","364093","0.0-46.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/story_3_5.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","47","369803","0.0-47.0","202499","","5710","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/story_3_5.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","0","observation","story","5","story_3","","","",""
+"","","","","","html-keyboard-response","48","371806","0.0-48.0","202499","","null","<div class=""transition-square bg-info"">New series starting</div>","null","","","","","","","",""
+"","","","","","html-keyboard-response","49","374812","0.0-49.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/info_1_1.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","50","382519","0.0-50.0","202499","","7707","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/info_1_1.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","2","observation","info","1","info_1","","","",""
+"","","","","","html-keyboard-response","51","385533","0.0-51.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/info_1_2.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","52","391594","0.0-52.0","202499","","6060","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/info_1_2.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","0","observation","info","2","info_1","","","",""
+"","","","","","html-keyboard-response","53","394600","0.0-53.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/info_1_3.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","54","405107","0.0-54.0","202499","","10506","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/info_1_3.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","1","observation","info","3","info_1","","","",""
+"","","","","","html-keyboard-response","55","408122","0.0-55.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/info_1_4.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","56","418349","0.0-56.0","202499","","10227","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/info_1_4.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","1","observation","info","4","info_1","","","",""
+"","","","","","html-keyboard-response","57","421355","0.0-57.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/info_1_5.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","58","437331","0.0-58.0","202499","","15976","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/info_1_5.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","1","observation","info","5","info_1","","","",""
+"","","","","","html-keyboard-response","59","439338","0.0-59.0","202499","","null","<div class=""transition-square bg-info"">New series starting</div>","null","","","","","","","",""
+"","","","","","html-keyboard-response","60","442353","0.0-60.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/info_5_1.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","61","451404","0.0-61.0","202499","","9050","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/info_5_1.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","2","observation","info","1","info_5","","","",""
+"","","","","","html-keyboard-response","62","454416","0.0-62.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/info_5_2.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","63","463009","0.0-63.0","202499","","8592","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/info_5_2.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","1","observation","info","2","info_5","","","",""
+"","","","","","html-keyboard-response","64","466024","0.0-64.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/info_5_3.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","65","474449","0.0-65.0","202499","","8423","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/info_5_3.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","1","observation","info","3","info_5","","","",""
+"","","","","","html-keyboard-response","66","477450","0.0-66.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/info_5_4.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","67","486919","0.0-67.0","202499","","9468","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/info_5_4.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","0","observation","info","4","info_5","","","",""
+"","","","","","html-keyboard-response","68","489926","0.0-68.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/info_5_5.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","69","499115","0.0-69.0","202499","","9188","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/info_5_5.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","1","observation","info","5","info_5","","","",""
+"","","","","","html-keyboard-response","70","501131","0.0-70.0","202499","","null","<div class=""transition-square bg-story"">New series starting</div>","null","","","","","","","",""
+"","","","","","html-keyboard-response","71","504138","0.0-71.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/story_6_1.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","72","518564","0.0-72.0","202499","","14425","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/story_6_1.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","2","observation","story","1","story_6","","","",""
+"","","","","","html-keyboard-response","73","521577","0.0-73.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/story_6_2.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","74","527392","0.0-74.0","202499","","5814","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/story_6_2.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","0","observation","story","2","story_6","","","",""
+"","","","","","html-keyboard-response","75","530400","0.0-75.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/story_6_3.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","76","536616","0.0-76.0","202499","","6215","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/story_6_3.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","0","observation","story","3","story_6","","","",""
+"","","","","","html-keyboard-response","77","539626","0.0-77.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/story_6_4.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","78","549198","0.0-78.0","202499","","9571","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/story_6_4.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","0","observation","story","4","story_6","","","",""
+"","","","","","html-keyboard-response","79","552204","0.0-79.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/story_6_5.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","80","555691","0.0-80.0","202499","","3486","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/story_6_5.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","0","observation","story","5","story_6","","","",""
+"","","","","","html-keyboard-response","81","557707","0.0-81.0","202499","","null","<div class=""transition-square bg-story"">New series starting</div>","null","","","","","","","",""
+"","","","","","html-keyboard-response","82","560719","0.0-82.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/story_4_1.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","83","567391","0.0-83.0","202499","","6672","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/story_4_1.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","2","observation","story","1","story_4","","","",""
+"","","","","","html-keyboard-response","84","570403","0.0-84.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/story_4_2.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","85","576391","0.0-85.0","202499","","5986","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/story_4_2.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","0","observation","story","2","story_4","","","",""
+"","","","","","html-keyboard-response","86","579398","0.0-86.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/story_4_3.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","87","584649","0.0-87.0","202499","","5251","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/story_4_3.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","0","observation","story","3","story_4","","","",""
+"","","","","","html-keyboard-response","88","587656","0.0-88.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/story_4_4.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","89","592452","0.0-89.0","202499","","4796","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/story_4_4.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","0","observation","story","4","story_4","","","",""
+"","","","","","html-keyboard-response","90","595468","0.0-90.0","202499","","null","<div class=""stimulus-container""><img src=""images_story_vs_info_2/story_4_5.png"" class=""exp-image""></div>","null","","","","","","","",""
+"","","","","","html-button-response","91","602206","0.0-91.0","202499","","6737","
+                <div class=""stimulus-container"">
+                    <img src=""images_story_vs_info_2/story_4_5.png"" class=""exp-image"">
+                    <div class=""question-area"">
+                        <p style=""font-size: 20px; font-weight: bold;"">Is this image related to the previous image?</p>
+                    </div>
+                </div>","0","observation","story","5","story_4","","","",""
+"","","","","","instructions","92","622450","0.0-92.0","202499","[{""page_index"":0,""viewing_time"":20244}]","20244","","","","","","","","","",""
+"","","","","","html-button-response","93","638152","0.0-93.0","202499","","15702","<div class=""stimulus-container""><p style=""font-family:Arial; font-size:20px;"">Last image of the sequence...</p><img src=""images_story_vs_info_2/story_2_5.png"" class=""exp-image""></div>","0","","","","","","","",""
+"","","","","","html-button-response","94","662914","0.0-94.0","202499","","24761","<div class=""stimulus-container"">
+                    <p style=""font-family:Arial; font-size:20px;"">Outcome image</p>
+                    <img src=""images_story_vs_info_2/story_2_6_a.png"" class=""exp-image"">
+                    <div class=""value-tag val-high"">Worth: $100</div>
+                </div>","0","value_learning","","","story_2","100","","",""
+"","","","","","html-button-response","95","672440","0.0-95.0","202499","","9525","<div class=""stimulus-container""><p style=""font-family:Arial; font-size:20px;"">Last image of the sequence...</p><img src=""images_story_vs_info_2/story_3_5.png"" class=""exp-image""></div>","0","","","","","","","",""
+"","","","","","html-button-response","96","737715","0.0-96.0","202499","","65274","<div class=""stimulus-container"">
+                    <p style=""font-family:Arial; font-size:20px;"">Outcome image</p>
+                    <img src=""images_story_vs_info_2/story_3_6_a.png"" class=""exp-image"">
+                    <div class=""value-tag val-high"">Worth: $100</div>
+                </div>","0","value_learning","","","story_3","100","","",""
+"","","","","","html-button-response","97","829045","0.0-97.0","202499","","91329","<div class=""stimulus-container""><p style=""font-family:Arial; font-size:20px;"">Last image of the sequence...</p><img src=""images_story_vs_info_2/story_4_5.png"" class=""exp-image""></div>","0","","","","","","","",""
+"","","","","","html-button-response","98","858207","0.0-98.0","202499","","29161","<div class=""stimulus-container"">
+                    <p style=""font-family:Arial; font-size:20px;"">Outcome image</p>
+                    <img src=""images_story_vs_info_2/story_4_6_b.png"" class=""exp-image"">
+                    <div class=""value-tag val-low"">Worth: $0</div>
+                </div>","0","value_learning","","","story_4","0","","",""
+"","","","","","html-button-response","99","869222","0.0-99.0","202499","","11014","<div class=""stimulus-container""><p style=""font-family:Arial; font-size:20px;"">Last image of the sequence...</p><img src=""images_story_vs_info_2/story_6_5.png"" class=""exp-image""></div>","0","","","","","","","",""
+"","","","","","html-button-response","100","889708","0.0-100.0","202499","","20486","<div class=""stimulus-container"">
+                    <p style=""font-family:Arial; font-size:20px;"">Outcome image</p>
+                    <img src=""images_story_vs_info_2/story_6_6_b.png"" class=""exp-image"">
+                    <div class=""value-tag val-low"">Worth: $0</div>
+                </div>","0","value_learning","","","story_6","0","","",""
+"","","","","","html-button-response","101","898629","0.0-101.0","202499","","8920","<div class=""stimulus-container""><p style=""font-family:Arial; font-size:20px;"">Last image of the sequence...</p><img src=""images_story_vs_info_2/info_7_5.png"" class=""exp-image""></div>","0","","","","","","","",""
+"","","","","","html-button-response","102","919806","0.0-102.0","202499","","21176","<div class=""stimulus-container"">
+                    <p style=""font-family:Arial; font-size:20px;"">Outcome image</p>
+                    <img src=""images_story_vs_info_2/info_7_6_a.png"" class=""exp-image"">
+                    <div class=""value-tag val-high"">Worth: $100</div>
+                </div>","0","value_learning","","","info_7","100","","",""
+"","","","","","html-button-response","103","933619","0.0-103.0","202499","","13813","<div class=""stimulus-container""><p style=""font-family:Arial; font-size:20px;"">Last image of the sequence...</p><img src=""images_story_vs_info_2/info_8_5.png"" class=""exp-image""></div>","0","","","","","","","",""
+"","","","","","html-button-response","104","945105","0.0-104.0","202499","","11485","<div class=""stimulus-container"">
+                    <p style=""font-family:Arial; font-size:20px;"">Outcome image</p>
+                    <img src=""images_story_vs_info_2/info_8_6_a.png"" class=""exp-image"">
+                    <div class=""value-tag val-high"">Worth: $100</div>
+                </div>","0","value_learning","","","info_8","100","","",""
+"","","","","","html-button-response","105","952383","0.0-105.0","202499","","7277","<div class=""stimulus-container""><p style=""font-family:Arial; font-size:20px;"">Last image of the sequence...</p><img src=""images_story_vs_info_2/info_1_5.png"" class=""exp-image""></div>","0","","","","","","","",""
+"","","","","","html-button-response","106","963400","0.0-106.0","202499","","11017","<div class=""stimulus-container"">
+                    <p style=""font-family:Arial; font-size:20px;"">Outcome image</p>
+                    <img src=""images_story_vs_info_2/info_1_6_b.png"" class=""exp-image"">
+                    <div class=""value-tag val-low"">Worth: $0</div>
+                </div>","0","value_learning","","","info_1","0","","",""
+"","","","","","html-button-response","107","971078","0.0-107.0","202499","","7677","<div class=""stimulus-container""><p style=""font-family:Arial; font-size:20px;"">Last image of the sequence...</p><img src=""images_story_vs_info_2/info_5_5.png"" class=""exp-image""></div>","0","","","","","","","",""
+"","","","","","html-button-response","108","985741","0.0-108.0","202499","","14662","<div class=""stimulus-container"">
+                    <p style=""font-family:Arial; font-size:20px;"">Outcome image</p>
+                    <img src=""images_story_vs_info_2/info_5_6_b.png"" class=""exp-image"">
+                    <div class=""value-tag val-low"">Worth: $0</div>
+                </div>","0","value_learning","","","info_5","0","","",""
+"","","","","","instructions","109","989956","0.0-109.0","202499","[{""page_index"":0,""viewing_time"":4215}]","4215","","","","","","","","","",""
+"","","","","","html-button-response","110","1024060","0.0-110.0","202499","","34103","<div class=""stimulus-container""><h3>Which image do you find more significant or preferable?</h3>
+                   <div style=""display:flex; justify-content:center; gap:40px; margin-top:30px;"">
+                   <img src=""images_story_vs_info_2/story_2_5.png"" class=""small-image"">
+                   <img src=""images_story_vs_info_2/info_7_5.png"" class=""small-image"">
+                   </div></div>","0","final_choice","","","","","val_s_vs_i","100","story"
+"","","","","","html-button-response","111","1034766","0.0-111.0","202499","","10705","<div class=""stimulus-container""><h3>Which image do you find more significant or preferable?</h3>
+                   <div style=""display:flex; justify-content:center; gap:40px; margin-top:30px;"">
+                   <img src=""images_story_vs_info_2/info_7_4.png"" class=""small-image"">
+                   <img src=""images_story_vs_info_2/story_2_4.png"" class=""small-image"">
+                   </div></div>","1","final_choice","","","","","val_s_vs_i","100","story"
+"","","","","","html-button-response","112","1043487","0.0-112.0","202499","","8719","<div class=""stimulus-container""><h3>Which image do you find more significant or preferable?</h3>
+                   <div style=""display:flex; justify-content:center; gap:40px; margin-top:30px;"">
+                   <img src=""images_story_vs_info_2/story_4_4.png"" class=""small-image"">
+                   <img src=""images_story_vs_info_2/info_1_4.png"" class=""small-image"">
+                   </div></div>","1","final_choice","","","","","low_s_vs_i","0","info"
+"","","","","","html-button-response","113","1049780","0.0-113.0","202499","","6293","<div class=""stimulus-container""><h3>Which image do you find more significant or preferable?</h3>
+                   <div style=""display:flex; justify-content:center; gap:40px; margin-top:30px;"">
+                   <img src=""images_story_vs_info_2/story_2_1.png"" class=""small-image"">
+                   <img src=""images_story_vs_info_2/info_7_1.png"" class=""small-image"">
+                   </div></div>","0","final_choice","","","","","val_s_vs_i","100","story"
+"","","","","","html-button-response","114","1058662","0.0-114.0","202499","","8881","<div class=""stimulus-container""><h3>Which image do you find more significant or preferable?</h3>
+                   <div style=""display:flex; justify-content:center; gap:40px; margin-top:30px;"">
+                   <img src=""images_story_vs_info_2/info_1_5.png"" class=""small-image"">
+                   <img src=""images_story_vs_info_2/story_4_5.png"" class=""small-image"">
+                   </div></div>","1","final_choice","","","","","low_s_vs_i","0","story"
+"","","","","","html-button-response","115","1188508","0.0-115.0","202499","","129845","<div class=""stimulus-container""><h3>Which image do you find more significant or preferable?</h3>
+                   <div style=""display:flex; justify-content:center; gap:40px; margin-top:30px;"">
+                   <img src=""images_story_vs_info_2/info_1_2.png"" class=""small-image"">
+                   <img src=""images_story_vs_info_2/story_4_2.png"" class=""small-image"">
+                   </div></div>","1","final_choice","","","","","low_s_vs_i","0","story"
+"","","","","","html-button-response","116","1198733","0.0-116.0","202499","","10224","<div class=""stimulus-container""><h3>Which image do you find more significant or preferable?</h3>
+                   <div style=""display:flex; justify-content:center; gap:40px; margin-top:30px;"">
+                   <img src=""images_story_vs_info_2/info_1_1.png"" class=""small-image"">
+                   <img src=""images_story_vs_info_2/story_4_1.png"" class=""small-image"">
+                   </div></div>","0","final_choice","","","","","low_s_vs_i","0","info"
+"","","","","","html-button-response","117","1202872","0.0-117.0","202499","","4139","<div class=""stimulus-container""><h3>Which image do you find more significant or preferable?</h3>
+                   <div style=""display:flex; justify-content:center; gap:40px; margin-top:30px;"">
+                   <img src=""images_story_vs_info_2/info_1_3.png"" class=""small-image"">
+                   <img src=""images_story_vs_info_2/story_4_3.png"" class=""small-image"">
+                   </div></div>","0","final_choice","","","","","low_s_vs_i","0","info"
+"","","","","","html-button-response","118","1209417","0.0-118.0","202499","","6545","<div class=""stimulus-container""><h3>Which image do you find more significant or preferable?</h3>
+                   <div style=""display:flex; justify-content:center; gap:40px; margin-top:30px;"">
+                   <img src=""images_story_vs_info_2/story_2_1.png"" class=""small-image"">
+                   <img src=""images_story_vs_info_2/info_7_1.png"" class=""small-image"">
+                   </div></div>","0","final_choice","","","","","val_s_vs_i","100","story"
+"","","","","","html-button-response","119","1214037","0.0-119.0","202499","","4618","<div class=""stimulus-container""><h3>Which image do you find more significant or preferable?</h3>
+                   <div style=""display:flex; justify-content:center; gap:40px; margin-top:30px;"">
+                   <img src=""images_story_vs_info_2/info_1_1.png"" class=""small-image"">
+                   <img src=""images_story_vs_info_2/story_4_1.png"" class=""small-image"">
+                   </div></div>","0","final_choice","","","","","low_s_vs_i","0","info"
+"","","","","","html-button-response","120","1219425","0.0-120.0","202499","","5388","<div class=""stimulus-container""><h3>Which image do you find more significant or preferable?</h3>
+                   <div style=""display:flex; justify-content:center; gap:40px; margin-top:30px;"">
+                   <img src=""images_story_vs_info_2/story_2_5.png"" class=""small-image"">
+                   <img src=""images_story_vs_info_2/info_7_5.png"" class=""small-image"">
+                   </div></div>","0","final_choice","","","","","val_s_vs_i","100","story"
+"","","","","","html-button-response","121","1249749","0.0-121.0","202499","","30323","<div class=""stimulus-container""><h3>Which image do you find more significant or preferable?</h3>
+                   <div style=""display:flex; justify-content:center; gap:40px; margin-top:30px;"">
+                   <img src=""images_story_vs_info_2/info_1_3.png"" class=""small-image"">
+                   <img src=""images_story_vs_info_2/story_4_3.png"" class=""small-image"">
+                   </div></div>","0","final_choice","","","","","low_s_vs_i","0","info"
+"","","","","","html-button-response","122","1253021","0.0-122.0","202499","","3272","<div class=""stimulus-container""><h3>Which image do you find more significant or preferable?</h3>
+                   <div style=""display:flex; justify-content:center; gap:40px; margin-top:30px;"">
+                   <img src=""images_story_vs_info_2/info_7_2.png"" class=""small-image"">
+                   <img src=""images_story_vs_info_2/story_2_2.png"" class=""small-image"">
+                   </div></div>","1","final_choice","","","","","val_s_vs_i","100","story"
+"","","","","","html-button-response","123","1271755","0.0-123.0","202499","","18733","<div class=""stimulus-container""><h3>Which image do you find more significant or preferable?</h3>
+                   <div style=""display:flex; justify-content:center; gap:40px; margin-top:30px;"">
+                   <img src=""images_story_vs_info_2/info_7_2.png"" class=""small-image"">
+                   <img src=""images_story_vs_info_2/story_2_2.png"" class=""small-image"">
+                   </div></div>","1","final_choice","","","","","val_s_vs_i","100","story"
+"","","","","","html-button-response","124","1274434","0.0-124.0","202499","","2678","<div class=""stimulus-container""><h3>Which image do you find more significant or preferable?</h3>
+                   <div style=""display:flex; justify-content:center; gap:40px; margin-top:30px;"">
+                   <img src=""images_story_vs_info_2/info_1_5.png"" class=""small-image"">
+                   <img src=""images_story_vs_info_2/story_4_5.png"" class=""small-image"">
+                   </div></div>","1","final_choice","","","","","low_s_vs_i","0","story"
+"","","","","","html-button-response","125","1275736","0.0-125.0","202499","","1301","<div class=""stimulus-container""><h3>Which image do you find more significant or preferable?</h3>
+                   <div style=""display:flex; justify-content:center; gap:40px; margin-top:30px;"">
+                   <img src=""images_story_vs_info_2/info_7_2.png"" class=""small-image"">
+                   <img src=""images_story_vs_info_2/story_2_2.png"" class=""small-image"">
+                   </div></div>","1","final_choice","","","","","val_s_vs_i","100","story"
+"","","","","","html-button-response","126","1278663","0.0-126.0","202499","","2926","<div class=""stimulus-container""><h3>Which image do you find more significant or preferable?</h3>
+                   <div style=""display:flex; justify-content:center; gap:40px; margin-top:30px;"">
+                   <img src=""images_story_vs_info_2/info_7_3.png"" class=""small-image"">
+                   <img src=""images_story_vs_info_2/story_2_3.png"" class=""small-image"">
+                   </div></div>","1","final_choice","","","","","val_s_vs_i","100","story"
+"","","","","","html-button-response","127","1282309","0.0-127.0","202499","","3645","<div class=""stimulus-container""><h3>Which image do you find more significant or preferable?</h3>
+                   <div style=""display:flex; justify-content:center; gap:40px; margin-top:30px;"">
+                   <img src=""images_story_vs_info_2/info_7_4.png"" class=""small-image"">
+                   <img src=""images_story_vs_info_2/story_2_4.png"" class=""small-image"">
+                   </div></div>","1","final_choice","","","","","val_s_vs_i","100","story"
+"","","","","","html-button-response","128","1284265","0.0-128.0","202499","","1955","<div class=""stimulus-container""><h3>Which image do you find more significant or preferable?</h3>
+                   <div style=""display:flex; justify-content:center; gap:40px; margin-top:30px;"">
+                   <img src=""images_story_vs_info_2/info_7_3.png"" class=""small-image"">
+                   <img src=""images_story_vs_info_2/story_2_3.png"" class=""small-image"">
+                   </div></div>","1","final_choice","","","","","val_s_vs_i","100","story"
+"","","","","","html-button-response","129","1286543","0.0-129.0","202499","","2278","<div class=""stimulus-container""><h3>Which image do you find more significant or preferable?</h3>
+                   <div style=""display:flex; justify-content:center; gap:40px; margin-top:30px;"">
+                   <img src=""images_story_vs_info_2/info_7_1.png"" class=""small-image"">
+                   <img src=""images_story_vs_info_2/story_2_1.png"" class=""small-image"">
+                   </div></div>","1","final_choice","","","","","val_s_vs_i","100","story"
+"","","","","","html-button-response","130","1288717","0.0-130.0","202499","","2173","<div class=""stimulus-container""><h3>Which image do you find more significant or preferable?</h3>
+                   <div style=""display:flex; justify-content:center; gap:40px; margin-top:30px;"">
+                   <img src=""images_story_vs_info_2/story_4_2.png"" class=""small-image"">
+                   <img src=""images_story_vs_info_2/info_1_2.png"" class=""small-image"">
+                   </div></div>","0","final_choice","","","","","low_s_vs_i","0","story"
+"","","","","","html-button-response","131","1293266","0.0-131.0","202499","","4548","<div class=""stimulus-container""><h3>Which image do you find more significant or preferable?</h3>
+                   <div style=""display:flex; justify-content:center; gap:40px; margin-top:30px;"">
+                   <img src=""images_story_vs_info_2/story_4_2.png"" class=""small-image"">
+                   <img src=""images_story_vs_info_2/info_1_2.png"" class=""small-image"">
+                   </div></div>","0","final_choice","","","","","low_s_vs_i","0","story"
+"","","","","","html-button-response","132","1297296","0.0-132.0","202499","","4030","<div class=""stimulus-container""><h3>Which image do you find more significant or preferable?</h3>
+                   <div style=""display:flex; justify-content:center; gap:40px; margin-top:30px;"">
+                   <img src=""images_story_vs_info_2/story_4_4.png"" class=""small-image"">
+                   <img src=""images_story_vs_info_2/info_1_4.png"" class=""small-image"">
+                   </div></div>","1","final_choice","","","","","low_s_vs_i","0","info"
+"","","","","","html-button-response","133","1300677","0.0-133.0","202499","","3380","<div class=""stimulus-container""><h3>Which image do you find more significant or preferable?</h3>
+                   <div style=""display:flex; justify-content:center; gap:40px; margin-top:30px;"">
+                   <img src=""images_story_vs_info_2/info_1_1.png"" class=""small-image"">
+                   <img src=""images_story_vs_info_2/story_4_1.png"" class=""small-image"">
+                   </div></div>","0","final_choice","","","","","low_s_vs_i","0","info"
+"","","","","","survey-text","134","1658970","0.0-134.0","202499","","358286","","{""strategy"":""Yes i noticed some images contains things that are more valuable than the other,this makes it easy to deduce whih image will lead o more financial profut"",""logic"":""Yes some sequences related to one another exaxple is the Beekeeper that buys a seed followed by grows a flower, followed by the bee visiting the flower, etc everything is rlated and points toward the financial value"",""cues"":""Yes some images contains informations""}","","","","","","","",""
+"","","","","","instructions","135","1668139","0.0-135.0","202499","[{""page_index"":0,""viewing_time"":9168}]","9168","","","","","","","","","",""
