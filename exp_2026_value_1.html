@@ -239,59 +239,64 @@ all_blocks.forEach(function(block) {
     });
 });
 // ---------------------------------------------------------
-// Part 3: Final Choice (Updated with Profit Focus)
+// Part 3: Final Choice (24 Balanced Trials)
 // ---------------------------------------------------------
-timeline.push({
-    type: jsPsychInstructions,
-    pages: [
-        `<div class="instruction-text"><h2>Part 3: Final Choice</h2>
-        <p>This is the final part. You will see pairs of images.</p>
-        <p><b>Your Task:</b> Choose the image that you think will lead to a financial profit.</p>
-        <p>Correct choices will earn you a bonus reward.</p></div>`
-    ],
-    show_clickable_nav: true
-});
 
 var choice_trials = [];
 
+// נשתמש בסדרות מהמערך המעורבב שכבר קיים אצלך
+// shuffled_numbers מכיל את האינדקסים 0-7
+// נחלק אותן לפי הסוגים (בדיוק מה שהנבדק ראה בשלב 1)
+var s_val  = all_blocks.find(b => b.type === 'story' && b.is_valuable);
+var s_low  = all_blocks.find(b => b.type === 'story' && !b.is_valuable);
+var i_val  = all_blocks.find(b => b.type === 'info' && b.is_valuable);
+var i_low  = all_blocks.find(b => b.type === 'info' && !b.is_valuable);
+
 [1, 2, 3, 4, 5, 6].forEach(idx => {
-    // 1. Story vs Story
+    
+    // 1. סיפור רווחי מול סיפור לא רווחי
     choice_trials.push({ 
-        img1: getImagePath(all_blocks[0].name, idx), 
-        img2: getImagePath(all_blocks[2].name, idx), 
+        img1: getImagePath(s_val.name, idx), 
+        img2: getImagePath(s_low.name, idx), 
         pair_type: 'story_vs_story',
-        idx: idx
+        idx: idx 
     });
-    // 2. Info vs Info
+
+    // 2. מידע רווחי מול מידע לא רווחי
     choice_trials.push({ 
-        img1: getImagePath(all_blocks[4].name, idx), 
-        img2: getImagePath(all_blocks[6].name, idx), 
+        img1: getImagePath(i_val.name, idx), 
+        img2: getImagePath(i_low.name, idx), 
         pair_type: 'info_vs_info',
-        idx: idx
+        idx: idx 
     });
-    // 3. Story vs Info Cross
+
+    // 3. הצלבה: סיפור רווחי מול מידע לא רווחי
     choice_trials.push({ 
-        img1: getImagePath(all_blocks[1].name, idx), 
-        img2: getImagePath(all_blocks[7].name, idx), 
-        pair_type: 'story_vs_info_cross',
-        idx: idx
+        img1: getImagePath(s_val.name, idx), 
+        img2: getImagePath(i_low.name, idx), 
+        pair_type: 'story_val_vs_info_low',
+        idx: idx 
     });
-    // 4. Info vs Story Cross
+
+    // 4. הצלבה: מידע רווחי מול סיפור לא רווחי
     choice_trials.push({ 
-        img1: getImagePath(all_blocks[5].name, idx), 
-        img2: getImagePath(all_blocks[3].name, idx), 
-        pair_type: 'info_vs_story_cross',
-        idx: idx
+        img1: getImagePath(i_val.name, idx), 
+        img2: getImagePath(s_low.name, idx), 
+        pair_type: 'info_val_vs_story_low',
+        idx: idx 
     });
 });
 
+// ערבוב והצגה לנבדק
 jsPsych.randomization.shuffle(choice_trials).forEach(function(t) {
     var left_first = Math.random() < 0.5;
     
     timeline.push({
         type: jsPsychHtmlButtonResponse,
         stimulus: `
-            <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image will lead to a <b>financial profit</b>?</h3></div>
+            <div style="font-family: Arial; margin-bottom: 20px;">
+                <h3>Which image will lead to a <b>financial profit</b>?</h3>
+            </div>
             <div class="stimulus-container" style="display: flex; flex-direction: row; width: 800px; justify-content: center; gap: 30px;">
                 <img src="${left_first ? t.img1 : t.img2}" class="small-image">
                 <img src="${left_first ? t.img2 : t.img1}" class="small-image">
