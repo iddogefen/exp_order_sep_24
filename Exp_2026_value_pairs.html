@@ -57,15 +57,12 @@
 // ============================================================
 // DATA SAVING (Using save-my-data.php)
 // ============================================================
-var data_folder = 'data/';
-
-function saveData(filename, data) {
-    console.log("Starting saveData with filename:", filename);
+function saveData(data) {
+    console.log("Starting saveData...");
     fetch('/save-my-data.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-            filename: filename,
             filedata: data
         })
     })
@@ -81,14 +78,13 @@ function saveData(filename, data) {
 var jsPsych = initJsPsych({
     on_finish: function() {
         console.log("Experiment finished, saving data...");
-        saveData(data_folder + subject_id + ".csv", jsPsych.data.get().csv());
+        saveData(jsPsych.data.get().csv());
     }
 });
 
 var timeline = [];
 
 var participant_id = jsPsych.data.getURLVariable('participantId') || jsPsych.randomization.randomID(15);
-var subject_id = participant_id;
 
 jsPsych.data.addProperties({
     subject_id: participant_id,
@@ -237,29 +233,7 @@ timeline.push({
         '<div style="text-align: center; padding: 60px; font-family: Arial;">' +
         '<h2>✓ Test Complete!</h2>' +
         '<p style="font-size: 20px; margin-top: 20px;">Check Console (F12) for "✓ Success!" message.</p>' +
-        '<p style="font-size: 16px; margin-top: 20px;">Data should be saved in: <br><b>data/' + subject_id + '.csv</b></p>' +
-        '</div>'
-    ],
-    show_clickable_nav: false
-});
-
-jsPsych.run(timeline);
-
-  </script>
-</html>
-});
-
-// ============================================================
-// END OF EXPERIMENT
-// ============================================================
-timeline.push({
-    type: jsPsychInstructions,
-    pages: [
-        '<div style="text-align: center; padding: 60px; font-family: Arial;">' +
-        '<h2>Experiment Completed</h2>' +
-        '<p style="font-size: 20px; margin-top: 20px;">You have successfully finished the study.</p>' +
-        '<p style="font-size: 22px; color: #28a745; font-weight: bold; margin-top: 30px;">Thank you very much for your participation!</p>' +
-        '<p style="font-size: 16px; color: #666; margin-top: 40px;">You may now safely close this window or return to the platform.</p>' +
+        '<p style="font-size: 16px; margin-top: 20px;">Data should be saved in: <br><b>data/exp_data_*.csv</b></p>' +
         '</div>'
     ],
     show_clickable_nav: false
