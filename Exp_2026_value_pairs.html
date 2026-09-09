@@ -1,71 +1,3 @@
-Skip to content
-iddogefen
-exp_order_sep_24
-Repository navigation
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security and quality
-Insights
-Settings
-exp_order_sep_24
-/
-Exp_2026_value_pairs.html
-in
-main
-
-Edit
-
-Preview
-Indent mode
-
-Spaces
-Indent size
-
-2
-Line wrap mode
-
-No wrap
-Editing Exp_2026_value_pairs.html file contents
-  1
-  2
-  3
-  4
-  5
-  6
-  7
-  8
-  9
- 10
- 11
- 12
- 13
- 14
- 15
- 16
- 17
- 18
- 19
- 20
- 21
- 22
- 23
- 24
- 25
- 26
- 27
- 28
- 29
- 30
- 31
- 32
- 33
- 34
- 35
- 36
 <!DOCTYPE html>
 <html>
   <head>
@@ -102,5 +34,488 @@ Editing Exp_2026_value_pairs.html file contents
           cursor: pointer;
       }
 
-Use Control + Shift + m to toggle the tab key moving focus. Alternatively, use esc then tab to move to the next interactive element on the page.
- 
+      .fixation {
+          font-size: 60px;
+          color: #333;
+          height: 400px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+
+      .question-area {
+          height: 80px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+    </style>
+    <script src="jspsych/plugins/jspsych.js"></script>
+    <script src="jspsych/plugins/plugin-instructions.js"></script>
+    <script src="jspsych/plugins/plugin-html-button-response.js"></script>
+    <script src="jspsych/plugins/plugin-survey-text.js"></script>
+    <script src="jspsych/plugins/plugin-html-keyboard-response.js"></script>
+    <script src="jspsych/plugins/plugin-fullscreen.js"></script>
+    <script src="jspsych/plugins/plugin-preload.js"></script>
+    <link rel="stylesheet" href="jspsych/css/jspsych.css">
+  </head>
+  <body></body>
+  <script>
+
+// ============================================================
+// DATA SAVING
+// ============================================================
+function saveData(data) {
+    fetch('write_data.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filedata: data })
+    })
+    .then(response => response.json())
+    .then(result => console.log("Data saved successfully:", result.file))
+    .catch(error => console.error("Error saving data:", error));
+}
+
+var jsPsych = initJsPsych({
+    on_finish: function() {
+        saveData(jsPsych.data.get().csv());
+    }
+});
+
+var timeline = [];
+
+var participant_id = jsPsych.data.getURLVariable('participantId') || jsPsych.randomization.randomID(15);
+var study_id = jsPsych.data.getURLVariable('assignmentId');
+var session_id = jsPsych.data.getURLVariable('projectId');
+
+jsPsych.data.addProperties({
+    subject_id: participant_id,
+    study_id: study_id,
+    session_id: session_id,
+    experiment: 'Wimmer_Shohamy_2012_Association_Bias'
+});
+
+// ============================================================
+// PRACTICE STIMULI (2 זוגות להדגמה בלבד)
+// ============================================================
+var practice_pairs = [
+    { name: 'practice_seq_1', type: 'practice_sequence', e1: 1, e2: 2 },
+    { name: 'practice_seq_2', type: 'practice_sequence', e1: 1, e2: 2 }
+];
+
+function getPracticeImagePath(block, idx) {
+    return `images/${block.type}/${block.name}/${block.name}_${idx}.png`;
+}
+
+// ============================================================
+// MAIN STIMULI & PAIR DEFINITIONS (Top 40 Causal Values)
+// ============================================================
+var base_pairs = [
+    { name: 'dog_causal', type: 'causal_sequence', e1: 8, e2: 9 },
+    { name: 'dinner_party_scheme', type: 'schematic_sequence', e1: 3, e2: 4 },
+    { name: 'flight_scheme', type: 'schematic_sequence', e1: 1, e2: 3 },
+    { name: 'flight_scheme', type: 'schematic_sequence', e1: 1, e2: 4 },
+    { name: 'saving_a_cat_causal', type: 'causal_sequence', e1: 5, e2: 7 },
+    { name: 'hotel_scheme', type: 'schematic_sequence', e1: 1, e2: 3 },
+    { name: 'interview_scheme', type: 'schematic_sequence', e1: 2, e2: 8 },
+    { name: 'restaurant_scheme', type: 'schematic_sequence', e1: 1, e2: 7 },
+    { name: 'restaurant_scheme', type: 'schematic_sequence', e1: 4, e2: 5 },
+    { name: 'restaurant_scheme', type: 'schematic_sequence', e1: 6, e2: 7 },
+    { name: 'restaurant_scheme', type: 'schematic_sequence', e1: 8, e2: 9 },
+    { name: 'supermarket_scheme', type: 'schematic_sequence', e1: 1, e2: 3 },
+    { name: 'supermarket_scheme', type: 'schematic_sequence', e1: 3, e2: 4 },
+    { name: 'supermarket_scheme', type: 'schematic_sequence', e1: 3, e2: 9 },
+    { name: 'supermarket_scheme', type: 'schematic_sequence', e1: 4, e2: 5 },
+    { name: 'supermarket_scheme', type: 'schematic_sequence', e1: 6, e2: 7 },
+    { name: 'supermarket_scheme', type: 'schematic_sequence', e1: 8, e2: 9 },
+    { name: 'dog_causal', type: 'causal_sequence', e1: 1, e2: 3 },
+    { name: 'dog_causal', type: 'causal_sequence', e1: 5, e2: 8 },
+    { name: 'museum_causal', type: 'causal_sequence', e1: 6, e2: 10 },
+    { name: 'dinner_party_scheme', type: 'schematic_sequence', e1: 3, e2: 7 },
+    { name: 'dinner_party_scheme', type: 'schematic_sequence', e1: 4, e2: 7 },
+    { name: 'dinner_party_scheme', type: 'schematic_sequence', e1: 6, e2: 7 },
+    { name: 'flight_scheme', type: 'schematic_sequence', e1: 1, e2: 5 },
+    { name: 'flight_scheme', type: 'schematic_sequence', e1: 2, e2: 4 },
+    { name: 'flight_scheme', type: 'schematic_sequence', e1: 2, e2: 10 },
+    { name: 'flight_scheme', type: 'schematic_sequence', e1: 5, e2: 8 },
+    { name: 'flight_scheme', type: 'schematic_sequence', e1: 6, e2: 7 },
+    { name: 'flight_scheme', type: 'schematic_sequence', e1: 8, e2: 10 },
+    { name: 'package_causal', type: 'causal_sequence', e1: 3, e2: 4 },
+    { name: 'package_causal', type: 'causal_sequence', e1: 5, e2: 6 },
+    { name: 'package_causal', type: 'causal_sequence', e1: 6, e2: 1 },
+    { name: 'package_causal', type: 'causal_sequence', e1: 6, e2: 7 },
+    { name: 'package_causal', type: 'causal_sequence', e1: 8, e2: 10 },
+    { name: 'saving_a_cat_causal', type: 'causal_sequence', e1: 2, e2: 3 },
+    { name: 'saving_a_cat_causal', type: 'causal_sequence', e1: 3, e2: 4 },
+    { name: 'saving_a_cat_causal', type: 'causal_sequence', e1: 3, e2: 7 },
+    { name: 'saving_a_cat_causal', type: 'causal_sequence', e1: 6, e2: 8 },
+    { name: 'the_performance_causal', type: 'causal_sequence', e1: 5, e2: 6 },
+    { name: 'the_performance_causal', type: 'causal_sequence', e1: 6, e2: 8 }
+];
+
+var all_pairs = base_pairs.map(function(pair, index) {
+    var is_ascending = Math.random() < 0.5; 
+    return {
+        id: index,
+        name: pair.name,
+        type: pair.type,
+        s1_index: is_ascending ? pair.e1 : pair.e2,
+        s2_index: is_ascending ? pair.e2 : pair.e1,
+        order_direction: is_ascending ? 'ascending' : 'descending'
+    };
+});
+
+var test_blocks = jsPsych.randomization.shuffle(all_pairs);
+var rewarded_blocks = test_blocks.slice(0, 20).map(b => b.id);
+
+function getImagePath(block, idx) {
+    var suffix = (idx === 10) ? "ten" : idx;
+    return `images/${block.type}/${block.name}/${block.name}_${suffix}.png`;
+}
+
+// ============================================================
+// PRELOAD
+// ============================================================
+var imagesToPreload = [
+    'consent_form_2022.png',
+    'images/gray.png',
+    'images/dollar.png'
+];
+
+practice_pairs.forEach(function(b) {
+    imagesToPreload.push(getPracticeImagePath(b, 1));
+    imagesToPreload.push(getPracticeImagePath(b, 2));
+});
+
+test_blocks.forEach(function(b) {
+    imagesToPreload.push(getImagePath(b, b.s1_index));
+    imagesToPreload.push(getImagePath(b, b.s2_index));
+});
+
+timeline.push({
+    type: jsPsychPreload,
+    images: imagesToPreload,
+    message: 'Loading task assets...'
+});
+
+// ============================================================
+// INSTRUCTIONS & CONSENT
+// ============================================================
+timeline.push({
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
+        '<h2>ברוכים הבאים למחקר</h2>' +
+        '<p>ניסוי זה בוחן תהליכי זיכרון, אסוציאציות וקבלת החלטות.</p>' +
+        '<p>הניסוי מורכב משלושה שלבים, ויכלול בהתחלה סיבוב היכרות קצר (הדגמה).</p>' +
+        '<p>לחץ על "הבא" לקריאת טופס ההסכמה מדעת.</p>' +
+        '</div>',
+        '<div style="text-align: center; padding: 20px;">' +
+        '<img src="consent_form_2022.png" style="max-width:80%;"></img>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
+});
+
+timeline.push({
+    type: jsPsychFullscreen,
+    fullscreen_mode: true
+});
+
+// ============================================================
+// PRACTICE PHASE (שלב הדגמה)
+// ============================================================
+timeline.push({
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align: center; padding: 40px; font-family: Arial;">' +
+        '<h2>שלב הדגמה (Practice Phase)</h2>' +
+        '<p>כעת נעבור על <b>2 זוגות לדוגמה</b> כדי שתוכל להתרגל למבנה הניסוי.</p>' +
+        '<p>בכל צעד תופיע תמונה ראשונה (S1) למשך 3 שניות, אחריה צלב פיקסשיין, ואז תמונה שנייה (S2).</p>' +
+        '<p>עליך להסתכל היטב על הרצף, ולענות על שאלת הקשב שתוצג בסוף כל צמד.</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
+});
+
+practice_pairs.forEach(function(b) {
+    var s1_path = getPracticeImagePath(b, 1);
+    var s2_path = getPracticeImagePath(b, 2);
+
+    timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: `<div class="stimulus-container"><img src="${s1_path}" class="exp-image"></div>`,
+        choices: "NO_KEYS",
+        trial_duration: 3000, // מוגדל ב-50% (3 שניות)
+        data: { task: 'practice_S1', folder: b.name }
+    });
+
+    timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: '<div class="fixation">+</div>',
+        choices: "NO_KEYS",
+        trial_duration: 1500 // מוגדל ב-50% (1.5 שניות)
+    });
+
+    timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: `<div class="stimulus-container"><img src="${s2_path}" class="exp-image"></div>`,
+        choices: "NO_KEYS",
+        trial_duration: 3000, // מוגדל ב-50% (3 שניות)
+        data: { task: 'practice_S2', folder: b.name }
+    });
+
+    timeline.push({
+        type: jsPsychHtmlButtonResponse,
+        stimulus: `
+            <div class="stimulus-container">
+                <img src="${s2_path}" class="exp-image">
+                <div class="question-area">
+                    <p style="font-size: 20px; font-weight: bold;">האם הופיעה דמות אדם באחת מהתמונות?</p>
+                </div>
+            </div>`,
+        choices: ['כן', 'לא'],
+        trial_duration: 4500, // מוגדל ב-50% (4.5 שניות)
+        data: { task: 'practice_attention_check', folder: b.name }
+    });
+
+    timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
+        choices: "NO_KEYS",
+        trial_duration: 1500
+    });
+});
+
+timeline.push({
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align: center; padding: 40px; font-family: Arial;">' +
+        '<h2>סיום ההדגמה</h2>' +
+        '<p>מעולה! סיימנו את ההדגמה.</p>' +
+        '<p>כעת מתחיל הניסוי האמיתי. אנא הישאר ממוקד במסך.</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
+});
+
+// ============================================================
+// PHASE 1: ASSOCIATIVE LEARNING (Main Experiment)
+// ============================================================
+timeline.push({
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align: center; padding: 40px; font-family: Arial;">' +
+        '<h2>שלב 1: צפייה ברצפים</h2>' +
+        '<p>בשלב זה תצפה בזוגות עוקבים של תמונות (תמונה ראשונה $\rightarrow$ תמונה שנייה).</p>' +
+        '<p><b>הנחיה חשובה:</b> נסה ללמוד ולזכור את הקשר הסדרתי בין התמונות בכל זוג.</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
+});
+
+test_blocks.forEach(function(b) {
+    var s1_path = getImagePath(b, b.s1_index);
+    var s2_path = getImagePath(b, b.s2_index);
+
+    timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: `<div class="stimulus-container"><img src="${s1_path}" class="exp-image"></div>`,
+        choices: "NO_KEYS",
+        trial_duration: 3000, // מוגדל ב-50% (3 שניות)
+        data: { 
+            task: 'phase1_S1', 
+            folder: b.name, 
+            order_direction: b.order_direction,
+            s1_index: b.s1_index,
+            s2_index: b.s2_index 
+        }
+    });
+
+    timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: '<div class="fixation">+</div>',
+        choices: "NO_KEYS",
+        trial_duration: 1500 // מוגדל ב-50% (1.5 שניות)
+    });
+
+    timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: `<div class="stimulus-container"><img src="${s2_path}" class="exp-image"></div>`,
+        choices: "NO_KEYS",
+        trial_duration: 3000, // מוגדל ב-50% (3 שניות)
+        data: { 
+            task: 'phase1_S2', 
+            folder: b.name,
+            order_direction: b.order_direction
+        }
+    });
+
+    timeline.push({
+        type: jsPsychHtmlButtonResponse,
+        stimulus: `
+            <div class="stimulus-container">
+                <img src="${s2_path}" class="exp-image">
+                <div class="question-area">
+                    <p style="font-size: 20px; font-weight: bold;">האם הופיעה דמות אדם באחת מהתמונות?</p>
+                </div>
+            </div>`,
+        choices: ['כן', 'לא'],
+        trial_duration: 4500, // מוגדל ב-50% (4.5 שניות)
+        data: { task: 'phase1_attention_check', folder: b.name }
+    });
+
+    timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
+        choices: "NO_KEYS",
+        trial_duration: 1500
+    });
+});
+
+// ============================================================
+// PHASE 2: VALUE CONDITIONING
+// ============================================================
+timeline.push({
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align: center; padding: 40px; font-family: Arial;">' +
+        '<h2>שלב 2: גילוי ערך (Value Conditioning)</h2>' +
+        '<p>בשלב זה תוצג בפניך שוב התמונה השנייה (S2) מכל זוג.</p>' +
+        '<p><b>עליך ללחוץ על מקש הרווח (SPACEBAR)</b> כדי לגלות האם התמונה הזו שווה כסף או ניטרלית.</p>' +
+        '<p><span style="color:green; font-weight:bold;">סמל דולר</span> = שווי כספי גבוה ($)</p>' +
+        '<p><span style="color:gray; font-weight:bold;">תיבה אפורה</span> = ערך ניטרלי (ללא בונוס)</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
+});
+
+test_blocks.forEach(function(b) {
+    var is_rewarded = rewarded_blocks.includes(b.id);
+    var s2_path = getImagePath(b, b.s2_index); 
+
+    var reward_img = is_rewarded ? 'images/dollar.png' : 'images/gray.png';
+    var reward_txt = is_rewarded ? 'שווה כסף ($)' : 'ערך ניטרלי';
+    var reward_clr = is_rewarded ? 'green' : 'gray';
+
+    timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: `
+            <div class="stimulus-container">
+                <img src="${s2_path}" class="exp-image">
+                <p style="font-size: 24px; margin-top: 30px; font-weight: bold;">לחץ על מקש הרווח (SPACEBAR) לחשיפת הערך</p>
+            </div>`,
+        choices: [' '], 
+        data: { task: 'phase2_wait_for_value', folder: b.name }
+    });
+
+    timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: `
+            <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 30px;">
+                <img src="${s2_path}" class="exp-image">
+                <div>
+                    <img src="${reward_img}" style="width: 140px; height: 140px; border: 4px solid ${reward_clr};">
+                    <p style="color: ${reward_clr}; font-weight: bold; font-size: 24px;">${reward_txt}</p>
+                </div>
+            </div>`,
+        choices: "NO_KEYS",
+        trial_duration: 4500, // מוגדל ב-50% (4.5 שניות)
+        data: {
+            task: 'phase2_value_conditioning',
+            folder: b.name,
+            reward_condition: is_rewarded ? 'rewarded' : 'neutral',
+            order_direction: b.order_direction
+        }
+    });
+
+    timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
+        choices: "NO_KEYS",
+        trial_duration: 1500
+    });
+});
+
+// ============================================================
+// PHASE 3: PREFERENCE / CHOICE TEST
+// ============================================================
+timeline.push({
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align: center; padding: 40px; font-family: Arial;">' +
+        '<h2>שלב 3: מבחן בחירה (Decision Test)</h2>' +
+        '<p>כעת תראה זוגות של תמונות ראשונות (S1) מוצגות זו לצד זו.</p>' +
+        '<p>הקשב לתחושת הבטן שלך ובחר את התמונה שנראית לך <b>יותר ברת-מזל (Luckier)</b> או שאתה מעדיף אותה אינטואיטיבית.</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
+});
+
+var rewarded_s1_blocks = test_blocks.filter(b => rewarded_blocks.includes(b.id));
+var neutral_s1_blocks  = test_blocks.filter(b => !rewarded_blocks.includes(b.id));
+
+rewarded_s1_blocks.forEach(function(r_block, idx) {
+    var n_block = neutral_s1_blocks[idx];
+    if (!n_block) return;
+
+    var r_s1_path = getImagePath(r_block, r_block.s1_index);
+    var n_s1_path = getImagePath(n_block, n_block.s1_index);
+
+    timeline.push({
+        type: jsPsychHtmlButtonResponse,
+        stimulus: function() {
+            var left_is_rewarded = Math.random() < 0.5;
+            window.current_choice = {
+                left_is_rewarded: left_is_rewarded,
+                r_folder: r_block.name,
+                n_folder: n_block.name,
+                r_order: r_block.order_direction,
+                n_order: n_block.order_direction
+            };
+
+            var left_img  = left_is_rewarded ? r_s1_path : n_s1_path;
+            var right_img = left_is_rewarded ? n_s1_path : r_s1_path;
+
+            return `
+                <div style="font-family: Arial; margin-bottom: 20px;">
+                    <h3>איזו תמונה מבין השתיים היא <b>יותר ברת מזל</b>?</h3>
+                </div>
+                <div class="stimulus-container" style="display: flex; justify-content: center; gap: 30px;">
+                    <img src="${left_img}" class="small-image">
+                    <img src="${right_img}" class="small-image">
+                </div>`;
+        },
+        choices: ['שמאל', 'ימין'],
+        on_finish: function(data) {
+            var c = window.current_choice;
+            data.task = 'phase3_s1_preference_test';
+            data.rewarded_folder = c.r_folder;
+            data.neutral_folder = c.n_folder;
+            
+            data.rewarded_original_order = c.r_order; 
+            data.neutral_original_order = c.n_order;
+
+            data.chose_associated_reward = ((data.response === 0 && c.left_is_rewarded) ||
+                                            (data.response === 1 && !c.left_is_rewarded)) ? 1 : 0;
+        }
+    });
+});
+
+// ============================================================
+// DEMOGRAPHICS & DEBRIEF
+// ============================================================
+timeline.push({
+    type: jsPsychSurveyText,
+    questions: [
+        { prompt: 'מין (זכר / נקבה / אחר):', name: 'gender', rows: 1, columns: 20 },
+        { prompt: 'גיל:', name: 'age', rows: 1, columns: 5 },
+        { prompt: 'כיצד בחרת בין התמונות בחלק האחרון של הניסוי?', name: 'strategy', rows: 2, columns: 50 }
+    ],
+    data: { task: 'demographics' }
+});
+
+jsPsych.run(timeline);
+
+  </script>
+</html>
