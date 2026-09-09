@@ -57,17 +57,29 @@
   <script>
 
 // ============================================================
-// DATA SAVING
+// DATA SAVING (מנגנון שמירה זהה לחלוטין)
 // ============================================================
+var data_folder = 'data/';
+
 function saveData(data) {
     fetch('write_data.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ filedata: data })
     })
-    .then(response => response.json())
-    .then(result => console.log("Data saved successfully:", result.file))
-    .catch(error => console.error("Error saving data:", error));
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok: ' + response.status);
+        }
+        return response.json();
+    })
+    .then(result => {
+        console.log("Success! File saved as: ", result.file);
+    })
+    .catch(error => {
+        console.error("Error saving data:", error);
+        alert("There was an error saving your data. Please do not close this window.");
+    });
 }
 
 var jsPsych = initJsPsych({
@@ -246,7 +258,7 @@ timeline.push({
 });
 
 // ============================================================
-// END SCREEN
+// END SCREEN (תוקן כך שיאפשר הגעה תקינה לסוף הניסוי והפעלת ה-on_finish)
 // ============================================================
 timeline.push({
     type: jsPsychInstructions,
@@ -256,7 +268,7 @@ timeline.push({
         '<p style="font-size: 22px; color: #28a745; font-weight: bold;">Thank you! Check your server data folder now.</p>' +
         '</div>'
     ],
-    show_clickable_nav: false
+    show_clickable_nav: true
 });
 
 jsPsych.run(timeline);
