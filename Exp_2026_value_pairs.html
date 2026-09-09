@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Preference by Association Experiment (Wimmer & Shohamy, 2012)</title>
+    <title>Preference by Association Experiment</title>
     <style>
       body {
           background-color: #f8f9fa;
@@ -99,7 +99,8 @@ jsPsych.data.addProperties({
 // PRACTICE STIMULI (2 Practice Pairs)
 // ============================================================
 var practice_pairs = [
-   { name: 'the_performance_causal', type: 'causal_sequence', e1: 1, e2: 2 }
+   { name: 'the_performance_causal', type: 'causal_sequence', e1: 1, e2: 2 },
+   { name: 'museum_causal', type: 'causal_sequence', e1: 3, e2: 4 }
 ];
 
 function getPracticeImagePath(block, idx) {
@@ -107,50 +108,55 @@ function getPracticeImagePath(block, idx) {
 }
 
 // ============================================================
-// MAIN STIMULI & PAIR DEFINITIONS (Top 40 Causal Values)
+// STIMULI DEFINITIONS 
+// ברירת מחדל: גרסת ניסיון קצרה של 4 זוגות (2 גבוהים, 2 בינוניים)
 // ============================================================
-var base_pairs = [
-    { name: 'dog_causal', type: 'causal_sequence', e1: 8, e2: 9 },
-    { name: 'dinner_party_scheme', type: 'schematic_sequence', e1: 3, e2: 4 },
-    { name: 'flight_scheme', type: 'schematic_sequence', e1: 1, e2: 3 },
-    { name: 'flight_scheme', type: 'schematic_sequence', e1: 1, e2: 4 },
-    { name: 'saving_a_cat_causal', type: 'causal_sequence', e1: 5, e2: 7 },
-    { name: 'hotel_scheme', type: 'schematic_sequence', e1: 1, e2: 3 },
-    { name: 'interview_scheme', type: 'schematic_sequence', e1: 2, e2: 8 },
-    { name: 'restaurant_scheme', type: 'schematic_sequence', e1: 1, e2: 7 },
-    { name: 'restaurant_scheme', type: 'schematic_sequence', e1: 4, e2: 5 },
-    { name: 'restaurant_scheme', type: 'schematic_sequence', e1: 6, e2: 7 },
-    { name: 'restaurant_scheme', type: 'schematic_sequence', e1: 8, e2: 9 },
-    { name: 'supermarket_scheme', type: 'schematic_sequence', e1: 1, e2: 3 },
-    { name: 'supermarket_scheme', type: 'schematic_sequence', e1: 3, e2: 4 },
-    { name: 'supermarket_scheme', type: 'schematic_sequence', e1: 3, e2: 9 },
-    { name: 'supermarket_scheme', type: 'schematic_sequence', e1: 4, e2: 5 },
-    { name: 'supermarket_scheme', type: 'schematic_sequence', e1: 6, e2: 7 },
-    { name: 'supermarket_scheme', type: 'schematic_sequence', e1: 8, e2: 9 },
-    { name: 'dog_causal', type: 'causal_sequence', e1: 1, e2: 3 },
-    { name: 'dog_causal', type: 'causal_sequence', e1: 5, e2: 8 },
-    { name: 'museum_causal', type: 'causal_sequence', e1: 6, e2: 10 },
-    { name: 'dinner_party_scheme', type: 'schematic_sequence', e1: 3, e2: 7 },
-    { name: 'dinner_party_scheme', type: 'schematic_sequence', e1: 4, e2: 7 },
-    { name: 'dinner_party_scheme', type: 'schematic_sequence', e1: 6, e2: 7 },
-    { name: 'flight_scheme', type: 'schematic_sequence', e1: 1, e2: 5 },
-    { name: 'flight_scheme', type: 'schematic_sequence', e1: 2, e2: 4 },
-    { name: 'flight_scheme', type: 'schematic_sequence', e1: 2, e2: 10 },
-    { name: 'flight_scheme', type: 'schematic_sequence', e1: 5, e2: 8 },
-    { name: 'flight_scheme', type: 'schematic_sequence', e1: 6, e2: 7 },
-    { name: 'flight_scheme', type: 'schematic_sequence', e1: 8, e2: 10 },
-    { name: 'package_causal', type: 'causal_sequence', e1: 3, e2: 4 },
-    { name: 'package_causal', type: 'causal_sequence', e1: 5, e2: 6 },
-    { name: 'package_causal', type: 'causal_sequence', e1: 6, e2: 1 },
-    { name: 'package_causal', type: 'causal_sequence', e1: 6, e2: 7 },
-    { name: 'package_causal', type: 'causal_sequence', e1: 8, e2: 10 },
-    { name: 'saving_a_cat_causal', type: 'causal_sequence', e1: 2, e2: 3 },
-    { name: 'saving_a_cat_causal', type: 'causal_sequence', e1: 3, e2: 4 },
-    { name: 'saving_a_cat_causal', type: 'causal_sequence', e1: 3, e2: 7 },
-    { name: 'saving_a_cat_causal', type: 'causal_sequence', e1: 6, e2: 8 },
-    { name: 'the_performance_causal', type: 'causal_sequence', e1: 5, e2: 6 },
-    { name: 'the_performance_causal', type: 'causal_sequence', e1: 6, e2: 8 }
+var raw_candidates = [
+    // --- גרסת ניסיון (4 זוגות פעילים כרגע) ---
+    { name: 'interview_scheme', type: 'schematic_sequence', e1: 1, e2: 7, causality_condition: 'high' },
+    { name: 'supermarket_scheme', type: 'schematic_sequence', e1: 2, e2: 6, causality_condition: 'high' },
+    { name: 'cat_care_semantic', type: 'semantic_sequence', e1: 3, e2: 6, causality_condition: 'medium' },
+    { name: 'using_technology_semantic', type: 'semantic_sequence', e1: 4, e2: 3, causality_condition: 'medium' }
+
+    /* --- הגרסה המלאה (20 זוגות) - הסר את ההערה כשתרצה לעבור ל-20 ---
+    { name: 'interview_scheme', type: 'schematic_sequence', e1: 1, e2: 7, causality_condition: 'high' },
+    { name: 'supermarket_scheme', type: 'schematic_sequence', e1: 2, e2: 6, causality_condition: 'high' },
+    { name: 'package_causal', type: 'causal_sequence', e1: 4, e2: 7, causality_condition: 'high' },
+    { name: 'supermarket_scheme', type: 'schematic_sequence', e1: 1, e2: 5, causality_condition: 'high' },
+    { name: 'restaurant_scheme', type: 'schematic_sequence', e1: 4, e2: 7, causality_condition: 'high' },
+    { name: 'restaurant_scheme', type: 'schematic_sequence', e1: 6, e2: 7, causality_condition: 'high' },
+    { name: 'supermarket_scheme', type: 'schematic_sequence', e1: 1, e2: 6, causality_condition: 'high' },
+    { name: 'flight_scheme', type: 'schematic_sequence', e1: 4, e2: 5, causality_condition: 'high' },
+    { name: 'saving_a_cat_causal', type: 'causal_sequence', e1: 1, e2: 9, causality_condition: 'high' },
+    { name: 'package_causal', type: 'causal_sequence', e1: 8, e2: 10, causality_condition: 'high' },
+
+    { name: 'cat_care_semantic', type: 'semantic_sequence', e1: 3, e2: 6, causality_condition: 'medium' },
+    { name: 'using_technology_semantic', type: 'semantic_sequence', e1: 4, e2: 3, causality_condition: 'medium' },
+    { name: 'dinner_party_scheme', type: 'schematic_sequence', e1: 6, e2: 10, causality_condition: 'medium' },
+    { name: 'physical_activity_semantic', type: 'semantic_sequence', e1: 2, e2: 8, causality_condition: 'medium' },
+    { name: 'using_technology_semantic', type: 'semantic_sequence', e1: 3, e2: 7, causality_condition: 'medium' },
+    { name: 'kitchen_operations_semantic', type: 'semantic_sequence', e1: 5, e2: 9, causality_condition: 'medium' },
+    { name: 'physical_activity_semantic', type: 'semantic_sequence', e1: 9, e2: 10, causality_condition: 'medium' },
+    { name: 'dog_causal', type: 'causal_sequence', e1: 8, e2: 3, causality_condition: 'medium' },
+    { name: 'the_performance_causal', type: 'causal_sequence', e1: 10, e2: 4, causality_condition: 'medium' },
+    { name: 'self_care_activities_semantic', type: 'semantic_sequence', e1: 2, e2: 9, causality_condition: 'medium' }
+    -------------------------------------------------------------- */
 ];
+
+// מנגנון הבטחה למניעת כפילות תמונות מוחלטת
+var used_images = new Set();
+var base_pairs = [];
+
+raw_candidates.forEach(function(pair) {
+    var imgKey1 = pair.name + '_' + pair.e1;
+    var imgKey2 = pair.name + '_' + pair.e2;
+    
+    if (!used_images.has(imgKey1) && !used_images.has(imgKey2)) {
+        used_images.add(imgKey1);
+        used_images.add(imgKey2);
+        base_pairs.push(pair);
+    }
+});
 
 var all_pairs = base_pairs.map(function(pair, index) {
     var is_ascending = Math.random() < 0.5; 
@@ -160,12 +166,14 @@ var all_pairs = base_pairs.map(function(pair, index) {
         type: pair.type,
         s1_index: is_ascending ? pair.e1 : pair.e2,
         s2_index: is_ascending ? pair.e2 : pair.e1,
-        order_direction: is_ascending ? 'ascending' : 'descending'
+        order_direction: is_ascending ? 'ascending' : 'descending',
+        causality_condition: pair.causality_condition
     };
 });
 
 var test_blocks = jsPsych.randomization.shuffle(all_pairs);
-var rewarded_blocks = test_blocks.slice(0, 20).map(b => b.id);
+var half_length = Math.max(1, Math.floor(test_blocks.length / 2));
+var rewarded_blocks = test_blocks.slice(0, half_length).map(b => b.id);
 
 function getImagePath(block, idx) {
     var suffix = (idx === 10) ? "ten" : idx;
@@ -205,8 +213,8 @@ timeline.push({
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Welcome to the Experiment</h2>' +
-        '<p>This study investigates memory mechanisms, associations, and decision-making.</p>' +
-        '<p>The experiment consists of three main phases, beginning with a short practice session.</p>' +
+        '<p>This study investigates visual perception and decision-making.</p>' +
+        '<p>The experiment consists of three main parts, beginning with a short practice session.</p>' +
         '<p>Click "Next" to read the consent form.</p>' +
         '</div>',
         '<div style="text-align: center; padding: 20px;">' +
@@ -229,9 +237,9 @@ timeline.push({
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Practice Phase</h2>' +
-        '<p>We will now go through <b>2 practice pairs</b> so you can get familiar with the task structure.</p>' +
-        '<p>In each trial, a first image (S1) will appear for 3 seconds, followed by a fixation cross, and then a second image (S2).</p>' +
-        '<p>Please pay close attention to the sequence and answer the attention question at the end of each pair.</p>' +
+        '<p>We will now go through <b>2 practice pairs</b> so you can get familiar with the task.</p>' +
+        '<p>In each trial, a first image will appear for 2 seconds, followed by a fixation cross, and then a second image for 2 seconds.</p>' +
+        '<p>Please view the images carefully and answer the question at the end of each pair.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
@@ -245,7 +253,7 @@ practice_pairs.forEach(function(b) {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: `<div class="stimulus-container"><img src="${s1_path}" class="exp-image"></div>`,
         choices: "NO_KEYS",
-        trial_duration: 3000,
+        trial_duration: 2000,
         data: { task: 'practice_S1', folder: b.name }
     });
 
@@ -253,14 +261,14 @@ practice_pairs.forEach(function(b) {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: '<div class="fixation">+</div>',
         choices: "NO_KEYS",
-        trial_duration: 1500
+        trial_duration: 1000
     });
 
     timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: `<div class="stimulus-container"><img src="${s2_path}" class="exp-image"></div>`,
         choices: "NO_KEYS",
-        trial_duration: 3000,
+        trial_duration: 2000,
         data: { task: 'practice_S2', folder: b.name }
     });
 
@@ -274,7 +282,7 @@ practice_pairs.forEach(function(b) {
                 </div>
             </div>`,
         choices: ['Yes', 'No'],
-        trial_duration: 4500,
+        trial_duration: 3000,
         data: { task: 'practice_attention_check', folder: b.name }
     });
 
@@ -299,33 +307,37 @@ timeline.push({
 });
 
 // ============================================================
-// PHASE 1: ASSOCIATIVE LEARNING (Main Experiment)
+// PHASE 1: IMAGE PAIRS (Main Experiment)
 // ============================================================
 timeline.push({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
-        '<h2>Phase 1: Sequence Viewing</h2>' +
-        '<p>In this phase, you will view consecutive pairs of images (First Image -> Second Image).</p>' +
-        '<p><b>Important:</b> Try to learn and remember the sequential relationship between the images in each pair.</p>' +
+        '<h2>Phase 1: Image Viewing</h2>' +
+        '<p>In this phase, you will view pairs of images presented one after the other.</p>' +
+        '<p>Please look at each image carefully as it appears on the screen.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
 });
 
-test_blocks.forEach(function(b) {
+test_blocks.forEach(function(b, index) {
     var s1_path = getImagePath(b, b.s1_index);
     var s2_path = getImagePath(b, b.s2_index);
+
+    // מעקב קונסול להתקדמות
+    console.log(`[Phase 1] Pair ${index + 1} of ${test_blocks.length}`);
 
     timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: `<div class="stimulus-container"><img src="${s1_path}" class="exp-image"></div>`,
         choices: "NO_KEYS",
-        trial_duration: 3000,
+        trial_duration: 2000,
         data: { 
             task: 'phase1_S1', 
             folder: b.name, 
             order_direction: b.order_direction,
+            causality_condition: b.causality_condition,
             s1_index: b.s1_index,
             s2_index: b.s2_index 
         }
@@ -335,18 +347,19 @@ test_blocks.forEach(function(b) {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: '<div class="fixation">+</div>',
         choices: "NO_KEYS",
-        trial_duration: 1500
+        trial_duration: 1000
     });
 
     timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: `<div class="stimulus-container"><img src="${s2_path}" class="exp-image"></div>`,
         choices: "NO_KEYS",
-        trial_duration: 3000,
+        trial_duration: 2000,
         data: { 
             task: 'phase1_S2', 
             folder: b.name,
-            order_direction: b.order_direction
+            order_direction: b.order_direction,
+            causality_condition: b.causality_condition
         }
     });
 
@@ -360,7 +373,7 @@ test_blocks.forEach(function(b) {
                 </div>
             </div>`,
         choices: ['Yes', 'No'],
-        trial_duration: 4500,
+        trial_duration: 3000,
         data: { task: 'phase1_attention_check', folder: b.name }
     });
 
@@ -379,9 +392,9 @@ timeline.push({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
-        '<h2>Phase 2: Value Conditioning</h2>' +
-        '<p>In this phase, you will see the second image (S2) from each pair again.</p>' +
-        '<p><b>You must press the SPACEBAR</b> to reveal whether the image is worth money or neutral.</p>' +
+        '<h2>Phase 2: Image Values</h2>' +
+        '<p>In this phase, you will see some of the images from the previous task again.</p>' +
+        '<p><b>You must press the SPACEBAR</b> to reveal the monetary value associated with each image.</p>' +
         '<p><span style="color:green; font-weight:bold;">Dollar Sign</span> = High Monetary Value ($)</p>' +
         '<p><span style="color:gray; font-weight:bold;">Gray Box</span> = Neutral Value (No Bonus)</p>' +
         '</div>'
@@ -419,12 +432,13 @@ test_blocks.forEach(function(b) {
                 </div>
             </div>`,
         choices: "NO_KEYS",
-        trial_duration: 4500,
+        trial_duration: 3000,
         data: {
             task: 'phase2_value_conditioning',
             folder: b.name,
             reward_condition: is_rewarded ? 'rewarded' : 'neutral',
-            order_direction: b.order_direction
+            order_direction: b.order_direction,
+            causality_condition: b.causality_condition
         }
     });
 
@@ -444,7 +458,7 @@ timeline.push({
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Phase 3: Decision Test</h2>' +
-        '<p>You will now see pairs of first images (S1) displayed side-by-side.</p>' +
+        '<p>You will now see pairs of images displayed side-by-side.</p>' +
         '<p>Follow your gut feeling and choose the image that you feel is <b>luckier</b> or that you intuitively prefer.</p>' +
         '</div>'
     ],
@@ -470,7 +484,9 @@ rewarded_s1_blocks.forEach(function(r_block, idx) {
                 r_folder: r_block.name,
                 n_folder: n_block.name,
                 r_order: r_block.order_direction,
-                n_order: n_block.order_direction
+                n_order: n_block.order_direction,
+                r_causality: r_block.causality_condition,
+                n_causality: n_block.causality_condition
             };
 
             var left_img  = left_is_rewarded ? r_s1_path : n_s1_path;
@@ -494,6 +510,8 @@ rewarded_s1_blocks.forEach(function(r_block, idx) {
             
             data.rewarded_original_order = c.r_order; 
             data.neutral_original_order = c.n_order;
+            data.rewarded_causality = c.r_causality;
+            data.neutral_causality = c.n_causality;
 
             data.chose_associated_reward = ((data.response === 0 && c.left_is_rewarded) ||
                                             (data.response === 1 && !c.left_is_rewarded)) ? 1 : 0;
@@ -512,6 +530,22 @@ timeline.push({
         { prompt: 'How did you choose between images in the final part?', name: 'strategy', rows: 2, columns: 50 }
     ],
     data: { task: 'demographics' }
+});
+
+// ============================================================
+// END OF EXPERIMENT / THANK YOU SCREEN
+// ============================================================
+timeline.push({
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align: center; padding: 60px; font-family: Arial;">' +
+        '<h2>Experiment Completed</h2>' +
+        '<p style="font-size: 20px; margin-top: 20px;">You have successfully finished the study.</p>' +
+        '<p style="font-size: 22px; color: #28a745; font-weight: bold; margin-top: 30px;">Thank you very much for your participation!</p>' +
+        '<p style="font-size: 16px; color: #666; margin-top: 40px;">You may now safely close this window or return to the platform.</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: false
 });
 
 jsPsych.run(timeline);
