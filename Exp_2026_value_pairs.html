@@ -96,8 +96,19 @@ jsPsych.data.addProperties({
 });
 
 // ============================================================
-// STIMULI & PAIR DEFINITIONS (Top 40 Causal Values)
-// הגרלה בזמן אמת של כיוון ההצגה לכל זוג (עולה או יורד)
+// PRACTICE STIMULI (2 זוגות להדגמה בלבד)
+// ============================================================
+var practice_pairs = [
+    { name: 'practice_seq_1', type: 'practice_sequence', e1: 1, e2: 2 },
+    { name: 'practice_seq_2', type: 'practice_sequence', e1: 1, e2: 2 }
+];
+
+function getPracticeImagePath(block, idx) {
+    return `images/${block.type}/${block.name}/${block.name}_${idx}.png`;
+}
+
+// ============================================================
+// MAIN STIMULI & PAIR DEFINITIONS (Top 40 Causal Values)
 // ============================================================
 var base_pairs = [
     { name: 'dog_causal', type: 'causal_sequence', e1: 8, e2: 9 },
@@ -143,7 +154,7 @@ var base_pairs = [
 ];
 
 var all_pairs = base_pairs.map(function(pair, index) {
-    var is_ascending = Math.random() < 0.5; // 50% chance for ascending
+    var is_ascending = Math.random() < 0.5; 
     return {
         id: index,
         name: pair.name,
@@ -154,10 +165,7 @@ var all_pairs = base_pairs.map(function(pair, index) {
     };
 });
 
-// עירבוב סדר הבלוקים למשתתף הנוכחי
 var test_blocks = jsPsych.randomization.shuffle(all_pairs);
-
-// בחירת 20 סדרות שיהיו מתוגמלות (החצי הראשון של הרשימה המעורבבת)
 var rewarded_blocks = test_blocks.slice(0, 20).map(b => b.id);
 
 function getImagePath(block, idx) {
@@ -173,6 +181,11 @@ var imagesToPreload = [
     'images/gray.png',
     'images/dollar.png'
 ];
+
+practice_pairs.forEach(function(b) {
+    imagesToPreload.push(getPracticeImagePath(b, 1));
+    imagesToPreload.push(getPracticeImagePath(b, 2));
+});
 
 test_blocks.forEach(function(b) {
     imagesToPreload.push(getImagePath(b, b.s1_index));
@@ -192,9 +205,10 @@ timeline.push({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
-        '<h2>Welcome to the Experiment</h2>' +
-        '<p>This study investigates memory mechanisms and decision-making.</p>' +
-        '<p>Click "Next" to read the consent form.</p>' +
+        '<h2>ברוכים הבאים למחקר</h2>' +
+        '<p>ניסוי זה בוחן תהליכי זיכרון, אסוציאציות וקבלת החלטות.</p>' +
+        '<p>הניסוי מורכב משלושה שלבים, ויכלול בהתחלה סיבוב היכרות קצר (הדגמה).</p>' +
+        '<p>לחץ על "הבא" לקריאת טופס ההסכמה מדעת.</p>' +
         '</div>',
         '<div style="text-align: center; padding: 20px;">' +
         '<img src="consent_form_2022.png" style="max-width:80%;"></img>' +
@@ -209,15 +223,92 @@ timeline.push({
 });
 
 // ============================================================
-// PHASE 1: ASSOCIATIVE LEARNING (S1 -> S2 Pairs)
+// PRACTICE PHASE (שלב הדגמה)
 // ============================================================
 timeline.push({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: center; padding: 40px; font-family: Arial;">' +
-        '<h2>Phase 1: Associative Pair Presentation</h2>' +
-        '<p>You will view pairs of consecutive images (First Image -> Second Image).</p>' +
-        '<p>Pay close attention to the sequential relationship between the images in each pair.</p>' +
+        '<h2>שלב הדגמה (Practice Phase)</h2>' +
+        '<p>כעת נעבור על <b>2 זוגות לדוגמה</b> כדי שתוכל להתרגל למבנה הניסוי.</p>' +
+        '<p>בכל צעד תופיע תמונה ראשונה (S1) למשך 3 שניות, אחריה צלב פיקסשיין, ואז תמונה שנייה (S2).</p>' +
+        '<p>עליך להסתכל היטב על הרצף, ולענות על שאלת הקשב שתוצג בסוף כל צמד.</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
+});
+
+practice_pairs.forEach(function(b) {
+    var s1_path = getPracticeImagePath(b, 1);
+    var s2_path = getPracticeImagePath(b, 2);
+
+    timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: `<div class="stimulus-container"><img src="${s1_path}" class="exp-image"></div>`,
+        choices: "NO_KEYS",
+        trial_duration: 3000, // מוגדל ב-50% (3 שניות)
+        data: { task: 'practice_S1', folder: b.name }
+    });
+
+    timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: '<div class="fixation">+</div>',
+        choices: "NO_KEYS",
+        trial_duration: 1500 // מוגדל ב-50% (1.5 שניות)
+    });
+
+    timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: `<div class="stimulus-container"><img src="${s2_path}" class="exp-image"></div>`,
+        choices: "NO_KEYS",
+        trial_duration: 3000, // מוגדל ב-50% (3 שניות)
+        data: { task: 'practice_S2', folder: b.name }
+    });
+
+    timeline.push({
+        type: jsPsychHtmlButtonResponse,
+        stimulus: `
+            <div class="stimulus-container">
+                <img src="${s2_path}" class="exp-image">
+                <div class="question-area">
+                    <p style="font-size: 20px; font-weight: bold;">האם הופיעה דמות אדם באחת מהתמונות?</p>
+                </div>
+            </div>`,
+        choices: ['כן', 'לא'],
+        trial_duration: 4500, // מוגדל ב-50% (4.5 שניות)
+        data: { task: 'practice_attention_check', folder: b.name }
+    });
+
+    timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
+        choices: "NO_KEYS",
+        trial_duration: 1500
+    });
+});
+
+timeline.push({
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align: center; padding: 40px; font-family: Arial;">' +
+        '<h2>סיום ההדגמה</h2>' +
+        '<p>מעולה! סיימנו את ההדגמה.</p>' +
+        '<p>כעת מתחיל הניסוי האמיתי. אנא הישאר ממוקד במסך.</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
+});
+
+// ============================================================
+// PHASE 1: ASSOCIATIVE LEARNING (Main Experiment)
+// ============================================================
+timeline.push({
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align: center; padding: 40px; font-family: Arial;">' +
+        '<h2>שלב 1: צפייה ברצפים</h2>' +
+        '<p>בשלב זה תצפה בזוגות עוקבים של תמונות (תמונה ראשונה $\rightarrow$ תמונה שנייה).</p>' +
+        '<p><b>הנחיה חשובה:</b> נסה ללמוד ולזכור את הקשר הסדרתי בין התמונות בכל זוג.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
@@ -231,7 +322,7 @@ test_blocks.forEach(function(b) {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: `<div class="stimulus-container"><img src="${s1_path}" class="exp-image"></div>`,
         choices: "NO_KEYS",
-        trial_duration: 2000,
+        trial_duration: 3000, // מוגדל ב-50% (3 שניות)
         data: { 
             task: 'phase1_S1', 
             folder: b.name, 
@@ -245,14 +336,14 @@ test_blocks.forEach(function(b) {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: '<div class="fixation">+</div>',
         choices: "NO_KEYS",
-        trial_duration: 1000
+        trial_duration: 1500 // מוגדל ב-50% (1.5 שניות)
     });
 
     timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: `<div class="stimulus-container"><img src="${s2_path}" class="exp-image"></div>`,
         choices: "NO_KEYS",
-        trial_duration: 2000,
+        trial_duration: 3000, // מוגדל ב-50% (3 שניות)
         data: { 
             task: 'phase1_S2', 
             folder: b.name,
@@ -266,11 +357,11 @@ test_blocks.forEach(function(b) {
             <div class="stimulus-container">
                 <img src="${s2_path}" class="exp-image">
                 <div class="question-area">
-                    <p style="font-size: 20px; font-weight: bold;">Was there a person in either of the images?</p>
+                    <p style="font-size: 20px; font-weight: bold;">האם הופיעה דמות אדם באחת מהתמונות?</p>
                 </div>
             </div>`,
-        choices: ['Yes', 'No'],
-        trial_duration: 3000,
+        choices: ['כן', 'לא'],
+        trial_duration: 4500, // מוגדל ב-50% (4.5 שניות)
         data: { task: 'phase1_attention_check', folder: b.name }
     });
 
@@ -289,11 +380,11 @@ timeline.push({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: center; padding: 40px; font-family: Arial;">' +
-        '<h2>Phase 2: Value Conditioning</h2>' +
-        '<p>In this phase, you will see images from the previous task.</p>' +
-        '<p><b>You must press the SPACEBAR</b> to reveal if the image is worth money.</p>' +
-        '<p><span style="color:green; font-weight:bold;">DOLLAR</span> = High Value ($)</p>' +
-        '<p><span style="color:gray; font-weight:bold;">GRAY</span> = Neutral Value</p>' +
+        '<h2>שלב 2: גילוי ערך (Value Conditioning)</h2>' +
+        '<p>בשלב זה תוצג בפניך שוב התמונה השנייה (S2) מכל זוג.</p>' +
+        '<p><b>עליך ללחוץ על מקש הרווח (SPACEBAR)</b> כדי לגלות האם התמונה הזו שווה כסף או ניטרלית.</p>' +
+        '<p><span style="color:green; font-weight:bold;">סמל דולר</span> = שווי כספי גבוה ($)</p>' +
+        '<p><span style="color:gray; font-weight:bold;">תיבה אפורה</span> = ערך ניטרלי (ללא בונוס)</p>' +
         '</div>'
     ],
     show_clickable_nav: true
@@ -304,7 +395,7 @@ test_blocks.forEach(function(b) {
     var s2_path = getImagePath(b, b.s2_index); 
 
     var reward_img = is_rewarded ? 'images/dollar.png' : 'images/gray.png';
-    var reward_txt = is_rewarded ? 'WORTH MONEY' : 'NEUTRAL VALUE';
+    var reward_txt = is_rewarded ? 'שווה כסף ($)' : 'ערך ניטרלי';
     var reward_clr = is_rewarded ? 'green' : 'gray';
 
     timeline.push({
@@ -312,7 +403,7 @@ test_blocks.forEach(function(b) {
         stimulus: `
             <div class="stimulus-container">
                 <img src="${s2_path}" class="exp-image">
-                <p style="font-size: 24px; margin-top: 30px; font-weight: bold;">Press SPACEBAR to reveal value</p>
+                <p style="font-size: 24px; margin-top: 30px; font-weight: bold;">לחץ על מקש הרווח (SPACEBAR) לחשיפת הערך</p>
             </div>`,
         choices: [' '], 
         data: { task: 'phase2_wait_for_value', folder: b.name }
@@ -329,7 +420,7 @@ test_blocks.forEach(function(b) {
                 </div>
             </div>`,
         choices: "NO_KEYS",
-        trial_duration: 3000,
+        trial_duration: 4500, // מוגדל ב-50% (4.5 שניות)
         data: {
             task: 'phase2_value_conditioning',
             folder: b.name,
@@ -353,9 +444,9 @@ timeline.push({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: center; padding: 40px; font-family: Arial;">' +
-        '<h2>Phase 3: Decision Test</h2>' +
-        '<p>You will now see pairs of images side-by-side.</p>' +
-        '<p>Please follow your gut feeling and choose the image that you feel is <b>luckier</b>.</p>' +
+        '<h2>שלב 3: מבחן בחירה (Decision Test)</h2>' +
+        '<p>כעת תראה זוגות של תמונות ראשונות (S1) מוצגות זו לצד זו.</p>' +
+        '<p>הקשב לתחושת הבטן שלך ובחר את התמונה שנראית לך <b>יותר ברת-מזל (Luckier)</b> או שאתה מעדיף אותה אינטואיטיבית.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
@@ -388,14 +479,14 @@ rewarded_s1_blocks.forEach(function(r_block, idx) {
 
             return `
                 <div style="font-family: Arial; margin-bottom: 20px;">
-                    <h3>Which image is <b>luckier</b>?</h3>
+                    <h3>איזו תמונה מבין השתיים היא <b>יותר ברת מזל</b>?</h3>
                 </div>
                 <div class="stimulus-container" style="display: flex; justify-content: center; gap: 30px;">
                     <img src="${left_img}" class="small-image">
                     <img src="${right_img}" class="small-image">
                 </div>`;
         },
-        choices: ['Left', 'Right'],
+        choices: ['שמאל', 'ימין'],
         on_finish: function(data) {
             var c = window.current_choice;
             data.task = 'phase3_s1_preference_test';
@@ -417,9 +508,9 @@ rewarded_s1_blocks.forEach(function(r_block, idx) {
 timeline.push({
     type: jsPsychSurveyText,
     questions: [
-        { prompt: 'Gender (MALE / FEMALE / OTHER):', name: 'gender', rows: 1, columns: 20 },
-        { prompt: 'Age:', name: 'age', rows: 1, columns: 5 },
-        { prompt: 'How did you choose between images in the final part?', name: 'strategy', rows: 2, columns: 50 }
+        { prompt: 'מין (זכר / נקבה / אחר):', name: 'gender', rows: 1, columns: 20 },
+        { prompt: 'גיל:', name: 'age', rows: 1, columns: 5 },
+        { prompt: 'כיצד בחרת בין התמונות בחלק האחרון של הניסוי?', name: 'strategy', rows: 2, columns: 50 }
     ],
     data: { task: 'demographics' }
 });
