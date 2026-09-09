@@ -62,7 +62,7 @@
   <script>
 
 // ============================================================
-// DATA SAVING
+// DATA SAVING (Fixed)
 // ============================================================
 var data_folder = 'data/';
 
@@ -76,10 +76,16 @@ function saveData(data) {
         if (!response.ok) {
             throw new Error('Network response was not ok: ' + response.status);
         }
-        return response.json();
+        return response.text().then(text => {
+            try {
+                return JSON.parse(text);
+            } catch (e) {
+                return { success: true, raw: text };
+            }
+        });
     })
     .then(result => {
-        console.log("Success! File saved as: ", result.file);
+        console.log("Success! Data saved.", result);
     })
     .catch(error => {
         console.error("Error saving data:", error);
@@ -119,10 +125,9 @@ function getPracticeImagePath(block, idx) {
 }
 
 // ============================================================
-// MAIN STIMULI DEFINITIONS (כל 20 הזוגות המלאים: סיבתי וסכימתי בלבד)
+// MAIN STIMULI DEFINITIONS
 // ============================================================
 var raw_candidates = [
-    // High Causality (> 0.8) - Causal & Scheme only
     { name: 'museum_causal', type: 'causal_sequence', e1: 6, e2: 9, causality_condition: 'high' },
     { name: 'dog_causal', type: 'causal_sequence', e1: 4, e2: 5, causality_condition: 'high' },
     { name: 'dog_causal', type: 'causal_sequence', e1: 8, e2: 10, causality_condition: 'high' },
@@ -134,7 +139,6 @@ var raw_candidates = [
     { name: 'the_performance_causal', type: 'causal_sequence', e1: 7, e2: 9, causality_condition: 'high' },
     { name: 'interview_scheme', type: 'schematic_sequence', e1: 3, e2: 6, causality_condition: 'high' },
 
-    // Medium Causality (0.4 - 0.6) - Causal & Scheme only
     { name: 'dog_causal', type: 'causal_sequence', e1: 1, e2: 7, causality_condition: 'medium' },
     { name: 'museum_causal', type: 'causal_sequence', e1: 1, e2: 7, causality_condition: 'medium' },
     { name: 'hotel_scheme', type: 'schematic_sequence', e1: 5, e2: 6, causality_condition: 'medium' },
@@ -147,7 +151,6 @@ var raw_candidates = [
     { name: 'the_performance_causal', type: 'causal_sequence', e1: 2, e2: 10, causality_condition: 'medium' }
 ];
 
-// מנגנון מניעת כפילות תמונות מוחלטת
 var used_images = new Set();
 var base_pairs = [];
 
@@ -329,8 +332,6 @@ test_blocks.forEach(function(b, index) {
     var s1_path = getImagePath(b, b.s1_index);
     var s2_path = getImagePath(b, b.s2_index);
 
-    console.log(`[Phase 1] Pair ${index + 1} of ${test_blocks.length}`);
-
     timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: `<div class="stimulus-container"><img src="${s1_path}" class="exp-image"></div>`,
@@ -454,7 +455,7 @@ test_blocks.forEach(function(b) {
 });
 
 // ============================================================
-// PHASE 3: PREFERENCE / CHOICE TEST (3 seconds view before choice)
+// PHASE 3: PREFERENCE / CHOICE TEST
 // ============================================================
 timeline.push({
     type: jsPsychInstructions,
@@ -478,7 +479,6 @@ rewarded_s1_blocks.forEach(function(r_block, idx) {
     var r_s1_path = getImagePath(r_block, r_block.s1_index);
     var n_s1_path = getImagePath(n_block, n_block.s1_index);
 
-    // Trial 1: Preview images for 3 seconds (NO buttons)
     timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: function() {
@@ -512,7 +512,6 @@ rewarded_s1_blocks.forEach(function(r_block, idx) {
         trial_duration: 3000
     });
 
-    // Trial 2: Present same images WITH choice buttons
     timeline.push({
         type: jsPsychHtmlButtonResponse,
         stimulus: function() {
@@ -538,7 +537,7 @@ rewarded_s1_blocks.forEach(function(r_block, idx) {
             data.neutral_causality = c.n_causality;
 
             data.chose_associated_reward = ((data.response === 0 && c.left_is_rewarded) ||
-                                            (data.response === 1 && !c.left_is_rewarded)) ? 1 : 0;
+                                           (data.response === 1 && !c.left_is_rewarded)) ? 1 : 0;
         }
     });
 });
@@ -558,7 +557,7 @@ timeline.push({
 });
 
 // ============================================================
-// END OF EXPERIMENT / THANK YOU SCREEN
+// END OF EXPERIMENT
 // ============================================================
 timeline.push({
     type: jsPsychInstructions,
