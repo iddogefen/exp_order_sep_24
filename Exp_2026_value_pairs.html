@@ -49,6 +49,7 @@
     <script src="jspsych/plugins/plugin-html-keyboard-response.js"></script>
     <script src="jspsych/plugins/plugin-fullscreen.js"></script>
     <script src="jspsych/plugins/plugin-preload.js"></script>
+    <script src="jspsych/plugins/plugin-call-function.js"></script>
     <link rel="stylesheet" href="jspsych/css/jspsych.css">
   </head>
   <body></body>
@@ -58,9 +59,17 @@
 // DATA SAVING (Using write_data.php - matches the actual file
 // name/location on the server, see exp_order_sep_24/write_data.php)
 // ============================================================
+var data_already_saved = false; // guard so we don't save twice
+
 function saveData(data) {
+    if (data_already_saved) {
+        console.log("saveData already called once, skipping duplicate call.");
+        return;
+    }
+    data_already_saved = true;
+
     console.log("Starting saveData...");
-    fetch('/write_data.php', {   // <-- FIXED: was '/save-my-data.php' (file didn't exist -> silent 404)
+    fetch('/write_data.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -69,8 +78,6 @@ function saveData(data) {
     })
     .then(response => {
         if (!response.ok) {
-            // Surface HTTP-level errors (404/500) instead of letting
-            // response.json() throw a confusing parse error.
             throw new Error('HTTP ' + response.status + ' ' + response.statusText);
         }
         return response.json();
@@ -80,15 +87,16 @@ function saveData(data) {
     })
     .catch(error => {
         console.error("✗ Error saving data:", error);
-        // Optional: surface the failure to the participant/experimenter
-        // instead of it being silently swallowed in the console only.
         alert("There was a problem saving your data. Please tell the experimenter. (" + error.message + ")");
     });
 }
 
 var jsPsych = initJsPsych({
     on_finish: function() {
-        console.log("Experiment finished, saving data...");
+        // Safety net: if for any reason saveData wasn't already
+        // triggered earlier (see the call-function trial below),
+        // this still catches it at the very end of the timeline.
+        console.log("Experiment timeline finished (on_finish).");
         saveData(jsPsych.data.get().csv());
     }
 });
@@ -236,6 +244,20 @@ timeline.push({
 });
 
 // ============================================================
+// SAVE DATA HERE - right after demographics, BEFORE the final
+// screen. This way the data is saved even if the participant
+// never interacts with (or closes the tab during) the last
+// "Test Complete" screen.
+// ============================================================
+timeline.push({
+    type: jsPsychCallFunction,
+    func: function() {
+        console.log("Reached end of real trials, saving data now (before final screen)...");
+        saveData(jsPsych.data.get().csv());
+    }
+});
+
+// ============================================================
 // END
 // ============================================================
 timeline.push({
@@ -243,11 +265,16 @@ timeline.push({
     pages: [
         '<div style="text-align: center; padding: 60px; font-family: Arial;">' +
         '<h2>✓ Test Complete!</h2>' +
-        '<p style="font-size: 20px; margin-top: 20px;">Check Console (F12) for "✓ Success!" message.</p>' +
+        '<p style="font-size: 20px; margin-top: 20px;">Your data has already been saved.</p>' +
+        '<p style="font-size: 16px; margin-top: 20px;">Check Console (F12) for "✓ Success!" message.</p>' +
         '<p style="font-size: 16px; margin-top: 20px;">Data should be saved in: <br><b>data/exp_data_*.csv</b></p>' +
+        '<p style="font-size: 18px; margin-top: 30px;">Click "Finish" below to close.</p>' +
         '</div>'
     ],
-    show_clickable_nav: false
+    show_clickable_nav: true   // <-- FIXED: was false, so there was no way
+                                //     to signal the end of the trial and the
+                                //     timeline (and on_finish/saveData) never
+                                //     actually completed.
 });
 
 jsPsych.run(timeline);
