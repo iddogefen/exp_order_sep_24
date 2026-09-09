@@ -41,13 +41,6 @@
           align-items: center;
           justify-content: center;
       }
-
-      .question-area {
-          height: 80px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-      }
     </style>
     <script src="jspsych/plugins/jspsych.js"></script>
     <script src="jspsych/plugins/plugin-instructions.js"></script>
@@ -62,65 +55,44 @@
   <script>
 
 // ============================================================
-// DATA SAVING (Fixed with Backup)
+// DATA SAVING (Using save-my-data.php)
 // ============================================================
 var data_folder = 'data/';
 
-function saveData(data) {
-    console.log("Starting saveData function");
-    fetch('write_data.php', {
+function saveData(filename, data) {
+    console.log("Starting saveData with filename:", filename);
+    fetch('/save-my-data.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ filedata: data })
+        body: JSON.stringify({ 
+            filename: filename,
+            filedata: data
+        })
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok: ' + response.status);
-        }
-        return response.text().then(text => {
-            try {
-                return JSON.parse(text);
-            } catch (e) {
-                return { success: true, raw: text };
-            }
-        });
-    })
+    .then(response => response.json())
     .then(result => {
-        console.log("Success! Data saved to server.", result);
+        console.log("✓ Success! Data saved.", result);
     })
     .catch(error => {
-        console.error("Error saving data to server:", error);
-        // Save locally as backup if server fails
-        try {
-            var backupKey = 'experiment_backup_' + participant_id + '_' + Date.now();
-            localStorage.setItem(backupKey, data);
-            console.log("Data saved locally to localStorage with key:", backupKey);
-            alert("✓ Data saved locally. Key: " + backupKey);
-        } catch (storageError) {
-            console.error("Error saving to localStorage:", storageError);
-            alert("Warning: Could not save data to server or locally. Please do not close this window and contact support.");
-        }
+        console.error("✗ Error saving data:", error);
     });
 }
 
 var jsPsych = initJsPsych({
     on_finish: function() {
         console.log("Experiment finished, saving data...");
-        saveData(jsPsych.data.get().csv());
+        saveData(data_folder + subject_id + ".csv", jsPsych.data.get().csv());
     }
 });
 
 var timeline = [];
 
 var participant_id = jsPsych.data.getURLVariable('participantId') || jsPsych.randomization.randomID(15);
-var study_id = jsPsych.data.getURLVariable('assignmentId');
-var session_id = jsPsych.data.getURLVariable('projectId');
+var subject_id = participant_id;
 
 jsPsych.data.addProperties({
     subject_id: participant_id,
-    study_id: study_id,
-    session_id: session_id,
-    experiment: 'Quick_Test_Single_Pair'
+    experiment: 'Quick_Test'
 });
 
 // ============================================================
@@ -130,9 +102,7 @@ var test_pair = {
     name: 'museum_causal', 
     type: 'causal_sequence', 
     s1_index: 1, 
-    s2_index: 2,
-    order_direction: 'ascending',
-    causality_condition: 'high'
+    s2_index: 2
 };
 
 function getImagePath(idx) {
@@ -157,34 +127,23 @@ timeline.push({
 });
 
 // ============================================================
-// INSTRUCTIONS
+// START
 // ============================================================
 timeline.push({
     type: jsPsychInstructions,
     pages: [
-        '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
-        '<h2>Quick Test - Single Pair</h2>' +
-        '<p>This is a minimal version with only 1 image pair to quickly test data saving.</p>' +
-        '<p>Click "Next" to start.</p>' +
+        '<div style="text-align: center; padding: 40px; font-family: Arial;">' +
+        '<h2>Quick Test</h2>' +
+        '<p>This is a quick 2-minute test to verify data saving works.</p>' +
+        '<p>Click Next to begin.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
 });
 
 // ============================================================
-// PHASE 1: VIEW IMAGES
+// VIEW IMAGES
 // ============================================================
-timeline.push({
-    type: jsPsychInstructions,
-    pages: [
-        '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
-        '<h2>Phase 1: View Images</h2>' +
-        '<p>Looking at 1 image pair...</p>' +
-        '</div>'
-    ],
-    show_clickable_nav: true
-});
-
 var s1_path = getImagePath(test_pair.s1_index);
 var s2_path = getImagePath(test_pair.s2_index);
 
@@ -193,12 +152,7 @@ timeline.push({
     stimulus: `<div class="stimulus-container"><img src="${s1_path}" class="exp-image"></div>`,
     choices: "NO_KEYS",
     trial_duration: 2000,
-    data: { 
-        task: 'phase1_S1', 
-        folder: test_pair.name, 
-        order_direction: test_pair.order_direction,
-        causality_condition: test_pair.causality_condition
-    }
+    data: { task: 'view_image_1' }
 });
 
 timeline.push({
@@ -213,35 +167,21 @@ timeline.push({
     stimulus: `<div class="stimulus-container"><img src="${s2_path}" class="exp-image"></div>`,
     choices: "NO_KEYS",
     trial_duration: 2000,
-    data: { 
-        task: 'phase1_S2', 
-        folder: test_pair.name
-    }
+    data: { task: 'view_image_2' }
 });
 
 // ============================================================
-// PHASE 2: VALUE CONDITIONING
+// VALUE REVEAL
 // ============================================================
-timeline.push({
-    type: jsPsychInstructions,
-    pages: [
-        '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
-        '<h2>Phase 2: Value Association</h2>' +
-        '<p>Press SPACEBAR to reveal the value...</p>' +
-        '</div>'
-    ],
-    show_clickable_nav: true
-});
-
 timeline.push({
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
         <div class="stimulus-container">
             <img src="${s2_path}" class="exp-image">
-            <p style="font-size: 24px; margin-top: 30px; font-weight: bold;">Press SPACEBAR</p>
+            <p style="font-size: 24px; margin-top: 30px;">Press SPACEBAR</p>
         </div>`,
     choices: [' '], 
-    data: { task: 'phase2_wait_for_value' }
+    data: { task: 'wait_for_value' }
 });
 
 timeline.push({
@@ -256,40 +196,12 @@ timeline.push({
         </div>`,
     choices: "NO_KEYS",
     trial_duration: 3000,
-    data: {
-        task: 'phase2_value_conditioning',
-        reward_condition: 'rewarded'
-    }
+    data: { task: 'value_revealed' }
 });
 
 // ============================================================
-// PHASE 3: CHOICE TEST
+// CHOICE
 // ============================================================
-timeline.push({
-    type: jsPsychInstructions,
-    pages: [
-        '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
-        '<h2>Phase 3: Choose</h2>' +
-        '<p>Pick which image you prefer...</p>' +
-        '</div>'
-    ],
-    show_clickable_nav: true
-});
-
-timeline.push({
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: `
-        <div style="font-family: Arial; margin-bottom: 20px;">
-            <h3>Which image do you prefer?</h3>
-        </div>
-        <div class="stimulus-container" style="display: flex; justify-content: center; gap: 30px;">
-            <img src="${s1_path}" class="small-image">
-            <img src="${s2_path}" class="small-image">
-        </div>`,
-    choices: "NO_KEYS",
-    trial_duration: 3000
-});
-
 timeline.push({
     type: jsPsychHtmlButtonResponse,
     stimulus: `
@@ -301,10 +213,7 @@ timeline.push({
             <img src="${s2_path}" class="small-image">
         </div>`,
     choices: ['Left', 'Right'],
-    on_finish: function(data) {
-        data.task = 'phase3_preference_test';
-        data.choice = data.response === 0 ? 'Left' : 'Right';
-    }
+    data: { task: 'preference_choice' }
 });
 
 // ============================================================
@@ -314,7 +223,7 @@ timeline.push({
     type: jsPsychSurveyText,
     questions: [
         { prompt: 'Your name:', name: 'name', rows: 1, columns: 20 },
-        { prompt: 'Age:', name: 'age', rows: 1, columns: 5 }
+        { prompt: 'Your age:', name: 'age', rows: 1, columns: 5 }
     ],
     data: { task: 'demographics' }
 });
@@ -327,8 +236,30 @@ timeline.push({
     pages: [
         '<div style="text-align: center; padding: 60px; font-family: Arial;">' +
         '<h2>✓ Test Complete!</h2>' +
-        '<p style="font-size: 20px; margin-top: 20px;">Check the browser console (F12) or localStorage to verify data was saved.</p>' +
-        '<p style="font-size: 16px; color: #666; margin-top: 40px;">You can now close this window.</p>' +
+        '<p style="font-size: 20px; margin-top: 20px;">Check Console (F12) for "✓ Success!" message.</p>' +
+        '<p style="font-size: 16px; margin-top: 20px;">Data should be saved in: <br><b>data/' + subject_id + '.csv</b></p>' +
+        '</div>'
+    ],
+    show_clickable_nav: false
+});
+
+jsPsych.run(timeline);
+
+  </script>
+</html>
+});
+
+// ============================================================
+// END OF EXPERIMENT
+// ============================================================
+timeline.push({
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align: center; padding: 60px; font-family: Arial;">' +
+        '<h2>Experiment Completed</h2>' +
+        '<p style="font-size: 20px; margin-top: 20px;">You have successfully finished the study.</p>' +
+        '<p style="font-size: 22px; color: #28a745; font-weight: bold; margin-top: 30px;">Thank you very much for your participation!</p>' +
+        '<p style="font-size: 16px; color: #666; margin-top: 40px;">You may now safely close this window or return to the platform.</p>' +
         '</div>'
     ],
     show_clickable_nav: false
