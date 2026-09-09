@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Preference by Association Experiment</title>
+    <title>Preference by Association Experiment - Full 20 Pairs</title>
     <style>
       body {
           background-color: #f8f9fa;
@@ -31,7 +31,6 @@
           object-fit: contain;
           border: 2px solid #ccc;
           background-color: #fff;
-          cursor: pointer;
       }
 
       .fixation {
@@ -92,7 +91,7 @@ jsPsych.data.addProperties({
     subject_id: participant_id,
     study_id: study_id,
     session_id: session_id,
-    experiment: 'Wimmer_Shohamy_2012_Association_Bias'
+    experiment: 'Wimmer_Shohamy_2012_Association_Bias_Full'
 });
 
 // ============================================================
@@ -108,42 +107,35 @@ function getPracticeImagePath(block, idx) {
 }
 
 // ============================================================
-// STIMULI DEFINITIONS 
-// ברירת מחדל: גרסת ניסיון קצרה של 4 זוגות (2 גבוהים, 2 בינוניים)
+// MAIN STIMULI DEFINITIONS (כל 20 הזוגות המלאים: סיבתי וסכימתי בלבד)
 // ============================================================
 var raw_candidates = [
-    // --- גרסת ניסיון (4 זוגות פעילים כרגע) ---
-    { name: 'interview_scheme', type: 'schematic_sequence', e1: 1, e2: 7, causality_condition: 'high' },
-    { name: 'supermarket_scheme', type: 'schematic_sequence', e1: 2, e2: 6, causality_condition: 'high' },
-    { name: 'cat_care_semantic', type: 'semantic_sequence', e1: 3, e2: 6, causality_condition: 'medium' },
-    { name: 'using_technology_semantic', type: 'semantic_sequence', e1: 4, e2: 3, causality_condition: 'medium' }
-
-    /* --- הגרסה המלאה (20 זוגות) - הסר את ההערה כשתרצה לעבור ל-20 ---
-    { name: 'interview_scheme', type: 'schematic_sequence', e1: 1, e2: 7, causality_condition: 'high' },
-    { name: 'supermarket_scheme', type: 'schematic_sequence', e1: 2, e2: 6, causality_condition: 'high' },
-    { name: 'package_causal', type: 'causal_sequence', e1: 4, e2: 7, causality_condition: 'high' },
-    { name: 'supermarket_scheme', type: 'schematic_sequence', e1: 1, e2: 5, causality_condition: 'high' },
-    { name: 'restaurant_scheme', type: 'schematic_sequence', e1: 4, e2: 7, causality_condition: 'high' },
+    // High Causality (> 0.8) - Causal & Scheme only
+    { name: 'museum_causal', type: 'causal_sequence', e1: 6, e2: 9, causality_condition: 'high' },
+    { name: 'dog_causal', type: 'causal_sequence', e1: 4, e2: 5, causality_condition: 'high' },
+    { name: 'dog_causal', type: 'causal_sequence', e1: 8, e2: 10, causality_condition: 'high' },
     { name: 'restaurant_scheme', type: 'schematic_sequence', e1: 6, e2: 7, causality_condition: 'high' },
-    { name: 'supermarket_scheme', type: 'schematic_sequence', e1: 1, e2: 6, causality_condition: 'high' },
-    { name: 'flight_scheme', type: 'schematic_sequence', e1: 4, e2: 5, causality_condition: 'high' },
-    { name: 'saving_a_cat_causal', type: 'causal_sequence', e1: 1, e2: 9, causality_condition: 'high' },
-    { name: 'package_causal', type: 'causal_sequence', e1: 8, e2: 10, causality_condition: 'high' },
+    { name: 'dinner_party_scheme', type: 'schematic_sequence', e1: 7, e2: 8, causality_condition: 'high' },
+    { name: 'the_performance_causal', type: 'causal_sequence', e1: 4, e2: 6, causality_condition: 'high' },
+    { name: 'hotel_scheme', type: 'schematic_sequence', e1: 1, e2: 4, causality_condition: 'high' },
+    { name: 'restaurant_scheme', type: 'schematic_sequence', e1: 2, e2: 5, causality_condition: 'high' },
+    { name: 'the_performance_causal', type: 'causal_sequence', e1: 7, e2: 9, causality_condition: 'high' },
+    { name: 'interview_scheme', type: 'schematic_sequence', e1: 3, e2: 6, causality_condition: 'high' },
 
-    { name: 'cat_care_semantic', type: 'semantic_sequence', e1: 3, e2: 6, causality_condition: 'medium' },
-    { name: 'using_technology_semantic', type: 'semantic_sequence', e1: 4, e2: 3, causality_condition: 'medium' },
-    { name: 'dinner_party_scheme', type: 'schematic_sequence', e1: 6, e2: 10, causality_condition: 'medium' },
-    { name: 'physical_activity_semantic', type: 'semantic_sequence', e1: 2, e2: 8, causality_condition: 'medium' },
-    { name: 'using_technology_semantic', type: 'semantic_sequence', e1: 3, e2: 7, causality_condition: 'medium' },
-    { name: 'kitchen_operations_semantic', type: 'semantic_sequence', e1: 5, e2: 9, causality_condition: 'medium' },
-    { name: 'physical_activity_semantic', type: 'semantic_sequence', e1: 9, e2: 10, causality_condition: 'medium' },
-    { name: 'dog_causal', type: 'causal_sequence', e1: 8, e2: 3, causality_condition: 'medium' },
-    { name: 'the_performance_causal', type: 'causal_sequence', e1: 10, e2: 4, causality_condition: 'medium' },
-    { name: 'self_care_activities_semantic', type: 'semantic_sequence', e1: 2, e2: 9, causality_condition: 'medium' }
-    -------------------------------------------------------------- */
+    // Medium Causality (0.4 - 0.6) - Causal & Scheme only
+    { name: 'dog_causal', type: 'causal_sequence', e1: 1, e2: 7, causality_condition: 'medium' },
+    { name: 'museum_causal', type: 'causal_sequence', e1: 1, e2: 7, causality_condition: 'medium' },
+    { name: 'hotel_scheme', type: 'schematic_sequence', e1: 5, e2: 6, causality_condition: 'medium' },
+    { name: 'the_performance_causal', type: 'causal_sequence', e1: 1, e2: 5, causality_condition: 'medium' },
+    { name: 'package_causal', type: 'causal_sequence', e1: 7, e2: 10, causality_condition: 'medium' },
+    { name: 'coin_causal', type: 'causal_sequence', e1: 4, e2: 9, causality_condition: 'medium' },
+    { name: 'package_causal', type: 'causal_sequence', e1: 9, e2: 2, causality_condition: 'medium' },
+    { name: 'saving_a_cat_causal', type: 'causal_sequence', e1: 5, e2: 1, causality_condition: 'medium' },
+    { name: 'dinner_party_scheme', type: 'schematic_sequence', e1: 2, e2: 9, causality_condition: 'medium' },
+    { name: 'the_performance_causal', type: 'causal_sequence', e1: 2, e2: 10, causality_condition: 'medium' }
 ];
 
-// מנגנון הבטחה למניעת כפילות תמונות מוחלטת
+// מנגנון מניעת כפילות תמונות מוחלטת
 var used_images = new Set();
 var base_pairs = [];
 
@@ -325,7 +317,6 @@ test_blocks.forEach(function(b, index) {
     var s1_path = getImagePath(b, b.s1_index);
     var s2_path = getImagePath(b, b.s2_index);
 
-    // מעקב קונסול להתקדמות
     console.log(`[Phase 1] Pair ${index + 1} of ${test_blocks.length}`);
 
     timeline.push({
@@ -451,7 +442,7 @@ test_blocks.forEach(function(b) {
 });
 
 // ============================================================
-// PHASE 3: PREFERENCE / CHOICE TEST
+// PHASE 3: PREFERENCE / CHOICE TEST (3 seconds view before choice)
 // ============================================================
 timeline.push({
     type: jsPsychInstructions,
@@ -475,8 +466,9 @@ rewarded_s1_blocks.forEach(function(r_block, idx) {
     var r_s1_path = getImagePath(r_block, r_block.s1_index);
     var n_s1_path = getImagePath(n_block, n_block.s1_index);
 
+    // Trial 1: Preview images for 3 seconds (NO buttons)
     timeline.push({
-        type: jsPsychHtmlButtonResponse,
+        type: jsPsychHtmlKeyboardResponse,
         stimulus: function() {
             var left_is_rewarded = Math.random() < 0.5;
             window.current_choice = {
@@ -492,6 +484,9 @@ rewarded_s1_blocks.forEach(function(r_block, idx) {
             var left_img  = left_is_rewarded ? r_s1_path : n_s1_path;
             var right_img = left_is_rewarded ? n_s1_path : r_s1_path;
 
+            window.current_left_img = left_img;
+            window.current_right_img = right_img;
+
             return `
                 <div style="font-family: Arial; margin-bottom: 20px;">
                     <h3>Which image is <b>luckier</b>?</h3>
@@ -499,6 +494,23 @@ rewarded_s1_blocks.forEach(function(r_block, idx) {
                 <div class="stimulus-container" style="display: flex; justify-content: center; gap: 30px;">
                     <img src="${left_img}" class="small-image">
                     <img src="${right_img}" class="small-image">
+                </div>`;
+        },
+        choices: "NO_KEYS",
+        trial_duration: 3000
+    });
+
+    // Trial 2: Present same images WITH choice buttons
+    timeline.push({
+        type: jsPsychHtmlButtonResponse,
+        stimulus: function() {
+            return `
+                <div style="font-family: Arial; margin-bottom: 20px;">
+                    <h3>Which image is <b>luckier</b>?</h3>
+                </div>
+                <div class="stimulus-container" style="display: flex; justify-content: center; gap: 30px;">
+                    <img src="${window.current_left_img}" class="small-image">
+                    <img src="${window.current_right_img}" class="small-image">
                 </div>`;
         },
         choices: ['Left', 'Right'],
@@ -527,6 +539,7 @@ timeline.push({
     questions: [
         { prompt: 'Gender (MALE / FEMALE / OTHER):', name: 'gender', rows: 1, columns: 20 },
         { prompt: 'Age:', name: 'age', rows: 1, columns: 5 },
+        { prompt: 'Did you have a specific strategy when choosing the "luckier" image in the final part?', name: 'luck_strategy', rows: 2, columns: 50 },
         { prompt: 'How did you choose between images in the final part?', name: 'strategy', rows: 2, columns: 50 }
     ],
     data: { task: 'demographics' }
