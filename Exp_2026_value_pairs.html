@@ -55,23 +55,34 @@
   <script>
 
 // ============================================================
-// DATA SAVING (Using save-my-data.php)
+// DATA SAVING (Using write_data.php - matches the actual file
+// name/location on the server, see exp_order_sep_24/write_data.php)
 // ============================================================
 function saveData(data) {
     console.log("Starting saveData...");
-    fetch('/save-my-data.php', {
+    fetch('/write_data.php', {   // <-- FIXED: was '/save-my-data.php' (file didn't exist -> silent 404)
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
             filedata: data
         })
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            // Surface HTTP-level errors (404/500) instead of letting
+            // response.json() throw a confusing parse error.
+            throw new Error('HTTP ' + response.status + ' ' + response.statusText);
+        }
+        return response.json();
+    })
     .then(result => {
         console.log("✓ Success! Data saved.", result);
     })
     .catch(error => {
         console.error("✗ Error saving data:", error);
+        // Optional: surface the failure to the participant/experimenter
+        // instead of it being silently swallowed in the console only.
+        alert("There was a problem saving your data. Please tell the experimenter. (" + error.message + ")");
     });
 }
 
