@@ -79,15 +79,15 @@ var jsPsych = initJsPsych({
 var timeline = [];
 
 var participant_id = jsPsych.data.getURLVariable('participantId') || jsPsych.randomization.randomID(15);
+var study_id = jsPsych.data.getURLVariable('assignmentId');
+var session_id = jsPsych.data.getURLVariable('projectId');
+
 jsPsych.data.addProperties({
     subject_id: participant_id,
+    study_id: study_id,
+    session_id: session_id,
     experiment: 'Single_Pair_Saving_Test'
 });
-
-// ============================================================
-// PRACTICE STIMULI (0 for quick test)
-// ============================================================
-var practice_pairs = [];
 
 // ============================================================
 // SINGLE PAIR TEST DEFINITION
@@ -200,18 +200,36 @@ timeline.push({
 });
 
 // ============================================================
-// PHASE 3: PREFERENCE TEST
+// PHASE 3: PREFERENCE TEST (3 seconds view before choice)
 // ============================================================
 timeline.push({
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: function() {
+        return `
+            <div style="font-family: Arial; margin-bottom: 20px;">
+                <h3>Which image is <b>luckier</b>?</h3>
+            </div>
+            <div class="stimulus-container" style="display: flex; justify-content: center; gap: 30px;">
+                <img src="${s1_path}" class="small-image">
+                <img src="${s1_path}" class="small-image">
+            </div>`;
+    },
+    choices: "NO_KEYS",
+    trial_duration: 3000
+});
+
+timeline.push({
     type: jsPsychHtmlButtonResponse,
-    stimulus: `
-        <div style="font-family: Arial; margin-bottom: 20px;">
-            <h3>Which image is <b>luckier</b>?</h3>
-        </div>
-        <div class="stimulus-container" style="display: flex; justify-content: center; gap: 30px;">
-            <img src="${s1_path}" class="small-image">
-            <img src="${s1_path}" class="small-image">
-        </div>`,
+    stimulus: function() {
+        return `
+            <div style="font-family: Arial; margin-bottom: 20px;">
+                <h3>Which image is <b>luckier</b>?</h3>
+            </div>
+            <div class="stimulus-container" style="display: flex; justify-content: center; gap: 30px;">
+                <img src="${s1_path}" class="small-image">
+                <img src="${s1_path}" class="small-image">
+            </div>`;
+    },
     choices: ['Left', 'Right'],
     data: { task: 'phase3_s1_preference_test' }
 });
