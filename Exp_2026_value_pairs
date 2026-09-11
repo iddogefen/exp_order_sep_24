@@ -2,74 +2,94 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <title>Cause-Effect Monetary Value Spreading Experiment</title>
     <style>
-      /* Fixed image size to prevent layout shifts */
-      .exp-image {
-          width: 500px;
-          height: 400px;
-          object-fit: contain;
-          border: 2px solid #ccc;
-          display: block;
-          margin: 0 auto;
-      }
-
-      /* Smaller image for Part 3 (two images side-by-side) */
-      .small-image {
-          width: 350px;
-          height: 280px;
-          object-fit: contain;
-          border: 2px solid #ccc;
+      body {
+          background-color: #f8f9fa;
+          font-family: Arial, sans-serif;
       }
 
       .stimulus-container {
-          width: 600px;
+          width: 800px;
           margin: 0 auto;
           text-align: center;
       }
 
-      /* Fixed-height question area so buttons stay in position */
-      .question-area {
-          height: 100px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+      .exp-image {
+          width: 450px;
+          height: 350px;
+          object-fit: contain;
+          border: 2px solid #ccc;
+          background-color: #fff;
+          display: block;
+          margin: 0 auto;
+      }
+
+      .small-image {
+          width: 260px;
+          height: 210px;
+          object-fit: contain;
+          border: 2px solid #ccc;
+          background-color: #fff;
       }
 
       .fixation {
           font-size: 60px;
-          font-family: Arial;
           color: #333;
-          height: 500px;
+          height: 400px;
           display: flex;
           align-items: center;
           justify-content: center;
       }
 
-      .hide_cursor {
-        cursor: none;
+      .question-area {
+          height: 80px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+
+      .practice-box {
+          width: 260px;
+          height: 200px;
+          margin: 0 auto;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 22px;
+          font-weight: bold;
+          color: #fff;
+          border-radius: 8px;
       }
     </style>
-    <title>My experiment - pairs version</title>
     <script src="jspsych/plugins/jspsych.js"></script>
     <script src="jspsych/plugins/plugin-instructions.js"></script>
     <script src="jspsych/plugins/plugin-html-button-response.js"></script>
     <script src="jspsych/plugins/plugin-survey-text.js"></script>
     <script src="jspsych/plugins/plugin-html-keyboard-response.js"></script>
-    <script src="jspsych/plugins/plugin-survey-likert.js"></script>
     <script src="jspsych/plugins/plugin-fullscreen.js"></script>
     <script src="jspsych/plugins/plugin-preload.js"></script>
+    <script src="jspsych/plugins/plugin-call-function.js"></script>
     <link rel="stylesheet" href="jspsych/css/jspsych.css">
   </head>
   <body></body>
   <script>
 
 // ============================================================
-// DATA SAVING
+// DATA SAVING (same mechanism as base template, with backup)
 // ============================================================
 var data_folder = 'data/';
+var data_already_saved = false;
 
 function saveData(data) {
-    fetch('write_data.php', {
+    if (data_already_saved) {
+        console.log("saveData already called once, skipping duplicate call.");
+        return;
+    }
+    data_already_saved = true;
+
+    console.log("Starting saveData...");
+    fetch('/write_data.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ filedata: data })
@@ -78,695 +98,632 @@ function saveData(data) {
         if (!response.ok) {
             throw new Error('Network response was not ok: ' + response.status);
         }
-        return response.json();
+        return response.text().then(text => {
+            try {
+                return JSON.parse(text);
+            } catch (e) {
+                return { success: true, raw: text };
+            }
+        });
     })
     .then(result => {
-        console.log("Success! File saved as: ", result.file);
+        console.log("Success! Data saved to server.", result);
     })
     .catch(error => {
-        console.error("Error saving data:", error);
-        alert("There was an error saving your data. Please do not close this window.");
+        console.error("Error saving data to server:", error);
+        try {
+            var backupKey = 'experiment_backup_' + participant_id + '_' + Date.now();
+            localStorage.setItem(backupKey, data);
+            console.log("Data saved locally to localStorage with key:", backupKey);
+            alert("Data saved locally. Please do not close this window.");
+        } catch (storageError) {
+            console.error("Error saving to localStorage:", storageError);
+            alert("Warning: Could not save data to server or locally. Please do not close this window and contact support.");
+        }
     });
 }
 
 var jsPsych = initJsPsych({
     on_finish: function() {
+        console.log("Experiment timeline finished (on_finish).");
         saveData(jsPsych.data.get().csv());
     }
 });
 
-var subject_id = jsPsych.randomization.randomID(15);
 var timeline = [];
 
-var participant_id = jsPsych.data.getURLVariable('participantId');
+var participant_id = jsPsych.data.getURLVariable('participantId') || jsPsych.randomization.randomID(15);
 var study_id = jsPsych.data.getURLVariable('assignmentId');
 var session_id = jsPsych.data.getURLVariable('projectId');
 
 jsPsych.data.addProperties({
-  subject_id: participant_id || subject_id,
-  study_id: study_id,
-  session_id: session_id,
+    subject_id: participant_id,
+    study_id: study_id,
+    session_id: session_id,
+    experiment: 'CauseEffect_Value_Spreading_Pilot'
 });
 
-
 // ============================================================
-// CONFIGURATION PARAMETERS - Modify general settings here
+// STIMULUS FOLDER & FILE NAMING
+// Images live in "images_value/" as:
+//   case_01.png ... case_24.png    (the CAUSE image of each pair)
+//   effect_01.png ... effect_24.png (the EFFECT image of each pair)
 // ============================================================
-var N_IMAGES_PER_SEQUENCE = 10;      // Number of images per sequence directory
+var NUM_PAIRS = 24;
+var STIM_FOLDER = 'images_value/';
 
-var PAIR_DISTANCES = [1, 2, 3];      // Pair distances (e.g., 2->3 is distance 1, 4->7 is distance 3)
+// Actual uploaded files: Cause_01.jpg..Cause_03.jpg then Cause_04.png..Cause_24.png
+// (same pattern for Effect_XX). Extension is looked up per pair number below.
+var JPG_PAIR_NUMBERS = [1, 2, 3];
 
-// false = Each sequence gets 1 pair per distance; direction (ascending/descending) is balanced across sequences.
-//         Total: 3 pairs per sequence => 54 pairs in experiment.
-// true  = Each sequence gets both ascending and descending pairs for every distance.
-//         Total: 6 pairs per sequence => 108 pairs (significantly longer experiment).
-var BOTH_DIRECTIONS_PER_SEQUENCE = false;
-
-// 'after_pair' = Attention question appears once, after both images (maintains flow between images).
-// 'after_each' = Attention question appears after each image individually (like the original version).
-var QUESTION_MODE = 'after_pair';
-
-var IMG_DURATION       = 3000;  // Display duration for each image in a pair
-var ISI_DURATION       = 500;   // Fixation screen duration between pair images
-var QUESTION_DURATION  = 3000;  // Maximum duration for attention question
-var ITI_DURATION       = 1500;  // Inter-trial interval between pairs
-var BLOCK_BREAK        = 2500;  // Break duration between sequences
-
-
-// ============================================================
-// SEQUENCE DEFINITIONS AND REWARDED CATEGORY SELECTION
-// ============================================================
-var causal_folders = [
-    'coin_causal', 'dog_causal', 'museum_causal',
-    'package_causal', 'saving_a_cat_causal', 'the_performance_causal'
-];
-
-var schematic_folders = [
-    'dinner_party_scheme', 'flight_scheme', 'hotel_scheme',
-    'interview_scheme', 'restaurant_scheme', 'supermarket_scheme'
-];
-
-var semantic_folders = [
-    'housework_semantic', 'gardening_semantic', 'office_semantic',
-    'shopping_semantic', 'sports_semantic', 'travel_semantic'
-];
-
-var n_causal = 6;
-var n_schematic = 6;
-var n_semantic = 6;
-var n_valuable_per_type = 3;
-
-var sampled_causal    = jsPsych.randomization.sampleWithoutReplacement(causal_folders, Math.min(n_causal, causal_folders.length));
-var sampled_schematic = jsPsych.randomization.sampleWithoutReplacement(schematic_folders, Math.min(n_schematic, schematic_folders.length));
-var sampled_semantic  = jsPsych.randomization.sampleWithoutReplacement(semantic_folders, Math.min(n_semantic, semantic_folders.length));
-
-var valuable_causal    = jsPsych.randomization.sampleWithoutReplacement(sampled_causal, n_valuable_per_type);
-var valuable_schematic = jsPsych.randomization.sampleWithoutReplacement(sampled_schematic, n_valuable_per_type);
-var valuable_semantic  = jsPsych.randomization.sampleWithoutReplacement(sampled_semantic, n_valuable_per_type);
-
-var valuable_folders_list = [...valuable_causal, ...valuable_schematic, ...valuable_semantic];
-
-var selected_blocks = [
-    ...sampled_causal.map(f => ({ name: f, type: 'causal_sequence' })),
-    ...sampled_schematic.map(f => ({ name: f, type: 'schematic_sequence' })),
-    ...sampled_semantic.map(f => ({ name: f, type: 'semantic_sequence' }))
-];
-
-// Shuffle block order once to be used throughout the experiment
-var experimental_blocks = jsPsych.randomization.shuffle(selected_blocks);
-
-console.log("Valuable folders (3 per type):", valuable_folders_list);
-console.log("Selected blocks for this participant:", experimental_blocks);
-
-
-// ============================================================
-// HELPER FUNCTIONS FOR IMAGE PATHS
-// ============================================================
-function imageSuffix(idx) {
-    return (idx === 10) ? "ten" : idx;
+function pad2(n) {
+    return n < 10 ? '0' + n : '' + n;
 }
 
-function imagePath(block, idx) {
-    return `images/${block.type}/${block.name}/${block.name}_${imageSuffix(idx)}.png`;
+function getExt(n) {
+    return JPG_PAIR_NUMBERS.indexOf(n) !== -1 ? '.jpg' : '.png';
 }
 
+function getCausePath(n) {
+    return STIM_FOLDER + 'Cause_' + pad2(n) + getExt(n);
+}
+
+function getEffectPath(n) {
+    return STIM_FOLDER + 'Effect_' + pad2(n) + getExt(n);
+}
+
+// ============================================================
+// BUILD THE 24 PAIRS
+// ============================================================
+var all_pairs = [];
+for (var i = 1; i <= NUM_PAIRS; i++) {
+    all_pairs.push({
+        pair_id: i,
+        cause_path: getCausePath(i),
+        effect_path: getEffectPath(i)
+    });
+}
+
+// ------------------------------------------------------------
+// Assign each pair to ONE of 4 cells (6 pairs per cell):
+//   cause_reward | cause_neutral | effect_reward | effect_neutral
+// This determines which member of the pair gets shown+rewarded
+// in Phase 2 (Controlled Exposure).
+// ------------------------------------------------------------
+var shuffled_for_cells = jsPsych.randomization.shuffle(all_pairs.slice());
+var cell_size = NUM_PAIRS / 4; // 6
+var cell_labels = ['cause_reward', 'cause_neutral', 'effect_reward', 'effect_neutral'];
+
+shuffled_for_cells.forEach(function(pair, idx) {
+    var cell_idx = Math.floor(idx / cell_size);
+    var cell = cell_labels[cell_idx];
+    pair.cell = cell;
+    pair.exposed_role = cell.indexOf('cause') === 0 ? 'cause' : 'effect';
+    pair.reward_condition = cell.endsWith('reward') ? 'reward' : 'neutral';
+    pair.exposed_path = (pair.exposed_role === 'cause') ? pair.cause_path : pair.effect_path;
+    // the member NOT shown in Phase 2 - this is the critical test item for Phase 3
+    pair.critical_path = (pair.exposed_role === 'cause') ? pair.effect_path : pair.cause_path;
+    pair.critical_role = (pair.exposed_role === 'cause') ? 'effect' : 'cause';
+});
 
 // ============================================================
 // PRELOAD
 // ============================================================
-var instruction_images = [];
-for (var i = 0; i <= 4; i++) {
-    instruction_images.push(`images/instructions/movie_${i}.png`);
-}
+var imagesToPreload = [
+    'images/consent_form_2026_page1.png',
+    'images/consent_form_2026_page2.png',
+    'images/gray.png',
+    'images/dollar.png'
+];
 
-function generateSelectedPaths(selectedBlocks) {
-    var paths = [];
-    selectedBlocks.forEach(function(block) {
-        for (var i = 1; i <= N_IMAGES_PER_SEQUENCE; i++) {
-            paths.push(imagePath(block, i));
-        }
-    });
-    return paths;
-}
-
-var preload = {
-    type: jsPsychPreload,
-    images: [
-        'consent_form_2022.png',
-        'images/gray.png',
-        'images/dollar.png',
-        ...instruction_images,
-        ...generateSelectedPaths(selected_blocks)
-    ],
-    message: 'Loading experiment assets... Please wait.',
-    continue_after_error: true
-};
-
-timeline.push(preload);
-
-
-// ============================================================
-// PAIR PLAN GENERATION
-// Each pair = two images from the same sequence, shown sequentially.
-// forward  = ascending order  (e.g., 2 then 3, or 4 then 7) -> positive signed_distance
-// backward = descending order (e.g., 3 then 2, or 7 then 4) -> negative signed_distance
-// ============================================================
-function makePairsAtDistance(dist, dirs) {
-    // All possible anchors such that both images remain within 1..N
-    var anchor_options = [];
-    for (var i = 1; i + dist <= N_IMAGES_PER_SEQUENCE; i++) {
-        anchor_options.push(i);
-    }
-    // Select a distinct anchor per direction to avoid showing the exact same image pair twice
-    var anchors = jsPsych.randomization.sampleWithoutReplacement(anchor_options, dirs.length);
-
-    return dirs.map(function(dir, k) {
-        var low  = anchors[k];
-        var high = anchors[k] + dist;
-        return {
-            first:     (dir === 'forward') ? low  : high,
-            second:    (dir === 'forward') ? high : low,
-            distance:  dist,
-            direction: dir
-        };
-    });
-}
-
-function buildPairPlan(blocks) {
-    var plan = {};
-    blocks.forEach(function(b) { plan[b.name] = []; });
-
-    PAIR_DISTANCES.forEach(function(dist) {
-        if (BOTH_DIRECTIONS_PER_SEQUENCE) {
-            // For each sequence: generate both ascending and descending pairs at this distance
-            blocks.forEach(function(b) {
-                plan[b.name] = plan[b.name].concat(makePairsAtDistance(dist, ['forward', 'backward']));
-            });
-        } else {
-            // Balanced across sequences: half get ascending, half get descending at this distance
-            var half = Math.floor(blocks.length / 2);
-            var dir_list = Array(half).fill('forward').concat(Array(blocks.length - half).fill('backward'));
-            dir_list = jsPsych.randomization.shuffle(dir_list);
-            blocks.forEach(function(b, idx) {
-                plan[b.name] = plan[b.name].concat(makePairsAtDistance(dist, [dir_list[idx]]));
-            });
-        }
-    });
-
-    // Shuffle pair order within each sequence
-    blocks.forEach(function(b) {
-        plan[b.name] = jsPsych.randomization.shuffle(plan[b.name]);
-    });
-
-    return plan;
-}
-
-var pair_plan = buildPairPlan(experimental_blocks);
-
-// Debug log: all pairs to be presented to this participant
-console.log("Pair plan for this participant:");
-experimental_blocks.forEach(function(b) {
-    pair_plan[b.name].forEach(function(p) {
-        console.log(`${b.name} | ${p.first} -> ${p.second} | dist=${p.distance} | ${p.direction} | signed=${p.second - p.first}`);
-    });
+all_pairs.forEach(function(p) {
+    imagesToPreload.push(p.cause_path);
+    imagesToPreload.push(p.effect_path);
 });
 
+timeline.push({
+    type: jsPsychPreload,
+    images: imagesToPreload,
+    message: 'Loading task assets...'
+});
 
 // ============================================================
-// INTRO / CONSENT
+// SHARED HELPERS
 // ============================================================
-var trial_0 = {
-  type: jsPsychInstructions,
-  pages: [
-    '<div style="font-family: Arial; padding: 100px; padding-top: 5%; text-align: left;">' +
-    '<h2>Thank you for participating in this experiment!</h2>' +
-    '<p>By clicking the "Begin Study" button, you will be taken to the study, including complete instructions and an informed consent agreement.</p>' +
-    '</div>'
-  ],
-  show_clickable_nav: true
-};
 
-var trial_consent = {
-  type: jsPsychInstructions,
-  pages: [
-    '<div style="text-align:center; font-family:Arial; font-size: 22px; padding-top:20px;">' +
-    '<p>Please carefully read the consent form below before proceeding.</p>' +
-    '<img src="consent_form_2022.png" style="max-width:80%; padding:20px;"></img>' +
-    '</div>'
-  ],
-  show_clickable_nav: true
-};
+// Simple 3-option math attention check, used throughout all phases.
+function mathAttentionCheckTrial() {
+    var a = Math.floor(Math.random() * 8) + 1;
+    var b = Math.floor(Math.random() * 8) + 1;
+    var correct = a + b;
+    var distractor1 = correct + 1;
+    var distractor2 = (correct - 1 <= 0) ? correct + 2 : correct - 1;
+    var options = jsPsych.randomization.shuffle([correct, distractor1, distractor2]);
+    var correct_option_index = options.indexOf(correct);
 
-var trial_01 = {
-  type: jsPsychFullscreen,
-  fullscreen_mode: true
-};
-
-timeline.push(trial_0, trial_consent, trial_01);
-
-
-// ============================================================
-// OVERVIEW INSTRUCTIONS
-// ============================================================
-var instructions_overview = {
-    type: jsPsychInstructions,
-    pages: [
-        '<div style="font-family: Arial; text-align: left; padding: 50px; line-height: 1.6;">' +
-        '<h2>Experiment Overview</h2>' +
-        '<p>This experiment consists of <b>three parts</b>:</p>' +
-        '<div style="background-color: #f9f9f9; border-left: 5px solid #333; padding: 20px; margin: 20px 0;">' +
-        '<p><b>Part 1:</b> You will view <b>pairs of images</b> taken from different events. ' +
-        'In each pair, one image appears first and the second image appears right after it.</p>' +
-        '<p><b>Part 2:</b> You will be shown specific images that have <b>monetary value</b>.</p>' +
-        '<p><b>Part 3:</b> You will choose between two images and estimate which one is worth more money. ' +
-        'A correct evaluation will lead to a <b>monetary reward</b>.</p>' +
-        '</div>' +
-        '<p>Please pay close attention to the images and follow your intuition. Click "Next" to begin.</p>' +
-        '</div>'
-    ],
-    show_clickable_nav: true
-};
-timeline.push(instructions_overview);
-
-
-// ============================================================
-// BUILDER FUNCTIONS FOR PAIR TRIAL SCREENS
-// ============================================================
-function viewTrial(image_src, trial_data) {
-    return {
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: `
-            <div class="stimulus-container">
-                <img src="${image_src}" class="exp-image">
-                <div class="question-area"></div>
-            </div>`,
-        choices: "NO_KEYS",
-        trial_duration: IMG_DURATION,
-        data: trial_data
-    };
-}
-
-function questionTrial(image_src, question_text, trial_data) {
     return {
         type: jsPsychHtmlButtonResponse,
-        stimulus: `
-            <div class="stimulus-container">
-                <img src="${image_src}" class="exp-image">
-                <div class="question-area">
-                    <p style="font-size: 20px; font-weight: bold; margin: 0;">${question_text}</p>
-                </div>
-            </div>`,
-        choices: ['Yes', 'No'],
-        trial_duration: QUESTION_DURATION,
-        response_ends_trial: true,
-        data: trial_data
+        stimulus: '<div style="font-size:28px; font-weight:bold; margin-bottom:20px;">Attention Check</div>' +
+                   '<div style="font-size:24px;">What is ' + a + ' + ' + b + ' ?</div>',
+        choices: options.map(String),
+        data: { task: 'attention_check_math', correct_answer: correct },
+        on_finish: function(data) {
+            data.correct = (data.response === correct_option_index) ? 1 : 0;
+        }
     };
 }
 
-var fixation_trial = {
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: '<div class="fixation">+</div>',
-    choices: "NO_KEYS",
-    trial_duration: ISI_DURATION,
-    data: { task: 'isi_within_pair' }
-};
-
-var iti_trial = {
+var whiteScreenTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
     choices: "NO_KEYS",
-    trial_duration: ITI_DURATION,
-    data: { task: 'iti_between_pairs' }
+    trial_duration: 1000
 };
 
+var fixationTrial = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: '<div class="fixation">+</div>',
+    choices: "NO_KEYS",
+    trial_duration: 1000
+};
+
+// Inserts a math attention check every `everyN` items processed.
+function pushWithAttentionChecks(sourceArray, everyN, trialBuilderFn) {
+    sourceArray.forEach(function(item, idx) {
+        timeline = timeline.concat(trialBuilderFn(item));
+        if ((idx + 1) % everyN === 0 && (idx + 1) < sourceArray.length) {
+            timeline.push(mathAttentionCheckTrial());
+        }
+    });
+}
 
 // ============================================================
-// PART 1 EXAMPLE - PRACTICE PAIR
+// INSTRUCTIONS & CONSENT
 // ============================================================
-var part1_example_intro = {
+timeline.push({
     type: jsPsychInstructions,
     pages: [
-        '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
-        '<h2>Part 1 Example</h2>' +
-        '<p style="font-size: 20px;">You will now see an example pair of images.</p>' +
-        '<p style="font-size: 20px;">The first image appears, then a "+" sign, and then the second image.</p>' +
-        '<p style="color: #d9534f;"><b>Your Task:</b> After the pair, answer whether a person appeared in the images.</p>' +
-        '<p>Click "Next" to start the example.</p>' +
+        '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
+        '<h2>Welcome to the Experiment</h2>' +
+        '<p>In this study you will see short cause-and-effect sentences illustrated with images, and you will be able to earn a small cash bonus on some of the tasks.</p>' +
+        '<p>The experiment has several short parts, beginning with a brief practice round.</p>' +
+        '<p>Click "Next" to read the consent form.</p>' +
+        '</div>',
+        '<div style="text-align: center; padding: 20px;">' +
+        '<img src="images/consent_form_2026_page1.png" style="max-width:80%;"></img>' +
+        '</div>',
+        '<div style="text-align: center; padding: 20px;">' +
+        '<img src="images/consent_form_2026_page2.png" style="max-width:80%;"></img>' +
         '</div>'
     ],
     show_clickable_nav: true
-};
-timeline.push(part1_example_intro);
-
-var example_pairs = [[1, 2], [3, 4]];
-example_pairs.forEach(function(pair) {
-    var img_a = `images/instructions/movie_${pair[0]}.png`;
-    var img_b = `images/instructions/movie_${pair[1]}.png`;
-
-    if (QUESTION_MODE === 'after_each') {
-        timeline.push(viewTrial(img_a, { task: 'example_view', position_in_pair: 1 }));
-        timeline.push(questionTrial(img_a, 'Is there a person in this image?', { task: 'example_question', position_in_pair: 1 }));
-        timeline.push(fixation_trial);
-        timeline.push(viewTrial(img_b, { task: 'example_view', position_in_pair: 2 }));
-        timeline.push(questionTrial(img_b, 'Is there a person in this image?', { task: 'example_question', position_in_pair: 2 }));
-    } else {
-        timeline.push(viewTrial(img_a, { task: 'example_view', position_in_pair: 1 }));
-        timeline.push(fixation_trial);
-        timeline.push(viewTrial(img_b, { task: 'example_view', position_in_pair: 2 }));
-        timeline.push(questionTrial(img_b, 'Was there a person in either of the two images?', { task: 'example_question' }));
-    }
-    timeline.push(iti_trial);
 });
 
+timeline.push({
+    type: jsPsychFullscreen,
+    fullscreen_mode: true
+});
 
 // ============================================================
-// TRANSITION TO MAIN EXPERIMENT
+// PRACTICE PHASE (text-based, no dependency on stimulus images)
 // ============================================================
-var start_main_experiment = {
+timeline.push({
     type: jsPsychInstructions,
     pages: [
-        '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
+        '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
+        '<h2>Practice Round</h2>' +
+        '<p>We will now go through a short practice round so you can get familiar with the task.</p>' +
+        '<p>In each trial, a first image will appear for a few seconds, followed by a question, then a second image, followed by another question.</p>' +
+        '<p>Please look at each image carefully and answer the questions that follow.</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
+});
+
+var practice_pairs = [
+    { color1: '#5b8def', label1: 'PRACTICE A', color2: '#4caf50', label2: 'PRACTICE B' },
+    { color1: '#e57373', label1: 'PRACTICE C', color2: '#ba68c8', label2: 'PRACTICE D' }
+];
+
+practice_pairs.forEach(function(p) {
+    timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: '<div class="stimulus-container"><div class="practice-box" style="background-color:' + p.color1 + ';">' + p.label1 + '</div></div>',
+        choices: "NO_KEYS",
+        trial_duration: 4000,
+        data: { task: 'practice_item1' }
+    });
+    timeline.push({
+        type: jsPsychHtmlButtonResponse,
+        stimulus: '<div class="question-area"><p style="font-size: 20px; font-weight: bold;">Was there a person in this image?</p></div>',
+        choices: ['Yes', 'No'],
+        data: { task: 'practice_person_check' }
+    });
+    timeline.push(fixationTrial);
+    timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: '<div class="stimulus-container"><div class="practice-box" style="background-color:' + p.color2 + ';">' + p.label2 + '</div></div>',
+        choices: "NO_KEYS",
+        trial_duration: 4000,
+        data: { task: 'practice_item2' }
+    });
+    timeline.push({
+        type: jsPsychHtmlButtonResponse,
+        stimulus: '<div class="question-area"><p style="font-size: 20px; font-weight: bold;">Was there a person in this image?</p></div>',
+        choices: ['Yes', 'No'],
+        data: { task: 'practice_person_check' }
+    });
+    timeline.push(whiteScreenTrial);
+});
+
+timeline.push({
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Practice Completed</h2>' +
-        '<p style="font-size: 20px;">The practice session is now over. We will now begin the <b>main experiment</b>.</p>' +
-        '<div style="background-color: #f9f9f9; border: 1px solid #ccc; padding: 20px; margin: 20px 0;">' +
-        '<p><b>Reminder:</b> Each trial shows <b>two images</b>, one after the other.</p>' +
-        '<p>Watch both images carefully, and indicate whether a <b>person</b> appeared.</p>' +
-        '<p>Images advance automatically, and the response buttons appear shortly after.</p>' +
-        '</div>' +
-        '<p>Click "Next" to start.</p>' +
-        '</div>'
-    ],
-    show_clickable_nav: true,
-    allow_backward: false
-};
-timeline.push(start_main_experiment);
-
-
-// ============================================================
-// PART 1 MAIN EXPERIMENT - PAIR PRESENTATION
-// ============================================================
-experimental_blocks.forEach(function(block) {
-
-    // Short blank break between sequences
-    timeline.push({
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
-        choices: "NO_KEYS",
-        trial_duration: BLOCK_BREAK,
-        data: { task: 'block_break', folder: block.name }
-    });
-
-    pair_plan[block.name].forEach(function(pair, p_index) {
-
-        // Log metadata for data analysis identifying the pair and direction
-        var pair_info = {
-            folder: block.name,
-            sequence_type: block.type,
-            pair_id: block.name + '_pair' + (p_index + 1),
-            pair_number_in_sequence: p_index + 1,
-            first_image_index: pair.first,
-            second_image_index: pair.second,
-            distance: pair.distance,                                 // Always positive (1/2/3)
-            signed_distance: pair.second - pair.first,               // Positive = ascending, Negative = descending
-            order_direction: pair.direction,                         // 'forward' / 'backward'
-            order_sign: (pair.direction === 'forward') ? 1 : -1,      // 1 / -1
-            is_ascending: (pair.second > pair.first) ? 1 : 0,         // 1 = ascending, 0 = descending
-            pair_label: pair.first + '->' + pair.second              // e.g., "4->7" or "7->4"
-        };
-
-        var img_first  = imagePath(block, pair.first);
-        var img_second = imagePath(block, pair.second);
-
-        if (QUESTION_MODE === 'after_each') {
-            timeline.push(viewTrial(img_first, Object.assign({}, pair_info, {
-                task: 'part1_pair_view', position_in_pair: 1, image_index: pair.first
-            })));
-            timeline.push(questionTrial(img_first, 'Is there a person in this image?', Object.assign({}, pair_info, {
-                task: 'part1_pair_question', position_in_pair: 1, image_index: pair.first
-            })));
-            timeline.push(fixation_trial);
-            timeline.push(viewTrial(img_second, Object.assign({}, pair_info, {
-                task: 'part1_pair_view', position_in_pair: 2, image_index: pair.second
-            })));
-            timeline.push(questionTrial(img_second, 'Is there a person in this image?', Object.assign({}, pair_info, {
-                task: 'part1_pair_question', position_in_pair: 2, image_index: pair.second
-            })));
-        } else {
-            timeline.push(viewTrial(img_first, Object.assign({}, pair_info, {
-                task: 'part1_pair_view', position_in_pair: 1, image_index: pair.first
-            })));
-            timeline.push(fixation_trial);
-            timeline.push(viewTrial(img_second, Object.assign({}, pair_info, {
-                task: 'part1_pair_view', position_in_pair: 2, image_index: pair.second
-            })));
-            timeline.push(questionTrial(img_second, 'Was there a person in either of the two images?', Object.assign({}, pair_info, {
-                task: 'part1_pair_question'
-            })));
-        }
-
-        timeline.push(iti_trial);
-    });
-});
-
-
-// ============================================================
-// PART 2: VALUE LEARNING (Passive conditioning)
-// ============================================================
-var part2_intro = {
-    type: jsPsychInstructions,
-    pages: [
-        '<div style="font-family: Arial; text-align: center; padding: 50px;">' +
-        '<h2>Part 2: Value Learning</h2>' +
-        '<p style="font-size: 20px;">In this part, you will see images from the previous part.</p>' +
-        '<p style="font-size: 20px;">Some images are <b>worth money</b> (marked with a <span style="color:green">DOLLAR</span> image),<br>' +
-        'and others have a <b>neutral value</b> (marked with a <span style="color:grey">GRAY</span> image).</p>' +
-        '<p>Please watch the images carefully. Click "Next" to begin.</p>' +
+        '<p>Great! The main experiment is about to begin. Please stay focused on the screen throughout.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
-};
-timeline.push(part2_intro);
-
-var shuffled_folders_part2 = jsPsych.randomization.shuffle(experimental_blocks);
-
-shuffled_folders_part2.forEach(function(block) {
-    var is_valuable = valuable_folders_list.includes(block.name);
-
-    var reward_image      = is_valuable ? "images/dollar.png" : "images/gray.png";
-    var reward_label      = is_valuable ? "WORTH MONEY" : "NEUTRAL VALUE";
-    var reward_color      = is_valuable ? "green" : "grey";
-    var reward_type_label = is_valuable ? "valuable" : "neutral";
-
-    // Select target image (X) from the middle of the sequence
-    var value_indices = [4, 5, 6, 7];
-    var target_index = jsPsych.randomization.sampleWithoutReplacement(value_indices, 1)[0];
-    var target_path = imagePath(block, target_index);
-
-    var passive_learning_trial = {
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: `
-            <div class="stimulus-container" style="display: flex; align-items: center; justify-content: center; gap: 40px; width: 900px;">
-                <img src="${target_path}" class="exp-image">
-                <div style="text-align: center;">
-                    <img src="${reward_image}" style="width: 150px; height: 150px; border: 5px solid ${reward_color}; border-radius: 15px;">
-                    <p style="color: ${reward_color}; font-weight: bold; font-size: 28px; margin-top: 15px;">${reward_label}</p>
-                </div>
-            </div>`,
-        choices: "NO_KEYS",
-        trial_duration: 6000,
-        data: {
-            task: 'part2_value_learning',
-            folder: block.name,
-            sequence_type: block.type,
-            valuable_image_index: target_index,
-            reward_type: reward_type_label
-        }
-    };
-
-    timeline.push(passive_learning_trial);
-
-    timeline.push({
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
-        choices: "NO_KEYS",
-        trial_duration: 3000,
-        data: { task: 'iti_part2' }
-    });
 });
 
-
 // ============================================================
-// PART 3: CHOICE
+// PHASE 1: ENCODING
+// Each of the 24 pairs is shown in full: cause image, then effect
+// image, each for 4 seconds, each followed by a short "person in
+// image?" question. Order is randomized per participant.
 // ============================================================
-var part3_intro = {
+timeline.push({
     type: jsPsychInstructions,
     pages: [
-        '<div style="text-align: center; padding: 50px;">' +
-        '<h2>Part 3: Final Choice</h2>' +
-        '<p>In this final part, you will be shown pairs of images.<br>' +
-        'Based only on what you learned in the previous part,<br>' +
-        'please choose the image which is worth <b>more money</b> using the buttons.</p>' +
+        '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
+        '<h2>Phase 1: Image Viewing</h2>' +
+        '<p>You will see 24 pairs of images, one after another. Each pair shows a cause and then its effect.</p>' +
+        '<p>Please view each image carefully. After each image, answer a short question about it.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
-};
-timeline.push(part3_intro);
-
-var all_part3_trials = [];
-
-// --- 3a. Within-sequence neighbor comparisons at distances 1/2/3 from the target image ---
-experimental_blocks.forEach(function(block) {
-    var offsets = [1, 2, 3];
-
-    offsets.forEach(function(dist) {
-        var neighbors_sequence = {
-            timeline: [
-                {
-                    type: jsPsychHtmlKeyboardResponse,
-                    stimulus: function() {
-                        var part2_info = jsPsych.data.get().filter({folder: block.name, task: 'part2_value_learning'}).values()[0];
-                        var X = (part2_info) ? part2_info.valuable_image_index : 5;
-
-                        var left_idx  = Math.random() < 0.5 ? X - dist : X + dist;
-                        var right_idx = (left_idx === X - dist) ? X + dist : X - dist;
-
-                        window.data_for_current_block = {
-                            left: left_idx,
-                            right: right_idx,
-                            lucky_X: X,
-                            distance: dist,
-                            left_path: imagePath(block, left_idx),
-                            right_path: imagePath(block, right_idx)
-                        };
-
-                        return `
-                            <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is worth <b>more money</b>?</h3></div>
-                            <div class="stimulus-container" style="display: flex; width: 800px; justify-content: center; gap: 30px;">
-                                <img src="${window.data_for_current_block.left_path}" class="small-image">
-                                <img src="${window.data_for_current_block.right_path}" class="small-image">
-                            </div>`;
-                    },
-                    choices: "NO_KEYS",
-                    trial_duration: 3000
-                },
-                {
-                    type: jsPsychHtmlButtonResponse,
-                    stimulus: function() {
-                        return `
-                            <div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is worth <b>more money</b>?</h3></div>
-                            <div class="stimulus-container" style="display: flex; width: 800px; justify-content: center; gap: 30px;">
-                                <img src="${window.data_for_current_block.left_path}" class="small-image">
-                                <img src="${window.data_for_current_block.right_path}" class="small-image">
-                            </div>`;
-                    },
-                    choices: ['Left', 'Right'],
-                    on_finish: function(data) {
-                        data.task = 'part3_choice_neighbors';
-                        data.folder = block.name;
-                        data.sequence_type = block.type;
-                        data.distance_from_x = window.data_for_current_block.distance;
-                        data.target_X = window.data_for_current_block.lucky_X;
-
-                        var chosen_idx = (data.response === 0) ? window.data_for_current_block.left : window.data_for_current_block.right;
-                        data.chosen_image_index = chosen_idx;
-
-                        // Check if selected image was after the target image (ascending) or before (descending)
-                        data.is_x_plus_dist = (chosen_idx === (data.target_X + data.distance_from_x)) ? 1 : 0;
-                        data.chosen_direction = (chosen_idx > data.target_X) ? 'ascending' : 'descending';
-                    }
-                }
-            ]
-        };
-        all_part3_trials.push(neighbors_sequence);
-    });
 });
 
-// --- 3b. Between-sequence comparisons: Valuable vs. Neutral ---
-var valuable_blocks_list_info = experimental_blocks.filter(b => valuable_folders_list.includes(b.name));
-var neutral_blocks_list_info  = experimental_blocks.filter(b => !valuable_folders_list.includes(b.name));
+var encoding_order = jsPsych.randomization.shuffle(all_pairs.slice());
 
-valuable_blocks_list_info.forEach(function(v_block, index) {
-    var n_block = neutral_blocks_list_info[index];
-    if (!n_block) return;
+function buildEncodingTrials(pair) {
+    return [
+        {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: '<div class="stimulus-container"><img src="' + pair.cause_path + '" class="exp-image"></div>',
+            choices: "NO_KEYS",
+            trial_duration: 4000,
+            data: { task: 'encoding_cause_view', pair_id: pair.pair_id }
+        },
+        {
+            type: jsPsychHtmlButtonResponse,
+            stimulus: '<div class="question-area"><p style="font-size: 20px; font-weight: bold;">Was there a person in this image?</p></div>',
+            choices: ['Yes', 'No'],
+            data: { task: 'encoding_cause_person_check', pair_id: pair.pair_id }
+        },
+        fixationTrial,
+        {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: '<div class="stimulus-container"><img src="' + pair.effect_path + '" class="exp-image"></div>',
+            choices: "NO_KEYS",
+            trial_duration: 4000,
+            data: { task: 'encoding_effect_view', pair_id: pair.pair_id }
+        },
+        {
+            type: jsPsychHtmlButtonResponse,
+            stimulus: '<div class="question-area"><p style="font-size: 20px; font-weight: bold;">Was there a person in this image?</p></div>',
+            choices: ['Yes', 'No'],
+            data: { task: 'encoding_effect_person_check', pair_id: pair.pair_id }
+        },
+        whiteScreenTrial
+    ];
+}
 
-    var cross_sequence = {
-        timeline: [
-            {
-                type: jsPsychHtmlKeyboardResponse,
-                stimulus: function() {
-                    var v_info = jsPsych.data.get().filter({folder: v_block.name, task: 'part2_value_learning'}).values()[0];
-                    var v_X = (v_info) ? v_info.valuable_image_index : 5;
-                    var n_info = jsPsych.data.get().filter({folder: n_block.name, task: 'part2_value_learning'}).values()[0];
-                    var n_X = (n_info) ? n_info.valuable_image_index : 5;
+pushWithAttentionChecks(encoding_order, 4, buildEncodingTrials);
 
-                    var left_is_v = Math.random() < 0.5;
+// ============================================================
+// PHASE 2: CONTROLLED EXPOSURE
+// Only ONE member of each pair is shown (per its assigned cell),
+// followed by a reward (💰) or neutral (◆) outcome. Order is
+// randomized and independent of the encoding order.
+// ============================================================
+timeline.push({
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
+        '<h2>Phase 2: Image Values</h2>' +
+        '<p>You will now see some of the images again, one at a time.</p>' +
+        '<p><b>Press the SPACEBAR</b> to reveal whether that image is worth a bonus.</p>' +
+        '<p><span style="color:green; font-weight:bold;">$</span> = You win a small bonus</p>' +
+        '<p><span style="color:gray; font-weight:bold;">&#9670;</span> = No bonus this time</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
+});
 
-                    window.cross_comp_data = {
-                        left_is_v: left_is_v,
-                        v_folder: v_block.name, n_folder: n_block.name,
-                        v_index: v_X, n_index: n_X,
-                        v_type: v_block.type, n_type: n_block.type,
-                        v_path: imagePath(v_block, v_X),
-                        n_path: imagePath(n_block, n_X)
-                    };
+var exposure_order = jsPsych.randomization.shuffle(all_pairs.slice());
 
-                    return `<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is worth <b>more money</b>?</h3></div>
-                            <div class="stimulus-container" style="display: flex; width: 800px; justify-content: center; gap: 30px;">
-                                <img src="${left_is_v ? window.cross_comp_data.v_path : window.cross_comp_data.n_path}" class="small-image">
-                                <img src="${left_is_v ? window.cross_comp_data.n_path : window.cross_comp_data.v_path}" class="small-image">
-                            </div>`;
-                },
-                choices: "NO_KEYS",
-                trial_duration: 3000
-            },
-            {
-                type: jsPsychHtmlButtonResponse,
-                stimulus: function() {
-                    var c = window.cross_comp_data;
-                    return `<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is worth <b>more money</b>?</h3></div>
-                            <div class="stimulus-container" style="display: flex; width: 800px; justify-content: center; gap: 30px;">
-                                <img src="${c.left_is_v ? c.v_path : c.n_path}" class="small-image">
-                                <img src="${c.left_is_v ? c.n_path : c.v_path}" class="small-image">
-                            </div>`;
-                },
-                choices: ['Left', 'Right'],
-                on_finish: function(data) {
-                    var c = window.cross_comp_data;
-                    data.task = 'part3_valuable_vs_neutral_direct';
-                    data.valuable_folder = c.v_folder;
-                    data.neutral_folder = c.n_folder;
-                    data.valuable_image_index = c.v_index;
-                    data.neutral_image_index = c.n_index;
-                    data.correct_choice = ((data.response === 0 && c.left_is_v) ||
-                                           (data.response === 1 && !c.left_is_v)) ? 1 : 0;
-                }
+function buildExposureTrials(pair) {
+    var is_rewarded = pair.reward_condition === 'reward';
+    var reward_img = is_rewarded ? 'images/dollar.png' : 'images/gray.png';
+    var reward_txt = is_rewarded ? 'You won 20 agorot!' : 'No bonus this time';
+    var reward_clr = is_rewarded ? 'green' : 'gray';
+
+    return [
+        {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: '<div class="stimulus-container"><img src="' + pair.exposed_path + '" class="exp-image">' +
+                       '<p style="font-size: 22px; margin-top: 20px; font-weight: bold;">Press SPACEBAR to reveal the outcome</p></div>',
+            choices: [' '],
+            data: {
+                task: 'exposure_wait',
+                pair_id: pair.pair_id,
+                exposed_role: pair.exposed_role,
+                reward_condition: pair.reward_condition,
+                cell: pair.cell
             }
-        ]
-    };
-    all_part3_trials.push(cross_sequence);
-});
+        },
+        {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: '<div class="stimulus-container" style="display:flex; align-items:center; justify-content:center; gap:30px;">' +
+                       '<img src="' + pair.exposed_path + '" class="exp-image">' +
+                       '<div><img src="' + reward_img + '" style="width:140px;height:140px;border:4px solid ' + reward_clr + ';">' +
+                       '<p style="color:' + reward_clr + '; font-weight:bold; font-size:22px;">' + reward_txt + '</p></div></div>',
+            choices: "NO_KEYS",
+            trial_duration: 3000,
+            data: {
+                task: 'exposure_feedback',
+                pair_id: pair.pair_id,
+                exposed_role: pair.exposed_role,
+                reward_condition: pair.reward_condition,
+                cell: pair.cell
+            }
+        },
+        whiteScreenTrial
+    ];
+}
 
-// Final randomization across all Part 3 trial types
-jsPsych.randomization.shuffle(all_part3_trials).forEach(function(trial) {
-    timeline.push(trial);
-});
-
+pushWithAttentionChecks(exposure_order, 4, buildExposureTrials);
 
 // ============================================================
-// DEMOGRAPHICS & DEBRIEF
+// PHASE 3: DECISION (forced choice)
+// For each pair, the participant chooses between the UNSEEN
+// ("critical") member of that pair and the unseen member of a
+// different pair (the "foil"). This is where the association
+// effect is measured, split by whether the exposed/rewarded
+// member of the critical pair was the cause or the effect.
 // ============================================================
-var trial_demographics = {
+timeline.push({
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
+        '<h2>Phase 3: Decision</h2>' +
+        '<p>You will now see pairs of images side by side.</p>' +
+        '<p>Follow your gut feeling and choose the image you feel is <b>luckier</b>, or that you intuitively prefer.</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
+});
+
+// Pair each pair's critical item ONLY with a critical item that has the
+// SAME role (cause-with-cause, effect-with-effect). This keeps the
+// comparison structurally matched (same sentence type on both sides)
+// and avoids confounding cause-phrase vs effect-phrase wording.
+// Within each role group, the foil is the item half-way around a
+// shuffled order of that group, so the foil is always from a
+// different pair and was never exposed/rewarded directly either.
+var shuffled_all_for_decision = jsPsych.randomization.shuffle(all_pairs.slice());
+
+// critical_role is the OPPOSITE of exposed_role (see cell assignment above):
+// pairs exposed on the cause -> critical item is the effect, and vice versa.
+var cause_critical_targets = shuffled_all_for_decision.filter(function(p) {
+    return p.critical_role === 'cause';
+});
+var effect_critical_targets = shuffled_all_for_decision.filter(function(p) {
+    return p.critical_role === 'effect';
+});
+
+function buildRoleMatchedDecisionSet(targetGroup) {
+    var half = targetGroup.length / 2; // 6, since each role group has 12 items
+    return targetGroup.map(function(pair, idx) {
+        var foil_pair = targetGroup[(idx + half) % targetGroup.length];
+        return {
+            target_pair_id: pair.pair_id,
+            target_path: pair.critical_path,
+            target_role: pair.critical_role,
+            target_reward_condition: pair.reward_condition,
+            target_cell: pair.cell,
+            foil_pair_id: foil_pair.pair_id,
+            foil_path: foil_pair.critical_path
+        };
+    });
+}
+
+// Combine both role-matched sets, then shuffle the overall trial order
+// so cause-trials and effect-trials are interleaved unpredictably.
+var decision_trials = jsPsych.randomization.shuffle(
+    buildRoleMatchedDecisionSet(cause_critical_targets).concat(
+        buildRoleMatchedDecisionSet(effect_critical_targets)
+    )
+);
+
+function buildDecisionTrials(dt) {
+    return [
+        {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: function() {
+                var target_left = Math.random() < 0.5;
+                window.current_decision = {
+                    target_left: target_left,
+                    target_pair_id: dt.target_pair_id,
+                    target_role: dt.target_role,
+                    target_reward_condition: dt.target_reward_condition,
+                    target_cell: dt.target_cell,
+                    foil_pair_id: dt.foil_pair_id
+                };
+                var left_img = target_left ? dt.target_path : dt.foil_path;
+                var right_img = target_left ? dt.foil_path : dt.target_path;
+                window.current_left_img = left_img;
+                window.current_right_img = right_img;
+                return '<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is <b>luckier</b>?</h3></div>' +
+                       '<div class="stimulus-container" style="display: flex; justify-content: center; gap: 30px;">' +
+                       '<img src="' + left_img + '" class="small-image"><img src="' + right_img + '" class="small-image"></div>';
+            },
+            choices: "NO_KEYS",
+            trial_duration: 2500
+        },
+        {
+            type: jsPsychHtmlButtonResponse,
+            stimulus: function() {
+                return '<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is <b>luckier</b>?</h3></div>' +
+                       '<div class="stimulus-container" style="display: flex; justify-content: center; gap: 30px;">' +
+                       '<img src="' + window.current_left_img + '" class="small-image"><img src="' + window.current_right_img + '" class="small-image"></div>';
+            },
+            choices: ['Left', 'Right'],
+            data: { task: 'decision_choice' },
+            on_finish: function(data) {
+                var c = window.current_decision;
+                data.target_pair_id = c.target_pair_id;
+                data.target_role = c.target_role;
+                data.target_reward_condition = c.target_reward_condition;
+                data.target_cell = c.target_cell;
+                data.foil_pair_id = c.foil_pair_id;
+                data.chose_target = ((data.response === 0 && c.target_left) ||
+                                      (data.response === 1 && !c.target_left)) ? 1 : 0;
+            }
+        },
+        {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
+            choices: "NO_KEYS",
+            trial_duration: 800
+        }
+    ];
+}
+
+pushWithAttentionChecks(decision_trials, 4, buildDecisionTrials);
+
+// ============================================================
+// PHASE 4: CONTROL (memory + causal strength rating)
+// ============================================================
+timeline.push({
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
+        '<h2>Phase 4: Final Questions</h2>' +
+        '<p>First, for each cause image you will pick the matching effect from a few options.</p>' +
+        '<p>Then, for each pair you will rate how naturally the first image leads to the second.</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
+});
+
+// ---- 4a: Memory test ----
+var memory_order = jsPsych.randomization.shuffle(all_pairs.slice());
+
+function buildMemoryTrial(pair) {
+    var foil_pool = all_pairs.filter(function(p) { return p.pair_id !== pair.pair_id; });
+    var foil_sample = jsPsych.randomization.sampleWithoutReplacement(foil_pool, 3);
+    var option_paths = jsPsych.randomization.shuffle(
+        [pair.effect_path].concat(foil_sample.map(function(p) { return p.effect_path; }))
+    );
+    var correct_index = option_paths.indexOf(pair.effect_path);
+    var option_labels = option_paths.map(function(p, i) { return 'Option ' + (i + 1); });
+
+    var options_html = option_paths.map(function(p, i) {
+        return '<div style="text-align:center;"><img src="' + p + '" class="small-image"><br>' +
+               '<span style="font-weight:bold;">Option ' + (i + 1) + '</span></div>';
+    }).join('');
+
+    return [
+        {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: '<div class="stimulus-container"><img src="' + pair.cause_path + '" class="exp-image">' +
+                       '<p style="font-size: 18px; margin-top: 15px;">Remember this cause. Its matching effect is one of the options on the next screen.</p></div>',
+            choices: "NO_KEYS",
+            trial_duration: 2000
+        },
+        {
+            type: jsPsychHtmlButtonResponse,
+            stimulus: '<div class="stimulus-container"><img src="' + pair.cause_path + '" class="small-image">' +
+                       '<p style="font-size: 18px; margin-top: 15px; font-weight:bold;">Which outcome matches this cause?</p></div>' +
+                       '<div style="display:flex; justify-content:center; gap:15px; flex-wrap:wrap; margin-top:10px;">' + options_html + '</div>',
+            choices: option_labels,
+            data: { task: 'memory_test', pair_id: pair.pair_id, correct_index: correct_index },
+            on_finish: function(data) {
+                data.correct = (data.response === correct_index) ? 1 : 0;
+            }
+        },
+        whiteScreenTrial
+    ];
+}
+
+pushWithAttentionChecks(memory_order, 6, buildMemoryTrial);
+
+// ---- 4b: Causal strength rating ----
+var rating_order = jsPsych.randomization.shuffle(all_pairs.slice());
+
+function buildRatingTrial(pair) {
+    return [
+        {
+            type: jsPsychHtmlButtonResponse,
+            stimulus: '<div class="stimulus-container" style="display:flex; justify-content:center; gap:30px;">' +
+                       '<img src="' + pair.cause_path + '" class="small-image"><img src="' + pair.effect_path + '" class="small-image"></div>' +
+                       '<p style="font-size: 20px; font-weight: bold; margin-top: 20px;">How naturally does the first image lead to the second?<br>' +
+                       '<span style="font-weight:normal; font-size:16px;">(1 = not at all natural, 7 = very natural)</span></p>',
+            choices: ['1', '2', '3', '4', '5', '6', '7'],
+            data: { task: 'causal_strength_rating', pair_id: pair.pair_id },
+            on_finish: function(data) {
+                data.rating = (data.response !== null) ? data.response + 1 : null;
+            }
+        },
+        whiteScreenTrial
+    ];
+}
+
+pushWithAttentionChecks(rating_order, 6, buildRatingTrial);
+
+// ============================================================
+// DEMOGRAPHICS
+// ============================================================
+timeline.push({
     type: jsPsychSurveyText,
     questions: [
-        {prompt: 'Please insert your gender (MALE / FEMALE / OTHER)', name: 'gender', rows: 1, columns: 20},
-        {prompt: 'Please insert your age', name: 'age', rows: 1, columns: 5},
-        {prompt: 'In the last part, how did you decide which image was worth <b>more money</b>?', name: 'decision_strategy', rows: 1, columns: 50},
-        {prompt: 'Did you use the same logic for all pairs? Please explain.', name: 'consistency_check', rows: 1, columns: 50},
-        {prompt: 'In the first part, did you notice anything about the <b>order</b> in which the two images of each pair appeared?', name: 'order_awareness', rows: 1, columns: 50}
+        { prompt: 'Gender (MALE / FEMALE / OTHER):', name: 'gender', rows: 1, columns: 20 },
+        { prompt: 'Age:', name: 'age', rows: 1, columns: 5 },
+        { prompt: 'Did you notice any pattern in how the bonuses were given? If so, describe it.', name: 'reward_strategy', rows: 2, columns: 50 },
+        { prompt: 'How did you choose between images in the "luckier" part?', name: 'strategy', rows: 2, columns: 50 }
     ],
     data: { task: 'demographics' }
-};
-timeline.push(trial_demographics);
+});
+
+// ============================================================
+// SAVE DATA (before the final screen, as a safety net)
+// ============================================================
+timeline.push({
+    type: jsPsychCallFunction,
+    func: function() {
+        console.log("Reached end of real trials, saving data now (before final screen)...");
+        saveData(jsPsych.data.get().csv());
+    }
+});
+
+// ============================================================
+// END OF EXPERIMENT
+// ============================================================
+timeline.push({
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align: center; padding: 60px; font-family: Arial;">' +
+        '<h2>Experiment Completed</h2>' +
+        '<p style="font-size: 20px; margin-top: 20px;">You have successfully finished the study.</p>' +
+        '<p style="font-size: 22px; color: #28a745; font-weight: bold; margin-top: 30px;">Thank you very much for your participation!</p>' +
+        '<p style="font-size: 16px; color: #666; margin-top: 40px;">Your data has already been saved. You may now safely close this window or return to the platform.</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
+});
 
 jsPsych.run(timeline);
 
