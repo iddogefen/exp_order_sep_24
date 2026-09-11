@@ -221,6 +221,20 @@ all_pairs.forEach(function(p) {
     imagesToPreload.push(p.effect_path);
 });
 
+var practice_pairs = [
+   { name: 'the_performance_causal', type: 'causal_sequence', e1: 1, e2: 2 },
+   { name: 'museum_causal', type: 'causal_sequence', e1: 3, e2: 4 }
+];
+
+function getPracticeImagePath(block, idx) {
+    return `images/${block.type}/${block.name}/${block.name}_${idx}.png`;
+}
+
+practice_pairs.forEach(function(p) {
+    imagesToPreload.push(getPracticeImagePath(p, 1));
+    imagesToPreload.push(getPracticeImagePath(p, 2));
+});
+
 timeline.push({
     type: jsPsychPreload,
     images: imagesToPreload,
@@ -277,6 +291,33 @@ function pushWithAttentionChecks(sourceArray, everyN, trialBuilderFn) {
     });
 }
 
+// Shows one image; after `delayMs` (default 4000ms) a short question
+// fades in BELOW the same image (same screen, not a separate page),
+// and only then can the participant click Yes/No to continue.
+function buildImageWithDelayedQuestionTrial(imagePath, dataObj, delayMs) {
+    delayMs = (typeof delayMs === 'number') ? delayMs : 4000;
+    return {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: '<div class="stimulus-container">' +
+                   '<img src="' + imagePath + '" class="exp-image">' +
+                   '<div class="question-area" id="delayed-question" style="visibility:hidden; margin-top:15px;">' +
+                   '<p style="font-size:20px; font-weight:bold;">Was there a person in this image?</p>' +
+                   '</div></div>',
+        choices: ['Yes', 'No'],
+        data: dataObj,
+        on_load: function() {
+            var btnGroup = document.querySelector('#jspsych-html-button-response-btngroup');
+            if (btnGroup) { btnGroup.style.visibility = 'hidden'; }
+            setTimeout(function() {
+                var q = document.querySelector('#delayed-question');
+                if (q) { q.style.visibility = 'visible'; }
+                var bg = document.querySelector('#jspsych-html-button-response-btngroup');
+                if (bg) { bg.style.visibility = 'visible'; }
+            }, delayMs);
+        }
+    };
+}
+
 // ============================================================
 // INSTRUCTIONS & CONSENT
 // ============================================================
@@ -285,7 +326,7 @@ timeline.push({
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Welcome to the Experiment</h2>' +
-        '<p>In this study you will see short cause-and-effect sentences illustrated with images, and you will be able to earn a small cash bonus on some of the tasks.</p>' +
+        '<p>In this study you will see pairs of images and answer short questions about them. You will also be able to earn a small cash bonus on some of the tasks.</p>' +
         '<p>The experiment has several short parts, beginning with a brief practice round.</p>' +
         '<p>Click "Next" to read the consent form.</p>' +
         '</div>',
@@ -320,39 +361,13 @@ timeline.push({
     show_clickable_nav: true
 });
 
-var practice_pairs = [
-    { color1: '#5b8def', label1: 'PRACTICE A', color2: '#4caf50', label2: 'PRACTICE B' },
-    { color1: '#e57373', label1: 'PRACTICE C', color2: '#ba68c8', label2: 'PRACTICE D' }
-];
-
 practice_pairs.forEach(function(p) {
-    timeline.push({
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: '<div class="stimulus-container"><div class="practice-box" style="background-color:' + p.color1 + ';">' + p.label1 + '</div></div>',
-        choices: "NO_KEYS",
-        trial_duration: 4000,
-        data: { task: 'practice_item1' }
-    });
-    timeline.push({
-        type: jsPsychHtmlButtonResponse,
-        stimulus: '<div class="question-area"><p style="font-size: 20px; font-weight: bold;">Was there a person in this image?</p></div>',
-        choices: ['Yes', 'No'],
-        data: { task: 'practice_person_check' }
-    });
+    var img1 = getPracticeImagePath(p, 1);
+    var img2 = getPracticeImagePath(p, 2);
+
+    timeline.push(buildImageWithDelayedQuestionTrial(img1, { task: 'practice_item1', folder: p.name }));
     timeline.push(fixationTrial);
-    timeline.push({
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: '<div class="stimulus-container"><div class="practice-box" style="background-color:' + p.color2 + ';">' + p.label2 + '</div></div>',
-        choices: "NO_KEYS",
-        trial_duration: 4000,
-        data: { task: 'practice_item2' }
-    });
-    timeline.push({
-        type: jsPsychHtmlButtonResponse,
-        stimulus: '<div class="question-area"><p style="font-size: 20px; font-weight: bold;">Was there a person in this image?</p></div>',
-        choices: ['Yes', 'No'],
-        data: { task: 'practice_person_check' }
-    });
+    timeline.push(buildImageWithDelayedQuestionTrial(img2, { task: 'practice_item2', folder: p.name }));
     timeline.push(whiteScreenTrial);
 });
 
@@ -378,7 +393,7 @@ timeline.push({
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Phase 1: Image Viewing</h2>' +
-        '<p>You will see 24 pairs of images, one after another. Each pair shows a cause and then its effect.</p>' +
+        '<p>You will see 24 pairs of images, one after another. Each pair shows two images, one followed by the other.</p>' +
         '<p>Please view each image carefully. After each image, answer a short question about it.</p>' +
         '</div>'
     ],
@@ -389,33 +404,9 @@ var encoding_order = jsPsych.randomization.shuffle(all_pairs.slice());
 
 function buildEncodingTrials(pair) {
     return [
-        {
-            type: jsPsychHtmlKeyboardResponse,
-            stimulus: '<div class="stimulus-container"><img src="' + pair.cause_path + '" class="exp-image"></div>',
-            choices: "NO_KEYS",
-            trial_duration: 4000,
-            data: { task: 'encoding_cause_view', pair_id: pair.pair_id }
-        },
-        {
-            type: jsPsychHtmlButtonResponse,
-            stimulus: '<div class="question-area"><p style="font-size: 20px; font-weight: bold;">Was there a person in this image?</p></div>',
-            choices: ['Yes', 'No'],
-            data: { task: 'encoding_cause_person_check', pair_id: pair.pair_id }
-        },
+        buildImageWithDelayedQuestionTrial(pair.cause_path, { task: 'encoding_cause', pair_id: pair.pair_id }),
         fixationTrial,
-        {
-            type: jsPsychHtmlKeyboardResponse,
-            stimulus: '<div class="stimulus-container"><img src="' + pair.effect_path + '" class="exp-image"></div>',
-            choices: "NO_KEYS",
-            trial_duration: 4000,
-            data: { task: 'encoding_effect_view', pair_id: pair.pair_id }
-        },
-        {
-            type: jsPsychHtmlButtonResponse,
-            stimulus: '<div class="question-area"><p style="font-size: 20px; font-weight: bold;">Was there a person in this image?</p></div>',
-            choices: ['Yes', 'No'],
-            data: { task: 'encoding_effect_person_check', pair_id: pair.pair_id }
-        },
+        buildImageWithDelayedQuestionTrial(pair.effect_path, { task: 'encoding_effect', pair_id: pair.pair_id }),
         whiteScreenTrial
     ];
 }
@@ -612,7 +603,7 @@ timeline.push({
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Phase 4: Final Questions</h2>' +
-        '<p>First, for each cause image you will pick the matching effect from a few options.</p>' +
+        '<p>First, for each image you will pick the matching image from a few options.</p>' +
         '<p>Then, for each pair you will rate how naturally the first image leads to the second.</p>' +
         '</div>'
     ],
@@ -640,14 +631,14 @@ function buildMemoryTrial(pair) {
         {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: '<div class="stimulus-container"><img src="' + pair.cause_path + '" class="exp-image">' +
-                       '<p style="font-size: 18px; margin-top: 15px;">Remember this cause. Its matching effect is one of the options on the next screen.</p></div>',
+                       '<p style="font-size: 18px; margin-top: 15px;">Remember this image. Its matching image is one of the options on the next screen.</p></div>',
             choices: "NO_KEYS",
             trial_duration: 2000
         },
         {
             type: jsPsychHtmlButtonResponse,
             stimulus: '<div class="stimulus-container"><img src="' + pair.cause_path + '" class="small-image">' +
-                       '<p style="font-size: 18px; margin-top: 15px; font-weight:bold;">Which outcome matches this cause?</p></div>' +
+                       '<p style="font-size: 18px; margin-top: 15px; font-weight:bold;">Which image matches this one?</p></div>' +
                        '<div style="display:flex; justify-content:center; gap:15px; flex-wrap:wrap; margin-top:10px;">' + options_html + '</div>',
             choices: option_labels,
             data: { task: 'memory_test', pair_id: pair.pair_id, correct_index: correct_index },
