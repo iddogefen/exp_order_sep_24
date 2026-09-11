@@ -711,8 +711,8 @@ function buildRatingTrial(pair) {
             stimulus: '<div class="stimulus-container" style="display:flex; justify-content:center; gap:30px;">' +
                        '<img src="' + pair.cause_path + '" class="small-image"><img src="' + pair.effect_path + '" class="small-image"></div>' +
                        '<p style="font-size: 20px; font-weight: bold; margin-top: 20px;">How naturally does the first image lead to the second?<br>' +
-                       '<span style="font-weight:normal; font-size:16px;">(1 = not at all natural, 7 = very natural)</span></p>',
-            choices: ['1', '2', '3', '4', '5', '6', '7'],
+                       '<span style="font-weight:normal; font-size:16px;">(1 = not at all natural, 10 = very natural)</span></p>',
+            choices: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
             data: { task: 'causal_strength_rating', pair_id: pair.pair_id },
             on_finish: function(data) {
                 data.rating = (data.response !== null) ? data.response + 1 : null;
