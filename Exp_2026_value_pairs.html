@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Study</title>
+    <title>Image Value Study</title>
     <style>
       body {
           background-color: #f8f9fa;
@@ -359,7 +359,7 @@ function buildImageWithDelayedQuestionTrial(imagePath, dataObj, delayMs) {
         stimulus: '<div class="stimulus-container">' +
                    '<img src="' + imagePath + '" class="exp-image">' +
                    '<div class="question-area" id="delayed-question" style="visibility:hidden; margin-top:15px;">' +
-                   '<p style="font-size:20px; font-weight:bold;">Does a person appear in this image or as text?</p>' +
+                   '<p style="font-size:20px; font-weight:bold;">Does a person appear in this image, or does the word "person" appear as text?</p>' +
                    '</div></div>',
         choices: ['Yes', 'No'],
         data: dataObj,
@@ -384,7 +384,7 @@ timeline.push(withMinReadTime({
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Welcome to the Experiment</h2>' +
-        '<p>In this study you will see pairs of images and answer short questions about them.</p>' +
+        '<p>In this study you will see pairs of images and answer short questions about them. Some images will also have a monetary value.</p>' +
         '<p>The experiment has several short parts, beginning with a brief practice round.</p>' +
         '<p>Click "Next" to read the consent form.</p>' +
         '</div>',
@@ -537,16 +537,25 @@ pushPhase(exposure_order, buildExposureTrials, 12);
 
 // ============================================================
 // PHASE 3: DECISION (forced choice)
-// This is a DIRECT reward-vs-neutral comparison, always within the
-// SAME role:
-//   - 6 trials: an unseen CAUSE whose effect-partner was REWARDED
-//               vs. an unseen CAUSE whose effect-partner was NEUTRAL
-//   - 6 trials: an unseen EFFECT whose cause-partner was REWARDED
-//               vs. an unseen EFFECT whose cause-partner was NEUTRAL
-// 12 choices total. This directly tests whether reward on one role
-// spreads to its partner more than reward on the other role does,
-// by comparing reward-linked vs neutral-linked items head-to-head
-// (never against an unrelated pair).
+// This now includes BOTH test types from Wimmer & Shohamy (2012),
+// always as a direct reward-vs-neutral comparison within the SAME role:
+//
+//   INDIRECT test (the never-directly-shown "critical" item of each
+//   pair - mirrors their S1+ vs S1- test):
+//     - 6 trials: an unseen CAUSE whose effect-partner was REWARDED
+//                 vs. an unseen CAUSE whose effect-partner was NEUTRAL
+//     - 6 trials: an unseen EFFECT whose cause-partner was REWARDED
+//                 vs. an unseen EFFECT whose cause-partner was NEUTRAL
+//
+//   DIRECT test (the item that WAS shown with its $1/$0 value in
+//   Phase 2 - mirrors their S2+ vs S2- test, a manipulation check
+//   that basic reward learning worked):
+//     - 6 trials: a REWARDED cause vs. a NEUTRAL cause (both exposed)
+//     - 6 trials: a REWARDED effect vs. a NEUTRAL effect (both exposed)
+//
+// 24 choices total (12 indirect + 12 direct). Both test types compare
+// reward-linked vs neutral-linked items head-to-head, never against an
+// unrelated pair.
 // ============================================================
 timeline.push(withMinReadTime({
     type: jsPsychInstructions,
@@ -565,8 +574,15 @@ timeline.push(withMinReadTime({
 var cause_critical_items = all_pairs.filter(function(p) { return p.critical_role === 'cause'; });
 var effect_critical_items = all_pairs.filter(function(p) { return p.critical_role === 'effect'; });
 
-// Builds 6 direct reward-vs-neutral trials for one role group (12 items -> 6 reward, 6 neutral).
-function buildDirectComparisonSet(roleGroup, comparisonRole) {
+// exposed_role groups - these are the items that WERE shown with their
+// $1/$0 value in Phase 2. Used for the new DIRECT test.
+var cause_exposed_items = all_pairs.filter(function(p) { return p.exposed_role === 'cause'; });
+var effect_exposed_items = all_pairs.filter(function(p) { return p.exposed_role === 'effect'; });
+
+// Builds 6 direct reward-vs-neutral trials for one role group (12 items ->
+// 6 reward, 6 neutral). `pathField` selects which image to use per pair:
+// 'critical_path' for the indirect test, 'exposed_path' for the direct test.
+function buildComparisonSet(roleGroup, comparisonRole, testType, pathField) {
     var reward_items = jsPsych.randomization.shuffle(
         roleGroup.filter(function(p) { return p.reward_condition === 'reward'; })
     );
@@ -577,20 +593,24 @@ function buildDirectComparisonSet(roleGroup, comparisonRole) {
     return reward_items.map(function(rewardPair, idx) {
         var neutralPair = neutral_items[idx];
         return {
+            test_type: testType, // 'direct' or 'indirect'
             comparison_role: comparisonRole, // 'cause' or 'effect'
             reward_pair_id: rewardPair.pair_id,
-            reward_path: rewardPair.critical_path,
+            reward_path: rewardPair[pathField],
             neutral_pair_id: neutralPair.pair_id,
-            neutral_path: neutralPair.critical_path
+            neutral_path: neutralPair[pathField]
         };
     });
 }
 
-// Combine the 6 cause-trials + 6 effect-trials, then shuffle overall order
-// so they're interleaved unpredictably for the participant.
+// Combine all 4 sets (indirect-cause, indirect-effect, direct-cause,
+// direct-effect), then shuffle overall order so everything is
+// interleaved unpredictably for the participant.
 var decision_trials = jsPsych.randomization.shuffle(
-    buildDirectComparisonSet(cause_critical_items, 'cause').concat(
-        buildDirectComparisonSet(effect_critical_items, 'effect')
+    buildComparisonSet(cause_critical_items, 'cause', 'indirect', 'critical_path').concat(
+        buildComparisonSet(effect_critical_items, 'effect', 'indirect', 'critical_path'),
+        buildComparisonSet(cause_exposed_items, 'cause', 'direct', 'exposed_path'),
+        buildComparisonSet(effect_exposed_items, 'effect', 'direct', 'exposed_path')
     )
 );
 
@@ -602,6 +622,7 @@ function buildDecisionTrials(dt) {
                 var reward_left = Math.random() < 0.5;
                 window.current_decision = {
                     reward_left: reward_left,
+                    test_type: dt.test_type,
                     comparison_role: dt.comparison_role,
                     reward_pair_id: dt.reward_pair_id,
                     neutral_pair_id: dt.neutral_pair_id
@@ -628,6 +649,7 @@ function buildDecisionTrials(dt) {
             data: { task: 'decision_choice' },
             on_finish: function(data) {
                 var c = window.current_decision;
+                data.test_type = c.test_type;
                 data.comparison_role = c.comparison_role;
                 data.reward_pair_id = c.reward_pair_id;
                 data.neutral_pair_id = c.neutral_pair_id;
@@ -644,7 +666,7 @@ function buildDecisionTrials(dt) {
     ];
 }
 
-pushPhase(decision_trials, buildDecisionTrials, 6);
+pushPhase(decision_trials, buildDecisionTrials, 12);
 
 // ============================================================
 // PHASE 4: CONTROL (memory + causal strength rating)
