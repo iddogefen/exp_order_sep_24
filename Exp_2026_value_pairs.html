@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Cause-Effect Monetary Value Spreading Experiment</title>
+    <title>Study</title>
     <style>
       body {
           background-color: #f8f9fa;
@@ -245,8 +245,9 @@ timeline.push({
 // SHARED HELPERS
 // ============================================================
 
-// Simple 3-option math attention check, used throughout all phases.
-function mathAttentionCheckTrial() {
+// Simple 3-option math question, shown a handful of times through the
+// experiment (not framed as an "attention check" to the participant).
+function mathQuestionTrial() {
     var a = Math.floor(Math.random() * 8) + 1;
     var b = Math.floor(Math.random() * 8) + 1;
     var correct = a + b;
@@ -257,10 +258,9 @@ function mathAttentionCheckTrial() {
 
     return {
         type: jsPsychHtmlButtonResponse,
-        stimulus: '<div style="font-size:28px; font-weight:bold; margin-bottom:20px;">Attention Check</div>' +
-                   '<div style="font-size:24px;">What is ' + a + ' + ' + b + ' ?</div>',
+        stimulus: '<div style="font-size:24px;">What is ' + a + ' + ' + b + ' ?</div>',
         choices: options.map(String),
-        data: { task: 'attention_check_math', correct_answer: correct },
+        data: { task: 'math_question', correct_answer: correct },
         on_finish: function(data) {
             data.correct = (data.response === correct_option_index) ? 1 : 0;
         }
@@ -337,12 +337,14 @@ function withMinReadTime(instructionsTrial, minMs) {
     return trial;
 }
 
-// Inserts a math attention check every `everyN` items processed.
-function pushWithAttentionChecks(sourceArray, everyN, trialBuilderFn) {
+// Runs all trials for a phase, inserting exactly ONE math question after
+// the item at `checkAfterPosition` (1-based), if provided. Used to keep
+// the total math-question count at exactly 4 across the whole experiment.
+function pushPhase(sourceArray, trialBuilderFn, checkAfterPosition) {
     sourceArray.forEach(function(item, idx) {
         timeline = timeline.concat(trialBuilderFn(item));
-        if ((idx + 1) % everyN === 0 && (idx + 1) < sourceArray.length) {
-            timeline.push(mathAttentionCheckTrial());
+        if (checkAfterPosition && (idx + 1) === checkAfterPosition) {
+            timeline.push(mathQuestionTrial());
         }
     });
 }
@@ -382,7 +384,7 @@ timeline.push(withMinReadTime({
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Welcome to the Experiment</h2>' +
-        '<p>In this study you will see pairs of images and answer short questions about them. You will also be able to earn a small cash bonus on some of the tasks.</p>' +
+        '<p>In this study you will see pairs of images and answer short questions about them. Some images will also have a monetary value.</p>' +
         '<p>The experiment has several short parts, beginning with a brief practice round.</p>' +
         '<p>Click "Next" to read the consent form.</p>' +
         '</div>',
@@ -467,7 +469,7 @@ function buildEncodingTrials(pair) {
     ];
 }
 
-pushWithAttentionChecks(encoding_order, 4, buildEncodingTrials);
+pushPhase(encoding_order, buildEncodingTrials, 12);
 
 // ============================================================
 // PHASE 2: CONTROLLED EXPOSURE
@@ -481,9 +483,9 @@ timeline.push(withMinReadTime({
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Phase 2: Image Values</h2>' +
         '<p>You will now see some of the images again, one at a time.</p>' +
-        '<p><b>Press the SPACEBAR</b> to reveal whether that image is worth a bonus.</p>' +
-        '<p><span style="color:green; font-weight:bold;">$</span> = You win a small bonus</p>' +
-        '<p><span style="color:gray; font-weight:bold;">&#9670;</span> = No bonus this time</p>' +
+        '<p><b>Press the SPACEBAR</b> to reveal the value of that image.</p>' +
+        '<p><span style="color:green; font-weight:bold;">$</span> = This image is worth $1</p>' +
+        '<p><span style="color:gray; font-weight:bold;">&#9670;</span> = This image is worth $0</p>' +
         '</div>'
     ],
     show_clickable_nav: true
@@ -494,14 +496,14 @@ var exposure_order = jsPsych.randomization.shuffle(all_pairs.slice());
 function buildExposureTrials(pair) {
     var is_rewarded = pair.reward_condition === 'reward';
     var reward_img = is_rewarded ? 'images/dollar.png' : 'images/gray.png';
-    var reward_txt = is_rewarded ? 'You won 20 agorot!' : 'No bonus this time';
+    var reward_txt = is_rewarded ? 'This image is worth $1' : 'This image is worth $0';
     var reward_clr = is_rewarded ? 'green' : 'gray';
 
     return [
         {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: '<div class="stimulus-container"><img src="' + pair.exposed_path + '" class="exp-image">' +
-                       '<p style="font-size: 22px; margin-top: 20px; font-weight: bold;">Press SPACEBAR to reveal the outcome</p></div>',
+                       '<p style="font-size: 22px; margin-top: 20px; font-weight: bold;">Press SPACEBAR to reveal this image\'s value</p></div>',
             choices: [' '],
             data: {
                 task: 'exposure_wait',
@@ -531,7 +533,7 @@ function buildExposureTrials(pair) {
     ];
 }
 
-pushWithAttentionChecks(exposure_order, 4, buildExposureTrials);
+pushPhase(exposure_order, buildExposureTrials, 12);
 
 // ============================================================
 // PHASE 3: DECISION (forced choice)
@@ -552,7 +554,7 @@ timeline.push(withMinReadTime({
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Phase 3: Decision</h2>' +
         '<p>You will now see pairs of images side by side.</p>' +
-        '<p>Follow your gut feeling and choose the image you feel is <b>luckier</b>, or that you intuitively prefer.</p>' +
+        '<p>Follow your gut feeling and choose the image you feel is <b>more valuable</b>, or that you intuitively prefer.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
@@ -608,7 +610,7 @@ function buildDecisionTrials(dt) {
                 var right_img = reward_left ? dt.neutral_path : dt.reward_path;
                 window.current_left_img = left_img;
                 window.current_right_img = right_img;
-                return '<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is <b>luckier</b>?</h3></div>' +
+                return '<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is <b>more valuable</b>?</h3></div>' +
                        '<div class="stimulus-container" style="display: flex; justify-content: center; gap: 30px;">' +
                        '<img src="' + left_img + '" class="small-image"><img src="' + right_img + '" class="small-image"></div>';
             },
@@ -618,7 +620,7 @@ function buildDecisionTrials(dt) {
         {
             type: jsPsychHtmlButtonResponse,
             stimulus: function() {
-                return '<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is <b>luckier</b>?</h3></div>' +
+                return '<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is <b>more valuable</b>?</h3></div>' +
                        '<div class="stimulus-container" style="display: flex; justify-content: center; gap: 30px;">' +
                        '<img src="' + window.current_left_img + '" class="small-image"><img src="' + window.current_right_img + '" class="small-image"></div>';
             },
@@ -642,7 +644,7 @@ function buildDecisionTrials(dt) {
     ];
 }
 
-pushWithAttentionChecks(decision_trials, 3, buildDecisionTrials);
+pushPhase(decision_trials, buildDecisionTrials, 6);
 
 // ============================================================
 // PHASE 4: CONTROL (memory + causal strength rating)
@@ -660,7 +662,9 @@ timeline.push(withMinReadTime({
 }));
 
 // ---- 4a: Memory test ----
-var memory_order = jsPsych.randomization.shuffle(all_pairs.slice());
+var memory_order = jsPsych.randomization.shuffle(
+    all_pairs.filter(function(p) { return p.pair_id <= 6; })
+);
 
 function buildMemoryTrial(pair) {
     var foil_pool = all_pairs.filter(function(p) { return p.pair_id !== pair.pair_id; });
@@ -699,7 +703,7 @@ function buildMemoryTrial(pair) {
     ];
 }
 
-pushWithAttentionChecks(memory_order, 6, buildMemoryTrial);
+pushPhase(memory_order, buildMemoryTrial, 3);
 
 // ---- 4b: Causal strength rating ----
 var rating_order = jsPsych.randomization.shuffle(all_pairs.slice());
@@ -710,8 +714,8 @@ function buildRatingTrial(pair) {
             type: jsPsychHtmlButtonResponse,
             stimulus: '<div class="stimulus-container" style="display:flex; justify-content:center; gap:30px;">' +
                        '<img src="' + pair.cause_path + '" class="small-image"><img src="' + pair.effect_path + '" class="small-image"></div>' +
-                       '<p style="font-size: 20px; font-weight: bold; margin-top: 20px;">How naturally does the first image lead to the second?<br>' +
-                       '<span style="font-weight:normal; font-size:16px;">(1 = not at all natural, 10 = very natural)</span></p>',
+                       '<p style="font-size: 20px; font-weight: bold; margin-top: 20px;">How much did the first image cause the second?<br>' +
+                       '<span style="font-weight:normal; font-size:16px;">(1 = did not cause it at all, 10 = completely caused it)</span></p>',
             choices: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
             data: { task: 'causal_strength_rating', pair_id: pair.pair_id },
             on_finish: function(data) {
@@ -722,7 +726,7 @@ function buildRatingTrial(pair) {
     ];
 }
 
-pushWithAttentionChecks(rating_order, 6, buildRatingTrial);
+pushPhase(rating_order, buildRatingTrial, null);
 
 // ============================================================
 // DEMOGRAPHICS
@@ -732,8 +736,8 @@ timeline.push({
     questions: [
         { prompt: 'Gender (MALE / FEMALE / OTHER):', name: 'gender', rows: 1, columns: 20 },
         { prompt: 'Age:', name: 'age', rows: 1, columns: 5 },
-        { prompt: 'Did you notice any pattern in how the bonuses were given? If so, describe it.', name: 'reward_strategy', rows: 2, columns: 50 },
-        { prompt: 'How did you choose between images in the "luckier" part?', name: 'strategy', rows: 2, columns: 50 }
+        { prompt: 'Did you notice any pattern in how the values were assigned to images? If so, describe it.', name: 'reward_strategy', rows: 2, columns: 50 },
+        { prompt: 'How did you choose between images in the "more valuable" part?', name: 'strategy', rows: 2, columns: 50 }
     ],
     data: { task: 'demographics' }
 });
