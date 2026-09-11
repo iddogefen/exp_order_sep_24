@@ -359,7 +359,7 @@ function buildImageWithDelayedQuestionTrial(imagePath, dataObj, delayMs) {
         stimulus: '<div class="stimulus-container">' +
                    '<img src="' + imagePath + '" class="exp-image">' +
                    '<div class="question-area" id="delayed-question" style="visibility:hidden; margin-top:15px;">' +
-                   '<p style="font-size:20px; font-weight:bold;">Does a person appear in this image, or does the word "person" appear as text?</p>' +
+                   '<p style="font-size:20px; font-weight:bold;">Does a person appear in this image or text?</p>' +
                    '</div></div>',
         choices: ['Yes', 'No'],
         data: dataObj,
@@ -384,7 +384,7 @@ timeline.push(withMinReadTime({
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Welcome to the Experiment</h2>' +
-        '<p>In this study you will see pairs of images and answer short questions about them. Some images will also have a monetary value.</p>' +
+        '<p>In this study you will see pairs of images and answer short questions about them. </p>' +
         '<p>The experiment has several short parts, beginning with a brief practice round.</p>' +
         '<p>Click "Next" to read the consent form.</p>' +
         '</div>',
