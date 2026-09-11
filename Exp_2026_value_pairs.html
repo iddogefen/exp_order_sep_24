@@ -359,7 +359,7 @@ function buildImageWithDelayedQuestionTrial(imagePath, dataObj, delayMs) {
         stimulus: '<div class="stimulus-container">' +
                    '<img src="' + imagePath + '" class="exp-image">' +
                    '<div class="question-area" id="delayed-question" style="visibility:hidden; margin-top:15px;">' +
-                   '<p style="font-size:20px; font-weight:bold;">Was there a person in this image?</p>' +
+                   '<p style="font-size:20px; font-weight:bold;">Does a person appear in this image, or does the word "person" appear as text?</p>' +
                    '</div></div>',
         choices: ['Yes', 'No'],
         data: dataObj,
@@ -481,9 +481,9 @@ timeline.push(withMinReadTime({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
-        '<h2>Phase 2: Image Values</h2>' +
+        '<h2>Phase 2</h2>' +
         '<p>You will now see some of the images again, one at a time.</p>' +
-        '<p><b>Press the SPACEBAR</b> to reveal the value of that image.</p>' +
+        '<p><b>Press the SPACEBAR</b> to reveal what that image is worth.</p>' +
         '<p><span style="color:green; font-weight:bold;">$</span> = This image is worth $1</p>' +
         '<p><span style="color:gray; font-weight:bold;">&#9670;</span> = This image is worth $0</p>' +
         '</div>'
@@ -655,7 +655,7 @@ timeline.push(withMinReadTime({
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Phase 4: Final Questions</h2>' +
         '<p>First, for each image you will pick the matching image from a few options.</p>' +
-        '<p>Then, for each pair you will rate how naturally the first image leads to the second.</p>' +
+        '<p>Then, for each pair you will rate how much the first image caused the second.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
