@@ -281,6 +281,62 @@ var fixationTrial = {
     trial_duration: 1000
 };
 
+// Wraps a jsPsychInstructions trial so its navigation buttons stay
+// disabled for `minMs` (default 10000ms), forcing a minimum reading
+// time before the participant can click through to the next stage.
+// A small countdown notice is shown while buttons are disabled.
+function withMinReadTime(instructionsTrial, minMs) {
+    minMs = (typeof minMs === 'number') ? minMs : 10000;
+    var trial = Object.assign({}, instructionsTrial);
+    var original_on_load = trial.on_load;
+
+    trial.on_load = function() {
+        if (original_on_load) { original_on_load(); }
+
+        function getNavButtons() {
+            return document.querySelectorAll(
+                '#jspsych-instructions-back, #jspsych-instructions-next, #jspsych-instructions-nav button, .jspsych-btn'
+            );
+        }
+
+        var buttons = getNavButtons();
+        buttons.forEach(function(btn) {
+            btn.disabled = true;
+            btn.style.opacity = '0.4';
+            btn.style.cursor = 'not-allowed';
+        });
+
+        var contentEl = document.querySelector('.jspsych-content') || document.body;
+        var notice = document.createElement('div');
+        notice.id = 'min-read-notice';
+        notice.style.cssText = 'text-align:center; color:#888; font-size:14px; margin-top:15px;';
+        var remaining = Math.ceil(minMs / 1000);
+        notice.innerText = 'Please take a moment to read (you can continue in ' + remaining + 's)...';
+        contentEl.appendChild(notice);
+
+        var countdownInterval = setInterval(function() {
+            remaining -= 1;
+            if (notice) {
+                notice.innerText = remaining > 0
+                    ? 'Please take a moment to read (you can continue in ' + remaining + 's)...'
+                    : '';
+            }
+            if (remaining <= 0) { clearInterval(countdownInterval); }
+        }, 1000);
+
+        setTimeout(function() {
+            getNavButtons().forEach(function(btn) {
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.style.cursor = 'pointer';
+            });
+            if (notice && notice.parentNode) { notice.parentNode.removeChild(notice); }
+        }, minMs);
+    };
+
+    return trial;
+}
+
 // Inserts a math attention check every `everyN` items processed.
 function pushWithAttentionChecks(sourceArray, everyN, trialBuilderFn) {
     sourceArray.forEach(function(item, idx) {
@@ -321,7 +377,7 @@ function buildImageWithDelayedQuestionTrial(imagePath, dataObj, delayMs) {
 // ============================================================
 // INSTRUCTIONS & CONSENT
 // ============================================================
-timeline.push({
+timeline.push(withMinReadTime({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
@@ -338,7 +394,7 @@ timeline.push({
         '</div>'
     ],
     show_clickable_nav: true
-});
+}));
 
 timeline.push({
     type: jsPsychFullscreen,
@@ -348,7 +404,7 @@ timeline.push({
 // ============================================================
 // PRACTICE PHASE (text-based, no dependency on stimulus images)
 // ============================================================
-timeline.push({
+timeline.push(withMinReadTime({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
@@ -359,7 +415,7 @@ timeline.push({
         '</div>'
     ],
     show_clickable_nav: true
-});
+}));
 
 practice_pairs.forEach(function(p) {
     var img1 = getPracticeImagePath(p, 1);
@@ -371,7 +427,7 @@ practice_pairs.forEach(function(p) {
     timeline.push(whiteScreenTrial);
 });
 
-timeline.push({
+timeline.push(withMinReadTime({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
@@ -380,7 +436,7 @@ timeline.push({
         '</div>'
     ],
     show_clickable_nav: true
-});
+}));
 
 // ============================================================
 // PHASE 1: ENCODING
@@ -388,7 +444,7 @@ timeline.push({
 // image, each for 4 seconds, each followed by a short "person in
 // image?" question. Order is randomized per participant.
 // ============================================================
-timeline.push({
+timeline.push(withMinReadTime({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
@@ -398,7 +454,7 @@ timeline.push({
         '</div>'
     ],
     show_clickable_nav: true
-});
+}));
 
 var encoding_order = jsPsych.randomization.shuffle(all_pairs.slice());
 
@@ -419,7 +475,7 @@ pushWithAttentionChecks(encoding_order, 4, buildEncodingTrials);
 // followed by a reward (💰) or neutral (◆) outcome. Order is
 // randomized and independent of the encoding order.
 // ============================================================
-timeline.push({
+timeline.push(withMinReadTime({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
@@ -431,7 +487,7 @@ timeline.push({
         '</div>'
     ],
     show_clickable_nav: true
-});
+}));
 
 var exposure_order = jsPsych.randomization.shuffle(all_pairs.slice());
 
@@ -485,7 +541,7 @@ pushWithAttentionChecks(exposure_order, 4, buildExposureTrials);
 // effect is measured, split by whether the exposed/rewarded
 // member of the critical pair was the cause or the effect.
 // ============================================================
-timeline.push({
+timeline.push(withMinReadTime({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
@@ -495,7 +551,7 @@ timeline.push({
         '</div>'
     ],
     show_clickable_nav: true
-});
+}));
 
 // Pair each pair's critical item ONLY with a critical item that has the
 // SAME role (cause-with-cause, effect-with-effect). This keeps the
@@ -598,7 +654,7 @@ pushWithAttentionChecks(decision_trials, 4, buildDecisionTrials);
 // ============================================================
 // PHASE 4: CONTROL (memory + causal strength rating)
 // ============================================================
-timeline.push({
+timeline.push(withMinReadTime({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
@@ -608,7 +664,7 @@ timeline.push({
         '</div>'
     ],
     show_clickable_nav: true
-});
+}));
 
 // ---- 4a: Memory test ----
 var memory_order = jsPsych.randomization.shuffle(all_pairs.slice());
