@@ -535,11 +535,16 @@ pushWithAttentionChecks(exposure_order, 4, buildExposureTrials);
 
 // ============================================================
 // PHASE 3: DECISION (forced choice)
-// For each pair, the participant chooses between the UNSEEN
-// ("critical") member of that pair and the unseen member of a
-// different pair (the "foil"). This is where the association
-// effect is measured, split by whether the exposed/rewarded
-// member of the critical pair was the cause or the effect.
+// This is a DIRECT reward-vs-neutral comparison, always within the
+// SAME role:
+//   - 6 trials: an unseen CAUSE whose effect-partner was REWARDED
+//               vs. an unseen CAUSE whose effect-partner was NEUTRAL
+//   - 6 trials: an unseen EFFECT whose cause-partner was REWARDED
+//               vs. an unseen EFFECT whose cause-partner was NEUTRAL
+// 12 choices total. This directly tests whether reward on one role
+// spreads to its partner more than reward on the other role does,
+// by comparing reward-linked vs neutral-linked items head-to-head
+// (never against an unrelated pair).
 // ============================================================
 timeline.push(withMinReadTime({
     type: jsPsychInstructions,
@@ -553,45 +558,37 @@ timeline.push(withMinReadTime({
     show_clickable_nav: true
 }));
 
-// Pair each pair's critical item ONLY with a critical item that has the
-// SAME role (cause-with-cause, effect-with-effect). This keeps the
-// comparison structurally matched (same sentence type on both sides)
-// and avoids confounding cause-phrase vs effect-phrase wording.
-// Within each role group, the foil is the item half-way around a
-// shuffled order of that group, so the foil is always from a
-// different pair and was never exposed/rewarded directly either.
-var shuffled_all_for_decision = jsPsych.randomization.shuffle(all_pairs.slice());
-
 // critical_role is the OPPOSITE of exposed_role (see cell assignment above):
 // pairs exposed on the cause -> critical item is the effect, and vice versa.
-var cause_critical_targets = shuffled_all_for_decision.filter(function(p) {
-    return p.critical_role === 'cause';
-});
-var effect_critical_targets = shuffled_all_for_decision.filter(function(p) {
-    return p.critical_role === 'effect';
-});
+var cause_critical_items = all_pairs.filter(function(p) { return p.critical_role === 'cause'; });
+var effect_critical_items = all_pairs.filter(function(p) { return p.critical_role === 'effect'; });
 
-function buildRoleMatchedDecisionSet(targetGroup) {
-    var half = targetGroup.length / 2; // 6, since each role group has 12 items
-    return targetGroup.map(function(pair, idx) {
-        var foil_pair = targetGroup[(idx + half) % targetGroup.length];
+// Builds 6 direct reward-vs-neutral trials for one role group (12 items -> 6 reward, 6 neutral).
+function buildDirectComparisonSet(roleGroup, comparisonRole) {
+    var reward_items = jsPsych.randomization.shuffle(
+        roleGroup.filter(function(p) { return p.reward_condition === 'reward'; })
+    );
+    var neutral_items = jsPsych.randomization.shuffle(
+        roleGroup.filter(function(p) { return p.reward_condition === 'neutral'; })
+    );
+    // reward_items.length === neutral_items.length === 6 by design (6 pairs per cell)
+    return reward_items.map(function(rewardPair, idx) {
+        var neutralPair = neutral_items[idx];
         return {
-            target_pair_id: pair.pair_id,
-            target_path: pair.critical_path,
-            target_role: pair.critical_role,
-            target_reward_condition: pair.reward_condition,
-            target_cell: pair.cell,
-            foil_pair_id: foil_pair.pair_id,
-            foil_path: foil_pair.critical_path
+            comparison_role: comparisonRole, // 'cause' or 'effect'
+            reward_pair_id: rewardPair.pair_id,
+            reward_path: rewardPair.critical_path,
+            neutral_pair_id: neutralPair.pair_id,
+            neutral_path: neutralPair.critical_path
         };
     });
 }
 
-// Combine both role-matched sets, then shuffle the overall trial order
-// so cause-trials and effect-trials are interleaved unpredictably.
+// Combine the 6 cause-trials + 6 effect-trials, then shuffle overall order
+// so they're interleaved unpredictably for the participant.
 var decision_trials = jsPsych.randomization.shuffle(
-    buildRoleMatchedDecisionSet(cause_critical_targets).concat(
-        buildRoleMatchedDecisionSet(effect_critical_targets)
+    buildDirectComparisonSet(cause_critical_items, 'cause').concat(
+        buildDirectComparisonSet(effect_critical_items, 'effect')
     )
 );
 
@@ -600,17 +597,15 @@ function buildDecisionTrials(dt) {
         {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: function() {
-                var target_left = Math.random() < 0.5;
+                var reward_left = Math.random() < 0.5;
                 window.current_decision = {
-                    target_left: target_left,
-                    target_pair_id: dt.target_pair_id,
-                    target_role: dt.target_role,
-                    target_reward_condition: dt.target_reward_condition,
-                    target_cell: dt.target_cell,
-                    foil_pair_id: dt.foil_pair_id
+                    reward_left: reward_left,
+                    comparison_role: dt.comparison_role,
+                    reward_pair_id: dt.reward_pair_id,
+                    neutral_pair_id: dt.neutral_pair_id
                 };
-                var left_img = target_left ? dt.target_path : dt.foil_path;
-                var right_img = target_left ? dt.foil_path : dt.target_path;
+                var left_img = reward_left ? dt.reward_path : dt.neutral_path;
+                var right_img = reward_left ? dt.neutral_path : dt.reward_path;
                 window.current_left_img = left_img;
                 window.current_right_img = right_img;
                 return '<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is <b>luckier</b>?</h3></div>' +
@@ -631,13 +626,11 @@ function buildDecisionTrials(dt) {
             data: { task: 'decision_choice' },
             on_finish: function(data) {
                 var c = window.current_decision;
-                data.target_pair_id = c.target_pair_id;
-                data.target_role = c.target_role;
-                data.target_reward_condition = c.target_reward_condition;
-                data.target_cell = c.target_cell;
-                data.foil_pair_id = c.foil_pair_id;
-                data.chose_target = ((data.response === 0 && c.target_left) ||
-                                      (data.response === 1 && !c.target_left)) ? 1 : 0;
+                data.comparison_role = c.comparison_role;
+                data.reward_pair_id = c.reward_pair_id;
+                data.neutral_pair_id = c.neutral_pair_id;
+                data.chose_reward = ((data.response === 0 && c.reward_left) ||
+                                      (data.response === 1 && !c.reward_left)) ? 1 : 0;
             }
         },
         {
@@ -649,7 +642,7 @@ function buildDecisionTrials(dt) {
     ];
 }
 
-pushWithAttentionChecks(decision_trials, 4, buildDecisionTrials);
+pushWithAttentionChecks(decision_trials, 3, buildDecisionTrials);
 
 // ============================================================
 // PHASE 4: CONTROL (memory + causal strength rating)
