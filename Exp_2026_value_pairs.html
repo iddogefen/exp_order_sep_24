@@ -404,7 +404,8 @@ timeline.push({
 });
 
 // ============================================================
-// PRACTICE PHASE (text-based, no dependency on stimulus images)
+// PRACTICE PHASE
+// EFFECT FIRST, THEN CAUSE
 // ============================================================
 timeline.push(withMinReadTime({
     type: jsPsychInstructions,
@@ -423,9 +424,10 @@ practice_pairs.forEach(function(p) {
     var img1 = getPracticeImagePath(p, 1);
     var img2 = getPracticeImagePath(p, 2);
 
-    timeline.push(buildImageWithDelayedQuestionTrial(img1, { task: 'practice_item1', folder: p.name }));
-    timeline.push(fixationTrial);
+    // CHANGED ORDER: EFFECT (img2) FIRST, THEN CAUSE (img1)
     timeline.push(buildImageWithDelayedQuestionTrial(img2, { task: 'practice_item2', folder: p.name }));
+    timeline.push(fixationTrial);
+    timeline.push(buildImageWithDelayedQuestionTrial(img1, { task: 'practice_item1', folder: p.name }));
     timeline.push(whiteScreenTrial);
 });
 
@@ -442,9 +444,10 @@ timeline.push(withMinReadTime({
 
 // ============================================================
 // PHASE 1: ENCODING
-// Each of the 24 pairs is shown in full: cause image, then effect
-// image, each for 4 seconds, each followed by a short "person in
-// image?" question. Order is randomized per participant.
+// Each of the 24 pairs is shown in full:
+// EFFECT image first, then CAUSE image.
+// Each for 4 seconds, each followed by a short "person in image?"
+// question. Order is randomized per participant.
 // ============================================================
 timeline.push(withMinReadTime({
     type: jsPsychInstructions,
@@ -462,9 +465,18 @@ var encoding_order = jsPsych.randomization.shuffle(all_pairs.slice());
 
 function buildEncodingTrials(pair) {
     return [
-        buildImageWithDelayedQuestionTrial(pair.cause_path, { task: 'encoding_cause', pair_id: pair.pair_id }),
+        // CHANGED ORDER: EFFECT FIRST
+        buildImageWithDelayedQuestionTrial(
+            pair.effect_path,
+            { task: 'encoding_effect', pair_id: pair.pair_id }
+        ),
         fixationTrial,
-        buildImageWithDelayedQuestionTrial(pair.effect_path, { task: 'encoding_effect', pair_id: pair.pair_id }),
+
+        // THEN CAUSE
+        buildImageWithDelayedQuestionTrial(
+            pair.cause_path,
+            { task: 'encoding_cause', pair_id: pair.pair_id }
+        ),
         whiteScreenTrial
     ];
 }
@@ -589,6 +601,7 @@ function buildComparisonSet(roleGroup, comparisonRole, testType, pathField) {
     var neutral_items = jsPsych.randomization.shuffle(
         roleGroup.filter(function(p) { return p.reward_condition === 'neutral'; })
     );
+
     // reward_items.length === neutral_items.length === 6 by design (6 pairs per cell)
     return reward_items.map(function(rewardPair, idx) {
         var neutralPair = neutral_items[idx];
