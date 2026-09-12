@@ -140,7 +140,7 @@ jsPsych.data.addProperties({
     subject_id: participant_id,
     study_id: study_id,
     session_id: session_id,
-    experiment: 'CauseEffect_Value_Spreading_Pilot'
+    experiment: 'CauseEffect_Value_Spreading_Pilot_Scrambled'
 });
 
 // ============================================================
@@ -185,6 +185,24 @@ for (var i = 1; i <= NUM_PAIRS; i++) {
 }
 
 // ------------------------------------------------------------
+// Derangement helper: returns an array `deranged` of length n such
+// that deranged[i] !== i for every i (a permutation with no fixed
+// points). Used below to pair each item with a partner drawn from a
+// DIFFERENT, unrelated pair, so the "critical" test item in Phase 3
+// is a scrambled control rather than the item's real causal partner.
+// ------------------------------------------------------------
+function buildDerangement(n) {
+    var indices = Array.from({ length: n }, function(_, i) { return i; });
+    var deranged;
+    do {
+        deranged = jsPsych.randomization.shuffle(indices.slice());
+    } while (deranged.some(function(v, i) { return v === i; }));
+    return deranged;
+}
+
+var derangement = buildDerangement(NUM_PAIRS); // index i (0-based) -> index of scrambled partner pair
+
+// ------------------------------------------------------------
 // Assign each pair to ONE of 4 cells (6 pairs per cell):
 //   cause_reward | cause_neutral | effect_reward | effect_neutral
 // This determines which member of the pair gets shown+rewarded
@@ -201,9 +219,16 @@ shuffled_for_cells.forEach(function(pair, idx) {
     pair.exposed_role = cell.indexOf('cause') === 0 ? 'cause' : 'effect';
     pair.reward_condition = cell.endsWith('reward') ? 'reward' : 'neutral';
     pair.exposed_path = (pair.exposed_role === 'cause') ? pair.cause_path : pair.effect_path;
-    // the member NOT shown in Phase 2 - this is the critical test item for Phase 3
-    pair.critical_path = (pair.exposed_role === 'cause') ? pair.effect_path : pair.cause_path;
+    // SCRAMBLED CONTROL: the critical test item is now drawn from a
+    // DIFFERENT, randomly assigned pair (via a fixed-point-free
+    // derangement) instead of this pair's own causal partner. These
+    // two items were never co-presented during Phase 1 encoding, so
+    // any indirect preference here cannot reflect a real learned
+    // cause-effect association - it isolates general/baseline biases.
+    var partner_pair = all_pairs[derangement[pair.pair_id - 1]];
+    pair.critical_path = (pair.exposed_role === 'cause') ? partner_pair.effect_path : partner_pair.cause_path;
     pair.critical_role = (pair.exposed_role === 'cause') ? 'effect' : 'cause';
+    pair.critical_pair_id = partner_pair.pair_id; // logged for analysis
 });
 
 // ============================================================
@@ -404,8 +429,7 @@ timeline.push({
 });
 
 // ============================================================
-// PRACTICE PHASE
-// EFFECT FIRST, THEN CAUSE
+// PRACTICE PHASE (text-based, no dependency on stimulus images)
 // ============================================================
 timeline.push(withMinReadTime({
     type: jsPsychInstructions,
@@ -424,10 +448,9 @@ practice_pairs.forEach(function(p) {
     var img1 = getPracticeImagePath(p, 1);
     var img2 = getPracticeImagePath(p, 2);
 
-    // CHANGED ORDER: EFFECT (img2) FIRST, THEN CAUSE (img1)
-    timeline.push(buildImageWithDelayedQuestionTrial(img2, { task: 'practice_item2', folder: p.name }));
-    timeline.push(fixationTrial);
     timeline.push(buildImageWithDelayedQuestionTrial(img1, { task: 'practice_item1', folder: p.name }));
+    timeline.push(fixationTrial);
+    timeline.push(buildImageWithDelayedQuestionTrial(img2, { task: 'practice_item2', folder: p.name }));
     timeline.push(whiteScreenTrial);
 });
 
@@ -444,10 +467,9 @@ timeline.push(withMinReadTime({
 
 // ============================================================
 // PHASE 1: ENCODING
-// Each of the 24 pairs is shown in full:
-// EFFECT image first, then CAUSE image.
-// Each for 4 seconds, each followed by a short "person in image?"
-// question. Order is randomized per participant.
+// Each of the 24 pairs is shown in full: cause image, then effect
+// image, each for 4 seconds, each followed by a short "person in
+// image?" question. Order is randomized per participant.
 // ============================================================
 timeline.push(withMinReadTime({
     type: jsPsychInstructions,
@@ -465,18 +487,9 @@ var encoding_order = jsPsych.randomization.shuffle(all_pairs.slice());
 
 function buildEncodingTrials(pair) {
     return [
-        // CHANGED ORDER: EFFECT FIRST
-        buildImageWithDelayedQuestionTrial(
-            pair.effect_path,
-            { task: 'encoding_effect', pair_id: pair.pair_id }
-        ),
+        buildImageWithDelayedQuestionTrial(pair.cause_path, { task: 'encoding_cause', pair_id: pair.pair_id }),
         fixationTrial,
-
-        // THEN CAUSE
-        buildImageWithDelayedQuestionTrial(
-            pair.cause_path,
-            { task: 'encoding_cause', pair_id: pair.pair_id }
-        ),
+        buildImageWithDelayedQuestionTrial(pair.effect_path, { task: 'encoding_effect', pair_id: pair.pair_id }),
         whiteScreenTrial
     ];
 }
@@ -552,12 +565,13 @@ pushPhase(exposure_order, buildExposureTrials, 12);
 // This now includes BOTH test types from Wimmer & Shohamy (2012),
 // always as a direct reward-vs-neutral comparison within the SAME role:
 //
-//   INDIRECT test (the never-directly-shown "critical" item of each
-//   pair - mirrors their S1+ vs S1- test):
-//     - 6 trials: an unseen CAUSE whose effect-partner was REWARDED
-//                 vs. an unseen CAUSE whose effect-partner was NEUTRAL
-//     - 6 trials: an unseen EFFECT whose cause-partner was REWARDED
-//                 vs. an unseen EFFECT whose cause-partner was NEUTRAL
+//   INDIRECT test (the never-directly-shown "critical" item - now
+//   SCRAMBLED, drawn from an unrelated pair via a derangement, so it
+//   was never co-presented with the exposed item during encoding):
+//     - 6 trials: an unseen "cause-role" scrambled item whose paired
+//                 (unrelated) exposed item was REWARDED
+//                 vs. one whose paired exposed item was NEUTRAL
+//     - 6 trials: same, for "effect-role" scrambled items
 //
 //   DIRECT test (the item that WAS shown with its $1/$0 value in
 //   Phase 2 - mirrors their S2+ vs S2- test, a manipulation check
@@ -567,7 +581,8 @@ pushPhase(exposure_order, buildExposureTrials, 12);
 //
 // 24 choices total (12 indirect + 12 direct). Both test types compare
 // reward-linked vs neutral-linked items head-to-head, never against an
-// unrelated pair.
+// unrelated pair (except for the intentional scrambled-control source
+// of the indirect/critical items, per the derangement above).
 // ============================================================
 timeline.push(withMinReadTime({
     type: jsPsychInstructions,
@@ -582,7 +597,8 @@ timeline.push(withMinReadTime({
 }));
 
 // critical_role is the OPPOSITE of exposed_role (see cell assignment above):
-// pairs exposed on the cause -> critical item is the effect, and vice versa.
+// pairs exposed on the cause -> critical item is an effect (now sourced
+// from a scrambled/unrelated pair), and vice versa.
 var cause_critical_items = all_pairs.filter(function(p) { return p.critical_role === 'cause'; });
 var effect_critical_items = all_pairs.filter(function(p) { return p.critical_role === 'effect'; });
 
@@ -601,7 +617,6 @@ function buildComparisonSet(roleGroup, comparisonRole, testType, pathField) {
     var neutral_items = jsPsych.randomization.shuffle(
         roleGroup.filter(function(p) { return p.reward_condition === 'neutral'; })
     );
-
     // reward_items.length === neutral_items.length === 6 by design (6 pairs per cell)
     return reward_items.map(function(rewardPair, idx) {
         var neutralPair = neutral_items[idx];
