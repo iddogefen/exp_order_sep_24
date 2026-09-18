@@ -140,7 +140,7 @@ jsPsych.data.addProperties({
     subject_id: participant_id,
     study_id: study_id,
     session_id: session_id,
-    experiment: 'CauseEffect_Value_Spreading_Pilot_ScrambledEncoding'
+    experiment: 'CauseEffect_Value_Spreading_Pilot'
 });
 
 // ============================================================
@@ -174,51 +174,21 @@ function getEffectPath(n) {
 
 // ============================================================
 // BUILD THE 24 PAIRS
-// SCRAMBLED-ENCODING CONTROL VERSION: each "pair" now consistently
-// combines the CAUSE image from one original pair with the EFFECT
-// image from a DIFFERENT, randomly assigned original pair (via a
-// fixed-point-free derangement, so no pair ever keeps its own real
-// partner). This scrambled cause/effect combination is what gets
-// encoded together in Phase 1, exposed/rewarded in Phase 2, tested
-// in Phase 3, and rated for causal strength in Phase 4b - i.e. the
-// "pair" the participant learns is arbitrary/mismatched throughout,
-// not a real-world causal relationship.
 // ============================================================
-
-// ------------------------------------------------------------
-// Derangement helper: returns an array `deranged` of length n such
-// that deranged[i] !== i for every i (a permutation with no fixed
-// points). Used to source each scrambled pair's effect image from a
-// DIFFERENT original pair index than its cause image.
-// ------------------------------------------------------------
-function buildDerangement(n) {
-    var indices = Array.from({ length: n }, function(_, i) { return i; });
-    var deranged;
-    do {
-        deranged = jsPsych.randomization.shuffle(indices.slice());
-    } while (deranged.some(function(v, i) { return v === i; }));
-    return deranged;
-}
-
-var derangement = buildDerangement(NUM_PAIRS); // index i (0-based) -> index whose EFFECT image is borrowed
-
 var all_pairs = [];
 for (var i = 1; i <= NUM_PAIRS; i++) {
-    var effect_source_n = derangement[i - 1] + 1; // 1-based pair number to borrow the effect image from
     all_pairs.push({
-        pair_id: i,                          // identity of this scrambled pair (keyed on its cause image)
-        cause_path: getCausePath(i),         // cause image from original pair i
-        effect_path: getEffectPath(effect_source_n), // effect image borrowed from a DIFFERENT original pair
-        effect_source_pair_id: effect_source_n       // logged for analysis: which real pair the effect image came from
+        pair_id: i,
+        cause_path: getCausePath(i),
+        effect_path: getEffectPath(i)
     });
 }
 
 // ------------------------------------------------------------
-// Assign each (scrambled) pair to ONE of 4 cells (6 pairs per cell):
+// Assign each pair to ONE of 4 cells (6 pairs per cell):
 //   cause_reward | cause_neutral | effect_reward | effect_neutral
-// This determines which member of the scrambled pair gets shown+rewarded
-// in Phase 2 (Controlled Exposure), and which member is the unseen
-// "critical" item tested indirectly in Phase 3.
+// This determines which member of the pair gets shown+rewarded
+// in Phase 2 (Controlled Exposure).
 // ------------------------------------------------------------
 var shuffled_for_cells = jsPsych.randomization.shuffle(all_pairs.slice());
 var cell_size = NUM_PAIRS / 4; // 6
@@ -231,11 +201,7 @@ shuffled_for_cells.forEach(function(pair, idx) {
     pair.exposed_role = cell.indexOf('cause') === 0 ? 'cause' : 'effect';
     pair.reward_condition = cell.endsWith('reward') ? 'reward' : 'neutral';
     pair.exposed_path = (pair.exposed_role === 'cause') ? pair.cause_path : pair.effect_path;
-    // The member NOT shown in Phase 2 - this is the critical test item
-    // for Phase 3. Because cause_path/effect_path are already scrambled
-    // (mismatched) above, this critical item is the OTHER half of the
-    // arbitrary pair the participant encoded together, not a genuine
-    // causal partner.
+    // the member NOT shown in Phase 2 - this is the critical test item for Phase 3
     pair.critical_path = (pair.exposed_role === 'cause') ? pair.effect_path : pair.cause_path;
     pair.critical_role = (pair.exposed_role === 'cause') ? 'effect' : 'cause';
 });
@@ -574,16 +540,12 @@ pushPhase(exposure_order, buildExposureTrials, 12);
 // This now includes BOTH test types from Wimmer & Shohamy (2012),
 // always as a direct reward-vs-neutral comparison within the SAME role:
 //
-//   INDIRECT test (the never-directly-shown "critical" item): because
-//   the pairs themselves are now SCRAMBLED at encoding (cause image
-//   from one original pair + effect image from a different one), the
-//   critical item here is simply the other half of that arbitrary
-//   pair the participant encoded together - never a genuine causal
-//   partner of the exposed item:
-//     - 6 trials: an unseen "cause-role" item whose scrambled partner
-//                 (exposed alongside it in Phase 1) was REWARDED
-//                 vs. one whose scrambled partner was NEUTRAL
-//     - 6 trials: same, for "effect-role" items
+//   INDIRECT test (the never-directly-shown "critical" item of each
+//   pair - mirrors their S1+ vs S1- test):
+//     - 6 trials: an unseen CAUSE whose effect-partner was REWARDED
+//                 vs. an unseen CAUSE whose effect-partner was NEUTRAL
+//     - 6 trials: an unseen EFFECT whose cause-partner was REWARDED
+//                 vs. an unseen EFFECT whose cause-partner was NEUTRAL
 //
 //   DIRECT test (the item that WAS shown with its $1/$0 value in
 //   Phase 2 - mirrors their S2+ vs S2- test, a manipulation check
@@ -592,10 +554,8 @@ pushPhase(exposure_order, buildExposureTrials, 12);
 //     - 6 trials: a REWARDED effect vs. a NEUTRAL effect (both exposed)
 //
 // 24 choices total (12 indirect + 12 direct). Both test types compare
-// reward-linked vs neutral-linked items head-to-head. Because encoding
-// itself is scrambled (see pair-building section above), even the
-// "indirect" comparisons never reflect a genuine causal relationship -
-// only the arbitrary co-encoded association.
+// reward-linked vs neutral-linked items head-to-head, never against an
+// unrelated pair.
 // ============================================================
 timeline.push(withMinReadTime({
     type: jsPsychInstructions,
@@ -610,8 +570,7 @@ timeline.push(withMinReadTime({
 }));
 
 // critical_role is the OPPOSITE of exposed_role (see cell assignment above):
-// pairs exposed on the cause -> critical item is an effect (now sourced
-// from a scrambled/unrelated pair), and vice versa.
+// pairs exposed on the cause -> critical item is the effect, and vice versa.
 var cause_critical_items = all_pairs.filter(function(p) { return p.critical_role === 'cause'; });
 var effect_critical_items = all_pairs.filter(function(p) { return p.critical_role === 'effect'; });
 
@@ -769,12 +728,6 @@ function buildMemoryTrial(pair) {
 pushPhase(memory_order, buildMemoryTrial, 3);
 
 // ---- 4b: Causal strength rating ----
-// Because pair.cause_path / pair.effect_path are now SCRAMBLED
-// (mismatched across original pairs - see pair-building section
-// above), this rating doubles as a manipulation check: participants
-// should rate these arbitrary combinations as causally weak (low on
-// the 1-10 scale), confirming they did not perceive/construct a real
-// causal relationship between the two co-encoded images.
 var rating_order = jsPsych.randomization.shuffle(all_pairs.slice());
 
 function buildRatingTrial(pair) {
