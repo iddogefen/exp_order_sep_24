@@ -152,24 +152,31 @@ jsPsych.data.addProperties({
 var NUM_PAIRS = 24;
 var STIM_FOLDER = 'images_value_semantic/';
 
-// All stimulus files in images_value_semantic/ share the same extension.
-// Change this one value if the files are not .jpg.
-var STIM_EXT = '.jpg';
+// The files in images_value_semantic/ do NOT all share one extension
+// (matched against the actual server listing). Pair numbers listed below
+// are .jpg; every other number is .png. Cause and Effect differ, so each
+// role has its own list.
+var CAUSE_JPG_NUMBERS  = [1, 2, 3, 13, 15, 17, 18];
+var EFFECT_JPG_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16];
 
 function pad2(n) {
     return n < 10 ? '0' + n : '' + n;
 }
 
-function getExt(n) {
-    return STIM_EXT;
+function getCauseExt(n) {
+    return CAUSE_JPG_NUMBERS.indexOf(n) !== -1 ? '.jpg' : '.png';
+}
+
+function getEffectExt(n) {
+    return EFFECT_JPG_NUMBERS.indexOf(n) !== -1 ? '.jpg' : '.png';
 }
 
 function getCausePath(n) {
-    return STIM_FOLDER + 'Semantic_Cause_' + pad2(n) + getExt(n);
+    return STIM_FOLDER + 'Semantic_Cause_' + pad2(n) + getCauseExt(n);
 }
 
 function getEffectPath(n) {
-    return STIM_FOLDER + 'Semantic_Effect_' + pad2(n) + getExt(n);
+    return STIM_FOLDER + 'Semantic_Effect_' + pad2(n) + getEffectExt(n);
 }
 
 // ============================================================
