@@ -140,36 +140,36 @@ jsPsych.data.addProperties({
     subject_id: participant_id,
     study_id: study_id,
     session_id: session_id,
-    experiment: 'CauseEffect_Value_Spreading_Pilot'
+    experiment: 'CauseEffect_Value_Spreading_Pilot_Semantic'
 });
 
 // ============================================================
 // STIMULUS FOLDER & FILE NAMING
-// Images live in "images_value/" as:
-//   case_01.png ... case_24.png    (the CAUSE image of each pair)
-//   effect_01.png ... effect_24.png (the EFFECT image of each pair)
+// Images live in "images_value_semantic/" as:
+//   Semantic_Cause_01 ... Semantic_Cause_24    (the CAUSE image of each pair)
+//   Semantic_Effect_01 ... Semantic_Effect_24  (the EFFECT image of each pair)
 // ============================================================
 var NUM_PAIRS = 24;
-var STIM_FOLDER = 'images_value/';
+var STIM_FOLDER = 'images_value_semantic/';
 
-// Actual uploaded files: Cause_01.jpg..Cause_03.jpg then Cause_04.png..Cause_24.png
-// (same pattern for Effect_XX). Extension is looked up per pair number below.
-var JPG_PAIR_NUMBERS = [1, 2, 3];
+// All stimulus files in images_value_semantic/ share the same extension.
+// Change this one value if the files are not .jpg.
+var STIM_EXT = '.jpg';
 
 function pad2(n) {
     return n < 10 ? '0' + n : '' + n;
 }
 
 function getExt(n) {
-    return JPG_PAIR_NUMBERS.indexOf(n) !== -1 ? '.jpg' : '.png';
+    return STIM_EXT;
 }
 
 function getCausePath(n) {
-    return STIM_FOLDER + 'Cause_' + pad2(n) + getExt(n);
+    return STIM_FOLDER + 'Semantic_Cause_' + pad2(n) + getExt(n);
 }
 
 function getEffectPath(n) {
-    return STIM_FOLDER + 'Effect_' + pad2(n) + getExt(n);
+    return STIM_FOLDER + 'Semantic_Effect_' + pad2(n) + getExt(n);
 }
 
 // ============================================================
