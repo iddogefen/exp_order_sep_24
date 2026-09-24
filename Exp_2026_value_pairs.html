@@ -347,7 +347,7 @@ function buildCausalRatingTrial(firstPath, secondPath, dataObj) {
     return {
         type: jsPsychHtmlButtonResponse,
         stimulus: '<div class="stimulus-container">' +
-                   '<p style="font-size: 22px; font-weight: bold; margin-top: 60px;">How much did the first image lead to the second?</p>' +
+                   '<p style="font-size: 22px; font-weight: bold; margin-top: 60px;">How much did the first image cause the second?</p>' +
                    '<p style="font-size: 16px;">(1 = not at all, 10 = completely)</p>' +
                    '</div>',
         choices: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
@@ -411,7 +411,7 @@ timeline.push(withMinReadTime({
         '<h2>Practice Round</h2>' +
         '<p>We will now go through a short practice round so you can get familiar with the task.</p>' +
         '<p>In each trial, two images will appear one after the other.</p>' +
-        '<p>Then you will rate, from 1 to 10, <b>how much the first image led to the second</b>.</p>' +
+        '<p>Then you will rate, from 1 to 10, <b>how much the first image caused the second</b>.</p>' +
         '<p>You will have <b>3 seconds</b> to answer, so please respond quickly.</p>' +
         '</div>'
     ],
@@ -449,7 +449,7 @@ timeline.push(withMinReadTime({
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Phase 1: Image Viewing</h2>' +
         '<p>You will see 24 pairs of images, one image after the other.</p>' +
-        '<p>After each pair, rate from 1 to 10 <b>how much the first image led to the second</b>.</p>' +
+        '<p>After each pair, rate from 1 to 10 <b>how much the first image caused the second</b>.</p>' +
         '<p>You will have <b>3 seconds</b> to answer.</p>' +
         '</div>'
     ],
@@ -645,7 +645,7 @@ function buildDecisionTrials(dt) {
 pushPhase(decision_trials, buildDecisionTrials, 12);
 
 // ============================================================
-// PHASE 4: CONTROL (memory + causal strength rating) - unchanged
+// PHASE 4: CONTROL (memory test + causal direction question)
 // ============================================================
 timeline.push(withMinReadTime({
     type: jsPsychInstructions,
@@ -653,7 +653,7 @@ timeline.push(withMinReadTime({
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Phase 4: Final Questions</h2>' +
         '<p>First, for each image you will pick the matching image from a few options.</p>' +
-        '<p>Then, for each pair you will rate how much the first image caused the second.</p>' +
+        '<p>Then, for each pair of images, you will say which one caused the other, or whether they are not related.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
@@ -702,27 +702,51 @@ function buildMemoryTrial(pair) {
 
 pushPhase(memory_order, buildMemoryTrial, 3);
 
-var rating_order = jsPsych.randomization.shuffle(all_pairs.slice());
+// ---- 4b: Causal direction question ----
+// For each pair, the two images are labeled A (left) and B (right).
+// Exactly half of the pairs show the CAUSE as A, the other half show the
+// EFFECT as A (balanced, random per participant). Participants choose:
+// "A caused B", "B caused A", or "They are not related".
+var direction_order = jsPsych.randomization.shuffle(all_pairs.slice());
+var cause_as_A_flags = jsPsych.randomization.shuffle(
+    Array(NUM_PAIRS / 2).fill(true).concat(Array(NUM_PAIRS / 2).fill(false))
+);
+direction_order.forEach(function(pair, idx) { pair.cause_is_A = cause_as_A_flags[idx]; });
 
-function buildRatingTrial(pair) {
+var DIRECTION_CHOICES = ['A caused B', 'B caused A', 'They are not related'];
+
+function buildDirectionTrial(pair) {
+    var imgA = pair.cause_is_A ? pair.cause_path : pair.effect_path;
+    var imgB = pair.cause_is_A ? pair.effect_path : pair.cause_path;
+    var correct_index = pair.cause_is_A ? 0 : 1;
     return [
         {
             type: jsPsychHtmlButtonResponse,
             stimulus: '<div class="stimulus-container" style="display:flex; justify-content:center; gap:30px;">' +
-                       '<img src="' + pair.cause_path + '" class="small-image"><img src="' + pair.effect_path + '" class="small-image"></div>' +
-                       '<p style="font-size: 20px; font-weight: bold; margin-top: 20px;">How much did the first image cause the second?<br>' +
-                       '<span style="font-weight:normal; font-size:16px;">(1 = did not cause it at all, 10 = completely caused it)</span></p>',
-            choices: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-            data: { task: 'causal_strength_rating', pair_id: pair.pair_id },
+                       '<div><img src="' + imgA + '" class="small-image">' +
+                       '<div style="font-size:22px; font-weight:bold; margin-top:6px;">A</div></div>' +
+                       '<div><img src="' + imgB + '" class="small-image">' +
+                       '<div style="font-size:22px; font-weight:bold; margin-top:6px;">B</div></div></div>' +
+                       '<p style="font-size: 20px; font-weight: bold; margin-top: 20px;">Which statement is correct?</p>',
+            choices: DIRECTION_CHOICES,
+            data: {
+                task: 'causal_direction',
+                pair_id: pair.pair_id,
+                cause_is_A: pair.cause_is_A ? 1 : 0,
+                correct_index: correct_index
+            },
             on_finish: function(data) {
-                data.rating = (data.response !== null) ? data.response + 1 : null;
+                data.answer = DIRECTION_CHOICES[data.response];
+                data.correct_direction = (data.response === correct_index) ? 1 : 0;
+                data.reversed_direction = (data.response === 1 - correct_index) ? 1 : 0;
+                data.chose_unrelated = (data.response === 2) ? 1 : 0;
             }
         },
         whiteScreenTrial
     ];
 }
 
-pushPhase(rating_order, buildRatingTrial, null);
+pushPhase(direction_order, buildDirectionTrial, null);
 
 // ============================================================
 // DEMOGRAPHICS
