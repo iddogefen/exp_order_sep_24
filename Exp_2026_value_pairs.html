@@ -64,7 +64,7 @@
 // ============================================================
 // TIMING SETTINGS (all changes from the previous version are here)
 // ============================================================
-var IMAGE_MS = 2000;              // Phase 1: each image shown for 2 s (was 4 s)
+var IMAGE_MS = 4000;              // Phase 1: each image shown for 4 s
 var RATING_TIME_LIMIT_MS = 3000;  // Phase 1: 3 s to give the 1-10 causal rating
 var DECISION_MIN_DISPLAY_MS = 3000; // Phase 3: images stay on screen at least 3 s;
                                     // participants may respond immediately (no lockout)
@@ -338,19 +338,18 @@ function buildImageTrial(imagePath, dataObj) {
 
 // ------------------------------------------------------------
 // NEW: after both images, rate 1-10 how much the first led to the
-// second. Both images are shown small (first on the left, second on
-// the right). Participants have RATING_TIME_LIMIT_MS to answer; if
-// they do not answer, rating is recorded as null (timed_out = 1).
+// second. The images are NOT shown again (question only), so exposure
+// to the pair is identical for everyone. Participants have
+// RATING_TIME_LIMIT_MS to answer; if they do not answer, rating is
+// recorded as null (timed_out = 1).
 // ------------------------------------------------------------
 function buildCausalRatingTrial(firstPath, secondPath, dataObj) {
     return {
         type: jsPsychHtmlButtonResponse,
-        stimulus: '<div class="stimulus-container" style="display:flex; justify-content:center; gap:30px;">' +
-                   '<div><img src="' + firstPath + '" class="small-image"><div class="rating-label">First</div></div>' +
-                   '<div><img src="' + secondPath + '" class="small-image"><div class="rating-label">Second</div></div>' +
-                   '</div>' +
-                   '<p style="font-size: 20px; font-weight: bold; margin-top: 20px;">How much did the first image lead to the second?<br>' +
-                   '<span style="font-weight:normal; font-size:16px;">(1 = not at all, 10 = completely)</span></p>',
+        stimulus: '<div class="stimulus-container">' +
+                   '<p style="font-size: 22px; font-weight: bold; margin-top: 60px;">How much did the first image lead to the second?</p>' +
+                   '<p style="font-size: 16px;">(1 = not at all, 10 = completely)</p>' +
+                   '</div>',
         choices: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
         trial_duration: RATING_TIME_LIMIT_MS,
         response_ends_trial: true,
@@ -440,7 +439,7 @@ timeline.push(withMinReadTime({
 
 // ============================================================
 // PHASE 1: ENCODING
-// Each pair: cause image (2 s), fixation (1 s), effect image (2 s),
+// Each pair: cause image (4 s), fixation (1 s), effect image (4 s),
 // then a 1-10 rating of how much the first led to the second (3 s
 // to answer). Order is randomized per participant.
 // ============================================================
