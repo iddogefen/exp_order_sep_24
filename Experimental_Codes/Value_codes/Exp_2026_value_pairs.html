@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Image Study</title>
+    <style>
+      body { background-color: #f8f9fa; font-family: Arial, sans-serif; }
+      .stimulus-container { width: 900px; margin: 0 auto; text-align: center; }
+      .exp-image {
+          width: 450px; height: 350px; object-fit: contain;
+          border: 2px solid #ccc; background-color: #fff; display: block; margin: 0 auto;
+      }
+      .small-image {
+          width: 260px; height: 210px; object-fit: contain;
+          border: 2px solid #ccc; background-color: #fff;
+      }
+      .thumb {
+          width: 140px; height: 110px; object-fit: contain;
+          border: 3px solid #ccc; background-color: #fff; border-radius: 6px;
+      }
+      .thumb-wrap { display: inline-block; margin: 6px; position: relative; cursor: pointer; }
+      .thumb-wrap.selected .thumb { border-color: #2E8B2E; opacity: 0.55; }
+      .order-badge {
+          position: absolute; top: 4px; left: 8px; font-size: 26px; font-weight: bold;
+          color: #2E8B2E; text-shadow: 0 0 4px #fff;
+      }
+      .outcome-box { display: inline-block; margin: 6px 20px; vertical-align: top; }
+      .fixation {
+          font-size: 60px; color: #333; height: 400px;
+          display: flex; align-items: center; justify-content: center;
+      }
+      .task-btn {
+          font-size: 18px; padding: 8px 22px; margin: 10px; border-radius: 6px;
+          border: 1px solid #999; background: #fff; cursor: pointer;
+      }
+      .task-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    </style>
+    <script src="jspsych/plugins/jspsych.js"></script>
+    <script src="jspsych/plugins/plugin-instructions.js"></script>
+    <script src="jspsych/plugins/plugin-html-button-response.js"></script>
+    <script src="jspsych/plugins/plugin-survey-text.js"></script>
+    <script src="jspsych/plugins/plugin-html-keyboard-response.js"></script>
+    <script src="jspsych/plugins/plugin-fullscreen.js"></script>
+    <script src="jspsych/plugins/plugin-preload.js"></script>
+    <script src="jspsych/plugins/plugin-call-function.js"></script>
+    <link rel="stylesheet" href="jspsych/css/jspsych.css">
+  </head>
+  <body></body>
+  <script>
+
+// ============================================================
+// DESIGN
+//   Between subjects:
+//     NARRATIVE group: after each sequence, write a short story that
+//                      connects all the images and the outcome.
+//     SEQUENCE group:  after each sequence, click the images in the
+//                      order they were shown.
+//   8 sequences x 5 unrelated object images, each followed by an
+//   outcome: MONEY ($100) for 4 sequences, NOTHING for 4. Objects are
+//   assigned to sequences and outcomes at random per participant.
+//
+//   Phase 1  Encoding (5 images + outcome, then the group task)
+//   Phase 2  Preference choice: an item from a MONEY sequence vs an
+//            item from a NOTHING sequence, SAME position (1-5).
+//            4 choices per position = 20 choices.
+//   Phase 3  Outcome memory: for every item, which outcome followed
+//            its sequence (money / nothing / don't remember).
+//   Phase 4  Strategy questions (manipulation check) + demographics
+// ============================================================
+
+// ============================================================
+// SETTINGS
+// ============================================================
+var EXPERIMENT_NAME = 'Narrative_vs_Sequence_Value_v1';
+var N_SEQUENCES = 8;
+var SEQ_LENGTH = 5;
+var IMAGE_MS = 3000;          // each object image
+var FIXATION_MS = 500;        // between images
+var OUTCOME_MS = 3000;        // outcome screen
+
+// Stimuli (replace with your files):
+//   object images: images_objects/obj_01.png ... obj_40.png (unrelated objects)
+//   practice:      images_objects/practice_01.png ... practice_05.png
+//   outcomes:      images/dollar.png (money), images/gray.png (nothing)
+var OBJECT_FOLDER = 'images_objects/';
+var N_OBJECTS = N_SEQUENCES * SEQ_LENGTH;   // 40
+var MONEY_IMG = 'images/dollar.png';
+var NOTHING_IMG = 'images/gray.png';
+var MONEY_TEXT = 'Outcome: $100';
+var NOTHING_TEXT = 'Outcome: nothing';
+
+function pad2(n) { return n < 10 ? '0' + n : '' + n; }
+function objectPath(i) { return OBJECT_FOLDER + 'obj_' + pad2(i) + '.png'; }
+function practicePath(i) { return OBJECT_FOLDER + 'practice_' + pad2(i) + '.png'; }
+
+// ============================================================
+// DATA SAVING (same mechanism as the base template)
+// ============================================================
+var data_already_saved = false;
+
+function saveData(data) {
+    if (data_already_saved) { return; }
+    data_already_saved = true;
+    fetch('/write_data.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filedata: data })
+    })
+    .then(function(response) {
+        if (!response.ok) { throw new Error('Network response was not ok: ' + response.status); }
+        return response.text();
+    })
+    .then(function() { console.log('Data saved to server.'); })
+    .catch(function(error) {
+        console.error('Error saving data to server:', error);
+        try {
+            var backupKey = 'experiment_backup_' + participant_id + '_' + Date.now();
+            localStorage.setItem(backupKey, data);
+            alert('Data saved locally. Please do not close this window.');
+        } catch (storageError) {
+            alert('Warning: Could not save data. Please do not close this window and contact support.');
+        }
+    });
+}
+
+var jsPsych = initJsPsych({
+    on_finish: function() { saveData(jsPsych.data.get().csv()); }
+});
+
+var timeline = [];
+
+var participant_id = jsPsych.data.getURLVariable('participantId') || jsPsych.randomization.randomID(15);
+var study_id = jsPsych.data.getURLVariable('assignmentId');
+var session_id = jsPsych.data.getURLVariable('projectId');
+
+// Group: from the URL (?group=narrative or ?group=sequence) if given,
+// otherwise random. Using two links (one per group) keeps groups balanced.
+var url_group = jsPsych.data.getURLVariable('group');
+var GROUP = (url_group === 'narrative' || url_group === 'sequence')
+    ? url_group
+    : (Math.random() < 0.5 ? 'narrative' : 'sequence');
+
+jsPsych.data.addProperties({
+    subject_id: participant_id,
+    study_id: study_id,
+    session_id: session_id,
+    experiment: EXPERIMENT_NAME,
+    group: GROUP
+});
+
+// ============================================================
+// BUILD SEQUENCES (random per participant)
+// ============================================================
+var object_ids = jsPsych.randomization.shuffle(
+    Array.from({ length: N_OBJECTS }, function(_, k) { return k + 1; })
+);
+var outcomes = jsPsych.randomization.shuffle(
+    Array(N_SEQUENCES / 2).fill('money').concat(Array(N_SEQUENCES / 2).fill('nothing'))
+);
+
+var sequences = [];
+for (var s = 0; s < N_SEQUENCES; s++) {
+    var items = [];
+    for (var p = 0; p < SEQ_LENGTH; p++) {
+        var oid = object_ids[s * SEQ_LENGTH + p];
+        items.push({ object_id: oid, path: objectPath(oid), position: p + 1 });
+    }
+    sequences.push({ seq_id: s + 1, items: items, outcome: outcomes[s] });
+}
+
+var practice_sequence = {
+    seq_id: 0,
+    items: Array.from({ length: SEQ_LENGTH }, function(_, k) {
+        return { object_id: 'practice_' + (k + 1), path: practicePath(k + 1), position: k + 1 };
+    }),
+    outcome: 'money'
+};
+
+// ============================================================
+// PRELOAD
+// ============================================================
+var imagesToPreload = [
+    'images/consent_form_2026_page1.png', 'images/consent_form_2026_page2.png',
+    MONEY_IMG, NOTHING_IMG
+];
+for (var k = 1; k <= N_OBJECTS; k++) { imagesToPreload.push(objectPath(k)); }
+for (var k2 = 1; k2 <= SEQ_LENGTH; k2++) { imagesToPreload.push(practicePath(k2)); }
+
+timeline.push({ type: jsPsychPreload, images: imagesToPreload, message: 'Loading task assets...' });
+
+// ============================================================
+// HELPERS
+// ============================================================
+function mathQuestionTrial() {
+    var a = Math.floor(Math.random() * 8) + 1;
+    var b = Math.floor(Math.random() * 8) + 1;
+    var correct = a + b;
+    var options = jsPsych.randomization.shuffle([correct, correct + 1, (correct - 1 <= 0) ? correct + 2 : correct - 1]);
+    var correct_index = options.indexOf(correct);
+    return {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: '<div style="font-size:24px;">What is ' + a + ' + ' + b + ' ?</div>',
+        choices: options.map(String),
+        data: { task: 'math_question', correct_answer: correct },
+        on_finish: function(data) { data.correct = (data.response === correct_index) ? 1 : 0; }
+    };
+}
+
+var whiteScreenTrial = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
+    choices: "NO_KEYS",
+    trial_duration: 1000
+};
+
+var fixationTrial = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: '<div class="fixation">+</div>',
+    choices: "NO_KEYS",
+    trial_duration: FIXATION_MS
+};
+
+// Instructions whose buttons stay disabled for minMs (default 8 s).
+function withMinReadTime(instructionsTrial, minMs) {
+    minMs = (typeof minMs === 'number') ? minMs : 8000;
+    var trial = Object.assign({}, instructionsTrial);
+    trial.on_load = function() {
+        var btns = document.querySelectorAll('#jspsych-instructions-next, #jspsych-instructions-back');
+        btns.forEach(function(b) { b.disabled = true; b.style.opacity = '0.4'; });
+        setTimeout(function() {
+            document.querySelectorAll('#jspsych-instructions-next, #jspsych-instructions-back')
+                .forEach(function(b) { b.disabled = false; b.style.opacity = '1'; });
+        }, minMs);
+    };
+    return trial;
+}
+
+function instructions(html, minMs) {
+    return withMinReadTime({
+        type: jsPsychInstructions,
+        pages: ['<div style="text-align:left; padding:40px; max-width:800px; margin:auto;">' + html + '</div>'],
+        show_clickable_nav: true
+    }, minMs);
+}
+
+function outcomeHtml(outcome) {
+    var img = outcome === 'money' ? MONEY_IMG : NOTHING_IMG;
+    var txt = outcome === 'money' ? MONEY_TEXT : NOTHING_TEXT;
+    var clr = outcome === 'money' ? 'green' : 'gray';
+    return '<div class="stimulus-container">' +
+           '<img src="' + img + '" style="width:220px;height:220px;object-fit:contain;border:4px solid ' + clr + ';">' +
+           '<p style="font-size:26px; font-weight:bold; color:' + clr + ';">' + txt + '</p></div>';
+}
+
+// Thumbnails of a sequence in a scrambled order (same for both groups),
+// plus the outcome shown separately.
+function thumbsHtml(seq, scrambled, clickable) {
+    var html = '<div>';
+    scrambled.forEach(function(item) {
+        html += '<div class="thumb-wrap" data-oid="' + item.object_id + '">' +
+                '<img src="' + item.path + '" class="thumb">' +
+                (clickable ? '<span class="order-badge"></span>' : '') + '</div>';
+    });
+    html += '</div>';
+    var img = seq.outcome === 'money' ? MONEY_IMG : NOTHING_IMG;
+    var txt = seq.outcome === 'money' ? MONEY_TEXT : NOTHING_TEXT;
+    html += '<div class="outcome-box"><img src="' + img + '" class="thumb" style="width:90px;height:90px;">' +
+            '<div style="font-size:14px;">' + txt + '</div></div>';
+    return html;
+}
+
+// ------------------------------------------------------------
+// Group task after each sequence
+// ------------------------------------------------------------
+function narrativeTask(seq, task_label) {
+    var scrambled = jsPsych.randomization.shuffle(seq.items.slice());
+    return {
+        type: jsPsychSurveyText,
+        preamble: '<div class="stimulus-container">' +
+                  '<p style="font-size:20px; font-weight:bold;">Write a short story that connects ALL of these images and ends with the outcome.</p>' +
+                  thumbsHtml(seq, scrambled, false) + '</div>',
+        questions: [{ prompt: 'Your story (one or two sentences):', name: 'story', rows: 3, columns: 70, required: true }],
+        data: {
+            task: task_label, seq_id: seq.seq_id, outcome: seq.outcome,
+            thumb_order: scrambled.map(function(it) { return it.object_id; }).join('|')
+        },
+        on_finish: function(data) {
+            data.story = data.response ? data.response.story : null;
+        }
+    };
+}
+
+function sequenceTask(seq, task_label) {
+    var scrambled = jsPsych.randomization.shuffle(seq.items.slice());
+    var true_order = seq.items.map(function(it) { return String(it.object_id); });
+    return {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: '<div class="stimulus-container">' +
+                  '<p style="font-size:20px; font-weight:bold;">Click the images in the order in which they were shown.</p>' +
+                  thumbsHtml(seq, scrambled, true) +
+                  '<div><button id="reset-btn" class="task-btn">Reset</button>' +
+                  '<button id="done-btn" class="task-btn" disabled>Done</button></div></div>',
+        choices: "NO_KEYS",
+        data: {
+            task: task_label, seq_id: seq.seq_id, outcome: seq.outcome,
+            thumb_order: scrambled.map(function(it) { return it.object_id; }).join('|')
+        },
+        on_load: function() {
+            var start = performance.now();
+            var clicked = [];
+            var wraps = document.querySelectorAll('.thumb-wrap');
+            var done = document.getElementById('done-btn');
+            function refresh() {
+                wraps.forEach(function(w) {
+                    var idx = clicked.indexOf(w.getAttribute('data-oid'));
+                    w.classList.toggle('selected', idx !== -1);
+                    w.querySelector('.order-badge').textContent = idx !== -1 ? (idx + 1) : '';
+                });
+                done.disabled = clicked.length !== SEQ_LENGTH;
+            }
+            wraps.forEach(function(w) {
+                w.addEventListener('click', function() {
+                    var oid = w.getAttribute('data-oid');
+                    if (clicked.indexOf(oid) === -1 && clicked.length < SEQ_LENGTH) { clicked.push(oid); refresh(); }
+                });
+            });
+            document.getElementById('reset-btn').addEventListener('click', function() { clicked = []; refresh(); });
+            done.addEventListener('click', function() {
+                var n_correct = clicked.filter(function(oid, i) { return oid === true_order[i]; }).length;
+                jsPsych.finishTrial({
+                    rt: Math.round(performance.now() - start),
+                    response_order: clicked.join('|'),
+                    true_order: true_order.join('|'),
+                    n_positions_correct: n_correct,
+                    order_fully_correct: n_correct === SEQ_LENGTH ? 1 : 0
+                });
+            });
+        }
+    };
+}
+
+// ------------------------------------------------------------
+// One full encoding block: 5 images, outcome, group task
+// ------------------------------------------------------------
+function buildSequenceBlock(seq, is_practice) {
+    var trials = [];
+    seq.items.forEach(function(item) {
+        trials.push({
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: '<div class="stimulus-container"><img src="' + item.path + '" class="exp-image"></div>',
+            choices: "NO_KEYS",
+            trial_duration: IMAGE_MS,
+            data: {
+                task: is_practice ? 'practice_image' : 'encoding_image',
+                seq_id: seq.seq_id, position: item.position, object_id: item.object_id, outcome: seq.outcome
+            }
+        });
+        trials.push(fixationTrial);
+    });
+    trials.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: outcomeHtml(seq.outcome),
+        choices: "NO_KEYS",
+        trial_duration: OUTCOME_MS,
+        data: { task: is_practice ? 'practice_outcome' : 'encoding_outcome', seq_id: seq.seq_id, outcome: seq.outcome }
+    });
+    var label = is_practice ? 'practice_task' : 'group_task';
+    trials.push(GROUP === 'narrative' ? narrativeTask(seq, label) : sequenceTask(seq, label));
+    trials.push(whiteScreenTrial);
+    return trials;
+}
+
+// ============================================================
+// CONSENT
+// ============================================================
+timeline.push(withMinReadTime({
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align:left; padding:40px;"><h2>Welcome to the Experiment</h2>' +
+        '<p>In this study you will see short series of images and answer questions about them.</p>' +
+        '<p>Click "Next" to read the consent form.</p></div>',
+        '<div style="text-align:center; padding:20px;"><img src="images/consent_form_2026_page1.png" style="max-width:80%;"></div>',
+        '<div style="text-align:center; padding:20px;"><img src="images/consent_form_2026_page2.png" style="max-width:80%;"></div>'
+    ],
+    show_clickable_nav: true
+}, 5000));
+
+timeline.push({ type: jsPsychFullscreen, fullscreen_mode: true });
+
+// ============================================================
+// INSTRUCTIONS + PRACTICE (group-specific)
+// ============================================================
+var group_instructions = GROUP === 'narrative'
+    ? '<h2>Your Task</h2>' +
+      '<p>You will see series of 5 images, one at a time. Each series ends with an <b>outcome</b>: either <b>$100</b> or <b>nothing</b>.</p>' +
+      '<p>After each series, you will see the images again and <b>write a short story that connects all of them</b>, ending with the outcome.</p>' +
+      '<p>The images are not related to each other, so use your imagination. Any story is fine, as long as it includes every image and the outcome.</p>'
+    : '<h2>Your Task</h2>' +
+      '<p>You will see series of 5 images, one at a time. Each series ends with an <b>outcome</b>: either <b>$100</b> or <b>nothing</b>.</p>' +
+      '<p>After each series, you will see the images again in a mixed order and <b>click them in the order in which they were shown</b>.</p>' +
+      '<p>Try to remember the exact order of each series.</p>';
+
+timeline.push(instructions(group_instructions + '<p>Let\'s start with one practice series.</p>'));
+timeline = timeline.concat(buildSequenceBlock(practice_sequence, true));
+timeline.push(instructions('<h2>Practice Completed</h2><p>The main part is about to begin. There are ' +
+    N_SEQUENCES + ' series. Please stay focused.</p>', 5000));
+
+// ============================================================
+// PHASE 1: ENCODING
+// ============================================================
+var encoding_order = jsPsych.randomization.shuffle(sequences.slice());
+encoding_order.forEach(function(seq, idx) {
+    timeline = timeline.concat(buildSequenceBlock(seq, false));
+    if (idx === 3) { timeline.push(mathQuestionTrial()); }
+});
+
+// ============================================================
+// PHASE 2: PREFERENCE CHOICE
+// Item from a MONEY sequence vs item from a NOTHING sequence, same
+// position. For each position, money sequences are paired with nothing
+// sequences at random (each sequence used once per position).
+// ============================================================
+timeline.push(instructions('<h2>Part 2</h2>' +
+    '<p>You will now see two images at a time.</p>' +
+    '<p>Choose the image you <b>like more</b>. Go with your gut feeling.</p>'));
+
+var money_seqs = sequences.filter(function(s) { return s.outcome === 'money'; });
+var nothing_seqs = sequences.filter(function(s) { return s.outcome === 'nothing'; });
+var choice_specs = [];
+for (var pos = 1; pos <= SEQ_LENGTH; pos++) {
+    var shuffled_nothing = jsPsych.randomization.shuffle(nothing_seqs.slice());
+    money_seqs.forEach(function(ms, i) {
+        var ns = shuffled_nothing[i];
+        choice_specs.push({
+            position: pos,
+            money_item: ms.items[pos - 1], money_seq: ms.seq_id,
+            nothing_item: ns.items[pos - 1], nothing_seq: ns.seq_id
+        });
+    });
+}
+choice_specs = jsPsych.randomization.shuffle(choice_specs);
+
+choice_specs.forEach(function(c, idx) {
+    var money_left = Math.random() < 0.5;
+    var left = money_left ? c.money_item : c.nothing_item;
+    var right = money_left ? c.nothing_item : c.money_item;
+    timeline.push({
+        type: jsPsychHtmlButtonResponse,
+        stimulus: '<div style="margin-bottom:20px;"><h3>Which image do you <b>like more</b>?</h3></div>' +
+                  '<div class="stimulus-container" style="display:flex; justify-content:center; gap:30px;">' +
+                  '<img src="' + left.path + '" class="small-image"><img src="' + right.path + '" class="small-image"></div>',
+        choices: ['Left', 'Right'],
+        data: {
+            task: 'preference_choice', position: c.position,
+            money_seq: c.money_seq, money_object: c.money_item.object_id,
+            nothing_seq: c.nothing_seq, nothing_object: c.nothing_item.object_id,
+            money_left: money_left ? 1 : 0
+        },
+        on_finish: function(data) {
+            data.chose_money = ((data.response === 0 && money_left) || (data.response === 1 && !money_left)) ? 1 : 0;
+        }
+    });
+    timeline.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
+        choices: "NO_KEYS",
+        trial_duration: 600
+    });
+    if (idx === 9) { timeline.push(mathQuestionTrial()); }
+});
+
+// ============================================================
+// PHASE 3: OUTCOME MEMORY (every item)
+// ============================================================
+timeline.push(instructions('<h2>Part 3</h2>' +
+    '<p>For each image, indicate the <b>outcome of the series</b> it belonged to.</p>' +
+    '<p>If you do not remember, choose "I don\'t remember". Please do not guess.</p>'));
+
+var MEMORY_CHOICES = ['$100', 'Nothing', "I don't remember"];
+var all_items = [];
+sequences.forEach(function(seq) {
+    seq.items.forEach(function(it) {
+        all_items.push({ item: it, seq_id: seq.seq_id, outcome: seq.outcome });
+    });
+});
+all_items = jsPsych.randomization.shuffle(all_items);
+
+all_items.forEach(function(x, idx) {
+    timeline.push({
+        type: jsPsychHtmlButtonResponse,
+        stimulus: '<div class="stimulus-container"><img src="' + x.item.path + '" class="small-image">' +
+                  '<p style="font-size:20px; font-weight:bold; margin-top:15px;">What was the outcome of the series this image belonged to?</p></div>',
+        choices: MEMORY_CHOICES,
+        data: {
+            task: 'outcome_memory', seq_id: x.seq_id, position: x.item.position,
+            object_id: x.item.object_id, true_outcome: x.outcome
+        },
+        on_finish: function(data) {
+            var ans = MEMORY_CHOICES[data.response];
+            data.answer = ans;
+            data.dont_remember = (ans === "I don't remember") ? 1 : 0;
+            var truth = x.outcome === 'money' ? '$100' : 'Nothing';
+            data.outcome_correct = (data.dont_remember === 1) ? null : (ans === truth ? 1 : 0);
+        }
+    });
+    if (idx === 19) { timeline.push(mathQuestionTrial()); }
+});
+
+// ============================================================
+// PHASE 4: MANIPULATION CHECK + DEMOGRAPHICS
+// ============================================================
+timeline.push({
+    type: jsPsychHtmlButtonResponse,
+    stimulus: '<p style="font-size:20px;">While viewing the series, how often did you make up a <b>story</b> connecting the images?</p>',
+    choices: ['Never', 'Sometimes', 'Often', 'Always'],
+    data: { task: 'story_use_check' },
+    on_finish: function(data) { data.story_use = data.response; }  // 0 = never ... 3 = always
+});
+
+timeline.push({
+    type: jsPsychSurveyText,
+    questions: [
+        { prompt: 'Gender (MALE / FEMALE / OTHER):', name: 'gender', rows: 1, columns: 20 },
+        { prompt: 'Age:', name: 'age', rows: 1, columns: 5 },
+        { prompt: 'How did you try to remember the series?', name: 'memory_strategy', rows: 2, columns: 60 },
+        { prompt: 'How did you choose between images in Part 2?', name: 'choice_strategy', rows: 2, columns: 60 }
+    ],
+    data: { task: 'demographics' }
+});
+
+timeline.push({
+    type: jsPsychCallFunction,
+    func: function() { saveData(jsPsych.data.get().csv()); }
+});
+
+timeline.push({
+    type: jsPsychInstructions,
+    pages: ['<div style="text-align:center; padding:60px;"><h2>Experiment Completed</h2>' +
+            '<p style="font-size:20px;">Thank you very much for your participation!</p>' +
+            '<p style="font-size:16px; color:#666;">Your data has been saved. You may now close this window.</p></div>'],
+    show_clickable_nav: true
+});
+
+jsPsych.run(timeline);
+
+  </script>
+</html>

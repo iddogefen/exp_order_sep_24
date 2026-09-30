@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      /* Optional: Hide cursor if needed */
+      .hide_cursor {
+        cursor: none;
+      }
+    </style>
+    <title>Causality Experiment</title>
+    <!-- Include jsPsych library and plugins -->
+    <script src="jspsych/plugins/jspsych.js"></script>
+    <script src="jspsych/plugins/plugin-instructions.js"></script>
+    <script src="jspsych/plugins/plugin-html-button-response.js"></script>
+    <script src="jspsych/plugins/plugin-preload.js"></script>
+	<script src="Tools/Functions.js"></script>
+    <link rel="stylesheet" href="jspsych/css/jspsych.css">
+  </head>
+  <body></body>
+  <script>
+	const vrs = "D15-11,T17:00"
+    // Define data folder for saving results
+    var data_folder = 'data/';
+	// set html messages
+	start='<div style="display: flex; justify-content: center; align-items: center;">';
+	bef_img='<div style="text-align: center; margin-right: 20px;">';
+	p1=	'<p style="font-size: 24px; font-weight: bold;">Event 1</p>';
+	p2=	'<p style="font-size: 24px; font-weight: bold;">Event 2</p>';
+	end_div=' </div>'
+	question=	'<p style="text-align: center; margin-top: 20px;">Did one event cause the other?</p>`';
+
+    // Initialize experiment timeline
+    var timeline = [];
+    // initialize jsPsych
+    var jsPsych = initJsPsych({
+      on_finish: function() {
+	// File to be saved in "data" subfolder
+        saveData(data_folder+subject_id+".csv", jsPsych.data.get().csv());
+		console.log("Saved ",data_folder+subject_id);
+
+      }
+    });
+    console.log("jsPsych ",jsPsych.version(), "Code version=",vrs);
+
+
+    // capture info from url line
+    var subject_id = jsPsych.data.getURLVariable('participantId');
+    var study_id = jsPsych.data.getURLVariable('assignmentId');
+    var session_id = jsPsych.data.getURLVariable('projectId');
+    var urlvar = jsPsych.data.urlVariables();
+
+	slow=true;
+	simulate=false;
+	trial_duration	= 60000;
+	answer_reveal	= 5000;
+
+	fast_test=jsPsych.data.getURLVariable('fast_test');
+	if (fast_test != undefined) {
+		slow=false;
+		simulate=true;
+		trial_duration	= 100;
+		answer_reveal	= 100;
+	}
+
+	if (slow)
+		console.log("Regular speed");
+	else
+		console.log("Fast test + simulation");
+
+
+	seqs=jsPsych.data.getURLVariable('seqs');
+	if (seqs != null)
+		seqlist=seqs.split(";");
+	else {
+		seq_from_file=getText("sequences.txt");
+		seq_from_file = seq_from_file.toString();
+		seqlist=seq_from_file.split(";");//seqlist=seq_from_file;
+	}
+    console.log("seqlist ",seqlist);
+
+
+
+
+	var timeline = [];
+
+
+	// this adds a property called 'subject'  to every trial
+	jsPsych.data.addProperties({
+	  	subject: subject_id,
+	});
+
+
+    // Preload images
+  	images_to_preload=retrieveImageNames("images");
+      var preload = {
+        type: jsPsychPreload,
+        images: images_to_preload
+  	};
+      timeline.push(preload);
+
+  // Add instruction phase
+  var instructions = {
+      type: jsPsychInstructions,
+      pages: [
+        '<h2>Welcome to the experiment!</h2>' +
+        '<p>In this experiment, you will see pairs of images depicting two events.</p>' +
+        '<p>Your task is to determine whether:</p>' +
+        '<ul>' +
+        '<li><strong>event 1 causes event 2</strong></li>' +
+        '<li><strong>event 2 causes event 1</strong></li>' +
+        '<li><strong>the events are unrelated</strong></li>' +
+        '</ul>' +
+        '<p>Before starting the actual experiment, you will go through <strong>three examples</strong> to understand the task.</p>' +
+        '<p>Click "Next" to begin the examples.</p>'
+      ],
+		trial_duration: trial_duration,
+
+      show_clickable_nav: true
+    };
+
+    timeline.push(instructions);
+
+	// EXAMPLES
+	let allExamples = [];
+	Instructions=[
+		[1,2,"<p>The correct answer is: <strong>event 1 causes event 2</strong>.</p>",'<p>Click "Next" to proceed to the next example.</p>'],
+		[2,1,"<p>The correct answer is: <strong>event 2 causes event 1</strong>.</p>",'<p>Click "Next" to proceed to the next example.</p>'],
+		[5,6,"<p>The correct answer is: <strong>events are unrelated</strong>.</p>",'<p>Click "Next" to proceed to the experiment.</p>']
+	];
+
+	Instructions.forEach((pair,idx) => {
+		// Generate trials for physical_activity_semantic
+			let img1_str=  "images/Instructions/"+pair[0]+".png"  ;
+			let img2_str=  "images/Instructions/"+pair[1]+".png"  ;
+			img1=	 '<img src="'+img1_str+'" style="width: 300px; height: auto;">';
+			img2=	 '<img src="'+img2_str+'" style="width: 300px; height: auto;">';
+		  // Examples trial
+		  timeline.push({
+			type: jsPsychHtmlButtonResponse,
+			stimulus: start+bef_img+p1+img1+end_div+bef_img+p2+img2+end_div+end_div+question,
+			choices: ['event 1 causes event 2', 'event 2 causes event 1', 'events are unrelated'],
+			  trial_duration: trial_duration,
+
+
+			button_html: '<button class="jspsych-btn" disabled>%choice%</button>',
+			on_load: function () {
+			  setTimeout(() => {
+				document.querySelectorAll('.jspsych-btn').forEach(button => {
+				  button.disabled = false;
+				});
+			  }, answer_reveal);
+			},
+		  });
+		  timeline.push({
+			type: jsPsychHtmlButtonResponse,
+			stimulus: start+bef_img+p1+img1+end_div+bef_img+p2+img2+end_div+end_div+
+					'<h2>Correct Answer</h2>'+
+					pair[2]+  pair[3],
+				  choices: ['Next'],
+			  trial_duration: trial_duration,
+			button_html: '<button class="jspsych-btn" disabled>%choice%</button>',
+			on_load: function () {
+			  setTimeout(() => {
+				document.querySelectorAll('.jspsych-btn').forEach(button => {
+				  button.disabled = false;
+				});
+			  }, 0);
+			},
+		  });
+		});
+
+		// Add transition trial before the experiment starts
+		var transition_trial = {
+		  type: jsPsychHtmlButtonResponse,
+		  stimulus: `
+			<h2>Get Ready!</h2>
+			<p>You have completed the examples. The experiment is about to begin.</p>
+			<p>Click "Start" to begin the experiment.</p>`,
+				  trial_duration: trial_duration,
+
+		  choices: ['Start']
+		};
+
+		timeline.push(transition_trial);
+
+
+
+	// Generate all unique pairs for the causal images with random order
+	function generateRandomizedPairs(rangeStart, rangeEnd) {
+	  let pairs = [];
+	  for (let i = rangeStart; i <= rangeEnd; i++) {
+		for (let j = i + 1; j <= rangeEnd; j++) {
+			first = i;
+			// original images use _ten for last image instead of _10 for sorting
+			if (i==10)
+				first="ten";
+			second = j;
+			if (j==10)
+				second="ten";
+
+		  if (Math.random() > 0.5) {
+			pairs.push([first ,second]); // Keep the original order
+		  } else {
+			pairs.push([second, first]); // Reverse the order
+		  }
+		}
+	  }
+	  return pairs;
+	}
+
+	let allTrials = [];
+	seqlist.forEach((sequence,idx) => {
+		seq=sequence.split("/");
+
+		// Generate trials for physical_activity_semantic
+		let physicalPairs = generateRandomizedPairs(1, 10);
+		physicalPairs.forEach(pair => {
+			let img1_str=  "images/"+seq[0]+"/"+seq[1]+"/"+seq[1]+"_"+pair[0]+".png"  ;
+			let img2_str=  "images/"+seq[0]+"/"+seq[1]+"/"+seq[1]+"_"+pair[1]+".png"  ;
+			img1=	 '<img src="'+img1_str+'" style="width: 300px; height: auto;">';
+			img2=	 '<img src="'+img2_str+'" style="width: 300px; height: auto;">';
+		  // Main trial
+		  allTrials.push({
+			type: jsPsychHtmlButtonResponse,
+			stimulus: start+bef_img+p1+img1+end_div+bef_img+p2+img2+end_div+end_div+question,
+			choices: ['event 1 causes event 2', 'event 2 causes event 1', 'events are unrelated'],
+			  trial_duration: trial_duration,
+
+
+			button_html: '<button class="jspsych-btn" disabled>%choice%</button>',
+			on_load: function () {
+			  setTimeout(() => {
+				document.querySelectorAll('.jspsych-btn').forEach(button => {
+				  button.disabled = false;
+				});
+			  }, answer_reveal);
+			},
+			on_finish: function (data) {
+				res0=pair[0];
+				if (res0=='ten') res0=10;
+			  	data.firstImageNumber = res0;
+				res1=pair[1];
+				if (res1=='ten') res1=10;
+			  	data.secondImageNumber = res1;
+			  	data.response_made = typeof data.response !== 'undefined';
+			  	if (simulate)	 {
+					data.response = Math.floor(Math.random() * 3);
+			  	}
+
+			  data.stimulus_type = sequence.split("/")[1];
+			}
+		  });
+		});
+	});
+
+	// Shuffle all trials
+	let shuffledTrials = jsPsych.randomization.shuffle(allTrials);
+
+	// Add the shuffled trials to the timeline
+	timeline.push(...shuffledTrials);
+
+    // Add final thank-you screen
+    var trial_end = {
+      type: jsPsychInstructions,
+      pages: [
+        '<h2>Thank you for participating!</h2>' +
+        '<p>You have completed the experiment.</p>' +
+        '<p>Your completion code is: <strong>3730E71D97</strong></p>' +
+        '<p>Please copy this code and submit it in the platform.</p>'
+      ],
+      show_clickable_nav: true
+    };
+
+    timeline.push(trial_end);
+
+    // Run the experiment
+    jsPsych.run(timeline);
+  </script>
+</html>

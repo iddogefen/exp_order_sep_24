@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .hide_cursor { cursor: none; }
+    </style>
+    <title>Causal Memory Experiment</title>
+    <script src="jspsych/jspsych.js"></script>
+    <script src="jspsych/plugin-instructions.js"></script>
+    <script src="jspsych/plugin-image-keyboard-response.js"></script>
+    <script src="jspsych/plugin-image-button-response.js"></script>
+    <script src="jspsych/plugin-fullscreen.js"></script>
+    <script src="jspsych/plugin-preload.js"></script>
+    <script src="Tools/Functions1.js"></script>
+    <link rel="stylesheet" href="jspsych/css/jspsych.css">
+</head>
+<body></body>
+<script>
+    // Constants for consistency with your previous code versions
+    const vrs = "D05-13,T23:00";
+
+    /**
+     * Initialize jsPsych
+     */
+    const jsPsych = initJsPsych({
+        on_finish: function() {
+            const data = jsPsych.data.get();
+            // Original saving logic
+            saveData(data_folder + subject_id + ".csv", data.csv());
+            saveText(audio_folder + '/' + subject_id + "/part_" + part + "_seqs.txt", JSON.stringify(all_seq));
+            saveText(audio_folder + '/' + subject_id + "/part_" + part + "_selopts.txt", JSON.stringify(test_selections));
+        }
+    });
+
+    // Capture URL variables and set defaults
+    const subject_id = jsPsych.data.getURLVariable('participantId') || "user_" + Math.floor(Math.random()*1000000);
+    const part = jsPsych.data.getURLVariable('part') || 1;
+    const data_folder = 'data/part_' + part + '/';
+    const audio_folder = 'audio_files/part_' + part + '/'; 
+
+    // Define groups for causal sequences
+    const groups = [{ name: "causal", n: 10, random: "false" }];
+    const all_seq = getAllSequences(groups); 
+    const test_selections = []; 
+
+    console.log("jsPsych Version:", jsPsych.version(), "Code version:", vrs);
+    console.log("Sequences loaded:", all_seq);
+
+    let timeline = [];
+
+    /**
+     * 1. PRELOAD & FULLSCREEN
+     * (Removed Microphone Initialization to fix Permission Denied error)
+     */
+    timeline.push({
+        type: jsPsychPreload,
+        auto_preload: true
+    });
+
+    timeline.push({
+        type: jsPsychFullscreen,
+        fullscreen_mode: true
+    });
+
+    /**
+     * 3. PART 1: ENCODING (Passive Observation)
+     */
+    timeline.push({
+        type: jsPsychInstructions,
+        pages: [
+            '<div style="font-size: 24px;">Welcome to Part 1.<br>You will view several sequences of images. Please observe them carefully.</div>'
+        ],
+        show_clickable_nav: true
+    });
+
+    // Iterate through sequences
+    all_seq.forEach((sequence, s_idx) => {
+        // Based on your console log, sequence might be an array of image paths
+        const images = Array.isArray(sequence) ? sequence : sequence.images;
+
+        images.forEach((img_path, i_idx) => {
+            timeline.push({
+                type: jsPsychImageKeyboardResponse,
+                stimulus: img_path,
+                choices: "NO_KEYS",
+                trial_duration: 2000,
+                data: { phase: 'encoding', sequence_index: s_idx, image_index: i_idx }
+            });
+        });
+
+        // Inter-sequence break
+        timeline.push({
+            type: jsPsychImageKeyboardResponse,
+            stimulus: 'clear.png', // Ensure this file exists or use a blank HTML trial
+            choices: "NO_KEYS",
+            trial_duration: 1000
+        });
+    });
+
+    /**
+     * 4. PART 2: RETRIEVAL (2AFC - 4th vs 6th image)
+     */
+    timeline.push({
+        type: jsPsychInstructions,
+        pages: [
+            '<div style="font-size: 24px;">Part 2: Memory Test.<br>You will see two images. Select the one that appeared <b>LATER</b> in the sequence.</div>'
+        ],
+        show_clickable_nav: true
+    });
+
+    all_seq.forEach((sequence, s_idx) => {
+        const images = Array.isArray(sequence) ? sequence : sequence.images;
+        
+        // Safety check: ensure sequence has enough images for 4th (idx 3) and 6th (idx 5)
+        if (images.length >= 6) {
+            const img4 = images[3];
+            const img6 = images[5];
+            const choices = jsPsych.randomization.shuffle([img4, img6]);
+            
+            test_selections.push({ seq_idx: s_idx, img4: img4, img6: img6 });
+
+            timeline.push({
+                type: jsPsychImageButtonResponse,
+                stimulus: '',
+                choices: choices,
+                button_html: '<button class="jspsych-btn" style="margin: 20px;"><img src="%choice%" style="width:300px;"/></button>',
+                prompt: "<p style='font-size: 20px;'>Which image appeared LATER in the sequence?</p>",
+                data: {
+                    task: '2AFC_test',
+                    sequence_index: s_idx,
+                    correct_img: img6
+                },
+                on_finish: function(data) {
+                    const choice_made = choices[data.response];
+                    data.correct = (choice_made === data.correct_img);
+                    
+                    // Maintain server-side logging as per original code
+                    fetch('/save-my-data.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            subject_id: subject_id,
+                            sequence_index: s_idx,
+                            is_correct: data.correct,
+                            folder: data_folder
+                        })
+                    }).catch(e => console.error("Logging error:", e));
+                }
+            });
+        }
+    });
+
+    /**
+     * 5. FINISH & DATA SAVE
+     */
+    timeline.push({
+        type: jsPsychInstructions,
+        pages: ['<div style="font-size: 24px;">Experiment complete. Thank you for your participation!</div>'],
+        show_clickable_nav: true
+    });
+
+    jsPsych.run(timeline);
+</script>
+</html>
