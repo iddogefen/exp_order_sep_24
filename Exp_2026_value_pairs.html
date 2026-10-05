@@ -260,8 +260,8 @@ all_pairs.forEach(function(p) {
 });
 
 var practice_pairs = [
-   { name: 'the_performance_causal', type: 'causal_sequence', e1: 1, e2: 2 },
-   { name: 'museum_causal', type: 'causal_sequence', e1: 3, e2: 4 }
+   { name: 'the_performance_causal', type: 'causal_sequence', e1: 1, e2: 2, order: 'forward' },   // cause, then effect
+   { name: 'museum_causal', type: 'causal_sequence', e1: 3, e2: 4, order: 'reversed' }            // effect, then cause
 ];
 
 function getPracticeImagePath(block, idx) {
@@ -474,13 +474,22 @@ timeline.push(withMinReadTime({
     show_clickable_nav: true
 }));
 
+// Practice pair 1: cause first, then effect (file _1 then _2).
+// Practice pair 2: effect first, then cause (file _2 then _1).
 practice_pairs.forEach(function(p) {
-    var img1 = getPracticeImagePath(p, 1);
-    var img2 = getPracticeImagePath(p, 2);
+    var cause_img = getPracticeImagePath(p, 1);   // _1 = cause
+    var effect_img = getPracticeImagePath(p, 2);  // _2 = effect
+    var forward = (p.order === 'forward');
+    var first_img = forward ? cause_img : effect_img;
+    var second_img = forward ? effect_img : cause_img;
 
-    timeline.push(buildImageWithDelayedQuestionTrial(img1, { task: 'practice_item1', folder: p.name }));
+    timeline.push(buildImageWithDelayedQuestionTrial(first_img, {
+        task: 'practice_item1', folder: p.name, presentation_order: p.order, role: forward ? 'cause' : 'effect'
+    }));
     timeline.push(fixationTrial);
-    timeline.push(buildImageWithDelayedQuestionTrial(img2, { task: 'practice_item2', folder: p.name }));
+    timeline.push(buildImageWithDelayedQuestionTrial(second_img, {
+        task: 'practice_item2', folder: p.name, presentation_order: p.order, role: forward ? 'effect' : 'cause'
+    }));
     timeline.push(whiteScreenTrial);
 });
 
