@@ -124,6 +124,7 @@ var timeline = [];
 // ============================================================
 var T = {
     question_delay: 3500,           // Phase 1: each image shown 3.5 s before the question appears
+    question_deadline: 3000,        // Phase 1: after the question appears, up to 3 s to answer; otherwise the task moves on
     fixation: 1000,
     white: 1000,
     exposure_display: 3000,         // Phase 2: image shown alone for 3 s
@@ -404,9 +405,12 @@ function pushPhase(sourceArray, trialBuilderFn, checkAfterPosition, halfwayAfter
     });
 }
 
-// Shows one image; after `delayMs` (default 4000ms) a short question
+// Shows one image; after `delayMs` (T.question_delay) a short question
 // appears BELOW the same image, and only then can the participant
-// click Yes/No to continue.
+// click Yes/No. The participant then has T.question_deadline ms to answer;
+// if there is no answer the trial ends and the task moves on automatically.
+// Data: timed_out (1/0) and rt_from_question (RT measured from the moment
+// the question appeared, i.e. rt minus delayMs).
 function buildImageWithDelayedQuestionTrial(imagePath, dataObj, delayMs) {
     delayMs = (typeof delayMs === 'number') ? delayMs : T.question_delay;
     return {
@@ -417,7 +421,13 @@ function buildImageWithDelayedQuestionTrial(imagePath, dataObj, delayMs) {
                    '<p style="font-size:20px; font-weight:bold;">Does a person appear in this image, or does the word "person" appear as text?</p>' +
                    '</div></div>',
         choices: ['Yes', 'No'],
+        trial_duration: delayMs + T.question_deadline,
         data: dataObj,
+        on_finish: function(data) {
+            var no_answer = (data.response === null || data.response === undefined);
+            data.timed_out = no_answer ? 1 : 0;
+            data.rt_from_question = no_answer ? null : (data.rt - delayMs);
+        },
         on_load: function() {
             var btnGroup = document.querySelector('#jspsych-html-button-response-btngroup');
             if (btnGroup) { btnGroup.style.visibility = 'hidden'; }
@@ -468,6 +478,7 @@ timeline.push(withMinReadTime({
         '<h2>Practice Round</h2>' +
         '<p>We will now go through a short practice round so you can get familiar with the task.</p>' +
         '<p>In each trial, a first image will appear for a few seconds, followed by a question, then a second image, followed by another question.</p>' +
+        '<p>You will have only a few seconds to answer each question. If you do not answer in time, the task moves on automatically.</p>' +
         '<p>Please look at each image carefully and answer the questions that follow.</p>' +
         '</div>'
     ],
@@ -517,7 +528,7 @@ timeline.push(withMinReadTime({
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Phase 1: Image Viewing</h2>' +
         '<p>You will see 48 pairs of images, one after another. Each pair shows two images, one followed by the other.</p>' +
-        '<p>Please view each image carefully. After each image, answer a short question about it.</p>' +
+        '<p>Please view each image carefully. After each image, answer a short question about it. You will have only a few seconds to answer; if you do not, the task moves on automatically.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
