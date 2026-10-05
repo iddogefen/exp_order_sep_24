@@ -127,28 +127,30 @@ var timeline = [];
 // false = REAL timings for actual participants.
 // !!! Set to false before running real participants !!!
 // ============================================================
-var TEST_MODE = true;
+var TEST_MODE = false;
 
 var T = TEST_MODE ? {
-    question_delay: 500,      // image on screen before the question/buttons appear
+    question_delay: 500,            // Phase 1: image on screen before the question appears
     fixation: 500,
     white: 500,
-    exposure_feedback: 500,
-    decision_deadline: 4000,  // time allowed to choose (buttons are active immediately)
-    decision_feedback: 1000,  // chosen image shown this long, regardless of RT
+    exposure_display: 500,          // Phase 2: image shown ALONE before SPACE becomes active
+    exposure_press_deadline: 10000, // Phase 2: max time to press SPACE
+    exposure_reveal: 500,           // Phase 2: value shown after SPACE (always the full duration)
+    decision_deadline: 4000,        // Phase 3: time allowed to choose (buttons active immediately)
+    decision_feedback: 1000,        // Phase 3: chosen image shown this long, regardless of RT
     decision_blank: 500,
-    memory_preview: 500,
-    min_read: 2000,           // minimum reading time on instruction screens
-    halfway: 5000             // "halfway" notice
+    min_read: 2000,                 // minimum reading time on instruction screens
+    halfway: 5000                   // "halfway" notice
 } : {
-    question_delay: 4000,
+    question_delay: 3500,           // Phase 1: each image shown 3.5 s before the question appears
     fixation: 1000,
     white: 1000,
-    exposure_feedback: 3000,
+    exposure_display: 3000,         // Phase 2: image shown alone for 3 s
+    exposure_press_deadline: 10000, // Phase 2: up to 10 s to press SPACE
+    exposure_reveal: 3000,          // Phase 2: value shown 3 s, no matter what
     decision_deadline: 4000,
     decision_feedback: 1000,
     decision_blank: 800,
-    memory_preview: 2000,
     min_read: 10000,
     halfway: 5000
 };
@@ -577,7 +579,7 @@ timeline.push(withMinReadTime({
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Phase 2</h2>' +
         '<p>You will now see some of the images again, one at a time.</p>' +
-        '<p><b>Press the SPACEBAR</b> to reveal what that image is worth.</p>' +
+        '<p>Each image will first appear on its own. Then <b>press the SPACEBAR</b> to reveal what that image is worth. You have 10 seconds to press; if you do not, the value will be shown automatically.</p>' +
         '<p><span style="color:green; font-weight:bold;">$</span> = This image is worth $1</p>' +
         '<p><span style="color:gray; font-weight:bold;">&#9670;</span> = This image is worth $0</p>' +
         '</div>'
@@ -601,22 +603,47 @@ function buildExposureTrials(pair) {
         cell: pair.cell
     };
 
+    var img_html = '<img src="' + pair.exposed_path + '" class="exp-image">';
+    var prompt_style = 'font-size: 22px; margin-top: 20px; font-weight: bold;';
+    var prompt_text = 'Press SPACEBAR to reveal this image\'s value';
+
     return [
         {
+            // 1) The image is shown ALONE for T.exposure_display ms (3 s).
+            //    SPACE is not active yet; the prompt line is invisible but
+            //    keeps its space so the layout does not jump.
             type: jsPsychHtmlKeyboardResponse,
-            stimulus: '<div class="stimulus-container"><img src="' + pair.exposed_path + '" class="exp-image">' +
-                       '<p style="font-size: 22px; margin-top: 20px; font-weight: bold;">Press SPACEBAR to reveal this image\'s value</p></div>',
-            choices: [' '],
-            data: Object.assign({ task: 'exposure_wait' }, common_data)
+            stimulus: '<div class="stimulus-container">' + img_html +
+                       '<p style="' + prompt_style + ' visibility: hidden;">' + prompt_text + '</p></div>',
+            choices: "NO_KEYS",
+            trial_duration: T.exposure_display,
+            data: Object.assign({ task: 'exposure_display' }, common_data)
         },
         {
+            // 2) The prompt appears. The participant has up to
+            //    T.exposure_press_deadline ms (10 s) to press SPACE.
+            //    If no press, the trial ends and the value is revealed
+            //    automatically (pressed_space = 0 in the data).
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: '<div class="stimulus-container">' + img_html +
+                       '<p style="' + prompt_style + '">' + prompt_text + '</p></div>',
+            choices: [' '],
+            trial_duration: T.exposure_press_deadline,
+            data: Object.assign({ task: 'exposure_wait' }, common_data),
+            on_finish: function(data) {
+                data.pressed_space = (data.response === null) ? 0 : 1;
+            }
+        },
+        {
+            // 3) The value is shown for T.exposure_reveal ms (4 s) no matter
+            //    how fast the participant pressed.
             type: jsPsychHtmlKeyboardResponse,
             stimulus: '<div class="stimulus-container" style="display:flex; align-items:center; justify-content:center; gap:30px;">' +
-                       '<img src="' + pair.exposed_path + '" class="exp-image">' +
+                       img_html +
                        '<div><img src="' + reward_img + '" style="width:140px;height:140px;border:4px solid ' + reward_clr + ';">' +
                        '<p style="color:' + reward_clr + '; font-weight:bold; font-size:22px;">' + reward_txt + '</p></div></div>',
             choices: "NO_KEYS",
-            trial_duration: T.exposure_feedback,
+            trial_duration: T.exposure_reveal,
             data: Object.assign({ task: 'exposure_feedback' }, common_data)
         },
         whiteScreenTrial
@@ -786,65 +813,64 @@ timeline.push(withMinReadTime({
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Phase 4: Final Questions</h2>' +
-        '<p>First, for each image you will pick the matching image from a few options.</p>' +
+        '<p>First, you will see an image from a pair and type a short description of the other image of that pair.</p>' +
         '<p>Then, for each pair of images you will judge whether one image caused the other, or whether they are unrelated.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
 }));
 
-// ---- 4a: Memory test (12 pairs: 6 forward + 6 reversed, random) ----
+// ---- 4a: Memory test - OPEN QUESTION (24 pairs: 12 forward + 12 reversed) ----
+// The FIRST image of the pair (as it appeared in Phase 1) is shown, and the
+// participant types a description of the SECOND image of that pair.
+//   forward  pair: cue = cause,  target = effect
+//   reversed pair: cue = effect, target = cause
 var memory_forward = jsPsych.randomization.shuffle(
     all_pairs.filter(function(p) { return p.presentation_order === 'forward'; })
-).slice(0, 6);
+).slice(0, 12);
 var memory_reversed = jsPsych.randomization.shuffle(
     all_pairs.filter(function(p) { return p.presentation_order === 'reversed'; })
-).slice(0, 6);
+).slice(0, 12);
 var memory_order = jsPsych.randomization.shuffle(memory_forward.concat(memory_reversed));
 
 function buildMemoryTrial(pair) {
-    var foil_pool = all_pairs.filter(function(p) { return p.pair_id !== pair.pair_id; });
-    var foil_sample = jsPsych.randomization.sampleWithoutReplacement(foil_pool, 3);
-    var option_paths = jsPsych.randomization.shuffle(
-        [pair.effect_path].concat(foil_sample.map(function(p) { return p.effect_path; }))
-    );
-    var correct_index = option_paths.indexOf(pair.effect_path);
-    var option_labels = option_paths.map(function(p, i) { return 'Option ' + (i + 1); });
-
-    var options_html = option_paths.map(function(p, i) {
-        return '<div style="text-align:center;"><img src="' + p + '" class="small-image"><br>' +
-               '<span style="font-weight:bold;">Option ' + (i + 1) + '</span></div>';
-    }).join('');
+    var cue_role = pair.first_role;
+    var target_role = (pair.first_role === 'cause') ? 'effect' : 'cause';
 
     return [
         {
-            type: jsPsychHtmlKeyboardResponse,
-            stimulus: '<div class="stimulus-container"><img src="' + pair.cause_path + '" class="exp-image">' +
-                       '<p style="font-size: 18px; margin-top: 15px;">Remember this image. Its matching image is one of the options on the next screen.</p></div>',
-            choices: "NO_KEYS",
-            trial_duration: T.memory_preview
-        },
-        {
-            type: jsPsychHtmlButtonResponse,
-            stimulus: '<div class="stimulus-container"><img src="' + pair.cause_path + '" class="small-image">' +
-                       '<p style="font-size: 18px; margin-top: 15px; font-weight:bold;">Which image matches this one?</p></div>' +
-                       '<div style="display:flex; justify-content:center; gap:15px; flex-wrap:wrap; margin-top:10px;">' + options_html + '</div>',
-            choices: option_labels,
+            type: jsPsychSurveyText,
+            preamble: '<div class="stimulus-container"><img src="' + pair.first_path + '" class="exp-image">' +
+                      '<p style="font-size: 20px; margin-top: 15px; font-weight: bold;">This image was the FIRST image of a pair you saw earlier.</p>' +
+                      '<p style="font-size: 16px; color: #555;">If you do not remember, type "don\'t remember".</p></div>',
+            questions: [
+                {
+                    prompt: 'What was the SECOND image of this pair? Describe it in a few words:',
+                    name: 'memory_response',
+                    rows: 2,
+                    columns: 50,
+                    required: true
+                }
+            ],
+            button_label: 'Continue',
             data: {
                 task: 'memory_test',
                 pair_id: pair.pair_id,
                 presentation_order: pair.presentation_order,
-                correct_index: correct_index
+                cue_role: cue_role,
+                target_role: target_role,
+                cue_path: pair.first_path,
+                target_path: pair.second_path
             },
             on_finish: function(data) {
-                data.correct = (data.response === correct_index) ? 1 : 0;
+                data.memory_text = (data.response && data.response.memory_response) ? data.response.memory_response : null;
             }
         },
         whiteScreenTrial
     ];
 }
 
-pushPhase(memory_order, buildMemoryTrial, 6);
+pushPhase(memory_order, buildMemoryTrial, 12, 12);
 
 // ---- 4b: Causal judgment (all 48 pairs) ----
 // Both images are shown on ONE screen, labeled A (left) and B (right).
