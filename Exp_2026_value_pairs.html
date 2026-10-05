@@ -120,48 +120,21 @@ var jsPsych = initJsPsych({
 var timeline = [];
 
 // ============================================================
-// TEST MODE
-// true  = every image is shown for 0.5s and waiting times are shortened,
-//         so you can quickly click through the whole experiment and check
-//         that everything works. A red "TEST MODE" label appears on screen.
-// false = REAL timings for actual participants.
-// !!! Set to false before running real participants !!!
+// TIMINGS (milliseconds)
 // ============================================================
-var TEST_MODE = false;
-
-var T = TEST_MODE ? {
-    question_delay: 500,            // Phase 1: image on screen before the question appears
-    fixation: 500,
-    white: 500,
-    exposure_display: 500,          // Phase 2: image shown ALONE before SPACE becomes active
-    exposure_press_deadline: 10000, // Phase 2: max time to press SPACE
-    exposure_reveal: 500,           // Phase 2: value shown after SPACE (always the full duration)
-    decision_deadline: 4000,        // Phase 3: time allowed to choose (buttons active immediately)
-    decision_feedback: 1000,        // Phase 3: chosen image shown this long, regardless of RT
-    decision_blank: 500,
-    min_read: 2000,                 // minimum reading time on instruction screens
-    halfway: 5000                   // "halfway" notice
-} : {
+var T = {
     question_delay: 3500,           // Phase 1: each image shown 3.5 s before the question appears
     fixation: 1000,
     white: 1000,
     exposure_display: 3000,         // Phase 2: image shown alone for 3 s
     exposure_press_deadline: 10000, // Phase 2: up to 10 s to press SPACE
     exposure_reveal: 3000,          // Phase 2: value shown 3 s, no matter what
-    decision_deadline: 4000,
-    decision_feedback: 1000,
+    decision_deadline: 4000,        // Phase 3: time allowed to choose (buttons active immediately)
+    decision_feedback: 1000,        // Phase 3: chosen image shown this long, regardless of RT
     decision_blank: 800,
-    min_read: 10000,
-    halfway: 5000
+    min_read: 10000,                // minimum reading time on instruction screens
+    halfway: 5000                   // "halfway" notice
 };
-
-if (TEST_MODE) {
-    console.warn('TEST MODE IS ON - shortened timings. Set TEST_MODE = false for real participants.');
-    var test_banner = document.createElement('div');
-    test_banner.innerText = 'TEST MODE';
-    test_banner.style.cssText = 'position:fixed; top:6px; left:6px; z-index:99999; background:#c00; color:#fff; font:bold 13px Arial; padding:3px 8px; border-radius:4px;';
-    document.documentElement.appendChild(test_banner);
-}
 
 var participant_id = jsPsych.data.getURLVariable('participantId') || jsPsych.randomization.randomID(15);
 var study_id = jsPsych.data.getURLVariable('assignmentId');
@@ -466,7 +439,7 @@ timeline.push(withMinReadTime({
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Welcome to the Experiment</h2>' +
-        '<p>In this study you will see pairs of images and answer short questions about them. Some images will also have a monetary value.</p>' +
+        '<p>In this study you will see pairs of images and answer short questions about them.</p>' +
         '<p>The experiment has several short parts, beginning with a brief practice round.</p>' +
         '<p>Click "Next" to read the consent form.</p>' +
         '</div>',
