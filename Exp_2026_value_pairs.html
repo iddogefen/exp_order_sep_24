@@ -110,7 +110,20 @@ function saveData(data) {
     });
 }
 
+// Add ?debug=1 to the URL to log every finished trial in the console (the setup checks always run).
+var DEBUG = false;
+try { DEBUG = new URLSearchParams(window.location.search).get('debug') === '1'; } catch (e) {}
+
 var jsPsych = initJsPsych({
+    on_trial_finish: function(d) {
+        if (DEBUG) {
+            console.log('[trial ' + d.trial_index + '] ' + (d.task || d.trial_type) +
+                (d.pair_id ? ' pair=' + d.pair_id : '') +
+                (d.test_type ? ' ' + d.test_type + '/' + d.comparison_role + '/' + d.presentation_order : '') +
+                (d.rt !== null && d.rt !== undefined ? ' rt=' + d.rt : '') +
+                (d.timed_out === 1 ? ' TIMED_OUT' : ''));
+        }
+    },
     on_finish: function() {
         console.log("Experiment timeline finished (on_finish).");
         saveData(jsPsych.data.get().csv());
@@ -145,7 +158,7 @@ jsPsych.data.addProperties({
     subject_id: participant_id,
     study_id: study_id,
     session_id: session_id,
-    experiment: 'CauseEffect_Value_Spreading_48pairs_WithinSubject_Order'
+    experiment: 'ValueSpreading_WithinSubject_CauseEffect_EffectCause_v2_40pairs_IndirectFirst_2026-10-05'
 });
 
 // ============================================================
@@ -153,10 +166,19 @@ jsPsych.data.addProperties({
 // Images live in "images_value/" as:
 //   Cause_01 ... Cause_48   (the CAUSE image of each pair)
 //   Effect_01 ... Effect_48 (the EFFECT image of each pair)
+// (only the pairs in ACTIVE_PAIR_IDS are used)
 // Extension: .jpg for pairs 1-3, .png for the rest (edit the list
 // below if your files differ).
 // ============================================================
-var NUM_PAIRS = 48;
+// 40 pairs are used. Pairs removed after the pilot: 26 and 40 (cause/effect images were swapped),
+// 8 and 32 (weak causal link), 39, 25, 10 and 12 (ambiguous). File numbers are NOT renumbered.
+var REMOVED_PAIR_IDS = [8, 10, 12, 25, 26, 32, 39, 40];
+var ACTIVE_PAIR_IDS = [];
+for (var k = 1; k <= 48; k++) {
+    if (REMOVED_PAIR_IDS.indexOf(k) === -1) { ACTIVE_PAIR_IDS.push(k); }
+}
+var NUM_PAIRS = ACTIVE_PAIR_IDS.length;   // 40
+var HALF_PAIRS = NUM_PAIRS / 2;           // 20 (halfway notice + math question position)
 var STIM_FOLDER = 'images_value/';
 var JPG_PAIR_NUMBERS = [1, 2, 3];
 
@@ -177,23 +199,23 @@ function getEffectPath(n) {
 }
 
 // ============================================================
-// BUILD THE 48 PAIRS
+// BUILD THE 40 PAIRS
 // ============================================================
 var all_pairs = [];
-for (var i = 1; i <= NUM_PAIRS; i++) {
+ACTIVE_PAIR_IDS.forEach(function(i) {
     all_pairs.push({
         pair_id: i,
         cause_path: getCausePath(i),
         effect_path: getEffectPath(i)
     });
-}
+});
 
 // ------------------------------------------------------------
-// WITHIN-SUBJECT DESIGN: 2 x 2 x 2 = 8 cells, 6 pairs per cell.
+// WITHIN-SUBJECT DESIGN: 2 x 2 x 2 = 8 cells, 5 pairs per cell (40 pairs).
 //
 //   presentation_order (Phase 1 encoding):
-//       'forward'  -> cause shown first, then effect   (24 pairs)
-//       'reversed' -> effect shown first, then cause   (24 pairs)
+//       'forward'  -> cause shown first, then effect   (20 pairs)
+//       'reversed' -> effect shown first, then cause   (20 pairs)
 //   exposed_role (Phase 2 - which member is shown with its value):
 //       'cause' | 'effect'
 //   reward_condition (Phase 2 - the value of the exposed member):
@@ -215,7 +237,8 @@ presentation_orders.forEach(function(o) {
     });
 });
 
-var cell_size = NUM_PAIRS / design_cells.length; // 6
+var cell_size = NUM_PAIRS / design_cells.length; // 5
+if (cell_size !== Math.floor(cell_size)) { throw new Error('NUM_PAIRS must be divisible by 8'); }
 var shuffled_for_cells = jsPsych.randomization.shuffle(all_pairs.slice());
 
 shuffled_for_cells.forEach(function(pair, idx) {
@@ -335,10 +358,11 @@ function halfwayTrial() {
 }
 
 // Wraps a jsPsychInstructions trial so its navigation buttons stay
-// disabled for `minMs` (default 10000ms), forcing a minimum reading time.
+// disabled for `minMs` (default T.min_read), forcing a minimum reading time.
 function withMinReadTime(instructionsTrial, minMs) {
     minMs = (typeof minMs === 'number') ? minMs : T.min_read;
     var trial = Object.assign({}, instructionsTrial);
+    trial.allow_keys = false;   // keyboard navigation off, so the reading-time lock cannot be bypassed with the arrow keys
     var original_on_load = trial.on_load;
 
     trial.on_load = function() {
@@ -390,7 +414,7 @@ function withMinReadTime(instructionsTrial, minMs) {
 
 // Runs all trials for a phase, inserting exactly ONE math question after
 // the item at `checkAfterPosition` (1-based), if provided.
-// Total math questions in the experiment = 4.
+// Total math questions in the experiment = 4 (one per phase: encoding, exposure, decision, memory).
 // If `halfwayAfterPosition` is given, a 5-second "halfway" notice is shown
 // after that item (before the math question, if there is one).
 function pushPhase(sourceArray, trialBuilderFn, checkAfterPosition, halfwayAfterPosition) {
@@ -517,9 +541,9 @@ timeline.push(withMinReadTime({
 
 // ============================================================
 // PHASE 1: ENCODING  (within-subject manipulation of presentation order)
-// All 48 pairs are shown in a fully randomized (mixed) sequence.
-//   - 24 pairs: cause first, then effect   ('forward')
-//   - 24 pairs: effect first, then cause   ('reversed')
+// All 40 pairs are shown in a fully randomized (mixed) sequence.
+//   - 20 pairs: cause first, then effect   ('forward')
+//   - 20 pairs: effect first, then cause   ('reversed')
 // Each image is followed by a short "person in image?" question.
 // ============================================================
 timeline.push(withMinReadTime({
@@ -527,7 +551,7 @@ timeline.push(withMinReadTime({
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Phase 1: Image Viewing</h2>' +
-        '<p>You will see 48 pairs of images, one after another. Each pair shows two images, one followed by the other.</p>' +
+        '<p>You will see ' + NUM_PAIRS + ' pairs of images, one after another. Each pair shows two images, one followed by the other.</p>' +
         '<p>Please view each image carefully. After each image, answer a short question about it. You will have only a few seconds to answer; if you do not, the task moves on automatically.</p>' +
         '</div>'
     ],
@@ -558,7 +582,7 @@ function buildEncodingTrials(pair) {
     ];
 }
 
-pushPhase(encoding_order, buildEncodingTrials, 24, 24);
+pushPhase(encoding_order, buildEncodingTrials, HALF_PAIRS, HALF_PAIRS);
 
 // ============================================================
 // PHASE 2: CONTROLLED EXPOSURE
@@ -628,7 +652,7 @@ function buildExposureTrials(pair) {
             }
         },
         {
-            // 3) The value is shown for T.exposure_reveal ms (4 s) no matter
+            // 3) The value is shown for T.exposure_reveal ms (3 s) no matter
             //    how fast the participant pressed.
             type: jsPsychHtmlKeyboardResponse,
             stimulus: '<div class="stimulus-container" style="display:flex; align-items:center; justify-content:center; gap:30px;">' +
@@ -643,15 +667,19 @@ function buildExposureTrials(pair) {
     ];
 }
 
-pushPhase(exposure_order, buildExposureTrials, 24, 24);
+pushPhase(exposure_order, buildExposureTrials, HALF_PAIRS, HALF_PAIRS);
 
 // ============================================================
 // PHASE 3: DECISION (forced choice)
 //
 // Every comparison is reward-linked vs. neutral-linked, within the SAME
 // role AND the SAME presentation order (so order is never confounded
-// with reward). 2 orders x 2 roles x 2 test types x 6 comparisons
-// = 48 choices.
+// with reward). 2 orders x 2 roles x 2 test types x 5 comparisons
+// = 40 choices.
+//
+// BLOCK ORDER: all 20 INDIRECT choices come FIRST (shuffled among themselves),
+// followed by the 20 DIRECT choices (shuffled among themselves). The critical
+// test is therefore run while memory is fresh and before fatigue/forgetting.
 //
 //   INDIRECT test: the never-shown "critical" member of each pair
 //     (unseen CAUSE/EFFECT whose partner was rewarded vs. neutral).
@@ -673,7 +701,7 @@ timeline.push(withMinReadTime({
 }));
 
 // Builds direct reward-vs-neutral trials for one group of pairs
-// (12 items -> 6 reward, 6 neutral -> 6 comparisons).
+// (10 items -> 5 reward, 5 neutral -> 5 comparisons).
 // `pathField`: 'critical_path' (indirect) or 'exposed_path' (direct).
 function buildComparisonSet(group, comparisonRole, testType, pathField, orderLabel) {
     var reward_items = jsPsych.randomization.shuffle(
@@ -696,14 +724,15 @@ function buildComparisonSet(group, comparisonRole, testType, pathField, orderLab
     });
 }
 
-var all_decision_trials = [];
+var indirect_trials_all = [];
+var direct_trials_all = [];
 presentation_orders.forEach(function(o) {
     exposed_roles.forEach(function(r) {
         // INDIRECT: pairs whose unseen (critical) member has role r
         var indirect_group = all_pairs.filter(function(p) {
             return p.presentation_order === o && p.critical_role === r;
         });
-        all_decision_trials = all_decision_trials.concat(
+        indirect_trials_all = indirect_trials_all.concat(
             buildComparisonSet(indirect_group, r, 'indirect', 'critical_path', o)
         );
 
@@ -711,14 +740,15 @@ presentation_orders.forEach(function(o) {
         var direct_group = all_pairs.filter(function(p) {
             return p.presentation_order === o && p.exposed_role === r;
         });
-        all_decision_trials = all_decision_trials.concat(
+        direct_trials_all = direct_trials_all.concat(
             buildComparisonSet(direct_group, r, 'direct', 'exposed_path', o)
         );
     });
 });
 
-// Fully interleave all 48 decisions.
-var decision_trials = jsPsych.randomization.shuffle(all_decision_trials);
+// 20 indirect choices first, then 20 direct choices (each block shuffled).
+var decision_trials = jsPsych.randomization.shuffle(indirect_trials_all)
+    .concat(jsPsych.randomization.shuffle(direct_trials_all));
 
 function buildDecisionTrials(dt) {
     return [
@@ -775,7 +805,7 @@ function buildDecisionTrials(dt) {
                     return '<div style="font-family: Arial; text-align: center; padding: 60px;">' +
                            '<h2 style="color: #c00;">You did not click in time</h2></div>';
                 }
-                var hl = 'border: 6px solid #2a7fff;';
+                var hl = 'outline: 6px solid #2a7fff; outline-offset: 2px;';   // outline (not border): the image does not change size
                 var left_style = (resp === 0) ? hl : '';
                 var right_style = (resp === 1) ? hl : '';
                 return '<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is <b>more valuable</b>?</h3></div>' +
@@ -796,7 +826,7 @@ function buildDecisionTrials(dt) {
     ];
 }
 
-pushPhase(decision_trials, buildDecisionTrials, 24, 24);
+pushPhase(decision_trials, buildDecisionTrials, HALF_PAIRS, HALF_PAIRS);   // halfway notice = boundary between the indirect and the direct block
 
 // ============================================================
 // PHASE 4: CONTROL (memory + causal strength rating)
@@ -813,17 +843,17 @@ timeline.push(withMinReadTime({
     show_clickable_nav: true
 }));
 
-// ---- 4a: Memory test - OPEN QUESTION (24 pairs: 12 forward + 12 reversed) ----
+// ---- 4a: Memory test - OPEN QUESTION (20 pairs: 10 forward + 10 reversed) ----
 // The FIRST image of the pair (as it appeared in Phase 1) is shown, and the
 // participant types a description of the SECOND image of that pair.
 //   forward  pair: cue = cause,  target = effect
 //   reversed pair: cue = effect, target = cause
 var memory_forward = jsPsych.randomization.shuffle(
     all_pairs.filter(function(p) { return p.presentation_order === 'forward'; })
-).slice(0, 12);
+).slice(0, 10);
 var memory_reversed = jsPsych.randomization.shuffle(
     all_pairs.filter(function(p) { return p.presentation_order === 'reversed'; })
-).slice(0, 12);
+).slice(0, 10);
 var memory_order = jsPsych.randomization.shuffle(memory_forward.concat(memory_reversed));
 
 function buildMemoryTrial(pair) {
@@ -863,9 +893,9 @@ function buildMemoryTrial(pair) {
     ];
 }
 
-pushPhase(memory_order, buildMemoryTrial, 12, 12);
+pushPhase(memory_order, buildMemoryTrial, 10, 10);
 
-// ---- 4b: Causal judgment (all 48 pairs) ----
+// ---- 4b: Causal judgment (all 40 pairs) ----
 // Both images are shown on ONE screen, labeled A (left) and B (right).
 // The left/right placement follows the Phase 1 presentation order:
 //   forward  pairs -> cause on the left (A), effect on the right (B)
@@ -916,7 +946,7 @@ function buildRatingTrial(pair) {
     ];
 }
 
-pushPhase(rating_order, buildRatingTrial, null, 24);
+pushPhase(rating_order, buildRatingTrial, null, HALF_PAIRS);
 
 // ============================================================
 // DEMOGRAPHICS
@@ -939,6 +969,7 @@ timeline.push({
     type: jsPsychCallFunction,
     func: function() {
         console.log("Reached end of real trials, saving data now (before final screen)...");
+        try { runDataChecks(); } catch (e) { console.error('data checks failed to run', e); }
         saveData(jsPsych.data.get().csv());
     }
 });
@@ -946,18 +977,247 @@ timeline.push({
 // ============================================================
 // END OF EXPERIMENT
 // ============================================================
+// Leave fullscreen, then show the final page. It has no key/button and no duration, so it STAYS on
+// screen (the data were already saved above) and the participant can copy the completion code.
+// (A single Instructions page would clear the screen on "Next".)
 timeline.push({
-    type: jsPsychInstructions,
-    pages: [
-        '<div style="text-align: center; padding: 60px; font-family: Arial;">' +
+    type: jsPsychFullscreen,
+    fullscreen_mode: false
+});
+
+timeline.push({
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: '<div style="text-align: center; padding: 60px; font-family: Arial;">' +
         '<h2>Experiment Completed</h2>' +
         '<p style="font-size: 20px; margin-top: 20px;">You have successfully finished the study.</p>' +
         '<p style="font-size: 22px; color: #28a745; font-weight: bold; margin-top: 30px;">Thank you very much for your participation!</p>' +
         '<p style="font-size: 16px; color: #666; margin-top: 40px;">Your data has already been saved. Completion Code is 17GF67j9gnk. You may now safely close this window or return to the platform.</p>' +
-        '</div>'
-    ],
-    show_clickable_nav: true
+        '</div>',
+    choices: "NO_KEYS"
 });
+
+
+// ============================================================
+// CONSOLE SELF-CHECKS (open the browser console: F12 -> Console)
+// 1) runSetupChecks()  - runs when the page loads: verifies the design, the planned timeline and the image files.
+// 2) runDataChecks()   - runs at the END of the experiment (before saving): verifies the data that were collected.
+// Nothing is shown to participants. "PASS" / "FAIL" / "WARN" lines are printed in the console.
+// ============================================================
+var CHECK_SAVE_ENDPOINT = false;   // true = also send a harmless GET to /write_data.php to see if the server answers
+
+function makeChecker(title) {
+    var res = { pass: 0, fail: 0, warn: 0 };
+    console.group('%c' + title, 'font-weight:bold; font-size:14px;');
+    return {
+        ok: function(cond, msg, detail) {
+            if (cond) { res.pass++; console.log('%cPASS%c ' + msg, 'color:green;font-weight:bold', 'color:inherit'); }
+            else { res.fail++; console.error('FAIL ' + msg + (detail !== undefined ? '  ->  ' + JSON.stringify(detail) : '')); }
+        },
+        warn: function(cond, msg, detail) {
+            if (!cond) { res.warn++; console.warn('WARN ' + msg + (detail !== undefined ? '  ->  ' + JSON.stringify(detail) : '')); }
+            else { res.pass++; console.log('%cPASS%c ' + msg, 'color:green;font-weight:bold', 'color:inherit'); }
+        },
+        done: function() {
+            console.log('%c' + res.pass + ' passed, ' + res.fail + ' FAILED, ' + res.warn + ' warnings',
+                        'font-weight:bold; color:' + (res.fail ? 'red' : (res.warn ? 'orange' : 'green')));
+            console.groupEnd();
+            return res;
+        }
+    };
+}
+
+function countBy(arr, keyFn) {
+    var o = {};
+    arr.forEach(function(x) { var k = keyFn(x); o[k] = (o[k] || 0) + 1; });
+    return o;
+}
+
+function runSetupChecks() {
+    var c = makeChecker('SETUP CHECKS (design + timeline)');
+    try {
+        // ---- stimuli / pairs ----
+        c.ok(all_pairs.length === 40, '40 pairs in the design', all_pairs.length);
+        c.ok(REMOVED_PAIR_IDS.every(function(id) { return !all_pairs.some(function(p) { return p.pair_id === id; }); }),
+             'removed pairs (' + REMOVED_PAIR_IDS.join(',') + ') are not used');
+        c.ok(new Set(all_pairs.map(function(p) { return p.pair_id; })).size === all_pairs.length, 'no duplicate pair ids');
+        var cells = countBy(all_pairs, function(p) { return p.cell; });
+        c.ok(Object.keys(cells).length === 8 && Object.keys(cells).every(function(k) { return cells[k] === 5; }),
+             '8 design cells with 5 pairs each', cells);
+        var orders = countBy(all_pairs, function(p) { return p.presentation_order; });
+        c.ok(orders.forward === 20 && orders.reversed === 20, '20 forward + 20 reversed pairs', orders);
+        c.ok(all_pairs.every(function(p) {
+                 return p.presentation_order === 'forward'
+                     ? (p.first_path === p.cause_path && p.second_path === p.effect_path)
+                     : (p.first_path === p.effect_path && p.second_path === p.cause_path); }),
+             'presentation order: forward = cause first, reversed = effect first');
+        c.ok(all_pairs.every(function(p) {
+                 return p.critical_path !== p.exposed_path &&
+                        ((p.exposed_role === 'cause' && p.exposed_path === p.cause_path && p.critical_path === p.effect_path) ||
+                         (p.exposed_role === 'effect' && p.exposed_path === p.effect_path && p.critical_path === p.cause_path)); }),
+             'exposed member and critical (unseen) member are different and consistent with exposed_role');
+
+        // ---- decision phase ----
+        var byId = {}; all_pairs.forEach(function(p) { byId[p.pair_id] = p; });
+        c.ok(decision_trials.length === 40, '40 decision trials', decision_trials.length);
+        c.ok(decision_trials.slice(0, 20).every(function(d) { return d.test_type === 'indirect'; }) &&
+             decision_trials.slice(20).every(function(d) { return d.test_type === 'direct'; }),
+             'decision order: 20 INDIRECT first, then 20 DIRECT');
+        var bal = countBy(decision_trials, function(d) { return d.test_type + '|' + d.comparison_role + '|' + d.presentation_order; });
+        c.ok(Object.keys(bal).length === 8 && Object.keys(bal).every(function(k) { return bal[k] === 5; }),
+             'decision balance: 5 trials in each test_type x role x order cell', bal);
+        ['indirect', 'direct'].forEach(function(tt) {
+            var ids = [];
+            decision_trials.filter(function(d) { return d.test_type === tt; })
+                .forEach(function(d) { ids.push(d.reward_pair_id, d.neutral_pair_id); });
+            c.ok(ids.length === 40 && new Set(ids).size === 40, tt + ': every pair is used exactly once');
+        });
+        c.ok(decision_trials.every(function(d) {
+                 var r = byId[d.reward_pair_id], n = byId[d.neutral_pair_id];
+                 return r.reward_condition === 'reward' && n.reward_condition === 'neutral'; }),
+             'reward_pair_id is always a reward pair, neutral_pair_id always a neutral pair');
+        c.ok(decision_trials.every(function(d) {
+                 var r = byId[d.reward_pair_id], n = byId[d.neutral_pair_id];
+                 return r.presentation_order === d.presentation_order && n.presentation_order === d.presentation_order; }),
+             'both items of a comparison come from the SAME presentation order');
+        c.ok(decision_trials.filter(function(d) { return d.test_type === 'indirect'; }).every(function(d) {
+                 return d.reward_path === byId[d.reward_pair_id].critical_path && d.neutral_path === byId[d.neutral_pair_id].critical_path &&
+                        byId[d.reward_pair_id].critical_role === d.comparison_role && byId[d.neutral_pair_id].critical_role === d.comparison_role; }),
+             'INDIRECT trials compare the UNSEEN members, both with the labelled role');
+        c.ok(decision_trials.filter(function(d) { return d.test_type === 'direct'; }).every(function(d) {
+                 return d.reward_path === byId[d.reward_pair_id].exposed_path && d.neutral_path === byId[d.neutral_pair_id].exposed_path &&
+                        byId[d.reward_pair_id].exposed_role === d.comparison_role && byId[d.neutral_pair_id].exposed_role === d.comparison_role; }),
+             'DIRECT trials compare the EXPOSED members, both with the labelled role');
+
+        // ---- memory ----
+        var mo = countBy(memory_order, function(p) { return p.presentation_order; });
+        c.ok(memory_order.length === 20 && mo.forward === 10 && mo.reversed === 10, 'memory test: 10 forward + 10 reversed pairs', mo);
+
+        // ---- planned timeline ----
+        var tl = countBy(timeline.filter(function(t) { return t.data && t.data.task; }), function(t) { return t.data.task; });
+        var expected = { encoding_item: 80, exposure_display: 40, exposure_wait: 40, exposure_feedback: 40,
+                         decision_choice: 40, decision_feedback: 40, memory_test: 20, causal_judgment: 40,
+                         math_question: 4, halfway_notice: 5, practice_item1: 2, practice_item2: 2, demographics: 1 };
+        Object.keys(expected).forEach(function(k) {
+            c.ok(tl[k] === expected[k], 'timeline has ' + expected[k] + ' x ' + k, tl[k]);
+        });
+        var enc = timeline.find(function(t) { return t.data && t.data.task === 'encoding_item'; });
+        c.ok(enc && enc.trial_duration === T.question_delay + T.question_deadline,
+             'Phase 1 trial lasts question_delay + question_deadline = ' + (T.question_delay + T.question_deadline) + ' ms');
+        var dc = timeline.find(function(t) { return t.data && t.data.task === 'decision_choice'; });
+        c.ok(dc && dc.trial_duration === T.decision_deadline, 'decision trial deadline = ' + T.decision_deadline + ' ms');
+        var last = timeline[timeline.length - 1];
+        c.ok(last && typeof last.stimulus === 'string' && last.stimulus.indexOf('Completion Code is ') !== -1 &&
+             last.stimulus.indexOf('XXXXXXXX') === -1 && last.trial_duration === undefined,
+             'last page shows a completion code (not the placeholder) and stays on screen');
+        console.log('Timings (ms):', JSON.stringify(T));
+
+        // ---- URL variables ----
+        c.warn(!!jsPsych.data.getURLVariable('participantId'), 'URL has participantId (otherwise a random id is used)');
+        c.warn(!!study_id, 'URL has assignmentId (study_id)');
+        c.warn(!!session_id, 'URL has projectId (session_id)');
+        console.log('participant_id =', participant_id);
+    } catch (err) {
+        c.ok(false, 'setup checks crashed: ' + err.message);
+    }
+    var out = c.done();
+
+    // ---- image files (asynchronous; reports in the console when finished) ----
+    if (typeof Image !== 'undefined') {
+        var paths = {};
+        all_pairs.forEach(function(p) { paths[p.cause_path] = 1; paths[p.effect_path] = 1; });
+        ['images/gray.png', 'images/dollar.png', 'images/consent_form_2026_page1.png', 'images/consent_form_2026_page2.png']
+            .forEach(function(x) { paths[x] = 1; });
+        practice_pairs.forEach(function(p) { paths[getPracticeImagePath(p, 1)] = 1; paths[getPracticeImagePath(p, 2)] = 1; });
+        var list = Object.keys(paths), missing = [], done = 0;
+        list.forEach(function(path) {
+            var im = new Image();
+            im.onload = im.onerror = function(ev) {
+                if (ev && ev.type === 'error') { missing.push(path); }
+                if (++done === list.length) {
+                    if (missing.length) { console.error('FAIL image files: ' + missing.length + ' of ' + list.length + ' could not be loaded:', missing); }
+                    else { console.log('%cPASS%c all ' + list.length + ' image files load', 'color:green;font-weight:bold', 'color:inherit'); }
+                }
+            };
+            im.src = path;
+        });
+    }
+
+    if (CHECK_SAVE_ENDPOINT && typeof fetch !== 'undefined') {
+        fetch('/write_data.php', { method: 'GET' })
+            .then(function(r) { console.log('write_data.php answered with HTTP ' + r.status + (r.ok ? ' (reachable)' : ' (check the server)')); })
+            .catch(function(e) { console.error('FAIL write_data.php is not reachable:', e); });
+    }
+    return out;
+}
+
+function runDataChecks() {
+    var c = makeChecker('DATA CHECKS (collected data)');
+    try {
+        var all = jsPsych.data.get();
+        var rows = all.values();
+        var of = function(task) { return rows.filter(function(r) { return r.task === task; }); };
+        c.ok(rows.length > 0, 'data contains ' + rows.length + ' trials');
+        c.ok(rows.every(function(r) { return r.subject_id === participant_id; }), 'every row carries the subject_id');
+        c.ok(rows.every(function(r) { return !!r.experiment; }), 'every row carries the experiment name');
+
+        var exp = { encoding_item: 80, exposure_display: 40, exposure_wait: 40, exposure_feedback: 40,
+                    decision_choice: 40, decision_feedback: 40, memory_test: 20, causal_judgment: 40, math_question: 4, demographics: 1 };
+        Object.keys(exp).forEach(function(k) { c.ok(of(k).length === exp[k], exp[k] + ' x ' + k + ' recorded', of(k).length); });
+
+        // Phase 1
+        var enc = of('encoding_item');
+        c.ok(enc.every(function(r) { return r.timed_out === 0 || r.timed_out === 1; }), 'Phase 1: timed_out recorded on every item');
+        var encTO = enc.filter(function(r) { return r.timed_out === 1; }).length;
+        c.warn(encTO <= enc.length * 0.2, 'Phase 1: no-answer rate is ' + encTO + '/' + enc.length + ' (<= 20%)');
+        var rtq = enc.map(function(r) { return r.rt_from_question; }).filter(function(x) { return x !== null && x !== undefined; });
+        c.ok(rtq.every(function(x) { return x >= 0 && x <= T.question_deadline + 50; }), 'Phase 1: rt_from_question within 0..' + T.question_deadline + ' ms');
+
+        // Phase 2
+        var ew = of('exposure_wait');
+        c.ok(ew.every(function(r) { return r.pressed_space === 0 || r.pressed_space === 1; }), 'Phase 2: pressed_space recorded');
+        c.warn(ew.filter(function(r) { return r.pressed_space === 1; }).length >= ew.length * 0.8,
+               'Phase 2: space bar pressed on >= 80% of trials', ew.filter(function(r) { return r.pressed_space === 1; }).length);
+        var cellsSeen = countBy(of('exposure_feedback'), function(r) { return r.cell; });
+        c.ok(Object.keys(cellsSeen).length === 8 && Object.keys(cellsSeen).every(function(k) { return cellsSeen[k] === 5; }), 'Phase 2: 5 exposures per design cell', cellsSeen);
+
+        // Phase 3
+        var dec = of('decision_choice');
+        c.ok(dec.slice(0, 20).every(function(r) { return r.test_type === 'indirect'; }) &&
+             dec.slice(20).every(function(r) { return r.test_type === 'direct'; }), 'Phase 3: recorded order is 20 indirect then 20 direct');
+        c.ok(dec.every(function(r) { return r.timed_out === 1 ? (r.chose_reward === null) : (r.chose_reward === 0 || r.chose_reward === 1); }),
+             'Phase 3: chose_reward is 0/1 (null only when timed out)');
+        var decTO = dec.filter(function(r) { return r.timed_out === 1; }).length;
+        c.warn(decTO <= 4, 'Phase 3: ' + decTO + ' time-outs (<= 4)');
+        var dd = dec.filter(function(r) { return r.test_type === 'direct' && r.timed_out === 0; });
+        var dprop = dd.length ? dd.reduce(function(a, r) { return a + r.chose_reward; }, 0) / dd.length : NaN;
+        console.log('Direct test: ' + (dprop * 100).toFixed(1) + '% reward-linked choices (screen threshold in the analysis: > 60%)');
+        c.warn(dprop > 0.6, 'direct-test accuracy above the 60% screen', dprop);
+        var left = dec.filter(function(r) { return r.response === 0; }).length, right = dec.filter(function(r) { return r.response === 1; }).length;
+        c.warn(left >= 8 && right >= 8, 'left/right button use is not extreme (left ' + left + ', right ' + right + '; each should be >= 8 of 40)');
+
+        // Phase 4
+        var mem = of('memory_test');
+        c.ok(mem.every(function(r) { return typeof r.memory_text === 'string' && r.memory_text.length > 0; }), 'memory answers recorded as text');
+        var cj = of('causal_judgment');
+        c.ok(cj.every(function(r) { return ['cause_to_effect', 'effect_to_cause', 'unrelated'].indexOf(r.judgment) !== -1; }),
+             'causal judgments are coded (cause_to_effect / effect_to_cause / unrelated)');
+        c.ok(cj.every(function(r) { return r.left_role !== r.right_role; }), 'causal screen: left and right roles differ');
+        c.ok(cj.filter(function(r) { return r.presentation_order === 'forward'; }).every(function(r) { return r.left_role === 'cause'; }) &&
+             cj.filter(function(r) { return r.presentation_order === 'reversed'; }).every(function(r) { return r.left_role === 'effect'; }),
+             'causal screen: forward pairs show the cause on the left, reversed pairs the effect on the left');
+        var math = of('math_question');
+        c.warn(math.filter(function(r) { return r.correct === 1; }).length >= 3, 'math questions answered correctly: ' + math.filter(function(r) { return r.correct === 1; }).length + '/4');
+
+        // timing sanity
+        var total = rows.length ? Math.max.apply(null, rows.map(function(r) { return r.time_elapsed || 0; })) / 60000 : 0;
+        console.log('Total duration so far: ' + total.toFixed(1) + ' min');
+    } catch (err) {
+        c.ok(false, 'data checks crashed: ' + err.message);
+    }
+    return c.done();
+}
+
+runSetupChecks();
 
 jsPsych.run(timeline);
 
