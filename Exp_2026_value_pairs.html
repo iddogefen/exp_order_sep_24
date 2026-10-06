@@ -143,7 +143,7 @@ var T = {
     exposure_display: 3000,         // Phase 2: image shown alone for 3 s
     exposure_press_deadline: 10000, // Phase 2: up to 10 s to press SPACE
     exposure_reveal: 3000,          // Phase 2: value shown 3 s, no matter what
-    decision_deadline: 4000,        // Phase 3: time allowed to choose (buttons active immediately)
+    decision_deadline: 4000,        // Phase 3: the choice screen lasts exactly this long, however fast the click (buttons active immediately)
     decision_feedback: 1000,        // Phase 3: chosen image shown this long, regardless of RT
     decision_blank: 800,
     min_read: 5000,                 // minimum reading time on instruction screens
@@ -158,7 +158,7 @@ jsPsych.data.addProperties({
     subject_id: participant_id,
     study_id: study_id,
     session_id: session_id,
-    experiment: 'ValueSpreading_WithinSubject_CauseEffect_EffectCause_v2_40pairs_IndirectFirst_2026-10-05'
+    experiment: 'ValueSpreading_WithinSubject_CauseEffect_EffectCause_v3_40pairs_IndirectFirst_Fixed4sDecision_2026-10-05'
 });
 
 // ============================================================
@@ -183,6 +183,21 @@ for (var k = 1; k <= 48; k++) {
 }
 var NUM_PAIRS = ACTIVE_PAIR_IDS.length;   // 40
 var HALF_PAIRS = NUM_PAIRS / 2;           // 20 (halfway notice + math question position)
+
+// ---- VERSION STAMP: these columns are saved on every row of the data file, to tell the versions apart ----
+//   v2 (earlier pilot of the 40-pair design): click ended the decision trial; instruction said "answer as quickly as you can"
+//   v3 (this file): decision screen always lasts 4 s (response_ends_trial = false); instruction says there is no need to rush
+var VERSION_TAG = 'v3_fixed4s_2026-10-05';
+jsPsych.data.addProperties({
+    version_tag: VERSION_TAG,
+    n_pairs: NUM_PAIRS,
+    removed_pairs: REMOVED_PAIR_IDS.join('-'),
+    decision_block_order: 'indirect_first',
+    decision_deadline_ms: T.decision_deadline,
+    decision_screen_fixed_duration: 1,          // 1 = the choice screen lasts the full deadline, however fast the click
+    decision_instruction: 'no_rush_accuracy'    // v2 was: 'answer_quickly'
+});
+console.log('Experiment version: ' + VERSION_TAG);
 var STIM_FOLDER = 'images_value/';
 var JPG_PAIR_NUMBERS = [1, 2, 3];
 
@@ -698,7 +713,8 @@ timeline.push(withMinReadTime({
         '<h2>Phase 3: Decision</h2>' +
         '<p>You will now see pairs of images side by side.</p>' +
         '<p>Follow your gut feeling and choose the image you feel is <b>more valuable</b>, or that you intuitively prefer.</p>' +
-        '<p>You have only a few seconds to respond on each trial, so please answer as quickly as you can.</p>' +
+        '<p>You have <b>4 seconds</b> for each choice. The two images stay on the screen for the full 4 seconds <b>no matter how quickly you choose</b>, so there is no need to rush. What matters most is that you make the choice you think is the most correct.</p>' +
+        '<p>Click once on <b>Left</b> or <b>Right</b>. If you do not click within 4 seconds, the task moves on automatically.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
@@ -779,7 +795,21 @@ function buildDecisionTrials(dt) {
             },
             choices: ['Left', 'Right'],
             trial_duration: T.decision_deadline,
+            response_ends_trial: false,   // the choice screen always lasts the full T.decision_deadline (4 s), however fast the click
             data: { task: 'decision_choice' },
+            on_load: function() {
+                // outline the chosen image as soon as the click is registered (the plugin disables the buttons after the first click)
+                var btns = document.querySelectorAll('#jspsych-html-button-response-btngroup button');
+                var imgs = document.querySelectorAll('.stimulus-container img.small-image');
+                var chosen = false;
+                btns.forEach(function(b, i) {
+                    b.addEventListener('click', function() {
+                        if (chosen) { return; }
+                        chosen = true;
+                        if (imgs[i]) { imgs[i].style.outline = '6px solid #2a7fff'; imgs[i].style.outlineOffset = '2px'; }
+                    });
+                });
+            },
             on_finish: function(data) {
                 var c = window.current_decision;
                 data.test_type = c.test_type;
@@ -1109,6 +1139,7 @@ function runSetupChecks() {
              'Phase 1 trial lasts question_delay + question_deadline = ' + (T.question_delay + T.question_deadline) + ' ms');
         var dc = timeline.find(function(t) { return t.data && t.data.task === 'decision_choice'; });
         c.ok(dc && dc.trial_duration === T.decision_deadline, 'decision trial deadline = ' + T.decision_deadline + ' ms');
+        c.ok(dc && dc.response_ends_trial === false, 'decision choice screen lasts the full ' + T.decision_deadline + ' ms (a click does not end it)');
         var last = timeline[timeline.length - 1];
         c.ok(last && typeof last.stimulus === 'string' && last.stimulus.indexOf('Completion Code is ') !== -1 &&
              last.stimulus.indexOf('XXXXXXXX') === -1 && last.trial_duration === undefined,
@@ -1190,6 +1221,7 @@ function runDataChecks() {
              dec.slice(20).every(function(r) { return r.test_type === 'direct'; }), 'Phase 3: recorded order is 20 indirect then 20 direct');
         c.ok(dec.every(function(r) { return r.timed_out === 1 ? (r.chose_reward === null) : (r.chose_reward === 0 || r.chose_reward === 1); }),
              'Phase 3: chose_reward is 0/1 (null only when timed out)');
+        c.ok(dec.every(function(r) { return r.rt === null || r.rt === undefined || r.rt <= T.decision_deadline + 50; }), 'Phase 3: every RT is within 0..' + T.decision_deadline + ' ms');
         var decTO = dec.filter(function(r) { return r.timed_out === 1; }).length;
         c.warn(decTO <= 4, 'Phase 3: ' + decTO + ' time-outs (<= 4)');
         var dd = dec.filter(function(r) { return r.test_type === 'direct' && r.timed_out === 0; });
