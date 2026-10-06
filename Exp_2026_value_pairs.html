@@ -170,9 +170,13 @@ jsPsych.data.addProperties({
 // Extension: .jpg for pairs 1-3, .png for the rest (edit the list
 // below if your files differ).
 // ============================================================
-// 40 pairs are used. Pairs removed after the pilot: 26 and 40 (cause/effect images were swapped),
-// 8 and 32 (weak causal link), 39, 25, 10 and 12 (ambiguous). File numbers are NOT renumbered.
-var REMOVED_PAIR_IDS = [8, 10, 12, 25, 26, 32, 39, 40];
+// 40 pairs are used = the 40 best pairs of the 48 after the pilot (2026-10-05). File numbers are NOT renumbered.
+// The 8 removed pairs:
+//   26 and 40 - cause/effect images were swapped (excluded from all pilot analyses as well).
+//   8, 18, 32, 33, 42, 48 - the weakest causal-direction ratings in the pilot (only 9-10 of 14 screened
+//   participants judged "cause -> effect"; pair 42 was the lowest, 9/14). Ties at 10/14 with pair 2, which was kept.
+//   (Pairs 10, 12, 25 and 39 were dropped in an earlier draft but were rated clearly, so they are back in.)
+var REMOVED_PAIR_IDS = [8, 18, 26, 32, 33, 40, 42, 48];
 var ACTIVE_PAIR_IDS = [];
 for (var k = 1; k <= 48; k++) {
     if (REMOVED_PAIR_IDS.indexOf(k) === -1) { ACTIVE_PAIR_IDS.push(k); }
