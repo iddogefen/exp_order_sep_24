@@ -905,6 +905,10 @@ timeline.push(withShortReadTime({
 }));
 
 // ---- 4a: Memory test (all 16 pairs) ----
+// Time limit (ms) for choosing the matching device. If the participant
+// does not answer within this time, the experiment moves on automatically
+// (response = null, timed_out = 1, correct = null in the data).
+var MEMORY_TIME_MS = 6000;
 var memory_order = jsPsych.randomization.shuffle(all_pairs.slice());
 
 function buildMemoryTrial(pair) {
@@ -935,9 +939,11 @@ function buildMemoryTrial(pair) {
                        '<p style="font-size: 18px; margin-top: 15px; font-weight:bold;">Which device matches this button?</p></div>' +
                        '<div style="display:flex; justify-content:center; gap:15px; flex-wrap:wrap; margin-top:10px;">' + options_html + '</div>',
             choices: option_labels,
+            trial_duration: MEMORY_TIME_MS,
             data: { task: 'memory_test', pair_id: pair.pair_id, causality: pair.causality, correct_index: correct_index },
             on_finish: function(data) {
-                data.correct = (data.response === correct_index) ? 1 : 0;
+                data.timed_out = (data.response === null) ? 1 : 0;
+                data.correct = (data.response === null) ? null : ((data.response === correct_index) ? 1 : 0);
             }
         },
         whiteScreenTrial
