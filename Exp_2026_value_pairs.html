@@ -188,10 +188,10 @@ var IMAGE_DISPLAY_MS = 4000;
 
 // TEST MODE: add ?test=1 to the URL to run a quick test version. In test
 // mode every image in the association phase is shown for TEST_IMAGE_MS
-// (half a second) and the experiment moves on automatically, with no
+// (one second) and the experiment moves on automatically, with no
 // color question. Without ?test=1 the experiment runs normally.
 var TEST_MODE = jsPsych.data.getURLVariable('test') === '1';
-var TEST_IMAGE_MS = 500;
+var TEST_IMAGE_MS = 1000;
 
 function getDeviceName(n) {
     return DEVICE_NAMES[n] || 'light';
@@ -387,6 +387,14 @@ function withMinReadTime(instructionsTrial, minMs) {
     return trial;
 }
 
+// Short instruction screens (little text): the navigation buttons unlock
+// after SHORT_READ_MS (5 seconds) instead of the default 10 seconds.
+// The welcome/consent screens and the Phase 2 instructions keep 10 seconds.
+var SHORT_READ_MS = 5000;
+function withShortReadTime(instructionsTrial) {
+    return withMinReadTime(instructionsTrial, SHORT_READ_MS);
+}
+
 // Runs all trials for a phase, inserting exactly ONE math question after
 // the item at `checkAfterPosition` (1-based), if provided. Used to keep
 // the total math-question count at exactly 4 across the whole experiment.
@@ -457,6 +465,11 @@ function buildImageWithColorQuestionTrial(imagePath, dataObj, delayMs) {
 // Coding: 'A_to_B' (correct for causal series), 'B_to_A', 'unrelated'
 // (correct for non-causal series).
 // ------------------------------------------------------------
+// Time limit (ms) for the causal judgment. If the participant does not
+// answer within this time, the experiment moves on automatically
+// (response = null, timed_out = 1 in the data).
+var JUDGMENT_TIME_MS = 6000;
+
 var JUDGMENT_CHOICES = ['A caused B', 'B caused A', 'They are unrelated'];
 var JUDGMENT_CODES = ['A_to_B', 'B_to_A', 'unrelated'];
 
@@ -473,6 +486,7 @@ function buildCausalJudgmentTrial(pair, taskPrefix) {
                    '<p style="font-size:20px; font-weight:bold; margin-top:15px;">What is the relationship between image A and image B?</p>' +
                    '</div>',
         choices: JUDGMENT_CHOICES,
+        trial_duration: JUDGMENT_TIME_MS,
         data: {
             task: taskPrefix + 'causal_judgment',
             pair_id: pair.pair_id,
@@ -480,10 +494,11 @@ function buildCausalJudgmentTrial(pair, taskPrefix) {
             device_name: pair.device_name
         },
         on_finish: function(data) {
+            data.timed_out = (data.response === null) ? 1 : 0;
             data.judgment = (data.response !== null) ? JUDGMENT_CODES[data.response] : null;
-            data.judged_causal = (data.response === 0 || data.response === 1) ? 1 : 0;
+            data.judged_causal = (data.response === null) ? null : ((data.response === 0 || data.response === 1) ? 1 : 0);
             var correct_code = (pair.causality === 'causal') ? 'A_to_B' : 'unrelated';
-            data.judgment_correct = (data.judgment === correct_code) ? 1 : 0;
+            data.judgment_correct = (data.judgment === null) ? null : ((data.judgment === correct_code) ? 1 : 0);
         }
     };
 }
@@ -552,7 +567,7 @@ timeline.push({
 // One randomly chosen series from the experiment, run through the full
 // association procedure.
 // ============================================================
-timeline.push(withMinReadTime({
+timeline.push(withShortReadTime({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
@@ -566,7 +581,7 @@ timeline.push(withMinReadTime({
 
 timeline = timeline.concat(buildAssociationTrials(practice_pair, 'practice_'));
 
-timeline.push(withMinReadTime({
+timeline.push(withShortReadTime({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
@@ -588,7 +603,7 @@ timeline.push(withMinReadTime({
 // 9-16 are tagged "non_causal" (pressing does nothing). Order of pairs is
 // randomized per participant.
 // ============================================================
-timeline.push(withMinReadTime({
+timeline.push(withShortReadTime({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
@@ -683,7 +698,7 @@ pushPhase(exposure_order, buildExposureTrials, 8);
 //
 // 16 choices total (8 indirect + 8 direct).
 // ============================================================
-timeline.push(withMinReadTime({
+timeline.push(withShortReadTime({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
@@ -795,7 +810,7 @@ pushPhase(decision_trials, buildDecisionTrials, 8);
 // ============================================================
 // PHASE 4: CONTROL (memory + causal strength rating)
 // ============================================================
-timeline.push(withMinReadTime({
+timeline.push(withShortReadTime({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
