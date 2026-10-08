@@ -175,17 +175,22 @@ var NUM_PAIRS = 16;
 var NUM_CAUSAL = 8; // number of causal pairs (chosen at random for each participant)
 var STIM_FOLDER = 'images_buttons/';
 
-// PRACTICE uses its own series (series_0, NOT one of the 16 experiment pairs).
-// The same button + device are shown once per state in PRACTICE_STATES, in
-// this order ('causal' = device lights up after pressing, 'non_causal' =
-// nothing happens), each followed by the causal judgment with feedback.
-// Examples: ['causal', 'non_causal'] (default), ['causal'] (one example only).
-var PRACTICE_SERIES = 0;
-var PRACTICE_STATES = ['causal', 'non_causal'];
+// PRACTICE uses its own two folders, which are NOT among the 16 experiment
+// pairs: the same button and device in a CAUSAL version (device lights up
+// after pressing) and a NON-CAUSAL version (pressing does nothing), shown in
+// this order. Each is followed by the causal judgment with feedback.
+// Folder names follow the series pattern (prefix + label); the files inside
+// both folders end with 0 (series number 0):
+//   <prefix>0_on/ : button_0, click_0, <device>_before_pressing_0, <device>_on_0
+//   <prefix>0_off/: button_0, click_0, <device>_before_pressing_0, <device>_off_0
+// (<prefix> = SERIES_FOLDER_PREFIX, e.g. " series_" -> " series_0_on")
+var PRACTICE_SERIES_LIST = [
+    { series: 0, folder_label: '0_on',  state: 'causal' },
+    { series: 0, folder_label: '0_off', state: 'non_causal' }
+];
 
 // Device name used in the file names of each series (by series number).
 var DEVICE_NAMES = {
-    0: 'light',   // practice series
     1: 'light', 2: 'light', 3: 'light', 4: 'light',
     5: 'light', 6: 'light', 7: 'light', 8: 'light',
     9: 'light', 10: 'light', 11: 'light', 12: 'light',
@@ -256,10 +261,10 @@ var device_series_for_button = jsPsych.randomization.shuffle(
 
 // Builds one pair object: the BUTTON of series `bser` with the DEVICE of
 // series `dser` (their image paths). Causality is set afterwards.
-function makePair(bser, dser) {
+function makePair(bser, dser, bFolderOverride, dFolderOverride) {
     var dev = getDeviceName(dser);
-    var bFolder = seriesFolder(bser);   // folder of the BUTTON's series
-    var dFolder = seriesFolder(dser);   // folder of the DEVICE's series
+    var bFolder = bFolderOverride || seriesFolder(bser);   // folder of the BUTTON's series
+    var dFolder = dFolderOverride || seriesFolder(dser);   // folder of the DEVICE's series
     return {
         pair_id: bser,                  // = button series number
         button_series: bser,
@@ -331,28 +336,32 @@ assignRewardWithinGroup(all_pairs.filter(function(p) { return p.causality === 'n
 });
 
 // ------------------------------------------------------------
-// PRACTICE PAIRS: built from the separate practice series (PRACTICE_SERIES,
-// default series_0) - they are NOT part of the 16 experiment pairs and are
-// never shown again later. One practice pair per state in PRACTICE_STATES
-// (default: causal example first, then non-causal example), each run
-// through the full association procedure, with feedback on the causal
-// judgment. The button is labelled A in the first example for a random half
-// of the participants, and the label alternates between the examples.
-// Practice rows are tagged: task starts with 'practice_', pair_id =
-// PRACTICE_SERIES, plus 'practice_assignment' rows (see below).
+// PRACTICE PAIRS: built from the two separate practice folders
+// (PRACTICE_SERIES_LIST: 0_on = causal, then 0_off = non-causal). They are
+// NOT part of the 16 experiment pairs and are never shown again later. Each
+// is run through the full association procedure, with feedback on the
+// causal judgment. The button is labelled A in the first example for a
+// random half of the participants, and the label alternates between the
+// two examples. Practice rows are tagged: task starts with 'practice_',
+// pair_id = 'practice_1' / 'practice_2' (practice_1 = first example), plus
+// 'practice_assignment' rows that give the folder (practice_folder), the
+// causality and the image paths (see below).
 // ------------------------------------------------------------
 var practice_first_button_is_A = Math.random() < 0.5 ? 1 : 0;
-var practice_pairs = PRACTICE_STATES.map(function(state, idx) {
-    var pp = makePair(PRACTICE_SERIES, PRACTICE_SERIES);
-    applyCausality(pp, state);
+var practice_pairs = PRACTICE_SERIES_LIST.map(function(cfg, idx) {
+    var folder = seriesFolder(cfg.folder_label);
+    var pp = makePair(cfg.series, cfg.series, folder, folder);
+    pp.pair_id = 'practice_' + (idx + 1);
+    pp.practice_folder = cfg.folder_label;
+    applyCausality(pp, cfg.state);
     pp.button_is_A = (idx % 2 === 0) ? practice_first_button_is_A : 1 - practice_first_button_is_A;
     pp.practice_order = idx + 1;
     return pp;
 });
 jsPsych.data.addProperties({
-    practice_series: PRACTICE_SERIES,
-    practice_states: PRACTICE_STATES.join(','),
-    design_version: 'random_pairing_random_causality_practice_series0'
+    practice_folders: PRACTICE_SERIES_LIST.map(function(c) { return c.folder_label; }).join(','),
+    practice_states: PRACTICE_SERIES_LIST.map(function(c) { return c.state; }).join(','),
+    design_version: 'random_pairing_random_causality_practice_0on_0off'
 });
 
 // ------------------------------------------------------------
@@ -391,6 +400,7 @@ practice_pairs.forEach(function(p) {
         data: {
             task: 'practice_assignment',
             practice_order: p.practice_order,
+            practice_folder: p.practice_folder,
             pair_id: p.pair_id,
             button_series: p.button_series,
             device_series: p.device_series,
@@ -869,8 +879,8 @@ timeline.push(withShortReadTime({
     show_clickable_nav: true
 }));
 
-// The examples (PRACTICE_STATES, default: causal first, then non-causal) use
-// the separate practice series. Each one ends with feedback on the causal
+// The two examples (folder 0_on = causal, then 0_off = non-causal) use the
+// separate practice folders. Each one ends with feedback on the causal
 // judgment.
 practice_pairs.forEach(function(p) {
     timeline = timeline.concat(buildAssociationTrials(p, 'practice_', true));
