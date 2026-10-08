@@ -184,7 +184,7 @@ var DEVICE_TEST_STATE = 'before';
 var COLOR_OPTIONS = ['blue', 'red', 'green', 'purple', 'yellow', 'orange'];
 
 // How long (ms) each image is shown before the color question appears.
-var IMAGE_DISPLAY_MS = 4000;
+var IMAGE_DISPLAY_MS = 2500;
 
 // TEST MODE: add ?test=1 to the URL to run a quick test version. In test
 // mode everything that is shown for a fixed time (association images,
@@ -490,7 +490,7 @@ function buildImageWithColorQuestionTrial(imagePath, dataObj, delayMs) {
 // Time limit (ms) for the causal judgment. If the participant does not
 // answer within this time, the experiment moves on automatically
 // (response = null, timed_out = 1 in the data).
-var JUDGMENT_TIME_MS = 6000;
+var JUDGMENT_TIME_MS = 3000;
 
 var JUDGMENT_CHOICES = ['A caused B', 'B caused A', 'They are unrelated'];
 var JUDGMENT_CODES = ['A_to_B', 'B_to_A', 'unrelated'];
@@ -788,6 +788,7 @@ timeline.push(withShortReadTime({
         '<h2>Phase 3: Decision</h2>' +
         '<p>You will now see pairs of images side by side.</p>' +
         '<p>Choose the image that has the <b>higher monetary value</b>.</p>' +
+        '<p>Each screen takes a few seconds to move on to the next one, whether or not you answer right away, so take your time to choose correctly.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
@@ -834,11 +835,18 @@ var decision_trials = jsPsych.randomization.shuffle(
     )
 );
 
+// Total duration (ms) of each forced-choice screen. The participant can
+// answer at any moment, but the screen always lasts the full time before
+// moving on. If no answer is given, the data has response = null,
+// timed_out = 1 and chose_reward = null.
+var DECISION_TIME_MS = 6000;
+
 function buildDecisionTrials(dt) {
     return [
         {
-            type: jsPsychHtmlKeyboardResponse,
+            type: jsPsychHtmlButtonResponse,
             stimulus: function() {
+                // random left/right position of the rewarded item
                 var reward_left = Math.random() < 0.5;
                 window.current_decision = {
                     reward_left: reward_left,
@@ -850,24 +858,27 @@ function buildDecisionTrials(dt) {
                 };
                 var left_img = reward_left ? dt.reward_path : dt.neutral_path;
                 var right_img = reward_left ? dt.neutral_path : dt.reward_path;
-                window.current_left_img = left_img;
-                window.current_right_img = right_img;
                 return '<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image has the <b>higher monetary value</b>?</h3></div>' +
                        '<div class="stimulus-container" style="display: flex; justify-content: center; gap: 30px;">' +
                        '<img src="' + left_img + '" class="small-image"><img src="' + right_img + '" class="small-image"></div>';
             },
-            choices: "NO_KEYS",
-            trial_duration: dur(2500)
-        },
-        {
-            type: jsPsychHtmlButtonResponse,
-            stimulus: function() {
-                return '<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image has the <b>higher monetary value</b>?</h3></div>' +
-                       '<div class="stimulus-container" style="display: flex; justify-content: center; gap: 30px;">' +
-                       '<img src="' + window.current_left_img + '" class="small-image"><img src="' + window.current_right_img + '" class="small-image"></div>';
-            },
             choices: ['Left', 'Right'],
+            // The screen lasts DECISION_TIME_MS in total. The participant can
+            // answer immediately, but the screen always stays for the full
+            // time (answering fast does not speed things up). In test mode
+            // (?test=1) an answer ends the screen right away.
+            trial_duration: DECISION_TIME_MS,
+            response_ends_trial: TEST_MODE,
             data: { task: 'decision_choice' },
+            on_load: function() {
+                // after a click the buttons are disabled; mark the chosen one
+                document.querySelectorAll('#jspsych-html-button-response-btngroup button').forEach(function(b) {
+                    b.addEventListener('click', function() {
+                        b.style.outline = '4px solid #2e7d32';
+                        b.style.outlineOffset = '2px';
+                    });
+                });
+            },
             on_finish: function(data) {
                 var c = window.current_decision;
                 data.test_type = c.test_type;
@@ -875,8 +886,11 @@ function buildDecisionTrials(dt) {
                 data.causality = c.causality;
                 data.reward_pair_id = c.reward_pair_id;
                 data.neutral_pair_id = c.neutral_pair_id;
-                data.chose_reward = ((data.response === 0 && c.reward_left) ||
-                                      (data.response === 1 && !c.reward_left)) ? 1 : 0;
+                data.reward_left = c.reward_left ? 1 : 0;
+                data.timed_out = (data.response === null) ? 1 : 0;
+                data.chose_reward = (data.response === null) ? null :
+                                    (((data.response === 0 && c.reward_left) ||
+                                      (data.response === 1 && !c.reward_left)) ? 1 : 0);
             }
         },
         {
