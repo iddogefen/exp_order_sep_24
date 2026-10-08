@@ -265,6 +265,13 @@ function assignRewardWithinGroup(groupPairs) {
 assignRewardWithinGroup(all_pairs.filter(function(p) { return p.causality === 'causal'; }));
 assignRewardWithinGroup(all_pairs.filter(function(p) { return p.causality === 'non_causal'; }));
 
+// In the causal judgment, the BUTTON is labelled "A" for half of the pairs
+// and "B" for the other half (balanced within causal / non-causal).
+['causal', 'non_causal'].forEach(function(c) {
+    var grp = jsPsych.randomization.shuffle(all_pairs.filter(function(p) { return p.causality === c; }));
+    grp.forEach(function(pair, idx) { pair.button_is_A = (idx < grp.length / 2) ? 1 : 0; });
+});
+
 // ------------------------------------------------------------
 // PRACTICE SERIES: two of the existing series, picked at random for each
 // participant - ONE CAUSAL example (from series 1-8) and ONE NON-CAUSAL
@@ -483,7 +490,7 @@ function buildImageWithColorQuestionTrial(imagePath, dataObj, delayMs) {
 // Causal judgment shown after the association sequence of each pair.
 // Image A = the button being pressed (click_N), Image B = the device after
 // pressing. The participant sees the outcome (device activated or not)
-// and decides: A caused B / B caused A / unrelated.
+// and decides: A activated B / B activated A / they do not activate each other.
 // Coding: 'A_to_B' (correct for causal series), 'B_to_A', 'unrelated'
 // (correct for non-causal series).
 // ------------------------------------------------------------
@@ -492,17 +499,34 @@ function buildImageWithColorQuestionTrial(imagePath, dataObj, delayMs) {
 // (response = null, timed_out = 1 in the data).
 var JUDGMENT_TIME_MS = 6000;
 
-var JUDGMENT_CHOICES = ['A caused B', 'B caused A', 'They are unrelated'];
-var JUDGMENT_CODES = ['A_to_B', 'B_to_A', 'unrelated'];
+var JUDGMENT_CHOICES = ['A activated B', 'B activated A', 'They do not activate each other'];
+
+// Which image is shown as "A" (left) and "B" (right): the pressed button
+// or the device, depending on pair.button_is_A.
+function judgmentImages(pair) {
+    return pair.button_is_A
+        ? { A: pair.click_path, B: pair.device_after_path }
+        : { A: pair.device_after_path, B: pair.click_path };
+}
+// Choice index (0 = "A activated B", 1 = "B activated A") that is correct
+// for a causal pair (button activated the device).
+function correctCausalIndex(pair) { return pair.button_is_A ? 0 : 1; }
+// Data coding is in terms of button/device, independent of A/B labels.
+function judgmentCode(pair, response) {
+    if (response === null) return null;
+    if (response === 2) return 'unrelated';
+    return (response === correctCausalIndex(pair)) ? 'button_to_device' : 'device_to_button';
+}
 
 function buildCausalJudgmentTrial(pair, taskPrefix) {
+    var imgs = judgmentImages(pair);
     return {
         type: jsPsychHtmlButtonResponse,
         stimulus: '<div class="stimulus-container">' +
                    '<div class="assoc-row">' +
-                   '<div><img src="' + pair.click_path + '" class="assoc-image">' +
+                   '<div><img src="' + imgs.A + '" class="assoc-image">' +
                    '<p style="font-size:24px; font-weight:bold; margin-top:10px;">A</p></div>' +
-                   '<div><img src="' + pair.device_after_path + '" class="assoc-image">' +
+                   '<div><img src="' + imgs.B + '" class="assoc-image">' +
                    '<p style="font-size:24px; font-weight:bold; margin-top:10px;">B</p></div>' +
                    '</div>' +
                    '<p style="font-size:20px; font-weight:bold; margin-top:15px;">What is the relationship between image A and image B?</p>' +
@@ -513,13 +537,14 @@ function buildCausalJudgmentTrial(pair, taskPrefix) {
             task: taskPrefix + 'causal_judgment',
             pair_id: pair.pair_id,
             causality: pair.causality,
-            device_name: pair.device_name
+            device_name: pair.device_name,
+            button_is_A: pair.button_is_A
         },
         on_finish: function(data) {
             data.timed_out = (data.response === null) ? 1 : 0;
-            data.judgment = (data.response !== null) ? JUDGMENT_CODES[data.response] : null;
+            data.judgment = judgmentCode(pair, data.response);
             data.judged_causal = (data.response === null) ? null : ((data.response === 0 || data.response === 1) ? 1 : 0);
-            var correct_code = (pair.causality === 'causal') ? 'A_to_B' : 'unrelated';
+            var correct_code = (pair.causality === 'causal') ? 'button_to_device' : 'unrelated';
             data.judgment_correct = (data.judgment === null) ? null : ((data.judgment === correct_code) ? 1 : 0);
         }
     };
@@ -528,16 +553,18 @@ function buildCausalJudgmentTrial(pair, taskPrefix) {
 // ------------------------------------------------------------
 // Feedback shown right after the causal judgment in the PRACTICE round.
 // Tells the participant whether the answer was right and what the correct
-// answer is: "A caused B" for the causal example, "They are unrelated"
+// answer is: "X activated Y" for the causal example, "They do not activate each other"
 // for the non-causal example. Must directly follow the judgment trial
 // (it reads the judgment's data).
 // ------------------------------------------------------------
 function buildPracticeFeedbackTrial(pair) {
     var is_causal = (pair.causality === 'causal');
-    var correct_label = is_causal ? 'A caused B' : 'They are unrelated';
+    var btnL = pair.button_is_A ? 'A' : 'B';
+    var devL = pair.button_is_A ? 'B' : 'A';
+    var correct_label = is_causal ? (btnL + ' activated ' + devL) : 'They do not activate each other';
     var explanation = is_causal
-        ? 'Pressing the button (A) made the device (B) react.'
-        : 'Pressing the button (A) did not make the device (B) do anything.';
+        ? 'Pressing the button (' + btnL + ') activated the device (' + devL + ').'
+        : 'Pressing the button (' + btnL + ') did not activate the device (' + devL + ').';
 
     return {
         type: jsPsychHtmlButtonResponse,
@@ -554,9 +581,9 @@ function buildPracticeFeedbackTrial(pair) {
             return '<div class="stimulus-container">' +
                    '<h2 style="color:' + color + ';">' + verdict + '</h2>' +
                    '<div class="assoc-row">' +
-                   '<div><img src="' + pair.click_path + '" class="small-image">' +
+                   '<div><img src="' + judgmentImages(pair).A + '" class="small-image">' +
                    '<p style="font-size:20px; font-weight:bold; margin-top:8px;">A</p></div>' +
-                   '<div><img src="' + pair.device_after_path + '" class="small-image">' +
+                   '<div><img src="' + judgmentImages(pair).B + '" class="small-image">' +
                    '<p style="font-size:20px; font-weight:bold; margin-top:8px;">B</p></div>' +
                    '</div>' +
                    '<p style="font-size:20px; margin-top:15px;">The correct answer is: <b>' + correct_label + '</b></p>' +
@@ -574,7 +601,7 @@ function buildPracticeFeedbackTrial(pair) {
 // All images are shown ONE AT A TIME, each followed by a color question:
 //   BEFORE pressing: 1) button alone   2) device alone (before)
 //   AFTER  pressing: 3) button pressed (click) alone   4) device alone (after)
-// then the causal judgment (A = pressed button, B = device after).
+// then the causal judgment (A/B labels randomized: button is A in half of the pairs).
 // ------------------------------------------------------------
 // If withFeedback is true (practice only), a feedback screen with the
 // correct answer is added right after the causal judgment.
@@ -668,8 +695,8 @@ timeline.push(withShortReadTime({
 // Each of the 16 pairs (button + device) goes through the full sequence
 // (see buildAssociationTrials): button, device, button pressed, device
 // after pressing - one image at a time, each followed by a color
-// question - and then a causal judgment (A caused B / B caused A /
-// unrelated).
+// question - and then a causal judgment (A activated B / B activated A /
+// they do not activate each other).
 // Series 1-8 are tagged "causal" (pressing activates the device), series
 // 9-16 are tagged "non_causal" (pressing does nothing). Order of pairs is
 // randomized per participant.
