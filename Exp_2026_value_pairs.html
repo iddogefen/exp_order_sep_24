@@ -175,8 +175,17 @@ var NUM_PAIRS = 16;
 var NUM_CAUSAL = 8; // number of causal pairs (chosen at random for each participant)
 var STIM_FOLDER = 'images_buttons/';
 
+// PRACTICE uses its own series (series_0, NOT one of the 16 experiment pairs).
+// The same button + device are shown once per state in PRACTICE_STATES, in
+// this order ('causal' = device lights up after pressing, 'non_causal' =
+// nothing happens), each followed by the causal judgment with feedback.
+// Examples: ['causal', 'non_causal'] (default), ['causal'] (one example only).
+var PRACTICE_SERIES = 0;
+var PRACTICE_STATES = ['causal', 'non_causal'];
+
 // Device name used in the file names of each series (by series number).
 var DEVICE_NAMES = {
+    0: 'light',   // practice series
     1: 'light', 2: 'light', 3: 'light', 4: 'light',
     5: 'light', 6: 'light', 7: 'light', 8: 'light',
     9: 'light', 10: 'light', 11: 'light', 12: 'light',
@@ -245,24 +254,40 @@ var device_series_for_button = jsPsych.randomization.shuffle(
     Array.from({ length: NUM_PAIRS }, function(_, k) { return k + 1; })
 );
 
-var all_pairs = [];
-for (var i = 1; i <= NUM_PAIRS; i++) {
-    var dser = device_series_for_button[i - 1];
+// Builds one pair object: the BUTTON of series `bser` with the DEVICE of
+// series `dser` (their image paths). Causality is set afterwards.
+function makePair(bser, dser) {
     var dev = getDeviceName(dser);
-    var bFolder = seriesFolder(i);      // folder of the BUTTON's series
+    var bFolder = seriesFolder(bser);   // folder of the BUTTON's series
     var dFolder = seriesFolder(dser);   // folder of the DEVICE's series
-    all_pairs.push({
-        pair_id: i,                     // = button series number
-        button_series: i,
+    return {
+        pair_id: bser,                  // = button series number
+        button_series: bser,
         device_series: dser,
-        same_series_pairing: (i === dser) ? 1 : 0,
+        same_series_pairing: (bser === dser) ? 1 : 0,
         device_name: dev,
-        button_path: bFolder + 'button_' + i + '.png',
-        click_path: bFolder + 'click_' + i + '.png',
+        button_path: bFolder + 'button_' + bser + '.png',
+        click_path: bFolder + 'click_' + bser + '.png',
         device_before_path: dFolder + dev + '_before_pressing_' + dser + '.png',
         device_off_path: dFolder + dev + '_off_' + dser + '.png',
         device_on_path: dFolder + dev + '_on_' + dser + '.png'
-    });
+    };
+}
+
+// Sets causality on a pair and derives the images that depend on it.
+function applyCausality(pair, causality) {
+    pair.causality = causality;
+    // Device image shown AFTER pressing: lit (on) in causal pairs, unchanged (off) in non-causal pairs.
+    pair.device_after_path = (causality === 'causal') ? pair.device_on_path : pair.device_off_path;
+    // The CAUSE image of the pair = the (unpressed) button
+    pair.cause_path = pair.button_path;
+    // The EFFECT image of the pair = the device (state set by DEVICE_TEST_STATE)
+    pair.effect_path = (DEVICE_TEST_STATE === 'after') ? pair.device_after_path : pair.device_before_path;
+}
+
+var all_pairs = [];
+for (var i = 1; i <= NUM_PAIRS; i++) {
+    all_pairs.push(makePair(i, device_series_for_button[i - 1]));
 }
 
 // 2) Random causality: NUM_CAUSAL of the 16 pairs are causal.
@@ -270,13 +295,7 @@ var causal_pair_ids = jsPsych.randomization.sampleWithoutReplacement(
     all_pairs.map(function(p) { return p.pair_id; }), NUM_CAUSAL
 );
 all_pairs.forEach(function(pair) {
-    pair.causality = (causal_pair_ids.indexOf(pair.pair_id) !== -1) ? 'causal' : 'non_causal';
-    // Device image shown AFTER pressing: lit (on) in causal pairs, unchanged (off) in non-causal pairs.
-    pair.device_after_path = (pair.causality === 'causal') ? pair.device_on_path : pair.device_off_path;
-    // The CAUSE image of the pair = the (unpressed) button
-    pair.cause_path = pair.button_path;
-    // The EFFECT image of the pair = the device (state set by DEVICE_TEST_STATE)
-    pair.effect_path = (DEVICE_TEST_STATE === 'after') ? pair.device_after_path : pair.device_before_path;
+    applyCausality(pair, (causal_pair_ids.indexOf(pair.pair_id) !== -1) ? 'causal' : 'non_causal');
 });
 
 // ------------------------------------------------------------
@@ -312,31 +331,35 @@ assignRewardWithinGroup(all_pairs.filter(function(p) { return p.causality === 'n
 });
 
 // ------------------------------------------------------------
-// PRACTICE PAIRS: two of the participant's own pairs, picked at random -
-// ONE CAUSAL example and ONE NON-CAUSAL example. Each is run through the
-// full association procedure in the practice round, and after the causal
-// judgment the participant gets feedback with the correct answer. The ids
-// are saved on every data row (practice_causal_pair_id /
-// practice_noncausal_pair_id) and flagged in the 'pair_assignment' rows
-// (is_practice_pair), since these pairs are also shown again in the main
-// experiment.
+// PRACTICE PAIRS: built from the separate practice series (PRACTICE_SERIES,
+// default series_0) - they are NOT part of the 16 experiment pairs and are
+// never shown again later. One practice pair per state in PRACTICE_STATES
+// (default: causal example first, then non-causal example), each run
+// through the full association procedure, with feedback on the causal
+// judgment. The button is labelled A in the first example for a random half
+// of the participants, and the label alternates between the examples.
+// Practice rows are tagged: task starts with 'practice_', pair_id =
+// PRACTICE_SERIES, plus 'practice_assignment' rows (see below).
 // ------------------------------------------------------------
-var practice_causal_pair = jsPsych.randomization.sampleWithoutReplacement(
-    all_pairs.filter(function(p) { return p.causality === 'causal'; }), 1
-)[0];
-var practice_noncausal_pair = jsPsych.randomization.sampleWithoutReplacement(
-    all_pairs.filter(function(p) { return p.causality === 'non_causal'; }), 1
-)[0];
+var practice_first_button_is_A = Math.random() < 0.5 ? 1 : 0;
+var practice_pairs = PRACTICE_STATES.map(function(state, idx) {
+    var pp = makePair(PRACTICE_SERIES, PRACTICE_SERIES);
+    applyCausality(pp, state);
+    pp.button_is_A = (idx % 2 === 0) ? practice_first_button_is_A : 1 - practice_first_button_is_A;
+    pp.practice_order = idx + 1;
+    return pp;
+});
 jsPsych.data.addProperties({
-    practice_causal_pair_id: practice_causal_pair.pair_id,
-    practice_noncausal_pair_id: practice_noncausal_pair.pair_id,
-    design_version: 'random_pairing_random_causality'
+    practice_series: PRACTICE_SERIES,
+    practice_states: PRACTICE_STATES.join(','),
+    design_version: 'random_pairing_random_causality_practice_series0'
 });
 
 // ------------------------------------------------------------
 // ASSIGNMENT RECORD: one data row per pair (task = 'pair_assignment') that
 // lists exactly which series were combined for THIS participant: the button
 // series, the device series, causality, reward condition and A/B label.
+// The practice pairs get the same kind of row (task = 'practice_assignment').
 // These are silent trials (nothing is shown on screen).
 // ------------------------------------------------------------
 all_pairs.forEach(function(p) {
@@ -354,7 +377,26 @@ all_pairs.forEach(function(p) {
             reward_condition: p.reward_condition,
             cell: p.cell,
             button_is_A: p.button_is_A,
-            is_practice_pair: (p === practice_causal_pair || p === practice_noncausal_pair) ? 1 : 0,
+            button_path: p.button_path,
+            click_path: p.click_path,
+            device_before_path: p.device_before_path,
+            device_after_path: p.device_after_path
+        }
+    });
+});
+practice_pairs.forEach(function(p) {
+    timeline.push({
+        type: jsPsychCallFunction,
+        func: function() {},
+        data: {
+            task: 'practice_assignment',
+            practice_order: p.practice_order,
+            pair_id: p.pair_id,
+            button_series: p.button_series,
+            device_series: p.device_series,
+            device_name: p.device_name,
+            causality: p.causality,
+            button_is_A: p.button_is_A,
             button_path: p.button_path,
             click_path: p.click_path,
             device_before_path: p.device_before_path,
@@ -372,6 +414,13 @@ var imagesToPreload = [
     'images/gray.png',
     'images/dollar.png'
 ];
+
+practice_pairs.forEach(function(p) {
+    imagesToPreload.push(p.button_path);
+    imagesToPreload.push(p.click_path);
+    imagesToPreload.push(p.device_before_path);
+    imagesToPreload.push(p.device_after_path);
+});
 
 all_pairs.forEach(function(p) {
     imagesToPreload.push(p.button_path);
@@ -820,9 +869,10 @@ timeline.push(withShortReadTime({
     show_clickable_nav: true
 }));
 
-// Two examples in a FIXED order: first the causal one, then the non-causal
-// one. Each one ends with feedback on the causal judgment.
-[practice_causal_pair, practice_noncausal_pair].forEach(function(p) {
+// The examples (PRACTICE_STATES, default: causal first, then non-causal) use
+// the separate practice series. Each one ends with feedback on the causal
+// judgment.
+practice_pairs.forEach(function(p) {
     timeline = timeline.concat(buildAssociationTrials(p, 'practice_', true));
 });
 
