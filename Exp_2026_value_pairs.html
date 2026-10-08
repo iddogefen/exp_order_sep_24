@@ -182,8 +182,12 @@ function getDeviceName(n) {
     return DEVICE_NAMES[n] || 'light';
 }
 
+// Folder name of each series, e.g. "series_" -> images_buttons/series_1/
+// Change this if the folders on the server are named differently.
+var SERIES_FOLDER_PREFIX = 'series_';
+
 function seriesFolder(n) {
-    return STIM_FOLDER + 'series_' + n + '/';
+    return STIM_FOLDER + SERIES_FOLDER_PREFIX + n + '/';
 }
 
 // ============================================================
@@ -268,7 +272,10 @@ practice_pairs.forEach(function(p) {
 timeline.push({
     type: jsPsychPreload,
     images: imagesToPreload,
-    message: 'Loading task assets...'
+    message: 'Loading task assets...',
+    // Shows the FULL path of every file that failed to load (useful for
+    // debugging 404 errors). Can be removed once all images load correctly.
+    show_detailed_errors: true
 });
 
 // ============================================================
