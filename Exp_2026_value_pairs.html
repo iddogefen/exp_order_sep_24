@@ -25,6 +25,21 @@
           margin: 0 auto;
       }
 
+      .assoc-row {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 30px;
+      }
+
+      .assoc-image {
+          width: 340px;
+          height: 300px;
+          object-fit: contain;
+          border: 2px solid #ccc;
+          background-color: #fff;
+      }
+
       .small-image {
           width: 260px;
           height: 210px;
@@ -63,7 +78,7 @@
   <script>
 
 // ============================================================
-// DATA SAVING (with localStorage backup)
+// DATA SAVING (same mechanism as base template, with backup)
 // ============================================================
 var data_folder = 'data/';
 var data_already_saved = false;
@@ -110,20 +125,7 @@ function saveData(data) {
     });
 }
 
-// Add ?debug=1 to the URL to log every finished trial in the console (the setup checks always run).
-var DEBUG = false;
-try { DEBUG = new URLSearchParams(window.location.search).get('debug') === '1'; } catch (e) {}
-
 var jsPsych = initJsPsych({
-    on_trial_finish: function(d) {
-        if (DEBUG) {
-            console.log('[trial ' + d.trial_index + '] ' + (d.task || d.trial_type) +
-                (d.pair_id ? ' pair=' + d.pair_id : '') +
-                (d.test_type ? ' ' + d.test_type + '/' + d.comparison_role + '/' + d.presentation_order : '') +
-                (d.rt !== null && d.rt !== undefined ? ' rt=' + d.rt : '') +
-                (d.timed_out === 1 ? ' TIMED_OUT' : ''));
-        }
-    },
     on_finish: function() {
         console.log("Experiment timeline finished (on_finish).");
         saveData(jsPsych.data.get().csv());
@@ -131,25 +133,6 @@ var jsPsych = initJsPsych({
 });
 
 var timeline = [];
-
-// ============================================================
-// TIMINGS (milliseconds)
-// ============================================================
-var T = {
-    question_delay: 3500,           // Phase 1: each image shown 3.5 s before the question appears
-    question_deadline: 3000,        // Phase 1: after the question appears, up to 3 s to answer; otherwise the task moves on
-    fixation: 1000,
-    white: 1000,
-    exposure_display: 3000,         // Phase 2: image shown alone for 3 s
-    exposure_press_deadline: 10000, // Phase 2: up to 10 s to press SPACE
-    exposure_reveal: 3000,          // Phase 2: value shown 3 s, no matter what
-    decision_deadline: 5000,        // Phase 3: the choice screen lasts exactly this long, however fast the click (buttons active immediately)
-    decision_feedback: 1000,        // Phase 3: chosen image shown this long, regardless of RT
-    decision_blank: 800,
-    min_read: 5000,                 // minimum reading time on instruction screens
-    min_read_key: 10000,            // minimum reading time on the Phase 2 and Phase 3 instruction screens (the key instructions)
-    halfway: 5000                   // "halfway" notice
-};
 
 var participant_id = jsPsych.data.getURLVariable('participantId') || jsPsych.randomization.randomID(15);
 var study_id = jsPsych.data.getURLVariable('assignmentId');
@@ -159,136 +142,97 @@ jsPsych.data.addProperties({
     subject_id: participant_id,
     study_id: study_id,
     session_id: session_id,
-    experiment: 'ValueSpreading_WithinSubject_CauseEffect_EffectCause_v5_40pairs_Interleaved_ValueInstruction_2026-10-06'
+    experiment: 'Button_Device_Value_Spreading_Pilot'
 });
 
 // ============================================================
 // STIMULUS FOLDER & FILE NAMING
-// Images live in "images_value/" as:
-//   Cause_01 ... Cause_48   (the CAUSE image of each pair)
-//   Effect_01 ... Effect_48 (the EFFECT image of each pair)
-// (only the pairs in ACTIVE_PAIR_IDS are used)
-// Extension: .jpg for pairs 1-3, .png for the rest (edit the list
-// below if your files differ).
+// Each pair ("series") lives in its own folder inside images_buttons/:
+//
+//   images_buttons/series_N/button_N.png                    (button, before pressing)
+//   images_buttons/series_N/click_N.png                     (button, being pressed)
+//   images_buttons/series_N/<device>_before_pressing_N.png  (device, before)
+//   images_buttons/series_N/<device>_after_pressing_N.png   (device, after)
+//
+// <device> is the device's name in the file names (in series_1 it is "light").
+// If other series use other device names (e.g. "fan", "lamp"), fill them in
+// DEVICE_NAMES below. Any series not listed defaults to "light".
+//
+// Series 1-8  = CAUSAL     (pressing the button activates the device)
+// Series 9-16 = NON-CAUSAL (pressing the button does nothing)
 // ============================================================
-// 40 pairs are used = the 40 best pairs of the 48 by the pilot causal-direction ratings (2026-10-05).
-// File numbers are NOT renumbered. Ratings = share of the 14 participants who passed the direct-test screen
-// (> 0.7) and judged "cause -> effect". Pairs 26 and 40 (images were swapped in the pilot, now fixed) were
-// rated with their judgments reversed: 26 = 13/14, 40 = 12/14, so both are back in.
-// The 8 removed pairs (lowest ratings):
-//   42 (9/14);  2, 8, 18, 32, 33, 48 (10/14);  39 (11/14, tied with pair 36, which was kept).
-var REMOVED_PAIR_IDS = [2, 8, 18, 32, 33, 39, 42, 48];
-var ACTIVE_PAIR_IDS = [];
-for (var k = 1; k <= 48; k++) {
-    if (REMOVED_PAIR_IDS.indexOf(k) === -1) { ACTIVE_PAIR_IDS.push(k); }
-}
-var NUM_PAIRS = ACTIVE_PAIR_IDS.length;   // 40
-var HALF_PAIRS = NUM_PAIRS / 2;           // 20 (halfway notice + math question position)
+var NUM_PAIRS = 16;
+var NUM_CAUSAL = 8; // series 1..8 are causal, 9..16 are non-causal
+var STIM_FOLDER = 'images_buttons/';
 
-// ---- VERSION STAMP: these columns are saved on every row of the data file, to tell the versions apart ----
-//   v2 (earlier pilot of the 40-pair design): click ended the decision trial; instruction said "answer as quickly as you can"
-//   v3: decision screen always lasts 5 s (response_ends_trial = false); instruction says there is no need to rush; indirect block first, then direct block
-//   v5 (this file): v3 + (a) indirect and direct choices fully INTERLEAVED, (b) instruction = choose the image worth MORE MONEY
-//       based on the $1/$0 values learned in Phase 2 (no "gut feeling" / "prefer" wording, no "no need to rush" contradiction)
-var VERSION_TAG = 'v5_40pairs_interleaved_value_instruction_2026-10-06';
-jsPsych.data.addProperties({
-    version_tag: VERSION_TAG,
-    n_pairs: NUM_PAIRS,
-    removed_pairs: REMOVED_PAIR_IDS.join('-'),
-    decision_block_order: 'interleaved',
-    decision_deadline_ms: T.decision_deadline,
-    decision_screen_fixed_duration: 1,          // 1 = the choice screen lasts the full deadline, however fast the click
-    decision_instruction: 'remember_monetary_value'    // v2: 'answer_quickly'; v3: 'no_rush_accuracy'
-});
-console.log('Experiment version: ' + VERSION_TAG);
-var STIM_FOLDER = 'images_value/';
-var JPG_PAIR_NUMBERS = [1, 2, 3];
+var DEVICE_NAMES = {
+    1: 'light', 2: 'light', 3: 'light', 4: 'light',
+    5: 'light', 6: 'light', 7: 'light', 8: 'light',
+    9: 'light', 10: 'light', 11: 'light', 12: 'light',
+    13: 'light', 14: 'light', 15: 'light', 16: 'light'
+};
 
-function pad2(n) {
-    return n < 10 ? '0' + n : '' + n;
+// Which device image represents the device in Phase 2 (exposure), Phase 3
+// (decision) and the memory test: 'before' or 'after'. 'before' is used so
+// that causal and non-causal devices look equally "neutral" (in causal
+// series the "after" image is lit up, which could confound the results).
+var DEVICE_TEST_STATE = 'before';
+
+function getDeviceName(n) {
+    return DEVICE_NAMES[n] || 'light';
 }
 
-function getExt(n) {
-    return JPG_PAIR_NUMBERS.indexOf(n) !== -1 ? '.jpg' : '.png';
-}
-
-function getCausePath(n) {
-    return STIM_FOLDER + 'Cause_' + pad2(n) + getExt(n);
-}
-
-function getEffectPath(n) {
-    return STIM_FOLDER + 'Effect_' + pad2(n) + getExt(n);
+function seriesFolder(n) {
+    return STIM_FOLDER + 'series_' + n + '/';
 }
 
 // ============================================================
-// BUILD THE 40 PAIRS
+// BUILD THE 16 PAIRS
 // ============================================================
 var all_pairs = [];
-ACTIVE_PAIR_IDS.forEach(function(i) {
-    all_pairs.push({
+for (var i = 1; i <= NUM_PAIRS; i++) {
+    var dev = getDeviceName(i);
+    var folder = seriesFolder(i);
+    var pair = {
         pair_id: i,
-        cause_path: getCausePath(i),
-        effect_path: getEffectPath(i)
-    });
-});
+        device_name: dev,
+        causality: (i <= NUM_CAUSAL) ? 'causal' : 'non_causal',
+        button_path: folder + 'button_' + i + '.png',
+        click_path: folder + 'click_' + i + '.png',
+        device_before_path: folder + dev + '_before_pressing_' + i + '.png',
+        device_after_path: folder + dev + '_after_pressing_' + i + '.png'
+    };
+    // The CAUSE image of the pair = the (unpressed) button
+    pair.cause_path = pair.button_path;
+    // The EFFECT image of the pair = the device (state set by DEVICE_TEST_STATE)
+    pair.effect_path = (DEVICE_TEST_STATE === 'after') ? pair.device_after_path : pair.device_before_path;
+    all_pairs.push(pair);
+}
 
 // ------------------------------------------------------------
-// WITHIN-SUBJECT DESIGN: 2 x 2 x 2 = 8 cells, 5 pairs per cell (40 pairs).
-//
-//   presentation_order (Phase 1 encoding):
-//       'forward'  -> cause shown first, then effect   (20 pairs)
-//       'reversed' -> effect shown first, then cause   (20 pairs)
-//   exposed_role (Phase 2 - which member is shown with its value):
-//       'cause' | 'effect'
-//   reward_condition (Phase 2 - the value of the exposed member):
-//       'reward' ($1) | 'neutral' ($0)
-//
-// Pairs are randomly assigned to cells for every participant, so
-// the order manipulation is fully crossed with role and reward.
+// Reward is ALWAYS on the EFFECT (the device). Within EACH causality
+// group (8 causal, 8 non-causal) exactly 4 pairs are REWARDED ($1) and
+// 4 are NEUTRAL ($0). That gives 4 cells with 4 pairs each:
+//   causal_reward | causal_neutral | non_causal_reward | non_causal_neutral
+// In Phase 2 only the DEVICE of each pair is shown with its value. The
+// BUTTON is never shown in Phase 2 - it is the critical (indirect) test
+// item in Phase 3.
 // ------------------------------------------------------------
-var presentation_orders = ['forward', 'reversed'];
-var exposed_roles = ['cause', 'effect'];
-var reward_conditions = ['reward', 'neutral'];
-
-var design_cells = [];
-presentation_orders.forEach(function(o) {
-    exposed_roles.forEach(function(r) {
-        reward_conditions.forEach(function(w) {
-            design_cells.push({ order: o, role: r, reward: w });
-        });
+function assignRewardWithinGroup(groupPairs) {
+    var shuffled = jsPsych.randomization.shuffle(groupPairs.slice());
+    var half = shuffled.length / 2;
+    shuffled.forEach(function(pair, idx) {
+        pair.reward_condition = (idx < half) ? 'reward' : 'neutral';
+        pair.cell = pair.causality + '_' + pair.reward_condition;
+        pair.exposed_role = 'effect';
+        pair.exposed_path = pair.effect_path;
+        pair.critical_role = 'cause';
+        pair.critical_path = pair.cause_path;
     });
-});
+}
 
-var cell_size = NUM_PAIRS / design_cells.length; // 5
-if (cell_size !== Math.floor(cell_size)) { throw new Error('NUM_PAIRS must be divisible by 8'); }
-var shuffled_for_cells = jsPsych.randomization.shuffle(all_pairs.slice());
-
-shuffled_for_cells.forEach(function(pair, idx) {
-    var c = design_cells[Math.floor(idx / cell_size)];
-
-    pair.presentation_order = c.order;
-    pair.exposed_role = c.role;
-    pair.reward_condition = c.reward;
-    pair.cell = c.order + '_' + c.role + '_' + c.reward;
-
-    // Phase 1 encoding order
-    if (pair.presentation_order === 'forward') {
-        pair.first_role = 'cause';
-        pair.first_path = pair.cause_path;
-        pair.second_path = pair.effect_path;
-    } else {
-        pair.first_role = 'effect';
-        pair.first_path = pair.effect_path;
-        pair.second_path = pair.cause_path;
-    }
-
-    // Phase 2: the exposed member (shown with $1 / $0)
-    pair.exposed_path = (pair.exposed_role === 'cause') ? pair.cause_path : pair.effect_path;
-
-    // the member NOT shown in Phase 2 - critical item for the indirect test
-    pair.critical_path = (pair.exposed_role === 'cause') ? pair.effect_path : pair.cause_path;
-    pair.critical_role = (pair.exposed_role === 'cause') ? 'effect' : 'cause';
-});
+assignRewardWithinGroup(all_pairs.filter(function(p) { return p.causality === 'causal'; }));
+assignRewardWithinGroup(all_pairs.filter(function(p) { return p.causality === 'non_causal'; }));
 
 // ============================================================
 // PRELOAD
@@ -301,13 +245,15 @@ var imagesToPreload = [
 ];
 
 all_pairs.forEach(function(p) {
-    imagesToPreload.push(p.cause_path);
-    imagesToPreload.push(p.effect_path);
+    imagesToPreload.push(p.button_path);
+    imagesToPreload.push(p.click_path);
+    imagesToPreload.push(p.device_before_path);
+    imagesToPreload.push(p.device_after_path);
 });
 
 var practice_pairs = [
-   { name: 'the_performance_causal', type: 'causal_sequence', e1: 1, e2: 2, order: 'forward' },   // cause, then effect
-   { name: 'museum_causal', type: 'causal_sequence', e1: 3, e2: 4, order: 'reversed' }            // effect, then cause
+   { name: 'the_performance_causal', type: 'causal_sequence', e1: 1, e2: 2 },
+   { name: 'museum_causal', type: 'causal_sequence', e1: 3, e2: 4 }
 ];
 
 function getPracticeImagePath(block, idx) {
@@ -329,7 +275,8 @@ timeline.push({
 // SHARED HELPERS
 // ============================================================
 
-// Simple 3-option math question (not framed as an "attention check").
+// Simple 3-option math question, shown a handful of times through the
+// experiment (not framed as an "attention check" to the participant).
 function mathQuestionTrial() {
     var a = Math.floor(Math.random() * 8) + 1;
     var b = Math.floor(Math.random() * 8) + 1;
@@ -354,37 +301,23 @@ var whiteScreenTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
     choices: "NO_KEYS",
-    trial_duration: T.white
+    trial_duration: 1000
 };
 
 var fixationTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: '<div class="fixation">+</div>',
     choices: "NO_KEYS",
-    trial_duration: T.fixation
+    trial_duration: 1000
 };
 
-// "Halfway" notice shown for 5 seconds, then the experiment continues
-// automatically to the next trials.
-function halfwayTrial() {
-    return {
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: '<div style="font-family: Arial; text-align: center; padding: 60px;">' +
-                  '<h2>You are halfway through this part</h2>' +
-                  '<p style="font-size: 20px; color: #555;">The next trials will begin in a moment...</p>' +
-                  '</div>',
-        choices: "NO_KEYS",
-        trial_duration: T.halfway,
-        data: { task: 'halfway_notice' }
-    };
-}
-
 // Wraps a jsPsychInstructions trial so its navigation buttons stay
-// disabled for `minMs` (default T.min_read), forcing a minimum reading time.
+// disabled for `minMs` (default 10000ms), forcing a minimum reading
+// time before the participant can click through to the next stage.
+// A small countdown notice is shown while buttons are disabled.
 function withMinReadTime(instructionsTrial, minMs) {
-    minMs = (typeof minMs === 'number') ? minMs : T.min_read;
+    minMs = (typeof minMs === 'number') ? minMs : 10000;
     var trial = Object.assign({}, instructionsTrial);
-    trial.allow_keys = false;   // keyboard navigation off, so the reading-time lock cannot be bypassed with the arrow keys
     var original_on_load = trial.on_load;
 
     trial.on_load = function() {
@@ -435,30 +368,23 @@ function withMinReadTime(instructionsTrial, minMs) {
 }
 
 // Runs all trials for a phase, inserting exactly ONE math question after
-// the item at `checkAfterPosition` (1-based), if provided.
-// Total math questions in the experiment = 4 (one per phase: encoding, exposure, decision, memory).
-// If `halfwayAfterPosition` is given, a 5-second "halfway" notice is shown
-// after that item (before the math question, if there is one).
-function pushPhase(sourceArray, trialBuilderFn, checkAfterPosition, halfwayAfterPosition) {
+// the item at `checkAfterPosition` (1-based), if provided. Used to keep
+// the total math-question count at exactly 4 across the whole experiment.
+function pushPhase(sourceArray, trialBuilderFn, checkAfterPosition) {
     sourceArray.forEach(function(item, idx) {
         timeline = timeline.concat(trialBuilderFn(item));
-        if (halfwayAfterPosition && (idx + 1) === halfwayAfterPosition) {
-            timeline.push(halfwayTrial());
-        }
         if (checkAfterPosition && (idx + 1) === checkAfterPosition) {
             timeline.push(mathQuestionTrial());
         }
     });
 }
 
-// Shows one image; after `delayMs` (T.question_delay) a short question
-// appears BELOW the same image, and only then can the participant
-// click Yes/No. The participant then has T.question_deadline ms to answer;
-// if there is no answer the trial ends and the task moves on automatically.
-// Data: timed_out (1/0) and rt_from_question (RT measured from the moment
-// the question appeared, i.e. rt minus delayMs).
+// Shows one image; after `delayMs` (default 4000ms) a short question
+// fades in BELOW the same image (same screen, not a separate page),
+// and only then can the participant click Yes/No to continue.
+// (Used only for the practice trials.)
 function buildImageWithDelayedQuestionTrial(imagePath, dataObj, delayMs) {
-    delayMs = (typeof delayMs === 'number') ? delayMs : T.question_delay;
+    delayMs = (typeof delayMs === 'number') ? delayMs : 4000;
     return {
         type: jsPsychHtmlButtonResponse,
         stimulus: '<div class="stimulus-container">' +
@@ -467,13 +393,7 @@ function buildImageWithDelayedQuestionTrial(imagePath, dataObj, delayMs) {
                    '<p style="font-size:20px; font-weight:bold;">Does a person appear in this image, or does the word "person" appear as text?</p>' +
                    '</div></div>',
         choices: ['Yes', 'No'],
-        trial_duration: delayMs + T.question_deadline,
         data: dataObj,
-        on_finish: function(data) {
-            var no_answer = (data.response === null || data.response === undefined);
-            data.timed_out = no_answer ? 1 : 0;
-            data.rt_from_question = no_answer ? null : (data.rt - delayMs);
-        },
         on_load: function() {
             var btnGroup = document.querySelector('#jspsych-html-button-response-btngroup');
             if (btnGroup) { btnGroup.style.visibility = 'hidden'; }
@@ -487,6 +407,40 @@ function buildImageWithDelayedQuestionTrial(imagePath, dataObj, delayMs) {
     };
 }
 
+// Association-phase screen: TWO images side by side (button on the left,
+// device on the right). After `delayMs` (default 4000ms) a short Yes/No
+// question fades in BELOW the same images; only then can the participant
+// continue. `expectedIndex` = index of the correct answer in ['Yes','No'].
+function buildAssocScreenTrial(leftPath, rightPath, dataObj, questionText, expectedIndex, delayMs) {
+    delayMs = (typeof delayMs === 'number') ? delayMs : 4000;
+    return {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: '<div class="stimulus-container">' +
+                   '<div class="assoc-row">' +
+                   '<img src="' + leftPath + '" class="assoc-image">' +
+                   '<img src="' + rightPath + '" class="assoc-image">' +
+                   '</div>' +
+                   '<div class="question-area" id="delayed-question" style="visibility:hidden; margin-top:15px;">' +
+                   '<p style="font-size:20px; font-weight:bold;">' + questionText + '</p>' +
+                   '</div></div>',
+        choices: ['Yes', 'No'],
+        data: dataObj,
+        on_load: function() {
+            var btnGroup = document.querySelector('#jspsych-html-button-response-btngroup');
+            if (btnGroup) { btnGroup.style.visibility = 'hidden'; }
+            setTimeout(function() {
+                var q = document.querySelector('#delayed-question');
+                if (q) { q.style.visibility = 'visible'; }
+                var bg = document.querySelector('#jspsych-html-button-response-btngroup');
+                if (bg) { bg.style.visibility = 'visible'; }
+            }, delayMs);
+        },
+        on_finish: function(data) {
+            data.question_correct = (data.response === expectedIndex) ? 1 : 0;
+        }
+    };
+}
+
 // ============================================================
 // INSTRUCTIONS & CONSENT
 // ============================================================
@@ -495,7 +449,8 @@ timeline.push(withMinReadTime({
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Welcome to the Experiment</h2>' +
-        '<p>In this study you will see pairs of images and answer short questions about them.</p>' +
+        '<p>In this study you will look at devices that are produced in a factory. Each device comes with a button, and you will be asked to judge things related to them.</p>' +
+        '<p>Every device also has a <b>value</b>: some devices are worth <b>$1</b> and others are worth <b>$0</b>. You will find out the value of some of the devices later in the study.</p>' +
         '<p>The experiment has several short parts, beginning with a brief practice round.</p>' +
         '<p>Click "Next" to read the consent form.</p>' +
         '</div>',
@@ -524,29 +479,19 @@ timeline.push(withMinReadTime({
         '<h2>Practice Round</h2>' +
         '<p>We will now go through a short practice round so you can get familiar with the task.</p>' +
         '<p>In each trial, a first image will appear for a few seconds, followed by a question, then a second image, followed by another question.</p>' +
-        '<p>You will have only a few seconds to answer each question. If you do not answer in time, the task moves on automatically.</p>' +
         '<p>Please look at each image carefully and answer the questions that follow.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
 }));
 
-// Practice pair 1: cause first, then effect (file _1 then _2).
-// Practice pair 2: effect first, then cause (file _2 then _1).
 practice_pairs.forEach(function(p) {
-    var cause_img = getPracticeImagePath(p, 1);   // _1 = cause
-    var effect_img = getPracticeImagePath(p, 2);  // _2 = effect
-    var forward = (p.order === 'forward');
-    var first_img = forward ? cause_img : effect_img;
-    var second_img = forward ? effect_img : cause_img;
+    var img1 = getPracticeImagePath(p, 1);
+    var img2 = getPracticeImagePath(p, 2);
 
-    timeline.push(buildImageWithDelayedQuestionTrial(first_img, {
-        task: 'practice_item1', folder: p.name, presentation_order: p.order, role: forward ? 'cause' : 'effect'
-    }));
+    timeline.push(buildImageWithDelayedQuestionTrial(img1, { task: 'practice_item1', folder: p.name }));
     timeline.push(fixationTrial);
-    timeline.push(buildImageWithDelayedQuestionTrial(second_img, {
-        task: 'practice_item2', folder: p.name, presentation_order: p.order, role: forward ? 'effect' : 'cause'
-    }));
+    timeline.push(buildImageWithDelayedQuestionTrial(img2, { task: 'practice_item2', folder: p.name }));
     timeline.push(whiteScreenTrial);
 });
 
@@ -562,19 +507,28 @@ timeline.push(withMinReadTime({
 }));
 
 // ============================================================
-// PHASE 1: ENCODING  (within-subject manipulation of presentation order)
-// All 40 pairs are shown in a fully randomized (mixed) sequence.
-//   - 20 pairs: cause first, then effect   ('forward')
-//   - 20 pairs: effect first, then cause   ('reversed')
-// Each image is followed by a short "person in image?" question.
+// PHASE 1: ASSOCIATION (ENCODING)
+// Each of the 16 pairs (button + device) is shown TWICE:
+//   screen 1 (BEFORE pressing): button_N        + device "before pressing"
+//   screen 2 (AFTER pressing):  click_N (press) + device "after pressing"
+// Each screen is shown for 4 seconds, then a short Yes/No question
+// ("is a finger visible?") appears below the same images.
+// After the "after pressing" screen, a CAUSAL JUDGMENT trial follows:
+// the participant sees the outcome (button pressed + device activated or
+// not) and chooses "A caused B" / "B caused A" / "They are unrelated".
+// Series 1-8 are tagged "causal" (pressing activates the device), series
+// 9-16 are tagged "non_causal" (pressing does nothing). Order of pairs is
+// randomized per participant.
 // ============================================================
 timeline.push(withMinReadTime({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
-        '<h2>Phase 1: Image Viewing</h2>' +
-        '<p>You will see ' + NUM_PAIRS + ' pairs of images, one after another. Each pair shows two images, one followed by the other.</p>' +
-        '<p>Please view each image carefully. After each image, answer a short question about it. You will have only a few seconds to answer; if you do not, the task moves on automatically.</p>' +
+        '<h2>Phase 1: Buttons and Devices</h2>' +
+        '<p>You will see 16 different buttons, each one paired with a device.</p>' +
+        '<p>For each pair you will first see the button and the device <b>before</b> the button is pressed, and then the button being pressed and the device <b>after</b> the button was pressed.</p>' +
+        '<p>Please look carefully at each screen. After each screen, answer a short question about it.</p>' +
+        '<p>After each pair, you will also be asked about the relationship between the two images: image A (the button) and image B (the device). You will decide whether A caused B, B caused A, or whether they are unrelated.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
@@ -582,34 +536,74 @@ timeline.push(withMinReadTime({
 
 var encoding_order = jsPsych.randomization.shuffle(all_pairs.slice());
 
+var FINGER_QUESTION = 'Is a finger (or hand) visible in this image?';
+
+// Causal judgment shown right after the "after pressing" screen of each pair.
+// Image A = the button being pressed (click_N), Image B = the device after
+// pressing. The participant sees the outcome (device activated or not) and
+// decides: A caused B / B caused A / unrelated.
+// Coding: 'A_to_B' (correct for causal series), 'B_to_A', 'unrelated'
+// (correct for non-causal series).
+var JUDGMENT_CHOICES = ['A caused B', 'B caused A', 'They are unrelated'];
+var JUDGMENT_CODES = ['A_to_B', 'B_to_A', 'unrelated'];
+
+function buildCausalJudgmentTrial(pair) {
+    return {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: '<div class="stimulus-container">' +
+                   '<div class="assoc-row">' +
+                   '<div><img src="' + pair.click_path + '" class="assoc-image">' +
+                   '<p style="font-size:24px; font-weight:bold; margin-top:10px;">A</p></div>' +
+                   '<div><img src="' + pair.device_after_path + '" class="assoc-image">' +
+                   '<p style="font-size:24px; font-weight:bold; margin-top:10px;">B</p></div>' +
+                   '</div>' +
+                   '<p style="font-size:20px; font-weight:bold; margin-top:15px;">What is the relationship between image A and image B?</p>' +
+                   '</div>',
+        choices: JUDGMENT_CHOICES,
+        data: {
+            task: 'causal_judgment',
+            pair_id: pair.pair_id,
+            causality: pair.causality,
+            device_name: pair.device_name
+        },
+        on_finish: function(data) {
+            data.judgment = (data.response !== null) ? JUDGMENT_CODES[data.response] : null;
+            data.judged_causal = (data.response === 0 || data.response === 1) ? 1 : 0;
+            var correct_code = (pair.causality === 'causal') ? 'A_to_B' : 'unrelated';
+            data.judgment_correct = (data.judgment === correct_code) ? 1 : 0;
+        }
+    };
+}
+
 function buildEncodingTrials(pair) {
-    var second_role = (pair.first_role === 'cause') ? 'effect' : 'cause';
     return [
-        buildImageWithDelayedQuestionTrial(pair.first_path, {
-            task: 'encoding_item',
-            pair_id: pair.pair_id,
-            presentation_order: pair.presentation_order,
-            position: 1,
-            role: pair.first_role
-        }),
+        // Screen 1: BEFORE pressing (no finger -> correct answer "No" = index 1)
+        buildAssocScreenTrial(
+            pair.button_path, pair.device_before_path,
+            { task: 'encoding_before', stage: 'before', pair_id: pair.pair_id, causality: pair.causality, device_name: pair.device_name },
+            FINGER_QUESTION, 1
+        ),
         fixationTrial,
-        buildImageWithDelayedQuestionTrial(pair.second_path, {
-            task: 'encoding_item',
-            pair_id: pair.pair_id,
-            presentation_order: pair.presentation_order,
-            position: 2,
-            role: second_role
-        }),
+        // Screen 2: AFTER pressing (finger on the button -> correct answer "Yes" = index 0)
+        buildAssocScreenTrial(
+            pair.click_path, pair.device_after_path,
+            { task: 'encoding_after', stage: 'after', pair_id: pair.pair_id, causality: pair.causality, device_name: pair.device_name },
+            FINGER_QUESTION, 0
+        ),
+        fixationTrial,
+        // Causal judgment about the outcome just seen
+        buildCausalJudgmentTrial(pair),
         whiteScreenTrial
     ];
 }
 
-pushPhase(encoding_order, buildEncodingTrials, HALF_PAIRS, HALF_PAIRS);
+pushPhase(encoding_order, buildEncodingTrials, 8);
 
 // ============================================================
 // PHASE 2: CONTROLLED EXPOSURE
-// Only ONE member of each pair is shown (per its assigned cell),
-// followed by a reward ($1) or neutral ($0) outcome.
+// Only the DEVICE of each pair is shown, followed by a reward ($1) or
+// neutral ($0) outcome. Within each causality group (causal / non-causal),
+// 4 devices are rewarded and 4 are neutral (8 + 8 overall).
 // Order is randomized and independent of the encoding order.
 // ============================================================
 timeline.push(withMinReadTime({
@@ -617,98 +611,71 @@ timeline.push(withMinReadTime({
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Phase 2</h2>' +
-        '<p>You will now see some of the images again, one at a time.</p>' +
-        '<p>Each image will first appear on its own. Then <b>press the SPACEBAR</b> to reveal what that image is worth. You have 10 seconds to press; if you do not, the value will be shown automatically.</p>' +
-        '<p><span style="color:green; font-weight:bold;">$</span> = This image is worth $1</p>' +
-        '<p><span style="color:gray; font-weight:bold;">&#9670;</span> = This image is worth $0</p>' +
-        '<p><b>Please try to remember how much money each image is worth ($1 or $0).</b> Later you will be asked to choose the image that is worth more money.</p>' +
+        '<p>You will now see some of the devices again, one at a time.</p>' +
+        '<p><b>Press the SPACEBAR</b> to reveal what that device is worth.</p>' +
+        '<p><span style="color:green; font-weight:bold;">$</span> = This device is worth $1</p>' +
+        '<p><span style="color:gray; font-weight:bold;">&#9670;</span> = This device is worth $0</p>' +
         '</div>'
     ],
     show_clickable_nav: true
-}, T.min_read_key));   // 10 s before "Next" can be clicked
+}));
 
 var exposure_order = jsPsych.randomization.shuffle(all_pairs.slice());
 
 function buildExposureTrials(pair) {
     var is_rewarded = pair.reward_condition === 'reward';
     var reward_img = is_rewarded ? 'images/dollar.png' : 'images/gray.png';
-    var reward_txt = is_rewarded ? 'This image is worth $1' : 'This image is worth $0';
+    var reward_txt = is_rewarded ? 'This device is worth $1' : 'This device is worth $0';
     var reward_clr = is_rewarded ? 'green' : 'gray';
 
     var common_data = {
         pair_id: pair.pair_id,
+        causality: pair.causality,
         exposed_role: pair.exposed_role,
         reward_condition: pair.reward_condition,
-        presentation_order: pair.presentation_order,
         cell: pair.cell
     };
 
-    var img_html = '<img src="' + pair.exposed_path + '" class="exp-image">';
-    var prompt_style = 'font-size: 22px; margin-top: 20px; font-weight: bold;';
-    var prompt_text = 'Press SPACEBAR to reveal this image\'s value';
-
     return [
         {
-            // 1) The image is shown ALONE for T.exposure_display ms (3 s).
-            //    SPACE is not active yet; the prompt line is invisible but
-            //    keeps its space so the layout does not jump.
             type: jsPsychHtmlKeyboardResponse,
-            stimulus: '<div class="stimulus-container">' + img_html +
-                       '<p style="' + prompt_style + ' visibility: hidden;">' + prompt_text + '</p></div>',
-            choices: "NO_KEYS",
-            trial_duration: T.exposure_display,
-            data: Object.assign({ task: 'exposure_display' }, common_data)
-        },
-        {
-            // 2) The prompt appears. The participant has up to
-            //    T.exposure_press_deadline ms (10 s) to press SPACE.
-            //    If no press, the trial ends and the value is revealed
-            //    automatically (pressed_space = 0 in the data).
-            type: jsPsychHtmlKeyboardResponse,
-            stimulus: '<div class="stimulus-container">' + img_html +
-                       '<p style="' + prompt_style + '">' + prompt_text + '</p></div>',
+            stimulus: '<div class="stimulus-container"><img src="' + pair.exposed_path + '" class="exp-image">' +
+                       '<p style="font-size: 22px; margin-top: 20px; font-weight: bold;">Press SPACEBAR to reveal this device\'s value</p></div>',
             choices: [' '],
-            trial_duration: T.exposure_press_deadline,
-            data: Object.assign({ task: 'exposure_wait' }, common_data),
-            on_finish: function(data) {
-                data.pressed_space = (data.response === null) ? 0 : 1;
-            }
+            data: Object.assign({ task: 'exposure_wait' }, common_data)
         },
         {
-            // 3) The value is shown for T.exposure_reveal ms (3 s) no matter
-            //    how fast the participant pressed.
             type: jsPsychHtmlKeyboardResponse,
             stimulus: '<div class="stimulus-container" style="display:flex; align-items:center; justify-content:center; gap:30px;">' +
-                       img_html +
+                       '<img src="' + pair.exposed_path + '" class="exp-image">' +
                        '<div><img src="' + reward_img + '" style="width:140px;height:140px;border:4px solid ' + reward_clr + ';">' +
                        '<p style="color:' + reward_clr + '; font-weight:bold; font-size:22px;">' + reward_txt + '</p></div></div>',
             choices: "NO_KEYS",
-            trial_duration: T.exposure_reveal,
+            trial_duration: 3000,
             data: Object.assign({ task: 'exposure_feedback' }, common_data)
         },
         whiteScreenTrial
     ];
 }
 
-pushPhase(exposure_order, buildExposureTrials, HALF_PAIRS, HALF_PAIRS);
+pushPhase(exposure_order, buildExposureTrials, 8);
 
 // ============================================================
 // PHASE 3: DECISION (forced choice)
+// Both test types from Wimmer & Shohamy (2012), always as a direct
+// reward-vs-neutral comparison WITHIN the same causality group:
 //
-// Every comparison is reward-linked vs. neutral-linked, within the SAME
-// role AND the SAME presentation order (so order is never confounded
-// with reward). 2 orders x 2 roles x 2 test types x 5 comparisons
-// = 40 choices.
+//   INDIRECT test (the never-directly-shown BUTTON of each pair):
+//     - causal:     4 trials, button whose device was REWARDED vs
+//                   button whose device was NEUTRAL
+//     - non-causal: 4 trials, same comparison
 //
-// ORDER: all 40 choices (20 indirect + 20 direct) are INTERLEAVED in one random sequence, so the
-// two test types are not confounded with position / fatigue. The sequence is re-drawn until no two
-// consecutive trials involve the same pair (reward_pair_id / neutral_pair_id).
+//   DIRECT test (the DEVICE that WAS shown with its $1/$0 in Phase 2 -
+//   a manipulation check that basic reward learning worked):
+//     - causal:     4 trials, rewarded device vs neutral device
+//     - non-causal: 4 trials, same comparison
 //
-//   INDIRECT test: the never-shown "critical" member of each pair
-//     (unseen CAUSE/EFFECT whose partner was rewarded vs. neutral).
-//     -> tests value spreading.
-//   DIRECT test: the member that WAS shown with its $1/$0 value
-//     (manipulation check for reward learning).
+// 16 choices total (8 indirect + 8 direct).
 // ============================================================
 timeline.push(withMinReadTime({
     type: jsPsychInstructions,
@@ -716,31 +683,35 @@ timeline.push(withMinReadTime({
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Phase 3: Decision</h2>' +
         '<p>You will now see pairs of images side by side.</p>' +
-        '<p>Choose the image that is worth <b>more money</b>, based on the values ($1 or $0) you learned in Phase 2. This is <b>not</b> about which image you like more or which looks better; it is only about which image is worth more money.</p>' +
-        '<p>If you are not sure, make your best guess.</p>' +
-        '<p>You have <b>5 seconds</b> for each choice. The two images stay on the screen for the full 5 seconds <b>no matter how quickly you choose</b>, so you can take your time to recall the values.</p>' +
-        '<p>Click once on <b>Left</b> or <b>Right</b>. If you do not click within 5 seconds, the task moves on automatically.</p>' +
+        '<p>Follow your gut feeling and choose the image you feel is <b>more valuable</b>, or that you intuitively prefer.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
-}, T.min_read_key));   // 10 s before "Next" can be clicked
+}));
 
-// Builds direct reward-vs-neutral trials for one group of pairs
-// (10 items -> 5 reward, 5 neutral -> 5 comparisons).
-// `pathField`: 'critical_path' (indirect) or 'exposed_path' (direct).
-function buildComparisonSet(group, comparisonRole, testType, pathField, orderLabel) {
+// Reward is always on the effect (device), so the critical (unseen) item is
+// always the cause (button) and the exposed item is always the device.
+var causal_pairs = all_pairs.filter(function(p) { return p.causality === 'causal'; });
+var noncausal_pairs = all_pairs.filter(function(p) { return p.causality === 'non_causal'; });
+
+// Builds reward-vs-neutral trials for one causality group (8 pairs ->
+// 4 reward, 4 neutral -> 4 trials). `pathField` selects which image to
+// use per pair: 'critical_path' (button) for the indirect test,
+// 'exposed_path' (device) for the direct test.
+function buildComparisonSet(group, comparisonRole, testType, pathField, causality) {
     var reward_items = jsPsych.randomization.shuffle(
         group.filter(function(p) { return p.reward_condition === 'reward'; })
     );
     var neutral_items = jsPsych.randomization.shuffle(
         group.filter(function(p) { return p.reward_condition === 'neutral'; })
     );
+    // reward_items.length === neutral_items.length === 4 by design
     return reward_items.map(function(rewardPair, idx) {
         var neutralPair = neutral_items[idx];
         return {
-            test_type: testType,                 // 'direct' or 'indirect'
-            comparison_role: comparisonRole,     // 'cause' or 'effect'
-            presentation_order: orderLabel,      // 'forward' or 'reversed'
+            test_type: testType, // 'direct' or 'indirect'
+            comparison_role: comparisonRole, // 'cause' (button) or 'effect' (device)
+            causality: causality, // 'causal' or 'non_causal'
             reward_pair_id: rewardPair.pair_id,
             reward_path: rewardPair[pathField],
             neutral_pair_id: neutralPair.pair_id,
@@ -749,137 +720,71 @@ function buildComparisonSet(group, comparisonRole, testType, pathField, orderLab
     });
 }
 
-var indirect_trials_all = [];
-var direct_trials_all = [];
-presentation_orders.forEach(function(o) {
-    exposed_roles.forEach(function(r) {
-        // INDIRECT: pairs whose unseen (critical) member has role r
-        var indirect_group = all_pairs.filter(function(p) {
-            return p.presentation_order === o && p.critical_role === r;
-        });
-        indirect_trials_all = indirect_trials_all.concat(
-            buildComparisonSet(indirect_group, r, 'indirect', 'critical_path', o)
-        );
-
-        // DIRECT: pairs whose exposed member has role r
-        var direct_group = all_pairs.filter(function(p) {
-            return p.presentation_order === o && p.exposed_role === r;
-        });
-        direct_trials_all = direct_trials_all.concat(
-            buildComparisonSet(direct_group, r, 'direct', 'exposed_path', o)
-        );
-    });
-});
-
-// All 40 choices in ONE random sequence (indirect and direct interleaved); re-draw until no two consecutive
-// trials share a pair (so the exposed image and its unseen partner never follow each other directly).
-function sharesPair(a, b) {
-    return a.reward_pair_id === b.reward_pair_id || a.reward_pair_id === b.neutral_pair_id ||
-           a.neutral_pair_id === b.reward_pair_id || a.neutral_pair_id === b.neutral_pair_id;
-}
-function drawInterleaved(items) {
-    var seq = jsPsych.randomization.shuffle(items.slice());
-    for (var attempt = 0; attempt < 5000; attempt++) {
-        var ok = true;
-        for (var q = 1; q < seq.length; q++) { if (sharesPair(seq[q - 1], seq[q])) { ok = false; break; } }
-        if (ok) { return seq; }
-        seq = jsPsych.randomization.shuffle(items.slice());
-    }
-    return seq;   // (practically never reached)
-}
-var decision_trials = drawInterleaved(indirect_trials_all.concat(direct_trials_all));
+// Combine all 4 sets, then shuffle overall order so everything is
+// interleaved unpredictably for the participant.
+var decision_trials = jsPsych.randomization.shuffle(
+    buildComparisonSet(causal_pairs, 'cause', 'indirect', 'critical_path', 'causal').concat(
+        buildComparisonSet(noncausal_pairs, 'cause', 'indirect', 'critical_path', 'non_causal'),
+        buildComparisonSet(causal_pairs, 'effect', 'direct', 'exposed_path', 'causal'),
+        buildComparisonSet(noncausal_pairs, 'effect', 'direct', 'exposed_path', 'non_causal')
+    )
+);
 
 function buildDecisionTrials(dt) {
     return [
         {
-            // CHOICE SCREEN: the buttons are active IMMEDIATELY (no lock period).
-            // The participant has T.decision_deadline ms to respond; if no
-            // response is given, the trial ends with response = null.
-            type: jsPsychHtmlButtonResponse,
+            type: jsPsychHtmlKeyboardResponse,
             stimulus: function() {
                 var reward_left = Math.random() < 0.5;
                 window.current_decision = {
                     reward_left: reward_left,
                     test_type: dt.test_type,
                     comparison_role: dt.comparison_role,
-                    presentation_order: dt.presentation_order,
+                    causality: dt.causality,
                     reward_pair_id: dt.reward_pair_id,
                     neutral_pair_id: dt.neutral_pair_id
                 };
-                window.current_left_img = reward_left ? dt.reward_path : dt.neutral_path;
-                window.current_right_img = reward_left ? dt.neutral_path : dt.reward_path;
-                return '<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is worth <b>more money</b>?</h3></div>' +
+                var left_img = reward_left ? dt.reward_path : dt.neutral_path;
+                var right_img = reward_left ? dt.neutral_path : dt.reward_path;
+                window.current_left_img = left_img;
+                window.current_right_img = right_img;
+                return '<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is <b>more valuable</b>?</h3></div>' +
+                       '<div class="stimulus-container" style="display: flex; justify-content: center; gap: 30px;">' +
+                       '<img src="' + left_img + '" class="small-image"><img src="' + right_img + '" class="small-image"></div>';
+            },
+            choices: "NO_KEYS",
+            trial_duration: 2500
+        },
+        {
+            type: jsPsychHtmlButtonResponse,
+            stimulus: function() {
+                return '<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is <b>more valuable</b>?</h3></div>' +
                        '<div class="stimulus-container" style="display: flex; justify-content: center; gap: 30px;">' +
                        '<img src="' + window.current_left_img + '" class="small-image"><img src="' + window.current_right_img + '" class="small-image"></div>';
             },
             choices: ['Left', 'Right'],
-            trial_duration: T.decision_deadline,
-            response_ends_trial: false,   // the choice screen always lasts the full T.decision_deadline (5 s), however fast the click
             data: { task: 'decision_choice' },
-            on_load: function() {
-                // outline the chosen image as soon as the click is registered (the plugin disables the buttons after the first click)
-                var btns = document.querySelectorAll('#jspsych-html-button-response-btngroup button');
-                var imgs = document.querySelectorAll('.stimulus-container img.small-image');
-                var chosen = false;
-                btns.forEach(function(b, i) {
-                    b.addEventListener('click', function() {
-                        if (chosen) { return; }
-                        chosen = true;
-                        if (imgs[i]) { imgs[i].style.outline = '6px solid #2a7fff'; imgs[i].style.outlineOffset = '2px'; }
-                    });
-                });
-            },
             on_finish: function(data) {
                 var c = window.current_decision;
                 data.test_type = c.test_type;
                 data.comparison_role = c.comparison_role;
-                data.presentation_order = c.presentation_order;
+                data.causality = c.causality;
                 data.reward_pair_id = c.reward_pair_id;
                 data.neutral_pair_id = c.neutral_pair_id;
-                if (data.response === null || data.response === undefined) {
-                    data.timed_out = 1;
-                    data.chose_reward = null;
-                } else {
-                    data.timed_out = 0;
-                    data.chose_reward = ((data.response === 0 && c.reward_left) ||
-                                          (data.response === 1 && !c.reward_left)) ? 1 : 0;
-                }
-                window.current_decision_response = data.response;
+                data.chose_reward = ((data.response === 0 && c.reward_left) ||
+                                      (data.response === 1 && !c.reward_left)) ? 1 : 0;
             }
-        },
-        {
-            // FEEDBACK SCREEN: always lasts T.decision_feedback ms (1 second),
-            // no matter how fast the participant clicked.
-            // Shows the chosen image highlighted, or a "not in time" message.
-            type: jsPsychHtmlKeyboardResponse,
-            stimulus: function() {
-                var resp = window.current_decision_response;
-                if (resp === null || resp === undefined) {
-                    return '<div style="font-family: Arial; text-align: center; padding: 60px;">' +
-                           '<h2 style="color: #c00;">You did not click in time</h2></div>';
-                }
-                var hl = 'outline: 6px solid #2a7fff; outline-offset: 2px;';   // outline (not border): the image does not change size
-                var left_style = (resp === 0) ? hl : '';
-                var right_style = (resp === 1) ? hl : '';
-                return '<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is worth <b>more money</b>?</h3></div>' +
-                       '<div class="stimulus-container" style="display: flex; justify-content: center; gap: 30px;">' +
-                       '<img src="' + window.current_left_img + '" class="small-image" style="' + left_style + '">' +
-                       '<img src="' + window.current_right_img + '" class="small-image" style="' + right_style + '"></div>';
-            },
-            choices: "NO_KEYS",
-            trial_duration: T.decision_feedback,
-            data: { task: 'decision_feedback' }
         },
         {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
             choices: "NO_KEYS",
-            trial_duration: T.decision_blank
+            trial_duration: 800
         }
     ];
 }
 
-pushPhase(decision_trials, buildDecisionTrials, HALF_PAIRS, HALF_PAIRS);   // halfway notice + math question after trial 20
+pushPhase(decision_trials, buildDecisionTrials, 8);
 
 // ============================================================
 // PHASE 4: CONTROL (memory + causal strength rating)
@@ -889,117 +794,81 @@ timeline.push(withMinReadTime({
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Phase 4: Final Questions</h2>' +
-        '<p>First, you will see an image from a pair and type a short description of the other image of that pair.</p>' +
-        '<p>Then, for each pair of images you will judge whether one image caused the other, or whether they are unrelated.</p>' +
+        '<p>First, for each button you will pick the matching device from a few options.</p>' +
+        '<p>Then, for each pair you will rate how much pressing the button caused the device to react.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
 }));
 
-// ---- 4a: Memory test - OPEN QUESTION (20 pairs: 10 forward + 10 reversed) ----
-// The FIRST image of the pair (as it appeared in Phase 1) is shown, and the
-// participant types a description of the SECOND image of that pair.
-//   forward  pair: cue = cause,  target = effect
-//   reversed pair: cue = effect, target = cause
-var memory_forward = jsPsych.randomization.shuffle(
-    all_pairs.filter(function(p) { return p.presentation_order === 'forward'; })
-).slice(0, 10);
-var memory_reversed = jsPsych.randomization.shuffle(
-    all_pairs.filter(function(p) { return p.presentation_order === 'reversed'; })
-).slice(0, 10);
-var memory_order = jsPsych.randomization.shuffle(memory_forward.concat(memory_reversed));
+// ---- 4a: Memory test (6 pairs: 3 causal + 3 non-causal) ----
+var memory_order = jsPsych.randomization.shuffle(
+    jsPsych.randomization.sampleWithoutReplacement(causal_pairs, 3).concat(
+        jsPsych.randomization.sampleWithoutReplacement(noncausal_pairs, 3)
+    )
+);
 
 function buildMemoryTrial(pair) {
-    var cue_role = pair.first_role;
-    var target_role = (pair.first_role === 'cause') ? 'effect' : 'cause';
+    var foil_pool = all_pairs.filter(function(p) { return p.pair_id !== pair.pair_id; });
+    var foil_sample = jsPsych.randomization.sampleWithoutReplacement(foil_pool, 3);
+    var option_paths = jsPsych.randomization.shuffle(
+        [pair.effect_path].concat(foil_sample.map(function(p) { return p.effect_path; }))
+    );
+    var correct_index = option_paths.indexOf(pair.effect_path);
+    var option_labels = option_paths.map(function(p, i) { return 'Option ' + (i + 1); });
+
+    var options_html = option_paths.map(function(p, i) {
+        return '<div style="text-align:center;"><img src="' + p + '" class="small-image"><br>' +
+               '<span style="font-weight:bold;">Option ' + (i + 1) + '</span></div>';
+    }).join('');
 
     return [
         {
-            type: jsPsychSurveyText,
-            preamble: '<div class="stimulus-container"><img src="' + pair.first_path + '" class="exp-image">' +
-                      '<p style="font-size: 20px; margin-top: 15px; font-weight: bold;">This image was the FIRST image of a pair you saw earlier.</p>' +
-                      '<p style="font-size: 16px; color: #555;">If you do not remember, type "don\'t remember".</p></div>',
-            questions: [
-                {
-                    prompt: 'What was the SECOND image of this pair? Describe it in a few words:',
-                    name: 'memory_response',
-                    rows: 2,
-                    columns: 50,
-                    required: true
-                }
-            ],
-            button_label: 'Continue',
-            data: {
-                task: 'memory_test',
-                pair_id: pair.pair_id,
-                presentation_order: pair.presentation_order,
-                cue_role: cue_role,
-                target_role: target_role,
-                cue_path: pair.first_path,
-                target_path: pair.second_path
-            },
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: '<div class="stimulus-container"><img src="' + pair.cause_path + '" class="exp-image">' +
+                       '<p style="font-size: 18px; margin-top: 15px;">Remember this button. Its matching device is one of the options on the next screen.</p></div>',
+            choices: "NO_KEYS",
+            trial_duration: 2000
+        },
+        {
+            type: jsPsychHtmlButtonResponse,
+            stimulus: '<div class="stimulus-container"><img src="' + pair.cause_path + '" class="small-image">' +
+                       '<p style="font-size: 18px; margin-top: 15px; font-weight:bold;">Which device matches this button?</p></div>' +
+                       '<div style="display:flex; justify-content:center; gap:15px; flex-wrap:wrap; margin-top:10px;">' + options_html + '</div>',
+            choices: option_labels,
+            data: { task: 'memory_test', pair_id: pair.pair_id, causality: pair.causality, correct_index: correct_index },
             on_finish: function(data) {
-                data.memory_text = (data.response && data.response.memory_response) ? data.response.memory_response : null;
+                data.correct = (data.response === correct_index) ? 1 : 0;
             }
         },
         whiteScreenTrial
     ];
 }
 
-pushPhase(memory_order, buildMemoryTrial, 10, 10);
+pushPhase(memory_order, buildMemoryTrial, 3);
 
-// ---- 4b: Causal judgment (all 40 pairs) ----
-// Both images are shown on ONE screen, labeled A (left) and B (right).
-// The left/right placement follows the Phase 1 presentation order:
-//   forward  pairs -> cause on the left (A), effect on the right (B)
-//   reversed pairs -> effect on the left (A), cause on the right (B)
-// The participant chooses: "A caused B" / "B caused A" / "They are unrelated".
+// ---- 4b: Causal strength rating ----
 var rating_order = jsPsych.randomization.shuffle(all_pairs.slice());
 
 function buildRatingTrial(pair) {
-    var forward = (pair.presentation_order === 'forward');
-    var left_path = forward ? pair.cause_path : pair.effect_path;
-    var right_path = forward ? pair.effect_path : pair.cause_path;
-    var left_role = forward ? 'cause' : 'effect';
-    var right_role = forward ? 'effect' : 'cause';
-
-    var label_style = 'font-size:26px; font-weight:bold; margin:8px 0 0 0;';
-
     return [
         {
             type: jsPsychHtmlButtonResponse,
-            stimulus: '<div class="stimulus-container" style="display:flex; justify-content:center; gap:40px;">' +
-                       '<div><img src="' + left_path + '" class="small-image"><p style="' + label_style + '">A</p></div>' +
-                       '<div><img src="' + right_path + '" class="small-image"><p style="' + label_style + '">B</p></div>' +
-                       '</div>' +
-                       '<p style="font-size: 20px; font-weight: bold; margin-top: 20px;">Is there a causal relationship between these two images?</p>',
-            choices: ['A caused B', 'B caused A', 'They are unrelated'],
-            data: {
-                task: 'causal_judgment',
-                pair_id: pair.pair_id,
-                presentation_order: pair.presentation_order,
-                left_role: left_role,
-                right_role: right_role
-            },
+            stimulus: '<div class="stimulus-container" style="display:flex; justify-content:center; gap:30px;">' +
+                       '<img src="' + pair.click_path + '" class="small-image"><img src="' + pair.device_after_path + '" class="small-image"></div>' +
+                       '<p style="font-size: 20px; font-weight: bold; margin-top: 20px;">How much did pressing the button cause the device to react?<br>' +
+                       '<span style="font-weight:normal; font-size:16px;">(1 = did not cause it at all, 10 = completely caused it)</span></p>',
+            choices: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+            data: { task: 'causal_strength_rating', pair_id: pair.pair_id, causality: pair.causality },
             on_finish: function(data) {
-                var judgment = null;
-                if (data.response === 0) {          // "A caused B"
-                    judgment = (left_role === 'cause') ? 'cause_to_effect' : 'effect_to_cause';
-                } else if (data.response === 1) {   // "B caused A"
-                    judgment = (right_role === 'cause') ? 'cause_to_effect' : 'effect_to_cause';
-                } else if (data.response === 2) {
-                    judgment = 'unrelated';
-                }
-                data.judgment = judgment;
-                // 1 = the participant chose the intended direction (cause -> effect)
-                data.judged_intended_direction = (judgment === 'cause_to_effect') ? 1 : 0;
+                data.rating = (data.response !== null) ? data.response + 1 : null;
             }
         },
         whiteScreenTrial
     ];
 }
 
-pushPhase(rating_order, buildRatingTrial, null, HALF_PAIRS);
+pushPhase(rating_order, buildRatingTrial, null);
 
 // ============================================================
 // DEMOGRAPHICS
@@ -1009,8 +878,8 @@ timeline.push({
     questions: [
         { prompt: 'Gender (MALE / FEMALE / OTHER):', name: 'gender', rows: 1, columns: 20 },
         { prompt: 'Age:', name: 'age', rows: 1, columns: 5 },
-        { prompt: 'Did you notice any pattern in how the values were assigned to images? If so, describe it.', name: 'reward_strategy', rows: 2, columns: 50 },
-        { prompt: 'How did you choose between images in the "more money" part?', name: 'strategy', rows: 2, columns: 50 }
+        { prompt: 'Did you notice any pattern in how the values were assigned to devices? If so, describe it.', name: 'reward_strategy', rows: 2, columns: 50 },
+        { prompt: 'How did you choose between images in the "more valuable" part?', name: 'strategy', rows: 2, columns: 50 }
     ],
     data: { task: 'demographics' }
 });
@@ -1022,7 +891,6 @@ timeline.push({
     type: jsPsychCallFunction,
     func: function() {
         console.log("Reached end of real trials, saving data now (before final screen)...");
-        try { runDataChecks(); } catch (e) { console.error('data checks failed to run', e); }
         saveData(jsPsych.data.get().csv());
     }
 });
@@ -1030,255 +898,18 @@ timeline.push({
 // ============================================================
 // END OF EXPERIMENT
 // ============================================================
-// Leave fullscreen, then show the final page. It has no key/button and no duration, so it STAYS on
-// screen (the data were already saved above) and the participant can copy the completion code.
-// (A single Instructions page would clear the screen on "Next".)
 timeline.push({
-    type: jsPsychFullscreen,
-    fullscreen_mode: false
-});
-
-timeline.push({
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: '<div style="text-align: center; padding: 60px; font-family: Arial;">' +
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align: center; padding: 60px; font-family: Arial;">' +
         '<h2>Experiment Completed</h2>' +
         '<p style="font-size: 20px; margin-top: 20px;">You have successfully finished the study.</p>' +
         '<p style="font-size: 22px; color: #28a745; font-weight: bold; margin-top: 30px;">Thank you very much for your participation!</p>' +
-        '<p style="font-size: 16px; color: #666; margin-top: 40px;">Your data has already been saved. Completion Code is 17GF67j9gnk. You may now safely close this window or return to the platform.</p>' +
-        '</div>',
-    choices: "NO_KEYS"
+        '<p style="font-size: 16px; color: #666; margin-top: 40px;">Your data has already been saved. You may now safely close this window or return to the platform.</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
 });
-
-
-// ============================================================
-// CONSOLE SELF-CHECKS (open the browser console: F12 -> Console)
-// 1) runSetupChecks()  - runs when the page loads: verifies the design, the planned timeline and the image files.
-// 2) runDataChecks()   - runs at the END of the experiment (before saving): verifies the data that were collected.
-// Nothing is shown to participants. "PASS" / "FAIL" / "WARN" lines are printed in the console.
-// ============================================================
-var CHECK_SAVE_ENDPOINT = false;   // true = also send a harmless GET to /write_data.php to see if the server answers
-
-function makeChecker(title) {
-    var res = { pass: 0, fail: 0, warn: 0 };
-    console.group('%c' + title, 'font-weight:bold; font-size:14px;');
-    return {
-        ok: function(cond, msg, detail) {
-            if (cond) { res.pass++; console.log('%cPASS%c ' + msg, 'color:green;font-weight:bold', 'color:inherit'); }
-            else { res.fail++; console.error('FAIL ' + msg + (detail !== undefined ? '  ->  ' + JSON.stringify(detail) : '')); }
-        },
-        warn: function(cond, msg, detail) {
-            if (!cond) { res.warn++; console.warn('WARN ' + msg + (detail !== undefined ? '  ->  ' + JSON.stringify(detail) : '')); }
-            else { res.pass++; console.log('%cPASS%c ' + msg, 'color:green;font-weight:bold', 'color:inherit'); }
-        },
-        done: function() {
-            console.log('%c' + res.pass + ' passed, ' + res.fail + ' FAILED, ' + res.warn + ' warnings',
-                        'font-weight:bold; color:' + (res.fail ? 'red' : (res.warn ? 'orange' : 'green')));
-            console.groupEnd();
-            return res;
-        }
-    };
-}
-
-function countBy(arr, keyFn) {
-    var o = {};
-    arr.forEach(function(x) { var k = keyFn(x); o[k] = (o[k] || 0) + 1; });
-    return o;
-}
-
-function runSetupChecks() {
-    var c = makeChecker('SETUP CHECKS (design + timeline)');
-    try {
-        // ---- stimuli / pairs ----
-        c.ok(all_pairs.length === 40, '40 pairs in the design', all_pairs.length);
-        c.ok(REMOVED_PAIR_IDS.every(function(id) { return !all_pairs.some(function(p) { return p.pair_id === id; }); }),
-             'removed pairs (' + REMOVED_PAIR_IDS.join(',') + ') are not used');
-        c.ok(new Set(all_pairs.map(function(p) { return p.pair_id; })).size === all_pairs.length, 'no duplicate pair ids');
-        var cells = countBy(all_pairs, function(p) { return p.cell; });
-        c.ok(Object.keys(cells).length === 8 && Object.keys(cells).every(function(k) { return cells[k] === 5; }),
-             '8 design cells with 5 pairs each', cells);
-        var orders = countBy(all_pairs, function(p) { return p.presentation_order; });
-        c.ok(orders.forward === 20 && orders.reversed === 20, '20 forward + 20 reversed pairs', orders);
-        c.ok(all_pairs.every(function(p) {
-                 return p.presentation_order === 'forward'
-                     ? (p.first_path === p.cause_path && p.second_path === p.effect_path)
-                     : (p.first_path === p.effect_path && p.second_path === p.cause_path); }),
-             'presentation order: forward = cause first, reversed = effect first');
-        c.ok(all_pairs.every(function(p) {
-                 return p.critical_path !== p.exposed_path &&
-                        ((p.exposed_role === 'cause' && p.exposed_path === p.cause_path && p.critical_path === p.effect_path) ||
-                         (p.exposed_role === 'effect' && p.exposed_path === p.effect_path && p.critical_path === p.cause_path)); }),
-             'exposed member and critical (unseen) member are different and consistent with exposed_role');
-
-        // ---- decision phase ----
-        var byId = {}; all_pairs.forEach(function(p) { byId[p.pair_id] = p; });
-        c.ok(decision_trials.length === 40, '40 decision trials', decision_trials.length);
-        var nInd = decision_trials.filter(function(d) { return d.test_type === 'indirect'; }).length;
-        c.ok(nInd === 20 && decision_trials.length - nInd === 20, 'decision trials: 20 indirect + 20 direct (interleaved)');
-        var consecShare = 0;
-        for (var qq = 1; qq < decision_trials.length; qq++) { if (sharesPair(decision_trials[qq - 1], decision_trials[qq])) { consecShare++; } }
-        c.ok(consecShare === 0, 'no two consecutive decision trials share a pair', consecShare);
-        c.warn(decision_trials.slice(0, 20).some(function(d) { return d.test_type === 'direct'; }) &&
-               decision_trials.slice(20).some(function(d) { return d.test_type === 'indirect'; }),
-               'both test types occur in both halves of the decision phase');
-        var bal = countBy(decision_trials, function(d) { return d.test_type + '|' + d.comparison_role + '|' + d.presentation_order; });
-        c.ok(Object.keys(bal).length === 8 && Object.keys(bal).every(function(k) { return bal[k] === 5; }),
-             'decision balance: 5 trials in each test_type x role x order cell', bal);
-        ['indirect', 'direct'].forEach(function(tt) {
-            var ids = [];
-            decision_trials.filter(function(d) { return d.test_type === tt; })
-                .forEach(function(d) { ids.push(d.reward_pair_id, d.neutral_pair_id); });
-            c.ok(ids.length === 40 && new Set(ids).size === 40, tt + ': every pair is used exactly once');
-        });
-        c.ok(decision_trials.every(function(d) {
-                 var r = byId[d.reward_pair_id], n = byId[d.neutral_pair_id];
-                 return r.reward_condition === 'reward' && n.reward_condition === 'neutral'; }),
-             'reward_pair_id is always a reward pair, neutral_pair_id always a neutral pair');
-        c.ok(decision_trials.every(function(d) {
-                 var r = byId[d.reward_pair_id], n = byId[d.neutral_pair_id];
-                 return r.presentation_order === d.presentation_order && n.presentation_order === d.presentation_order; }),
-             'both items of a comparison come from the SAME presentation order');
-        c.ok(decision_trials.filter(function(d) { return d.test_type === 'indirect'; }).every(function(d) {
-                 return d.reward_path === byId[d.reward_pair_id].critical_path && d.neutral_path === byId[d.neutral_pair_id].critical_path &&
-                        byId[d.reward_pair_id].critical_role === d.comparison_role && byId[d.neutral_pair_id].critical_role === d.comparison_role; }),
-             'INDIRECT trials compare the UNSEEN members, both with the labelled role');
-        c.ok(decision_trials.filter(function(d) { return d.test_type === 'direct'; }).every(function(d) {
-                 return d.reward_path === byId[d.reward_pair_id].exposed_path && d.neutral_path === byId[d.neutral_pair_id].exposed_path &&
-                        byId[d.reward_pair_id].exposed_role === d.comparison_role && byId[d.neutral_pair_id].exposed_role === d.comparison_role; }),
-             'DIRECT trials compare the EXPOSED members, both with the labelled role');
-
-        // ---- memory ----
-        var mo = countBy(memory_order, function(p) { return p.presentation_order; });
-        c.ok(memory_order.length === 20 && mo.forward === 10 && mo.reversed === 10, 'memory test: 10 forward + 10 reversed pairs', mo);
-
-        // ---- planned timeline ----
-        var tl = countBy(timeline.filter(function(t) { return t.data && t.data.task; }), function(t) { return t.data.task; });
-        var expected = { encoding_item: 80, exposure_display: 40, exposure_wait: 40, exposure_feedback: 40,
-                         decision_choice: 40, decision_feedback: 40, memory_test: 20, causal_judgment: 40,
-                         math_question: 4, halfway_notice: 5, practice_item1: 2, practice_item2: 2, demographics: 1 };
-        Object.keys(expected).forEach(function(k) {
-            c.ok(tl[k] === expected[k], 'timeline has ' + expected[k] + ' x ' + k, tl[k]);
-        });
-        var enc = timeline.find(function(t) { return t.data && t.data.task === 'encoding_item'; });
-        c.ok(enc && enc.trial_duration === T.question_delay + T.question_deadline,
-             'Phase 1 trial lasts question_delay + question_deadline = ' + (T.question_delay + T.question_deadline) + ' ms');
-        var dc = timeline.find(function(t) { return t.data && t.data.task === 'decision_choice'; });
-        c.ok(dc && dc.trial_duration === T.decision_deadline, 'decision trial deadline = ' + T.decision_deadline + ' ms');
-        c.ok(dc && dc.response_ends_trial === false, 'decision choice screen lasts the full ' + T.decision_deadline + ' ms (a click does not end it)');
-        var last = timeline[timeline.length - 1];
-        c.ok(last && typeof last.stimulus === 'string' && last.stimulus.indexOf('Completion Code is ') !== -1 &&
-             last.stimulus.indexOf('XXXXXXXX') === -1 && last.trial_duration === undefined,
-             'last page shows a completion code (not the placeholder) and stays on screen');
-        c.ok(T.min_read_key === 10000, 'Phase 2 and Phase 3 instruction screens are locked for ' + T.min_read_key + ' ms');
-        console.log('Timings (ms):', JSON.stringify(T));
-
-        // ---- URL variables ----
-        c.warn(!!jsPsych.data.getURLVariable('participantId'), 'URL has participantId (otherwise a random id is used)');
-        c.warn(!!study_id, 'URL has assignmentId (study_id)');
-        c.warn(!!session_id, 'URL has projectId (session_id)');
-        console.log('participant_id =', participant_id);
-    } catch (err) {
-        c.ok(false, 'setup checks crashed: ' + err.message);
-    }
-    var out = c.done();
-
-    // ---- image files (asynchronous; reports in the console when finished) ----
-    if (typeof Image !== 'undefined') {
-        var paths = {};
-        all_pairs.forEach(function(p) { paths[p.cause_path] = 1; paths[p.effect_path] = 1; });
-        ['images/gray.png', 'images/dollar.png', 'images/consent_form_2026_page1.png', 'images/consent_form_2026_page2.png']
-            .forEach(function(x) { paths[x] = 1; });
-        practice_pairs.forEach(function(p) { paths[getPracticeImagePath(p, 1)] = 1; paths[getPracticeImagePath(p, 2)] = 1; });
-        var list = Object.keys(paths), missing = [], done = 0;
-        list.forEach(function(path) {
-            var im = new Image();
-            im.onload = im.onerror = function(ev) {
-                if (ev && ev.type === 'error') { missing.push(path); }
-                if (++done === list.length) {
-                    if (missing.length) { console.error('FAIL image files: ' + missing.length + ' of ' + list.length + ' could not be loaded:', missing); }
-                    else { console.log('%cPASS%c all ' + list.length + ' image files load', 'color:green;font-weight:bold', 'color:inherit'); }
-                }
-            };
-            im.src = path;
-        });
-    }
-
-    if (CHECK_SAVE_ENDPOINT && typeof fetch !== 'undefined') {
-        fetch('/write_data.php', { method: 'GET' })
-            .then(function(r) { console.log('write_data.php answered with HTTP ' + r.status + (r.ok ? ' (reachable)' : ' (check the server)')); })
-            .catch(function(e) { console.error('FAIL write_data.php is not reachable:', e); });
-    }
-    return out;
-}
-
-function runDataChecks() {
-    var c = makeChecker('DATA CHECKS (collected data)');
-    try {
-        var all = jsPsych.data.get();
-        var rows = all.values();
-        var of = function(task) { return rows.filter(function(r) { return r.task === task; }); };
-        c.ok(rows.length > 0, 'data contains ' + rows.length + ' trials');
-        c.ok(rows.every(function(r) { return r.subject_id === participant_id; }), 'every row carries the subject_id');
-        c.ok(rows.every(function(r) { return !!r.experiment; }), 'every row carries the experiment name');
-
-        var exp = { encoding_item: 80, exposure_display: 40, exposure_wait: 40, exposure_feedback: 40,
-                    decision_choice: 40, decision_feedback: 40, memory_test: 20, causal_judgment: 40, math_question: 4, demographics: 1 };
-        Object.keys(exp).forEach(function(k) { c.ok(of(k).length === exp[k], exp[k] + ' x ' + k + ' recorded', of(k).length); });
-
-        // Phase 1
-        var enc = of('encoding_item');
-        c.ok(enc.every(function(r) { return r.timed_out === 0 || r.timed_out === 1; }), 'Phase 1: timed_out recorded on every item');
-        var encTO = enc.filter(function(r) { return r.timed_out === 1; }).length;
-        c.warn(encTO <= enc.length * 0.2, 'Phase 1: no-answer rate is ' + encTO + '/' + enc.length + ' (<= 20%)');
-        var rtq = enc.map(function(r) { return r.rt_from_question; }).filter(function(x) { return x !== null && x !== undefined; });
-        c.ok(rtq.every(function(x) { return x >= 0 && x <= T.question_deadline + 50; }), 'Phase 1: rt_from_question within 0..' + T.question_deadline + ' ms');
-
-        // Phase 2
-        var ew = of('exposure_wait');
-        c.ok(ew.every(function(r) { return r.pressed_space === 0 || r.pressed_space === 1; }), 'Phase 2: pressed_space recorded');
-        c.warn(ew.filter(function(r) { return r.pressed_space === 1; }).length >= ew.length * 0.8,
-               'Phase 2: space bar pressed on >= 80% of trials', ew.filter(function(r) { return r.pressed_space === 1; }).length);
-        var cellsSeen = countBy(of('exposure_feedback'), function(r) { return r.cell; });
-        c.ok(Object.keys(cellsSeen).length === 8 && Object.keys(cellsSeen).every(function(k) { return cellsSeen[k] === 5; }), 'Phase 2: 5 exposures per design cell', cellsSeen);
-
-        // Phase 3
-        var dec = of('decision_choice');
-        c.ok(dec.filter(function(r) { return r.test_type === 'indirect'; }).length === 20 &&
-             dec.filter(function(r) { return r.test_type === 'direct'; }).length === 20, 'Phase 3: 20 indirect + 20 direct trials recorded (interleaved)');
-        c.ok(dec.every(function(r) { return r.timed_out === 1 ? (r.chose_reward === null) : (r.chose_reward === 0 || r.chose_reward === 1); }),
-             'Phase 3: chose_reward is 0/1 (null only when timed out)');
-        c.ok(dec.every(function(r) { return r.rt === null || r.rt === undefined || r.rt <= T.decision_deadline + 50; }), 'Phase 3: every RT is within 0..' + T.decision_deadline + ' ms');
-        var decTO = dec.filter(function(r) { return r.timed_out === 1; }).length;
-        c.warn(decTO <= 4, 'Phase 3: ' + decTO + ' time-outs (<= 4)');
-        var dd = dec.filter(function(r) { return r.test_type === 'direct' && r.timed_out === 0; });
-        var dprop = dd.length ? dd.reduce(function(a, r) { return a + r.chose_reward; }, 0) / dd.length : NaN;
-        console.log('Direct test: ' + (dprop * 100).toFixed(1) + '% reward-linked choices (screen threshold in the analysis: > 60%)');
-        c.warn(dprop > 0.6, 'direct-test accuracy above the 60% screen', dprop);
-        var left = dec.filter(function(r) { return r.response === 0; }).length, right = dec.filter(function(r) { return r.response === 1; }).length;
-        c.warn(left >= 8 && right >= 8, 'left/right button use is not extreme (left ' + left + ', right ' + right + '; each should be >= 8 of 40)');
-
-        // Phase 4
-        var mem = of('memory_test');
-        c.ok(mem.every(function(r) { return typeof r.memory_text === 'string' && r.memory_text.length > 0; }), 'memory answers recorded as text');
-        var cj = of('causal_judgment');
-        c.ok(cj.every(function(r) { return ['cause_to_effect', 'effect_to_cause', 'unrelated'].indexOf(r.judgment) !== -1; }),
-             'causal judgments are coded (cause_to_effect / effect_to_cause / unrelated)');
-        c.ok(cj.every(function(r) { return r.left_role !== r.right_role; }), 'causal screen: left and right roles differ');
-        c.ok(cj.filter(function(r) { return r.presentation_order === 'forward'; }).every(function(r) { return r.left_role === 'cause'; }) &&
-             cj.filter(function(r) { return r.presentation_order === 'reversed'; }).every(function(r) { return r.left_role === 'effect'; }),
-             'causal screen: forward pairs show the cause on the left, reversed pairs the effect on the left');
-        var math = of('math_question');
-        c.warn(math.filter(function(r) { return r.correct === 1; }).length >= 3, 'math questions answered correctly: ' + math.filter(function(r) { return r.correct === 1; }).length + '/4');
-
-        // timing sanity
-        var total = rows.length ? Math.max.apply(null, rows.map(function(r) { return r.time_elapsed || 0; })) / 60000 : 0;
-        console.log('Total duration so far: ' + total.toFixed(1) + ' min');
-    } catch (err) {
-        c.ok(false, 'data checks crashed: ' + err.message);
-    }
-    return c.done();
-}
-
-runSetupChecks();
 
 jsPsych.run(timeline);
 
