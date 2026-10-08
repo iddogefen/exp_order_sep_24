@@ -183,8 +183,10 @@ function getDeviceName(n) {
 }
 
 // Folder name of each series, e.g. "series_" -> images_buttons/series_1/
-// Change this if the folders on the server are named differently.
-var SERIES_FOLDER_PREFIX = 'series_';
+// NOTE: on the server the folders are named WITH A LEADING SPACE
+// (" series_1", " series_2", ...), so the prefix starts with a space.
+// If the folders are renamed to "series_1" etc., change this to 'series_'.
+var SERIES_FOLDER_PREFIX = ' series_';
 
 function seriesFolder(n) {
     return STIM_FOLDER + SERIES_FOLDER_PREFIX + n + '/';
