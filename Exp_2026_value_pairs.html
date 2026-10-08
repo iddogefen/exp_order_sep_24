@@ -185,6 +185,12 @@ var COLOR_OPTIONS = ['blue', 'red', 'green', 'purple', 'yellow', 'orange'];
 
 // How long (ms) each image is shown before the color question appears.
 var IMAGE_DISPLAY_MS = 2500;
+// Association phase repetitions: round 1 is the full sequence (color
+// question + causal judgment). Rounds 2..NUM_ASSOC_ROUNDS are short
+// repetitions of the same one-image-at-a-time sequence (no questions).
+var NUM_ASSOC_ROUNDS = 3;
+var REPEAT_IMAGE_MS = 1500;
+var REPEAT_GAP_MS = 500;   // fixation between before/after and after each pair
 
 // TEST MODE: add ?test=1 to the URL to run a quick test version. In test
 // mode everything that is shown for a fixed time (association images,
@@ -659,6 +665,41 @@ timeline.push({
     fullscreen_mode: true
 });
 
+// ------------------------------------------------------------
+// Short repetition of one pair (association rounds 2..N): the same
+// sequence as round 1 (button, device, button pressed, device after
+// pressing), one image at a time, but without color questions and
+// without the causal judgment.
+// ------------------------------------------------------------
+function buildRepeatAssociationTrials(pair, roundNum) {
+    function img(path, stage, role) {
+        return {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: '<div class="stimulus-container"><img src="' + path + '" class="exp-image"></div>',
+            choices: "NO_KEYS",
+            trial_duration: dur(REPEAT_IMAGE_MS),
+            data: {
+                task: 'encoding_repeat_image', assoc_round: roundNum, stage: stage, image_role: role,
+                pair_id: pair.pair_id, causality: pair.causality, device_name: pair.device_name, image_path: path
+            }
+        };
+    }
+    var gap = {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: '<div class="fixation">+</div>',
+        choices: "NO_KEYS",
+        trial_duration: dur(REPEAT_GAP_MS)
+    };
+    return [
+        img(pair.button_path, 'before', 'button'),
+        img(pair.device_before_path, 'before', 'device'),
+        gap,
+        img(pair.click_path, 'after', 'button'),
+        img(pair.device_after_path, 'after', 'device'),
+        gap
+    ];
+}
+
 // ============================================================
 // PRACTICE PHASE
 // Two randomly chosen series from the experiment (one causal, one
@@ -672,6 +713,7 @@ timeline.push(withShortReadTime({
         '<h2>Practice Round</h2>' +
         '<p>We will now go through a short practice round so you can get familiar with the task.</p>' +
         '<p>You will see buttons and devices. After each one, you will be asked a short question about it. In this round, you will also see the correct answer to the last question.</p>' +
+        '<p><b>It is important to pay attention to the relationship between the two images (the button and the device).</b></p>' +
         '</div>'
     ],
     show_clickable_nav: true
@@ -711,6 +753,7 @@ timeline.push(withShortReadTime({
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Phase 1: Buttons and Devices</h2>' +
         '<p>You will see buttons and devices. After each one, you will be asked a short question about it.</p>' +
+        '<p>You will see each pair several times. <b>It is important to pay attention to the relationship between the two images (the button and the device).</b></p>' +
         '</div>'
     ],
     show_clickable_nav: true
@@ -721,6 +764,25 @@ var encoding_order = jsPsych.randomization.shuffle(all_pairs.slice());
 pushPhase(encoding_order, function(pair) {
     return buildAssociationTrials(pair, 'encoding_');
 }, 8);
+
+// Repetition rounds (2..NUM_ASSOC_ROUNDS): all 16 pairs again, new random
+// order each round, same one-image-at-a-time sequence, no questions.
+for (var round = 2; round <= NUM_ASSOC_ROUNDS; round++) {
+    timeline.push(withShortReadTime({
+        type: jsPsychInstructions,
+        pages: [
+            '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
+            '<h2>Phase 1: Round ' + round + ' of ' + NUM_ASSOC_ROUNDS + '</h2>' +
+            '<p>You will now see the same buttons and devices again. There are no questions in this round.</p>' +
+            '<p><b>Please pay attention to the relationship between the button and the device in each pair.</b></p>' +
+            '</div>'
+        ],
+        show_clickable_nav: true
+    }));
+    jsPsych.randomization.shuffle(all_pairs.slice()).forEach((function(r) {
+        return function(pair) { timeline = timeline.concat(buildRepeatAssociationTrials(pair, r)); };
+    })(round));
+}
 
 // ============================================================
 // PHASE 2: CONTROLLED EXPOSURE
@@ -818,7 +880,7 @@ timeline.push(withShortReadTime({
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Phase 3: Decision</h2>' +
         '<p>You will now see pairs of images side by side.</p>' +
-        '<p>Choose the image that has the <b>higher monetary value</b>. If you are not sure, please guess.</p>' +
+        '<p>Choose the image that has the <b>higher monetary value</b>.</p>' +
         '<p>Each screen takes a few seconds to move on to the next one, whether or not you answer right away, so take your time to choose correctly.</p>' +
         '</div>'
     ],
