@@ -1002,10 +1002,17 @@ timeline.push({
         '<h2>Experiment Completed</h2>' +
         '<p style="font-size: 20px; margin-top: 20px;">You have successfully finished the study.</p>' +
         '<p style="font-size: 22px; color: #28a745; font-weight: bold; margin-top: 30px;">Thank you very much for your participation!</p>' +
+        '<p style="font-size: 20px; margin-top: 30px;">Your completion code is:</p>' +
+        '<p style="font-size: 34px; font-weight: bold; letter-spacing: 3px; margin: 10px 0;">C1AB457CA9</p>' +
+        '<p style="font-size: 16px; color: #666;">Please copy this code and enter it on the platform to confirm that you completed the study.</p>' +
         '<p style="font-size: 16px; color: #666; margin-top: 40px;">Your data has already been saved. You may now safely close this window or return to the platform.</p>' +
         '</div>'
     ],
-    show_clickable_nav: true
+    // The final screen has no "Next" button and no keyboard navigation, so
+    // it stays on the screen and the participant can copy the completion
+    // code. (The data was already saved by the call-function trial above.)
+    show_clickable_nav: false,
+    allow_keys: false
 });
 
 jsPsych.run(timeline);
