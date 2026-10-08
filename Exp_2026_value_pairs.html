@@ -538,7 +538,7 @@ function buildPracticeFeedbackTrial(pair) {
             } else if (last.judgment_correct === 1) {
                 verdict = 'Correct!'; color = 'green';
             } else {
-                verdict = 'Not quite.'; color = '#c0392b';
+                verdict = 'Incorrect.'; color = '#c0392b';
             }
             return '<div class="stimulus-container">' +
                    '<h2 style="color:' + color + ';">' + verdict + '</h2>' +
@@ -635,9 +635,9 @@ timeline.push(withShortReadTime({
     show_clickable_nav: true
 }));
 
-// Two examples in random order: one causal, one non-causal. Each one ends
-// with feedback on the causal judgment.
-jsPsych.randomization.shuffle([practice_causal_pair, practice_noncausal_pair]).forEach(function(p) {
+// Two examples in a FIXED order: first the causal one, then the non-causal
+// one. Each one ends with feedback on the causal judgment.
+[practice_causal_pair, practice_noncausal_pair].forEach(function(p) {
     timeline = timeline.concat(buildAssociationTrials(p, 'practice_', true));
 });
 
@@ -685,7 +685,9 @@ pushPhase(encoding_order, function(pair) {
 // Only the DEVICE of each pair is shown, followed by a reward ($1) or
 // neutral ($0) outcome. Within each causality group (causal / non-causal),
 // 4 devices are rewarded and 4 are neutral (8 + 8 overall).
-// Order is randomized and independent of the encoding order.
+// EACH DEVICE IS SHOWN TWICE (with the same value both times): the phase
+// has two rounds, each containing all 16 devices in a new random order
+// (32 exposure trials in total). Order is independent of the encoding order.
 // ============================================================
 timeline.push(withMinReadTime({
     type: jsPsychInstructions,
@@ -701,7 +703,15 @@ timeline.push(withMinReadTime({
     show_clickable_nav: true
 }));
 
-var exposure_order = jsPsych.randomization.shuffle(all_pairs.slice());
+// Two rounds; in each round all 16 devices appear once, in a fresh random
+// order, so the two showings of a device are never back-to-back. Copies of
+// the pair objects carry the round number (exposure_round) into the data.
+var exposure_order = [];
+[1, 2].forEach(function(round) {
+    jsPsych.randomization.shuffle(all_pairs.slice()).forEach(function(p) {
+        exposure_order.push(Object.assign({}, p, { exposure_round: round }));
+    });
+});
 
 function buildExposureTrials(pair) {
     var is_rewarded = pair.reward_condition === 'reward';
@@ -714,7 +724,8 @@ function buildExposureTrials(pair) {
         causality: pair.causality,
         exposed_role: pair.exposed_role,
         reward_condition: pair.reward_condition,
-        cell: pair.cell
+        cell: pair.cell,
+        exposure_round: pair.exposure_round
     };
 
     return [
@@ -732,14 +743,15 @@ function buildExposureTrials(pair) {
                        '<div><img src="' + reward_img + '" style="width:140px;height:140px;border:4px solid ' + reward_clr + ';">' +
                        '<p style="color:' + reward_clr + '; font-weight:bold; font-size:22px;">' + reward_txt + '</p></div></div>',
             choices: "NO_KEYS",
-            trial_duration: 3000,
+            trial_duration: TEST_MODE ? 1000 : 3000,   // 1 second in test mode (?test=1)
             data: Object.assign({ task: 'exposure_feedback' }, common_data)
         },
         whiteScreenTrial
     ];
 }
 
-pushPhase(exposure_order, buildExposureTrials, 8);
+// The single math question of this phase goes after the 16th of 32 trials.
+pushPhase(exposure_order, buildExposureTrials, 16);
 
 // ============================================================
 // PHASE 3: DECISION (forced choice)
