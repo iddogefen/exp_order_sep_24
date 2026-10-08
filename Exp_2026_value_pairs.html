@@ -669,7 +669,8 @@ function buildCausalJudgmentTrial(pair, taskPrefix) {
             device_series: pair.device_series,
             causality: pair.causality,
             device_name: pair.device_name,
-            button_is_A: pair.button_is_A
+            button_is_A: pair.button_is_A,
+            practice_folder: pair.practice_folder   // only set for practice pairs
         },
         on_finish: function(data) {
             data.timed_out = (data.response === null) ? 1 : 0;
@@ -723,7 +724,8 @@ function buildPracticeFeedbackTrial(pair) {
         },
         choices: ['Continue'],
         data: { task: 'practice_feedback', pair_id: pair.pair_id, button_series: pair.button_series,
-                 device_series: pair.device_series, causality: pair.causality }
+                 device_series: pair.device_series, causality: pair.causality,
+                 practice_folder: pair.practice_folder }   // only set for practice pairs
     };
 }
 
@@ -743,7 +745,8 @@ function buildAssociationTrials(pair, taskPrefix, withFeedback) {
         button_series: pair.button_series,
         device_series: pair.device_series,
         causality: pair.causality,
-        device_name: pair.device_name
+        device_name: pair.device_name,
+        practice_folder: pair.practice_folder   // only set for practice pairs
     };
     function imageTrial(path, stage, role) {
         return buildImageWithColorQuestionTrial(
@@ -1082,6 +1085,9 @@ function buildComparisonSet(group, comparisonRole, testType, pathField, causalit
             test_type: testType, // 'direct' or 'indirect'
             comparison_role: comparisonRole, // 'cause' (button) or 'effect' (device)
             causality: causality, // 'causal' or 'non_causal'
+            decision_cell: testType + '_' + causality,          // e.g. indirect_causal
+            reward_cell: rewardPair.cell,                       // e.g. causal_reward
+            neutral_cell: neutralPair.cell,                     // e.g. causal_neutral
             reward_pair_id: rewardPair.pair_id,
             reward_button_series: rewardPair.button_series,
             reward_device_series: rewardPair.device_series,
@@ -1122,6 +1128,9 @@ function buildDecisionTrials(dt) {
                     test_type: dt.test_type,
                     comparison_role: dt.comparison_role,
                     causality: dt.causality,
+                    decision_cell: dt.decision_cell,
+                    reward_cell: dt.reward_cell,
+                    neutral_cell: dt.neutral_cell,
                     reward_pair_id: dt.reward_pair_id,
                     neutral_pair_id: dt.neutral_pair_id,
                     reward_button_series: dt.reward_button_series,
@@ -1157,6 +1166,9 @@ function buildDecisionTrials(dt) {
                 data.test_type = c.test_type;
                 data.comparison_role = c.comparison_role;
                 data.causality = c.causality;
+                data.decision_cell = c.decision_cell;
+                data.reward_cell = c.reward_cell;
+                data.neutral_cell = c.neutral_cell;
                 data.reward_pair_id = c.reward_pair_id;
                 data.neutral_pair_id = c.neutral_pair_id;
                 data.reward_button_series = c.reward_button_series;
