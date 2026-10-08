@@ -282,11 +282,15 @@ assignRewardWithinGroup(all_pairs.filter(function(p) { return p.causality === 'n
 // so they can be controlled for in the analysis, since these series are
 // also shown again in the main experiment.
 // ------------------------------------------------------------
+// Practice examples are drawn only from the clearest series (highest
+// judgment accuracy in the pilot): causal 1, 3, 6; non-causal 12, 13.
+var PRACTICE_CAUSAL_IDS = [1, 3, 6];
+var PRACTICE_NONCAUSAL_IDS = [12, 13];
 var practice_causal_pair = jsPsych.randomization.sampleWithoutReplacement(
-    all_pairs.filter(function(p) { return p.causality === 'causal'; }), 1
+    all_pairs.filter(function(p) { return PRACTICE_CAUSAL_IDS.indexOf(p.pair_id) !== -1; }), 1
 )[0];
 var practice_noncausal_pair = jsPsych.randomization.sampleWithoutReplacement(
-    all_pairs.filter(function(p) { return p.causality === 'non_causal'; }), 1
+    all_pairs.filter(function(p) { return PRACTICE_NONCAUSAL_IDS.indexOf(p.pair_id) !== -1; }), 1
 )[0];
 jsPsych.data.addProperties({
     practice_causal_pair_id: practice_causal_pair.pair_id,
