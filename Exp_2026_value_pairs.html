@@ -187,11 +187,21 @@ var COLOR_OPTIONS = ['blue', 'red', 'green', 'purple', 'yellow', 'orange'];
 var IMAGE_DISPLAY_MS = 4000;
 
 // TEST MODE: add ?test=1 to the URL to run a quick test version. In test
-// mode every image in the association phase is shown for TEST_IMAGE_MS
-// (one second) and the experiment moves on automatically, with no
-// color question. Without ?test=1 the experiment runs normally.
+// mode everything that is shown for a fixed time (association images,
+// fixation crosses, blank screens, reward screens, the decision preview,
+// the memory cue) lasts only TEST_IMAGE_MS (half a second), the
+// association images move on automatically with no color question, and
+// the instruction screens unlock after half a second. Screens that wait
+// for an answer (judgment, decision choice, memory choice, math,
+// SPACEBAR) still wait for the participant. Without ?test=1 the
+// experiment runs normally.
 var TEST_MODE = jsPsych.data.getURLVariable('test') === '1';
-var TEST_IMAGE_MS = 1000;
+var TEST_IMAGE_MS = 500;
+
+// Returns the given duration normally, or TEST_IMAGE_MS in test mode.
+function dur(normalMs) {
+    return TEST_MODE ? TEST_IMAGE_MS : normalMs;
+}
 
 function getDeviceName(n) {
     return DEVICE_NAMES[n] || 'light';
@@ -332,14 +342,14 @@ var whiteScreenTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
     choices: "NO_KEYS",
-    trial_duration: TEST_MODE ? 300 : 1000   // shorter in test mode (?test=1)
+    trial_duration: dur(1000)
 };
 
 var fixationTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: '<div class="fixation">+</div>',
     choices: "NO_KEYS",
-    trial_duration: TEST_MODE ? 300 : 1000   // shorter in test mode (?test=1)
+    trial_duration: dur(1000)
 };
 
 // Wraps a jsPsychInstructions trial so its navigation buttons stay
@@ -348,6 +358,7 @@ var fixationTrial = {
 // A small countdown notice is shown while buttons are disabled.
 function withMinReadTime(instructionsTrial, minMs) {
     minMs = (typeof minMs === 'number') ? minMs : 10000;
+    if (TEST_MODE) { minMs = TEST_IMAGE_MS; }   // test mode: unlock after half a second
     var trial = Object.assign({}, instructionsTrial);
     var original_on_load = trial.on_load;
 
@@ -743,7 +754,7 @@ function buildExposureTrials(pair) {
                        '<div><img src="' + reward_img + '" style="width:140px;height:140px;border:4px solid ' + reward_clr + ';">' +
                        '<p style="color:' + reward_clr + '; font-weight:bold; font-size:22px;">' + reward_txt + '</p></div></div>',
             choices: "NO_KEYS",
-            trial_duration: TEST_MODE ? 1000 : 3000,   // 1 second in test mode (?test=1)
+            trial_duration: dur(3000),
             data: Object.assign({ task: 'exposure_feedback' }, common_data)
         },
         whiteScreenTrial
@@ -776,7 +787,7 @@ timeline.push(withShortReadTime({
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Phase 3: Decision</h2>' +
         '<p>You will now see pairs of images side by side.</p>' +
-        '<p>Follow your gut feeling and choose the image you feel is <b>more valuable</b>, or that you intuitively prefer.</p>' +
+        '<p>Choose the image that has the <b>higher monetary value</b>.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
@@ -841,17 +852,17 @@ function buildDecisionTrials(dt) {
                 var right_img = reward_left ? dt.neutral_path : dt.reward_path;
                 window.current_left_img = left_img;
                 window.current_right_img = right_img;
-                return '<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is <b>more valuable</b>?</h3></div>' +
+                return '<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image has the <b>higher monetary value</b>?</h3></div>' +
                        '<div class="stimulus-container" style="display: flex; justify-content: center; gap: 30px;">' +
                        '<img src="' + left_img + '" class="small-image"><img src="' + right_img + '" class="small-image"></div>';
             },
             choices: "NO_KEYS",
-            trial_duration: 2500
+            trial_duration: dur(2500)
         },
         {
             type: jsPsychHtmlButtonResponse,
             stimulus: function() {
-                return '<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image is <b>more valuable</b>?</h3></div>' +
+                return '<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image has the <b>higher monetary value</b>?</h3></div>' +
                        '<div class="stimulus-container" style="display: flex; justify-content: center; gap: 30px;">' +
                        '<img src="' + window.current_left_img + '" class="small-image"><img src="' + window.current_right_img + '" class="small-image"></div>';
             },
@@ -872,7 +883,7 @@ function buildDecisionTrials(dt) {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
             choices: "NO_KEYS",
-            trial_duration: 800
+            trial_duration: dur(800)
         }
     ];
 }
@@ -880,26 +891,21 @@ function buildDecisionTrials(dt) {
 pushPhase(decision_trials, buildDecisionTrials, 8);
 
 // ============================================================
-// PHASE 4: CONTROL (memory + causal strength rating)
+// PHASE 4: CONTROL (memory test)
 // ============================================================
 timeline.push(withShortReadTime({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Phase 4: Final Questions</h2>' +
-        '<p>First, for each button you will pick the matching device from a few options.</p>' +
-        '<p>Then, for each pair you will rate how much pressing the button caused the device to react.</p>' +
+        '<p>For each button you will pick the matching device from a few options.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
 }));
 
-// ---- 4a: Memory test (6 pairs: 3 causal + 3 non-causal) ----
-var memory_order = jsPsych.randomization.shuffle(
-    jsPsych.randomization.sampleWithoutReplacement(causal_pairs, 3).concat(
-        jsPsych.randomization.sampleWithoutReplacement(noncausal_pairs, 3)
-    )
-);
+// ---- 4a: Memory test (all 16 pairs) ----
+var memory_order = jsPsych.randomization.shuffle(all_pairs.slice());
 
 function buildMemoryTrial(pair) {
     var foil_pool = all_pairs.filter(function(p) { return p.pair_id !== pair.pair_id; });
@@ -921,7 +927,7 @@ function buildMemoryTrial(pair) {
             stimulus: '<div class="stimulus-container"><img src="' + pair.cause_path + '" class="exp-image">' +
                        '<p style="font-size: 18px; margin-top: 15px;">Remember this button. Its matching device is one of the options on the next screen.</p></div>',
             choices: "NO_KEYS",
-            trial_duration: 2000
+            trial_duration: dur(2000)
         },
         {
             type: jsPsychHtmlButtonResponse,
@@ -938,30 +944,8 @@ function buildMemoryTrial(pair) {
     ];
 }
 
-pushPhase(memory_order, buildMemoryTrial, 3);
-
-// ---- 4b: Causal strength rating ----
-var rating_order = jsPsych.randomization.shuffle(all_pairs.slice());
-
-function buildRatingTrial(pair) {
-    return [
-        {
-            type: jsPsychHtmlButtonResponse,
-            stimulus: '<div class="stimulus-container" style="display:flex; justify-content:center; gap:30px;">' +
-                       '<img src="' + pair.click_path + '" class="small-image"><img src="' + pair.device_after_path + '" class="small-image"></div>' +
-                       '<p style="font-size: 20px; font-weight: bold; margin-top: 20px;">How much did pressing the button cause the device to react?<br>' +
-                       '<span style="font-weight:normal; font-size:16px;">(1 = did not cause it at all, 10 = completely caused it)</span></p>',
-            choices: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-            data: { task: 'causal_strength_rating', pair_id: pair.pair_id, causality: pair.causality },
-            on_finish: function(data) {
-                data.rating = (data.response !== null) ? data.response + 1 : null;
-            }
-        },
-        whiteScreenTrial
-    ];
-}
-
-pushPhase(rating_order, buildRatingTrial, null);
+// The single math question of this phase goes after the 8th of 16 trials.
+pushPhase(memory_order, buildMemoryTrial, 8);
 
 // ============================================================
 // DEMOGRAPHICS
@@ -972,7 +956,7 @@ timeline.push({
         { prompt: 'Gender (MALE / FEMALE / OTHER):', name: 'gender', rows: 1, columns: 20 },
         { prompt: 'Age:', name: 'age', rows: 1, columns: 5 },
         { prompt: 'Did you notice any pattern in how the values were assigned to devices? If so, describe it.', name: 'reward_strategy', rows: 2, columns: 50 },
-        { prompt: 'How did you choose between images in the "more valuable" part?', name: 'strategy', rows: 2, columns: 50 }
+        { prompt: 'How did you choose between images in the "higher monetary value" part?', name: 'strategy', rows: 2, columns: 50 }
     ],
     data: { task: 'demographics' }
 });
