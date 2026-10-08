@@ -190,6 +190,8 @@ var IMAGE_DISPLAY_MS = 2500;
 // repetitions of the same one-image-at-a-time sequence (no questions).
 var NUM_ASSOC_ROUNDS = 3;
 var REPEAT_IMAGE_MS = 1500;
+var REPEAT_QUESTION_EVERY = 4;   // in repetition rounds: one matching question after every N pairs
+var REPEAT_QUESTION_MS = 6000;   // time limit for that question
 var REPEAT_GAP_MS = 500;   // fixation between before/after and after each pair
 
 // TEST MODE: add ?test=1 to the URL to run a quick test version. In test
@@ -700,6 +702,40 @@ function buildRepeatAssociationTrials(pair, roundNum) {
     ];
 }
 
+// ------------------------------------------------------------
+// One matching question inside a repetition round: a pair from the last
+// few pairs shown is picked, its button is displayed and the participant
+// chooses the matching device out of 4 (same format as the memory test,
+// but a different task name: 'repeat_match_question'). No feedback.
+// ------------------------------------------------------------
+function buildRepeatQuestionTrial(pair, roundNum) {
+    var foil_pool = all_pairs.filter(function(p) { return p.pair_id !== pair.pair_id; });
+    var foil_sample = jsPsych.randomization.sampleWithoutReplacement(foil_pool, 3);
+    var option_paths = jsPsych.randomization.shuffle(
+        [pair.effect_path].concat(foil_sample.map(function(p) { return p.effect_path; }))
+    );
+    var correct_index = option_paths.indexOf(pair.effect_path);
+    var option_labels = option_paths.map(function(p, i) { return 'Option ' + (i + 1); });
+    var options_html = option_paths.map(function(p, i) {
+        return '<div style="text-align:center;"><img src="' + p + '" class="small-image"><br>' +
+               '<span style="font-weight:bold;">Option ' + (i + 1) + '</span></div>';
+    }).join('');
+    return {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: '<div class="stimulus-container"><img src="' + pair.cause_path + '" class="small-image">' +
+                   '<p style="font-size: 18px; margin-top: 15px; font-weight:bold;">Which device matches this button?</p></div>' +
+                   '<div style="display:flex; justify-content:center; gap:15px; flex-wrap:wrap; margin-top:10px;">' + options_html + '</div>',
+        choices: option_labels,
+        trial_duration: dur(REPEAT_QUESTION_MS),
+        data: { task: 'repeat_match_question', assoc_round: roundNum, pair_id: pair.pair_id,
+                causality: pair.causality, correct_index: correct_index },
+        on_finish: function(data) {
+            data.timed_out = (data.response === null) ? 1 : 0;
+            data.correct = (data.response === null) ? null : ((data.response === correct_index) ? 1 : 0);
+        }
+    };
+}
+
 // ============================================================
 // PRACTICE PHASE
 // Two randomly chosen series from the experiment (one causal, one
@@ -773,15 +809,23 @@ for (var round = 2; round <= NUM_ASSOC_ROUNDS; round++) {
         pages: [
             '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
             '<h2>Phase 1: Round ' + round + ' of ' + NUM_ASSOC_ROUNDS + '</h2>' +
-            '<p>You will now see the same buttons and devices again. There are no questions in this round.</p>' +
+            '<p>You will now see the same buttons and devices again. Every now and then you will be asked which device matches a button.</p>' +
             '<p><b>Please pay attention to the relationship between the button and the device in each pair.</b></p>' +
             '</div>'
         ],
         show_clickable_nav: true
     }));
-    jsPsych.randomization.shuffle(all_pairs.slice()).forEach((function(r) {
-        return function(pair) { timeline = timeline.concat(buildRepeatAssociationTrials(pair, r)); };
-    })(round));
+    var roundOrder = jsPsych.randomization.shuffle(all_pairs.slice());
+    roundOrder.forEach(function(pair, idx) {
+        timeline = timeline.concat(buildRepeatAssociationTrials(pair, round));
+        if ((idx + 1) % REPEAT_QUESTION_EVERY === 0) {
+            // ask about one of the last REPEAT_QUESTION_EVERY pairs shown
+            var recent = roundOrder.slice(idx + 1 - REPEAT_QUESTION_EVERY, idx + 1);
+            var asked = jsPsych.randomization.sampleWithoutReplacement(recent, 1)[0];
+            timeline.push(buildRepeatQuestionTrial(asked, round));
+            timeline.push(whiteScreenTrial);
+        }
+    });
 }
 
 // ============================================================
