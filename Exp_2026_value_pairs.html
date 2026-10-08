@@ -256,14 +256,25 @@ assignRewardWithinGroup(all_pairs.filter(function(p) { return p.causality === 'c
 assignRewardWithinGroup(all_pairs.filter(function(p) { return p.causality === 'non_causal'; }));
 
 // ------------------------------------------------------------
-// PRACTICE SERIES: one of the existing series, picked at random for each
-// participant. It is run through the full association procedure in the
-// practice round. Its id is saved on every data row (practice_pair_id) so
-// it can be controlled for in the analysis, since this series is also
-// shown again in the main experiment.
+// PRACTICE SERIES: two of the existing series, picked at random for each
+// participant - ONE CAUSAL example (from series 1-8) and ONE NON-CAUSAL
+// example (from series 9-16). Each is run through the full association
+// procedure in the practice round, and after the causal judgment the
+// participant gets feedback with the correct answer. The ids are saved on
+// every data row (practice_causal_pair_id / practice_noncausal_pair_id)
+// so they can be controlled for in the analysis, since these series are
+// also shown again in the main experiment.
 // ------------------------------------------------------------
-var practice_pair = jsPsych.randomization.sampleWithoutReplacement(all_pairs, 1)[0];
-jsPsych.data.addProperties({ practice_pair_id: practice_pair.pair_id });
+var practice_causal_pair = jsPsych.randomization.sampleWithoutReplacement(
+    all_pairs.filter(function(p) { return p.causality === 'causal'; }), 1
+)[0];
+var practice_noncausal_pair = jsPsych.randomization.sampleWithoutReplacement(
+    all_pairs.filter(function(p) { return p.causality === 'non_causal'; }), 1
+)[0];
+jsPsych.data.addProperties({
+    practice_causal_pair_id: practice_causal_pair.pair_id,
+    practice_noncausal_pair_id: practice_noncausal_pair.pair_id
+});
 
 // ============================================================
 // PRELOAD
@@ -321,14 +332,14 @@ var whiteScreenTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
     choices: "NO_KEYS",
-    trial_duration: 1000
+    trial_duration: TEST_MODE ? 300 : 1000   // shorter in test mode (?test=1)
 };
 
 var fixationTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: '<div class="fixation">+</div>',
     choices: "NO_KEYS",
-    trial_duration: 1000
+    trial_duration: TEST_MODE ? 300 : 1000   // shorter in test mode (?test=1)
 };
 
 // Wraps a jsPsychInstructions trial so its navigation buttons stay
@@ -504,6 +515,49 @@ function buildCausalJudgmentTrial(pair, taskPrefix) {
 }
 
 // ------------------------------------------------------------
+// Feedback shown right after the causal judgment in the PRACTICE round.
+// Tells the participant whether the answer was right and what the correct
+// answer is: "A caused B" for the causal example, "They are unrelated"
+// for the non-causal example. Must directly follow the judgment trial
+// (it reads the judgment's data).
+// ------------------------------------------------------------
+function buildPracticeFeedbackTrial(pair) {
+    var is_causal = (pair.causality === 'causal');
+    var correct_label = is_causal ? 'A caused B' : 'They are unrelated';
+    var explanation = is_causal
+        ? 'Pressing the button (A) made the device (B) react.'
+        : 'Pressing the button (A) did not make the device (B) do anything.';
+
+    return {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: function() {
+            var last = jsPsych.data.get().last(1).values()[0];
+            var verdict, color;
+            if (last.response === null) {
+                verdict = 'Time ran out.'; color = '#888';
+            } else if (last.judgment_correct === 1) {
+                verdict = 'Correct!'; color = 'green';
+            } else {
+                verdict = 'Not quite.'; color = '#c0392b';
+            }
+            return '<div class="stimulus-container">' +
+                   '<h2 style="color:' + color + ';">' + verdict + '</h2>' +
+                   '<div class="assoc-row">' +
+                   '<div><img src="' + pair.click_path + '" class="small-image">' +
+                   '<p style="font-size:20px; font-weight:bold; margin-top:8px;">A</p></div>' +
+                   '<div><img src="' + pair.device_after_path + '" class="small-image">' +
+                   '<p style="font-size:20px; font-weight:bold; margin-top:8px;">B</p></div>' +
+                   '</div>' +
+                   '<p style="font-size:20px; margin-top:15px;">The correct answer is: <b>' + correct_label + '</b></p>' +
+                   '<p style="font-size:18px;">' + explanation + '</p>' +
+                   '</div>';
+        },
+        choices: ['Continue'],
+        data: { task: 'practice_feedback', pair_id: pair.pair_id, causality: pair.causality }
+    };
+}
+
+// ------------------------------------------------------------
 // Full association sequence for ONE pair (used for the practice series
 // with taskPrefix 'practice_' and for the main phase with 'encoding_').
 // All images are shown ONE AT A TIME, each followed by a color question:
@@ -511,7 +565,9 @@ function buildCausalJudgmentTrial(pair, taskPrefix) {
 //   AFTER  pressing: 3) button pressed (click) alone   4) device alone (after)
 // then the causal judgment (A = pressed button, B = device after).
 // ------------------------------------------------------------
-function buildAssociationTrials(pair, taskPrefix) {
+// If withFeedback is true (practice only), a feedback screen with the
+// correct answer is added right after the causal judgment.
+function buildAssociationTrials(pair, taskPrefix, withFeedback) {
     var base = {
         pair_id: pair.pair_id,
         causality: pair.causality,
@@ -530,9 +586,8 @@ function buildAssociationTrials(pair, taskPrefix) {
         imageTrial(pair.click_path, 'after', 'button'),
         imageTrial(pair.device_after_path, 'after', 'device'),
         fixationTrial,
-        buildCausalJudgmentTrial(pair, taskPrefix),
-        whiteScreenTrial
-    ];
+        buildCausalJudgmentTrial(pair, taskPrefix)
+    ].concat(withFeedback ? [buildPracticeFeedbackTrial(pair)] : [], [whiteScreenTrial]);
 }
 
 // ============================================================
@@ -564,8 +619,9 @@ timeline.push({
 
 // ============================================================
 // PRACTICE PHASE
-// One randomly chosen series from the experiment, run through the full
-// association procedure.
+// Two randomly chosen series from the experiment (one causal, one
+// non-causal), each run through the full association procedure, with
+// feedback on the correct answer in the causal judgment.
 // ============================================================
 timeline.push(withShortReadTime({
     type: jsPsychInstructions,
@@ -573,13 +629,17 @@ timeline.push(withShortReadTime({
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Practice Round</h2>' +
         '<p>We will now go through a short practice round so you can get familiar with the task.</p>' +
-        '<p>You will see buttons and devices. After each one, you will be asked a short question about it.</p>' +
+        '<p>You will see buttons and devices. After each one, you will be asked a short question about it. In this round, you will also see the correct answer to the last question.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
 }));
 
-timeline = timeline.concat(buildAssociationTrials(practice_pair, 'practice_'));
+// Two examples in random order: one causal, one non-causal. Each one ends
+// with feedback on the causal judgment.
+jsPsych.randomization.shuffle([practice_causal_pair, practice_noncausal_pair]).forEach(function(p) {
+    timeline = timeline.concat(buildAssociationTrials(p, 'practice_', true));
+});
 
 timeline.push(withShortReadTime({
     type: jsPsychInstructions,
