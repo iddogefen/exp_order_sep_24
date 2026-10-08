@@ -186,6 +186,13 @@ var COLOR_OPTIONS = ['blue', 'red', 'green', 'purple', 'yellow', 'orange'];
 // How long (ms) each image is shown before the color question appears.
 var IMAGE_DISPLAY_MS = 4000;
 
+// TEST MODE: add ?test=1 to the URL to run a quick test version. In test
+// mode every image in the association phase is shown for TEST_IMAGE_MS
+// (half a second) and the experiment moves on automatically, with no
+// color question. Without ?test=1 the experiment runs normally.
+var TEST_MODE = jsPsych.data.getURLVariable('test') === '1';
+var TEST_IMAGE_MS = 500;
+
 function getDeviceName(n) {
     return DEVICE_NAMES[n] || 'light';
 }
@@ -405,6 +412,18 @@ function buildImageWithColorQuestionTrial(imagePath, dataObj, delayMs) {
     delayMs = (typeof delayMs === 'number') ? delayMs : IMAGE_DISPLAY_MS;
     var color = randomColor();
     var trialData = Object.assign({}, dataObj, { image_path: imagePath, color_asked: color });
+
+    if (TEST_MODE) {
+        // Test version: show the image briefly and move on, no question.
+        return {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: '<div class="stimulus-container"><img src="' + imagePath + '" class="exp-image"></div>',
+            choices: "NO_KEYS",
+            trial_duration: TEST_IMAGE_MS,
+            data: Object.assign({}, trialData, { test_mode: 1 })
+        };
+    }
+
     return {
         type: jsPsychHtmlButtonResponse,
         stimulus: '<div class="stimulus-container">' +
@@ -539,10 +558,8 @@ timeline.push(withMinReadTime({
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Practice Round</h2>' +
-        '<p>We will now go through a short practice round so you can get familiar with the task. It uses one device and its button.</p>' +
-        '<p>You will see, one image at a time: the button, then the device, then the button being pressed, and then the device again.</p>' +
-        '<p>After each image, a short question about the colors in the image will appear. Please look at each image carefully and answer the question.</p>' +
-        '<p>At the end, you will be asked about the relationship between the button (image A) and the device (image B).</p>' +
+        '<p>We will now go through a short practice round so you can get familiar with the task.</p>' +
+        '<p>You will see a series of images. After each image, you will be asked a short question about it.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
@@ -577,10 +594,7 @@ timeline.push(withMinReadTime({
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
         '<h2>Phase 1: Buttons and Devices</h2>' +
-        '<p>You will see 16 different devices, each one with its own button.</p>' +
-        '<p>For each device you will see, one image at a time: the button, then the device, then the button being pressed, and then the device again.</p>' +
-        '<p>After each image, a short question about the colors in the image will appear. Please look carefully at each image.</p>' +
-        '<p>After each device, you will also be asked about the relationship between image A (the button being pressed) and image B (the device). You will decide whether A caused B, B caused A, or whether they are unrelated.</p>' +
+        '<p>You will see a series of images. After each image, you will be asked a short question about it.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
