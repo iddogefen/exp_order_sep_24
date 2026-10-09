@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Image Value Study - Part 2</title>
+    <title>Image Value Study</title>
     <style>
       body {
           background-color: #f8f9fa;
@@ -47,6 +47,22 @@
           border: 2px solid #ccc;
           background-color: #fff;
       }
+
+      .fixation {
+          font-size: 60px;
+          color: #333;
+          height: 400px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+
+      .question-area {
+          height: 80px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
     </style>
     <script src="jspsych/plugins/jspsych.js"></script>
     <script src="jspsych/plugins/plugin-instructions.js"></script>
@@ -56,43 +72,15 @@
     <script src="jspsych/plugins/plugin-fullscreen.js"></script>
     <script src="jspsych/plugins/plugin-preload.js"></script>
     <script src="jspsych/plugins/plugin-call-function.js"></script>
-    <script>
-// Part-1 arrangement of every participant, keyed by SHA-256 of the (upper-case) platform id.
-var PART1_ASSIGNMENTS = {"4343fa24c0cd1b795dfd5c95bccb5e1237465668a3935026a8f1f28d47372364":{"session_id":"01a11c3b-faa9-7946-997c-683ad4beec74","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":11,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":2,"device_series":14,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":3,"device_series":5,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":4,"device_series":6,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":5,"device_series":7,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":6,"device_series":8,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":7,"device_series":2,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":8,"device_series":1,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":9,"device_series":13,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":10,"device_series":3,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":11,"device_series":15,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":12,"device_series":4,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":13,"device_series":10,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":14,"device_series":12,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":15,"device_series":9,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":16,"device_series":16,"causality":"causal","reward_condition":"reward","button_is_A":0}]},"0ec384a4e2e4c6aa7cae964f16b17ce71dcd0f2cae215e23dc3061b76494c25b":{"session_id":"01a11cee-48c5-7597-8641-4dbf535bdbfc","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":10,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":2,"device_series":8,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":3,"device_series":3,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":4,"device_series":11,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":5,"device_series":9,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":6,"device_series":5,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":7,"device_series":16,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":8,"device_series":1,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":9,"device_series":7,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":10,"device_series":14,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":11,"device_series":12,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":12,"device_series":2,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":13,"device_series":6,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":14,"device_series":4,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":15,"device_series":13,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":16,"device_series":15,"causality":"causal","reward_condition":"neutral","button_is_A":0}]},"ac9d14c70b21481825fbab591baea057c1dfcc07777df5f78538e3787af1818f":{"session_id":"01a11c6c-fd72-7ba5-bb53-a5d35e214171","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":8,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":2,"device_series":16,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":3,"device_series":2,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":4,"device_series":15,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":5,"device_series":5,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":6,"device_series":12,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":7,"device_series":11,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":8,"device_series":6,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":9,"device_series":14,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":10,"device_series":4,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":11,"device_series":10,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":12,"device_series":7,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":13,"device_series":9,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":14,"device_series":3,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":15,"device_series":1,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":16,"device_series":13,"causality":"non_causal","reward_condition":"reward","button_is_A":1}]},"32ad93bde8d7b481eab9ff85049f9c3aabc972264744c1158f1cbe80a16615b7":{"session_id":"01a11c6c-fd72-7ba5-bb53-a5d35e214171","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":5,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":2,"device_series":16,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":3,"device_series":9,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":4,"device_series":7,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":5,"device_series":1,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":6,"device_series":14,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":7,"device_series":13,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":8,"device_series":8,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":9,"device_series":3,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":10,"device_series":11,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":11,"device_series":15,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":12,"device_series":4,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":13,"device_series":2,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":14,"device_series":12,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":15,"device_series":6,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":16,"device_series":10,"causality":"non_causal","reward_condition":"reward","button_is_A":0}]},"3fc74e5a168c2c247b2f9e108434eb9bd841f87ca6121c524e5abdd88545050c":{"session_id":"01a11cee-48c5-7597-8641-4dbf535bdbfc","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":13,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":2,"device_series":9,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":3,"device_series":14,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":4,"device_series":15,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":5,"device_series":1,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":6,"device_series":2,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":7,"device_series":6,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":8,"device_series":10,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":9,"device_series":11,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":10,"device_series":4,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":11,"device_series":16,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":12,"device_series":7,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":13,"device_series":5,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":14,"device_series":3,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":15,"device_series":8,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":16,"device_series":12,"causality":"non_causal","reward_condition":"reward","button_is_A":0}]},"1cd7dc5c47bfa71fd99bc0644027ccc15173cd566eb3c93e105e2710b01a888c":{"session_id":"01a11c6c-fd72-7ba5-bb53-a5d35e214171","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":5,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":2,"device_series":8,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":3,"device_series":3,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":4,"device_series":13,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":5,"device_series":2,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":6,"device_series":15,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":7,"device_series":12,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":8,"device_series":6,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":9,"device_series":11,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":10,"device_series":14,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":11,"device_series":7,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":12,"device_series":1,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":13,"device_series":4,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":14,"device_series":10,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":15,"device_series":16,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":16,"device_series":9,"causality":"causal","reward_condition":"neutral","button_is_A":1}]},"8fc6e313712fce92e60189b74865c7393098a62386e1afccf0296d6d15c95542":{"session_id":"01a11cee-48c5-7597-8641-4dbf535bdbfc","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":14,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":2,"device_series":9,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":3,"device_series":2,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":4,"device_series":5,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":5,"device_series":3,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":6,"device_series":12,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":7,"device_series":15,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":8,"device_series":11,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":9,"device_series":6,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":10,"device_series":4,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":11,"device_series":8,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":12,"device_series":16,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":13,"device_series":13,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":14,"device_series":1,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":15,"device_series":7,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":16,"device_series":10,"causality":"non_causal","reward_condition":"neutral","button_is_A":1}]},"659b92db6013d9612dea4c4aff7a76aa4272722c715df3a6d241b9dafafb1b23":{"session_id":"01a11c3b-faa9-7946-997c-683ad4beec74","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":3,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":2,"device_series":12,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":3,"device_series":15,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":4,"device_series":7,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":5,"device_series":1,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":6,"device_series":14,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":7,"device_series":11,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":8,"device_series":16,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":9,"device_series":4,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":10,"device_series":8,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":11,"device_series":13,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":12,"device_series":2,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":13,"device_series":10,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":14,"device_series":9,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":15,"device_series":6,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":16,"device_series":5,"causality":"causal","reward_condition":"neutral","button_is_A":1}]},"fe6de2fc728d797129f3ad674df4050b3089c8634e967fe4d4f81cdff68e8a5b":{"session_id":"01a11cee-48c5-7597-8641-4dbf535bdbfc","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":9,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":2,"device_series":15,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":3,"device_series":2,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":4,"device_series":8,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":5,"device_series":14,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":6,"device_series":6,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":7,"device_series":4,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":8,"device_series":1,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":9,"device_series":12,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":10,"device_series":16,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":11,"device_series":3,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":12,"device_series":11,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":13,"device_series":5,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":14,"device_series":13,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":15,"device_series":7,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":16,"device_series":10,"causality":"non_causal","reward_condition":"neutral","button_is_A":1}]},"b9d405cfc34dc4e62858ba417493c7f56dda6a8557b6bd6ad172b46f22da41d7":{"session_id":"01a11c6c-fd72-7ba5-bb53-a5d35e214171","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":7,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":2,"device_series":5,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":3,"device_series":14,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":4,"device_series":2,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":5,"device_series":9,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":6,"device_series":3,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":7,"device_series":12,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":8,"device_series":6,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":9,"device_series":4,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":10,"device_series":1,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":11,"device_series":13,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":12,"device_series":10,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":13,"device_series":16,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":14,"device_series":11,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":15,"device_series":8,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":16,"device_series":15,"causality":"causal","reward_condition":"neutral","button_is_A":1}]},"c6c0144c266fc0efc534d18fe56514025abcb45691159a5815c6aa45ed893c68":{"session_id":"01a11cee-48c5-7597-8641-4dbf535bdbfc","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":15,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":2,"device_series":9,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":3,"device_series":6,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":4,"device_series":2,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":5,"device_series":8,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":6,"device_series":4,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":7,"device_series":1,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":8,"device_series":14,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":9,"device_series":16,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":10,"device_series":12,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":11,"device_series":3,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":12,"device_series":10,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":13,"device_series":11,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":14,"device_series":7,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":15,"device_series":5,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":16,"device_series":13,"causality":"non_causal","reward_condition":"reward","button_is_A":1}]},"82a733b689085ababd2c645feab6bc29938934aaeecd0f58b36da4e56b6c900e":{"session_id":"01a11c3b-faa9-7946-997c-683ad4beec74","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":12,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":2,"device_series":15,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":3,"device_series":6,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":4,"device_series":9,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":5,"device_series":3,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":6,"device_series":4,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":7,"device_series":1,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":8,"device_series":7,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":9,"device_series":16,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":10,"device_series":5,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":11,"device_series":13,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":12,"device_series":2,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":13,"device_series":8,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":14,"device_series":14,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":15,"device_series":11,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":16,"device_series":10,"causality":"causal","reward_condition":"neutral","button_is_A":1}]},"4a5f429fbaf19a160a6cd060782d9be3c723e6ec3b5f97e8458ebaeafec2b097":{"session_id":"01a11c6c-fd72-7ba5-bb53-a5d35e214171","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":11,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":2,"device_series":12,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":3,"device_series":10,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":4,"device_series":13,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":5,"device_series":14,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":6,"device_series":6,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":7,"device_series":2,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":8,"device_series":8,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":9,"device_series":5,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":10,"device_series":7,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":11,"device_series":15,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":12,"device_series":16,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":13,"device_series":9,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":14,"device_series":1,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":15,"device_series":4,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":16,"device_series":3,"causality":"non_causal","reward_condition":"neutral","button_is_A":1}]},"e24462719c571c875efe3f630ce947a64c6bfe9869fed52599e22b8b1af64d5b":{"session_id":"01a11cee-48c5-7597-8641-4dbf535bdbfc","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":13,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":2,"device_series":5,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":3,"device_series":12,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":4,"device_series":10,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":5,"device_series":2,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":6,"device_series":3,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":7,"device_series":11,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":8,"device_series":16,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":9,"device_series":14,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":10,"device_series":7,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":11,"device_series":6,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":12,"device_series":15,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":13,"device_series":9,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":14,"device_series":1,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":15,"device_series":8,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":16,"device_series":4,"causality":"causal","reward_condition":"reward","button_is_A":1}]},"79abebbe222f07152b03f7f08732de239b938ae4cc2625f8fa2b9a692759b7bf":{"session_id":"01a11cee-48c5-7597-8641-4dbf535bdbfc","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":3,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":2,"device_series":1,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":3,"device_series":5,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":4,"device_series":15,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":5,"device_series":11,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":6,"device_series":10,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":7,"device_series":14,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":8,"device_series":8,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":9,"device_series":4,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":10,"device_series":13,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":11,"device_series":6,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":12,"device_series":9,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":13,"device_series":16,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":14,"device_series":7,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":15,"device_series":2,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":16,"device_series":12,"causality":"causal","reward_condition":"reward","button_is_A":0}]},"88aaee6155e051af185ffe23c81418b47500060ff55d5fceb6ae05eee308258d":{"session_id":"01a11c6c-fd72-7ba5-bb53-a5d35e214171","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":13,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":2,"device_series":14,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":3,"device_series":5,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":4,"device_series":3,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":5,"device_series":16,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":6,"device_series":1,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":7,"device_series":7,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":8,"device_series":9,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":9,"device_series":8,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":10,"device_series":15,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":11,"device_series":10,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":12,"device_series":12,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":13,"device_series":2,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":14,"device_series":6,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":15,"device_series":4,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":16,"device_series":11,"causality":"causal","reward_condition":"reward","button_is_A":0}]},"187f01ec4720f917a0f92cbdc5ea7ffacc53f66391b4afdb30b97ce1eafeec40":{"session_id":"01a11c6c-fd72-7ba5-bb53-a5d35e214171","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":1,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":2,"device_series":12,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":3,"device_series":16,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":4,"device_series":5,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":5,"device_series":7,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":6,"device_series":13,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":7,"device_series":4,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":8,"device_series":10,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":9,"device_series":8,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":10,"device_series":6,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":11,"device_series":14,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":12,"device_series":3,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":13,"device_series":2,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":14,"device_series":15,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":15,"device_series":11,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":16,"device_series":9,"causality":"causal","reward_condition":"neutral","button_is_A":1}]},"72b7dfabbd55351de08758d2cd10dc812796d22cd979a6c7c2c7ba0304ab9c07":{"session_id":"01a11cee-48c5-7597-8641-4dbf535bdbfc","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":8,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":2,"device_series":3,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":3,"device_series":4,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":4,"device_series":1,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":5,"device_series":14,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":6,"device_series":2,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":7,"device_series":12,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":8,"device_series":13,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":9,"device_series":7,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":10,"device_series":10,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":11,"device_series":11,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":12,"device_series":9,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":13,"device_series":16,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":14,"device_series":15,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":15,"device_series":6,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":16,"device_series":5,"causality":"causal","reward_condition":"reward","button_is_A":1}]},"af54847e397a448b247259a7a2ba6e1d066d5cc1f9c5330893646c5f3e409572":{"session_id":"01a11cee-48c5-7597-8641-4dbf535bdbfc","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":10,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":2,"device_series":9,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":3,"device_series":12,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":4,"device_series":5,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":5,"device_series":14,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":6,"device_series":16,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":7,"device_series":2,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":8,"device_series":8,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":9,"device_series":4,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":10,"device_series":1,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":11,"device_series":6,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":12,"device_series":13,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":13,"device_series":7,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":14,"device_series":15,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":15,"device_series":3,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":16,"device_series":11,"causality":"causal","reward_condition":"reward","button_is_A":1}]},"ea097bb85333144303b4880aa53d0d25e9c0ccf541b53be1f12fd24dd2a48144":{"session_id":"01a11c6c-fd72-7ba5-bb53-a5d35e214171","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":1,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":2,"device_series":7,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":3,"device_series":10,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":4,"device_series":6,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":5,"device_series":11,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":6,"device_series":4,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":7,"device_series":14,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":8,"device_series":3,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":9,"device_series":13,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":10,"device_series":12,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":11,"device_series":5,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":12,"device_series":15,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":13,"device_series":16,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":14,"device_series":8,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":15,"device_series":2,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":16,"device_series":9,"causality":"causal","reward_condition":"reward","button_is_A":0}]},"43ff56e4f1a4fca78a06d7831aebb2c9052e1723c39107ccf52608de5854e9fc":{"session_id":"01a11cee-48c5-7597-8641-4dbf535bdbfc","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":1,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":2,"device_series":9,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":3,"device_series":3,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":4,"device_series":10,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":5,"device_series":7,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":6,"device_series":11,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":7,"device_series":6,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":8,"device_series":16,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":9,"device_series":15,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":10,"device_series":4,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":11,"device_series":8,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":12,"device_series":12,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":13,"device_series":13,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":14,"device_series":2,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":15,"device_series":5,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":16,"device_series":14,"causality":"non_causal","reward_condition":"reward","button_is_A":0}]},"b440da2ee25ca33465b8933bf1874c07a41d7715cecfb9af55504201c0c14bad":{"session_id":"01a11c6c-fd72-7ba5-bb53-a5d35e214171","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":2,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":2,"device_series":7,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":3,"device_series":5,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":4,"device_series":14,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":5,"device_series":10,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":6,"device_series":3,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":7,"device_series":15,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":8,"device_series":6,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":9,"device_series":13,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":10,"device_series":8,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":11,"device_series":12,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":12,"device_series":1,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":13,"device_series":9,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":14,"device_series":16,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":15,"device_series":4,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":16,"device_series":11,"causality":"causal","reward_condition":"reward","button_is_A":1}]},"698f4311e88b45179b025c1396166d8f99fe979a17c795bec0633f931ff14b48":{"session_id":"01a11c6c-fd72-7ba5-bb53-a5d35e214171","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":15,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":2,"device_series":14,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":3,"device_series":7,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":4,"device_series":4,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":5,"device_series":8,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":6,"device_series":9,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":7,"device_series":10,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":8,"device_series":2,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":9,"device_series":6,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":10,"device_series":5,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":11,"device_series":3,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":12,"device_series":12,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":13,"device_series":16,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":14,"device_series":11,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":15,"device_series":13,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":16,"device_series":1,"causality":"non_causal","reward_condition":"neutral","button_is_A":0}]},"ddd365d5ee26909fd908abffcd7a7ac942c4768012a72e7775fd498396b514bf":{"session_id":"01a11c6c-fd72-7ba5-bb53-a5d35e214171","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":7,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":2,"device_series":2,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":3,"device_series":5,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":4,"device_series":14,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":5,"device_series":15,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":6,"device_series":12,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":7,"device_series":8,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":8,"device_series":9,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":9,"device_series":11,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":10,"device_series":10,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":11,"device_series":13,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":12,"device_series":4,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":13,"device_series":3,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":14,"device_series":1,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":15,"device_series":16,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":16,"device_series":6,"causality":"non_causal","reward_condition":"reward","button_is_A":0}]},"898428fd3e444c6727fef9dd3f33341e580fe654535a4bcea9e7cd80a7f30cfb":{"session_id":"01a11cee-48c5-7597-8641-4dbf535bdbfc","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":5,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":2,"device_series":4,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":3,"device_series":14,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":4,"device_series":8,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":5,"device_series":9,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":6,"device_series":6,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":7,"device_series":1,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":8,"device_series":15,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":9,"device_series":12,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":10,"device_series":16,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":11,"device_series":10,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":12,"device_series":7,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":13,"device_series":3,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":14,"device_series":11,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":15,"device_series":13,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":16,"device_series":2,"causality":"causal","reward_condition":"reward","button_is_A":0}]},"998b97f798b71d9bc8cb48013970f2b4a0d24f2e4b3294d9bf81c6982e9d743b":{"session_id":"01a11cee-48c5-7597-8641-4dbf535bdbfc","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":4,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":2,"device_series":10,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":3,"device_series":9,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":4,"device_series":14,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":5,"device_series":2,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":6,"device_series":3,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":7,"device_series":7,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":8,"device_series":6,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":9,"device_series":8,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":10,"device_series":12,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":11,"device_series":15,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":12,"device_series":5,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":13,"device_series":1,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":14,"device_series":13,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":15,"device_series":16,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":16,"device_series":11,"causality":"non_causal","reward_condition":"reward","button_is_A":1}]},"daecaeda156185c03659fe777e3ee4ea8f766629e4ee5d67327edfd45066194d":{"session_id":"01a11cee-48c5-7597-8641-4dbf535bdbfc","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":8,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":2,"device_series":1,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":3,"device_series":6,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":4,"device_series":14,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":5,"device_series":5,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":6,"device_series":10,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":7,"device_series":11,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":8,"device_series":3,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":9,"device_series":9,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":10,"device_series":7,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":11,"device_series":2,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":12,"device_series":15,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":13,"device_series":13,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":14,"device_series":16,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":15,"device_series":4,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":16,"device_series":12,"causality":"causal","reward_condition":"neutral","button_is_A":1}]},"be5c5a3241f0bf12b68ea7052feecc7053ccc16eb380de96818b6023d773b4e2":{"session_id":"01a11cee-48c5-7597-8641-4dbf535bdbfc","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":14,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":2,"device_series":2,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":3,"device_series":12,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":4,"device_series":9,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":5,"device_series":13,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":6,"device_series":4,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":7,"device_series":16,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":8,"device_series":8,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":9,"device_series":10,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":10,"device_series":5,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":11,"device_series":15,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":12,"device_series":6,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":13,"device_series":7,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":14,"device_series":1,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":15,"device_series":3,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":16,"device_series":11,"causality":"causal","reward_condition":"reward","button_is_A":1}]},"3ffb8c8fa205a2f8b8c0346dcafdf1be8f876a9e29b93f9e9d31ec7c8fb82fd3":{"session_id":"01a11c6c-fd72-7ba5-bb53-a5d35e214171","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":15,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":2,"device_series":12,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":3,"device_series":8,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":4,"device_series":1,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":5,"device_series":9,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":6,"device_series":4,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":7,"device_series":7,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":8,"device_series":14,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":9,"device_series":3,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":10,"device_series":2,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":11,"device_series":10,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":12,"device_series":6,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":13,"device_series":5,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":14,"device_series":11,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":15,"device_series":16,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":16,"device_series":13,"causality":"causal","reward_condition":"neutral","button_is_A":1}]},"298dc004572b2f26c2bfe87ba02ef08901047250fc167ccbf60e1a81c6b7a3b3":{"session_id":"01a11c6c-fd72-7ba5-bb53-a5d35e214171","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":15,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":2,"device_series":3,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":3,"device_series":9,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":4,"device_series":10,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":5,"device_series":4,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":6,"device_series":5,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":7,"device_series":11,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":8,"device_series":12,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":9,"device_series":1,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":10,"device_series":13,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":11,"device_series":6,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":12,"device_series":2,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":13,"device_series":16,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":14,"device_series":7,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":15,"device_series":14,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":16,"device_series":8,"causality":"non_causal","reward_condition":"neutral","button_is_A":1}]},"aba8cc75e133f91dbb33d4a3c682f7624779cb05e4863212f47a34ec638289db":{"session_id":"01a11c6c-fd72-7ba5-bb53-a5d35e214171","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":6,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":2,"device_series":7,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":3,"device_series":14,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":4,"device_series":11,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":5,"device_series":9,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":6,"device_series":5,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":7,"device_series":15,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":8,"device_series":12,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":9,"device_series":13,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":10,"device_series":1,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":11,"device_series":3,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":12,"device_series":10,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":13,"device_series":16,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":14,"device_series":8,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":15,"device_series":2,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":16,"device_series":4,"causality":"non_causal","reward_condition":"reward","button_is_A":0}]},"863a727ac87b757b317b00eec615e189d609f954a87bc65d1a2cc54a883adf08":{"session_id":"01a11c3b-faa9-7946-997c-683ad4beec74","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":13,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":2,"device_series":15,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":3,"device_series":4,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":4,"device_series":16,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":5,"device_series":12,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":6,"device_series":11,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":7,"device_series":14,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":8,"device_series":8,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":9,"device_series":5,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":10,"device_series":6,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":11,"device_series":2,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":12,"device_series":10,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":13,"device_series":9,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":14,"device_series":3,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":15,"device_series":7,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":16,"device_series":1,"causality":"non_causal","reward_condition":"neutral","button_is_A":0}]},"29f2b466975bd66794bd15a68a9475000832834daea193f5e55d98fc69e37f0e":{"session_id":"01a11cee-48c5-7597-8641-4dbf535bdbfc","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":8,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":2,"device_series":3,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":3,"device_series":16,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":4,"device_series":13,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":5,"device_series":10,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":6,"device_series":6,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":7,"device_series":7,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":8,"device_series":14,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":9,"device_series":5,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":10,"device_series":2,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":11,"device_series":9,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":12,"device_series":15,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":13,"device_series":11,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":14,"device_series":1,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":15,"device_series":12,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":16,"device_series":4,"causality":"non_causal","reward_condition":"neutral","button_is_A":0}]},"6b03146965de2b65e9abf8446e28132279dcc7b8d41777cc6037c3a5a5815eb9":{"session_id":"01a11c3b-faa9-7946-997c-683ad4beec74","design_version":"random_pairing_random_causality_practice_0on_0off","pairs":[{"pair_id":1,"device_series":14,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":2,"device_series":13,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":3,"device_series":11,"causality":"non_causal","reward_condition":"reward","button_is_A":0},{"pair_id":4,"device_series":1,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":5,"device_series":4,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":6,"device_series":3,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":7,"device_series":12,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":8,"device_series":9,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":9,"device_series":16,"causality":"non_causal","reward_condition":"neutral","button_is_A":1},{"pair_id":10,"device_series":8,"causality":"causal","reward_condition":"reward","button_is_A":0},{"pair_id":11,"device_series":15,"causality":"causal","reward_condition":"reward","button_is_A":1},{"pair_id":12,"device_series":6,"causality":"causal","reward_condition":"neutral","button_is_A":1},{"pair_id":13,"device_series":2,"causality":"causal","reward_condition":"neutral","button_is_A":0},{"pair_id":14,"device_series":5,"causality":"non_causal","reward_condition":"reward","button_is_A":1},{"pair_id":15,"device_series":10,"causality":"non_causal","reward_condition":"neutral","button_is_A":0},{"pair_id":16,"device_series":7,"causality":"non_causal","reward_condition":"reward","button_is_A":0}]}};
-</script>
     <link rel="stylesheet" href="jspsych/css/jspsych.css">
   </head>
   <body></body>
   <script>
-(function () {
 
 // ============================================================
-// PART 2 (about 24 hours after Part 1) - DELAYED TEST ONLY
-//
-// What happens here:
-//   1) The participant is identified by the platform id in the URL
-//      (?participantId=...). Their Part-1 arrangement (which button went with
-//      which device, which pairs were causal, which devices were rewarded, the
-//      A/B labels) is read from part1_assignments.js and REUSED exactly.
-//      Ids inside that file are stored only as SHA-256 hashes.
-//   2) NO learning phase and NO reward is shown again.
-//   3) Decision phase (same as Part 1: 8 indirect + 8 direct choices)
-//   4) Memory test (which device matches each button)  - all 16 pairs
-//   5) Causal judgment again (what was the relationship between the button and
-//      the device)                                        - all 16 pairs
-//
-// URL options:  ?allow_new=1 -> TESTING ONLY: if the id is not found, build a new
-//                               random arrangement instead of stopping.
-//               ?test=1      -> quick test mode (timed screens last 0.5 s).
+// DATA SAVING (same mechanism as base template, with backup)
 // ============================================================
-
-// Completion code shown at the end. CHANGE it to the code of the Part-2 study on the platform.
-var COMPLETION_CODE = 'C1AB457CA9';
-var PART = 2;
-
-// ============================================================
-// DATA SAVING (same mechanism as Part 1, with local backup)
-// ============================================================
+var data_folder = 'data/';
 var data_already_saved = false;
 
 function saveData(data) {
@@ -157,193 +145,272 @@ jsPsych.data.addProperties({
     experiment: 'Button_Device_Value_Spreading_Pilot'
 });
 
+// ============================================================
+// STIMULUS FOLDER & FILE NAMING
+// Each SERIES lives in its own folder inside images_buttons/ (series_N) and
+// holds one BUTTON and one DEVICE:
+//
+//   images_buttons/ series_N/button_N.png                       (button, before pressing)
+//   images_buttons/ series_N/click_N.png                        (button, being pressed)
+//   images_buttons/ series_N/<device>_before_pressing_N.png     (device, before pressing)
+//   images_buttons/ series_N/<device>_off_N.png                 (device after pressing, NOT activated)
+//   images_buttons/ series_N/<device>_on_N.png                  (device after pressing, ACTIVATED)
+//
+// <device> is the device's name in the file names (in all series it is "light").
+//
+// RANDOMIZATION - a NEW random assignment for every participant:
+//   1) BUTTON <-> DEVICE: the button of series i is paired with the device of
+//      a randomly chosen series j (a random permutation of the 16 devices over
+//      the 16 buttons; j can equal i by chance - tagged same_series_pairing=1).
+//   2) CAUSAL vs NON-CAUSAL: 8 of the 16 resulting pairs are chosen at random
+//      to be CAUSAL (pressing the button shows the device "on"); the other 8
+//      are NON-CAUSAL (pressing shows the device "off", i.e. nothing happens).
+//
+// pair_id = the number of the BUTTON's series (the button is the critical
+// test item). The device of that pair comes from series device_series. Both
+// numbers, the causality and the reward condition of every pair are saved in
+// the data (see the 'pair_assignment' rows and the *_series columns).
+// ============================================================
+var NUM_PAIRS = 16;
+var NUM_CAUSAL = 8; // number of causal pairs (chosen at random for each participant)
+var STIM_FOLDER = 'images_buttons/';
+
+// PRACTICE uses its own two folders, which are NOT among the 16 experiment
+// pairs: the same button and device in a CAUSAL version (device lights up
+// after pressing) and a NON-CAUSAL version (pressing does nothing), shown in
+// this order. Each is followed by the causal judgment with feedback.
+// Folder names follow the series pattern (prefix + label); the files inside
+// both folders end with 0 (series number 0):
+//   <prefix>0_on/ : button_0, click_0, <device>_before_pressing_0, <device>_on_0
+//   <prefix>0_off/: button_0, click_0, <device>_before_pressing_0, <device>_off_0
+// (<prefix> = SERIES_FOLDER_PREFIX, e.g. " series_" -> " series_0_on")
+var PRACTICE_SERIES_LIST = [
+    { series: 0, folder_label: '0_on',  state: 'causal' },
+    { series: 0, folder_label: '0_off', state: 'non_causal' }
+];
+
+// Device name used in the file names of each series (by series number).
+var DEVICE_NAMES = {
+    1: 'light', 2: 'light', 3: 'light', 4: 'light',
+    5: 'light', 6: 'light', 7: 'light', 8: 'light',
+    9: 'light', 10: 'light', 11: 'light', 12: 'light',
+    13: 'light', 14: 'light', 15: 'light', 16: 'light'
+};
+
+// Which device image represents the device in Phase 2 (exposure), Phase 3
+// (decision) and the memory test: 'before' or 'after'. 'before' is used so
+// that causal and non-causal devices look equally "neutral" (in causal
+// pairs the "after" image is lit up, which could confound the results).
+var DEVICE_TEST_STATE = 'before';
+
+// Colors used in the short question shown after every image in the
+// association phase ("Is there <color> in this image?"). A random color
+// from this list is chosen for each image.
+var COLOR_OPTIONS = ['blue', 'red', 'green', 'purple', 'yellow', 'orange'];
+
+// How long (ms) each image is shown before the color question appears.
+var IMAGE_DISPLAY_MS = 2500;
+// Association phase repetitions: round 1 is the full sequence (color
+// question + causal judgment). Rounds 2..NUM_ASSOC_ROUNDS are short
+// repetitions of the same one-image-at-a-time sequence (no questions).
+var NUM_ASSOC_ROUNDS = 3;
+var REPEAT_IMAGE_MS = 1500;
+var REPEAT_QUESTION_EVERY = 4;   // in repetition rounds: one matching question after every N pairs
+var REPEAT_QUESTION_MS = 6000;   // time limit for that question
+var REPEAT_GAP_MS = 500;   // fixation between before/after and after each pair
+
+// TEST MODE: add ?test=1 to the URL to run a quick test version. In test
+// mode everything that is shown for a fixed time (association images,
+// fixation crosses, blank screens, reward screens, the decision preview,
+// the memory cue) lasts only TEST_IMAGE_MS (half a second), the
+// association images move on automatically with no color question, and
+// the instruction screens unlock after half a second. Screens that wait
+// for an answer (judgment, decision choice, memory choice, math,
+// SPACEBAR) still wait for the participant. Without ?test=1 the
+// experiment runs normally.
 var TEST_MODE = jsPsych.data.getURLVariable('test') === '1';
 var TEST_IMAGE_MS = 500;
-var ALLOW_NEW_ASSIGNMENT = jsPsych.data.getURLVariable('allow_new') === '1';
 
+// Returns the given duration normally, or TEST_IMAGE_MS in test mode.
 function dur(normalMs) {
     return TEST_MODE ? TEST_IMAGE_MS : normalMs;
 }
 
-// ============================================================
-// FIND THE PARTICIPANT'S PART-1 ARRANGEMENT
-// ============================================================
-function sha256Hex(msg) {
-    var K = [], H = [], i, j;
-    var isPrime = function (n) { for (var d = 2; d * d <= n; d++) { if (n % d === 0) return false; } return true; };
-    var frac = function (x) { return ((x - Math.floor(x)) * 4294967296) | 0; };
-    for (var cand = 2, n = 0; n < 64; cand++) {
-        if (isPrime(cand)) {
-            if (n < 8) { H[n] = frac(Math.pow(cand, 1 / 2)); }
-            K[n] = frac(Math.pow(cand, 1 / 3));
-            n++;
-        }
-    }
-    var bytes = unescape(encodeURIComponent(msg)).split('').map(function (c) { return c.charCodeAt(0); });
-    var bitLen = bytes.length * 8;
-    bytes.push(0x80);
-    while (bytes.length % 64 !== 56) { bytes.push(0); }
-    for (i = 7; i >= 0; i--) { bytes.push(i >= 4 ? 0 : (bitLen >>> (i * 8)) & 0xff); }
-    var rotr = function (x, n) { return (x >>> n) | (x << (32 - n)); };
-    for (var off = 0; off < bytes.length; off += 64) {
-        var w = [];
-        for (j = 0; j < 16; j++) {
-            w[j] = (bytes[off + 4 * j] << 24) | (bytes[off + 4 * j + 1] << 16) | (bytes[off + 4 * j + 2] << 8) | bytes[off + 4 * j + 3];
-        }
-        for (j = 16; j < 64; j++) {
-            var s0 = rotr(w[j - 15], 7) ^ rotr(w[j - 15], 18) ^ (w[j - 15] >>> 3);
-            var s1 = rotr(w[j - 2], 17) ^ rotr(w[j - 2], 19) ^ (w[j - 2] >>> 10);
-            w[j] = (w[j - 16] + s0 + w[j - 7] + s1) | 0;
-        }
-        var a = H[0], b = H[1], c = H[2], d = H[3], e = H[4], f = H[5], g = H[6], h = H[7];
-        for (j = 0; j < 64; j++) {
-            var S1 = rotr(e, 6) ^ rotr(e, 11) ^ rotr(e, 25);
-            var ch = (e & f) ^ (~e & g);
-            var t1 = (h + S1 + ch + K[j] + w[j]) | 0;
-            var S0 = rotr(a, 2) ^ rotr(a, 13) ^ rotr(a, 22);
-            var maj = (a & b) ^ (a & c) ^ (b & c);
-            var t2 = (S0 + maj) | 0;
-            h = g; g = f; f = e; e = (d + t1) | 0; d = c; c = b; b = a; a = (t1 + t2) | 0;
-        }
-        H[0] = (H[0] + a) | 0; H[1] = (H[1] + b) | 0; H[2] = (H[2] + c) | 0; H[3] = (H[3] + d) | 0;
-        H[4] = (H[4] + e) | 0; H[5] = (H[5] + f) | 0; H[6] = (H[6] + g) | 0; H[7] = (H[7] + h) | 0;
-    }
-    return H.map(function (x) { return ('00000000' + (x >>> 0).toString(16)).slice(-8); }).join('');
+function getDeviceName(n) {
+    return DEVICE_NAMES[n] || 'light';
 }
 
-
-function lookupAssignment(pid) {
-    if (typeof PART1_ASSIGNMENTS === 'undefined') { return null; }
-    var key = sha256Hex(String(pid || '').trim().toUpperCase());
-    return PART1_ASSIGNMENTS[key] || null;
-}
-
-// Stops the experiment with a message (and saves a small record of what happened).
-function runBlocked(reason, message) {
-    jsPsych.data.addProperties({ part: PART, assignment_found: 0, blocked_reason: reason });
-    jsPsych.run([
-        { type: jsPsychCallFunction, func: function () {}, data: { task: 'part2_blocked', participant_id: participant_id, reason: reason } },
-        { type: jsPsychCallFunction, func: function () { saveData(jsPsych.data.get().csv()); } },
-        { type: jsPsychHtmlKeyboardResponse, choices: 'NO_KEYS',
-          stimulus: '<div style="max-width:700px; margin:80px auto; font-family:Arial; text-align:center;">' +
-                    '<h2>Part 2</h2><p style="font-size:18px;">' + message + '</p></div>' }
-    ]);
-}
-
-var assignment = lookupAssignment(participant_id);
-if (!assignment && !ALLOW_NEW_ASSIGNMENT) {
-    runBlocked('participant_not_found',
-        'We could not find your records from Part 1 of this study. Please do not continue. ' +
-        'Contact the researcher through the platform and mention this message.');
-    return;
-}
-
-// ============================================================
-// STIMULI: same folders and file names as Part 1
-//   images_buttons/ series_N/button_N.png                    (button)
-//   images_buttons/ series_N/<device>_before_pressing_N.png  (device, neutral state - used for every test here)
-// (the folders on the server have a leading space: " series_N")
-// ============================================================
-var NUM_PAIRS = 16;
-var NUM_CAUSAL = 8;
-var STIM_FOLDER = 'images_buttons/';
+// Folder name of each series, e.g. "series_" -> images_buttons/series_1/
+// NOTE: on the server the folders are named WITH A LEADING SPACE
+// (" series_1", " series_2", ...), so the prefix starts with a space.
+// If the folders are renamed to "series_1" etc., change this to 'series_'.
 var SERIES_FOLDER_PREFIX = ' series_';
-function seriesFolder(n) { return STIM_FOLDER + SERIES_FOLDER_PREFIX + n + '/'; }
-function getDeviceName(n) { return 'light'; }
 
-function makePair(bser, dser) {
+function seriesFolder(n) {
+    return STIM_FOLDER + SERIES_FOLDER_PREFIX + n + '/';
+}
+
+// ============================================================
+// BUILD THE 16 PAIRS (random button-device pairing + random causality)
+// ============================================================
+// 1) Random permutation: device_series_for_button[i-1] = series number of the
+//    device that is paired with the button of series i.
+var device_series_for_button = jsPsych.randomization.shuffle(
+    Array.from({ length: NUM_PAIRS }, function(_, k) { return k + 1; })
+);
+
+// Builds one pair object: the BUTTON of series `bser` with the DEVICE of
+// series `dser` (their image paths). Causality is set afterwards.
+function makePair(bser, dser, bFolderOverride, dFolderOverride) {
     var dev = getDeviceName(dser);
-    var pair = {
+    var bFolder = bFolderOverride || seriesFolder(bser);   // folder of the BUTTON's series
+    var dFolder = dFolderOverride || seriesFolder(dser);   // folder of the DEVICE's series
+    return {
         pair_id: bser,                  // = button series number
         button_series: bser,
         device_series: dser,
+        same_series_pairing: (bser === dser) ? 1 : 0,
         device_name: dev,
-        button_path: seriesFolder(bser) + 'button_' + bser + '.png',
-        device_before_path: seriesFolder(dser) + dev + '_before_pressing_' + dser + '.png'
+        button_path: bFolder + 'button_' + bser + '.png',
+        click_path: bFolder + 'click_' + bser + '.png',
+        device_before_path: dFolder + dev + '_before_pressing_' + dser + '.png',
+        device_off_path: dFolder + dev + '_off_' + dser + '.png',
+        device_on_path: dFolder + dev + '_on_' + dser + '.png'
     };
-    pair.cause_path = pair.button_path;               // the button (critical item in the indirect test)
-    pair.effect_path = pair.device_before_path;       // the device, neutral state (same as Part 1: DEVICE_TEST_STATE = 'before')
-    return pair;
 }
 
-// ------------------------------------------------------------
-// The 16 pairs
-// ------------------------------------------------------------
+// Sets causality on a pair and derives the images that depend on it.
+function applyCausality(pair, causality) {
+    pair.causality = causality;
+    // Device image shown AFTER pressing: lit (on) in causal pairs, unchanged (off) in non-causal pairs.
+    pair.device_after_path = (causality === 'causal') ? pair.device_on_path : pair.device_off_path;
+    // The CAUSE image of the pair = the (unpressed) button
+    pair.cause_path = pair.button_path;
+    // The EFFECT image of the pair = the device (state set by DEVICE_TEST_STATE)
+    pair.effect_path = (DEVICE_TEST_STATE === 'after') ? pair.device_after_path : pair.device_before_path;
+}
+
 var all_pairs = [];
-if (assignment) {
-    // PART 2: exactly the Part-1 arrangement
-    assignment.pairs.slice().sort(function (a, b) { return a.pair_id - b.pair_id; }).forEach(function (a) {
-        var p = makePair(a.pair_id, a.device_series);
-        p.causality = a.causality;
-        p.reward_condition = a.reward_condition;
-        p.button_is_A = a.button_is_A;
-        all_pairs.push(p);
-    });
-} else {
-    // TESTING ONLY (?allow_new=1): a new random arrangement, built like Part 1
-    var perm = jsPsych.randomization.shuffle(Array.from({ length: NUM_PAIRS }, function (_, k) { return k + 1; }));
-    for (var i = 1; i <= NUM_PAIRS; i++) { all_pairs.push(makePair(i, perm[i - 1])); }
-    var causal_ids = jsPsych.randomization.sampleWithoutReplacement(all_pairs.map(function (p) { return p.pair_id; }), NUM_CAUSAL);
-    all_pairs.forEach(function (p) { p.causality = (causal_ids.indexOf(p.pair_id) !== -1) ? 'causal' : 'non_causal'; });
-    ['causal', 'non_causal'].forEach(function (c) {
-        var grp = jsPsych.randomization.shuffle(all_pairs.filter(function (p) { return p.causality === c; }));
-        grp.forEach(function (p, idx) {
-            p.reward_condition = (idx < grp.length / 2) ? 'reward' : 'neutral';
-            p.button_is_A = (idx % 2 === 0) ? 1 : 0;
-        });
-    });
+for (var i = 1; i <= NUM_PAIRS; i++) {
+    all_pairs.push(makePair(i, device_series_for_button[i - 1]));
 }
-all_pairs.forEach(function (p) {
-    p.cell = p.causality + '_' + p.reward_condition;
-    p.exposed_role = 'effect';
-    p.exposed_path = p.effect_path;        // device: the item that had its value shown in Part 1
-    p.critical_role = 'cause';
-    p.critical_path = p.cause_path;        // button: never shown with a value
+
+// 2) Random causality: NUM_CAUSAL of the 16 pairs are causal.
+var causal_pair_ids = jsPsych.randomization.sampleWithoutReplacement(
+    all_pairs.map(function(p) { return p.pair_id; }), NUM_CAUSAL
+);
+all_pairs.forEach(function(pair) {
+    applyCausality(pair, (causal_pair_ids.indexOf(pair.pair_id) !== -1) ? 'causal' : 'non_causal');
 });
 
-// Safety check (16 pairs, 8 causal, 4 per cell, 16 distinct devices). If a stored
-// arrangement is broken, stop instead of running a wrong experiment.
-var cell_counts = {};
-all_pairs.forEach(function (p) { cell_counts[p.cell] = (cell_counts[p.cell] || 0) + 1; });
-var arrangement_ok = all_pairs.length === NUM_PAIRS &&
-    all_pairs.filter(function (p) { return p.causality === 'causal'; }).length === NUM_CAUSAL &&
-    ['causal_reward', 'causal_neutral', 'non_causal_reward', 'non_causal_neutral'].every(function (c) { return cell_counts[c] === NUM_PAIRS / 4; }) &&
-    new Set(all_pairs.map(function (p) { return p.device_series; })).size === NUM_PAIRS;
-if (!arrangement_ok) {
-    runBlocked('invalid_stored_arrangement',
-        'There was a problem loading your records from Part 1. Please do not continue. ' +
-        'Contact the researcher through the platform and mention this message.');
-    return;
+// ------------------------------------------------------------
+// Reward is ALWAYS on the EFFECT (the device). Within EACH causality
+// group (8 causal, 8 non-causal) exactly 4 pairs are REWARDED ($1) and
+// 4 are NEUTRAL ($0). That gives 4 cells with 4 pairs each:
+//   causal_reward | causal_neutral | non_causal_reward | non_causal_neutral
+// In Phase 2 only the DEVICE of each pair is shown with its value. The
+// BUTTON is never shown in Phase 2 - it is the critical (indirect) test
+// item in Phase 3.
+// ------------------------------------------------------------
+function assignRewardWithinGroup(groupPairs) {
+    var shuffled = jsPsych.randomization.shuffle(groupPairs.slice());
+    var half = shuffled.length / 2;
+    shuffled.forEach(function(pair, idx) {
+        pair.reward_condition = (idx < half) ? 'reward' : 'neutral';
+        pair.cell = pair.causality + '_' + pair.reward_condition;
+        pair.exposed_role = 'effect';
+        pair.exposed_path = pair.effect_path;
+        pair.critical_role = 'cause';
+        pair.critical_path = pair.cause_path;
+    });
 }
 
+assignRewardWithinGroup(all_pairs.filter(function(p) { return p.causality === 'causal'; }));
+assignRewardWithinGroup(all_pairs.filter(function(p) { return p.causality === 'non_causal'; }));
+
+// In the causal judgment, the BUTTON is labelled "A" for half of the pairs
+// and "B" for the other half (balanced within causal / non-causal).
+['causal', 'non_causal'].forEach(function(c) {
+    var grp = jsPsych.randomization.shuffle(all_pairs.filter(function(p) { return p.causality === c; }));
+    grp.forEach(function(pair, idx) { pair.button_is_A = (idx < grp.length / 2) ? 1 : 0; });
+});
+
+// ------------------------------------------------------------
+// PRACTICE PAIRS: built from the two separate practice folders
+// (PRACTICE_SERIES_LIST: 0_on = causal, then 0_off = non-causal). They are
+// NOT part of the 16 experiment pairs and are never shown again later. Each
+// is run through the full association procedure, with feedback on the
+// causal judgment. The button is labelled A in the first example for a
+// random half of the participants, and the label alternates between the
+// two examples. Practice rows are tagged: task starts with 'practice_',
+// pair_id = 'practice_1' / 'practice_2' (practice_1 = first example), plus
+// 'practice_assignment' rows that give the folder (practice_folder), the
+// causality and the image paths (see below).
+// ------------------------------------------------------------
+var practice_first_button_is_A = Math.random() < 0.5 ? 1 : 0;
+var practice_pairs = PRACTICE_SERIES_LIST.map(function(cfg, idx) {
+    var folder = seriesFolder(cfg.folder_label);
+    var pp = makePair(cfg.series, cfg.series, folder, folder);
+    pp.pair_id = 'practice_' + (idx + 1);
+    pp.practice_folder = cfg.folder_label;
+    applyCausality(pp, cfg.state);
+    pp.button_is_A = (idx % 2 === 0) ? practice_first_button_is_A : 1 - practice_first_button_is_A;
+    pp.practice_order = idx + 1;
+    return pp;
+});
 jsPsych.data.addProperties({
-    part: PART,
-    assignment_found: assignment ? 1 : 0,
-    assignment_source: assignment ? 'part1_lookup' : 'random_new_TEST',
-    part1_session_id: assignment ? (assignment.session_id || '') : '',
-    part1_design_version: assignment ? (assignment.design_version || '') : '',
-    design_version: 'random_pairing_random_causality_practice_0on_0off_part2_delayed_test'
+    practice_folders: PRACTICE_SERIES_LIST.map(function(c) { return c.folder_label; }).join(','),
+    practice_states: PRACTICE_SERIES_LIST.map(function(c) { return c.state; }).join(','),
+    design_version: 'random_pairing_random_causality_practice_0on_0off_decision_causal_vs_noncausal_within_reward'
 });
 
 // ------------------------------------------------------------
-// Record of the arrangement used (silent rows; same task name as Part 1)
+// ASSIGNMENT RECORD: one data row per pair (task = 'pair_assignment') that
+// lists exactly which series were combined for THIS participant: the button
+// series, the device series, causality, reward condition and A/B label.
+// The practice pairs get the same kind of row (task = 'practice_assignment').
+// These are silent trials (nothing is shown on screen).
 // ------------------------------------------------------------
-all_pairs.forEach(function (p) {
+all_pairs.forEach(function(p) {
     timeline.push({
         type: jsPsychCallFunction,
-        func: function () {},
+        func: function() {},
         data: {
             task: 'pair_assignment',
             pair_id: p.pair_id,
             button_series: p.button_series,
             device_series: p.device_series,
+            same_series_pairing: p.same_series_pairing,
             device_name: p.device_name,
             causality: p.causality,
             reward_condition: p.reward_condition,
             cell: p.cell,
             button_is_A: p.button_is_A,
             button_path: p.button_path,
-            device_before_path: p.device_before_path
+            click_path: p.click_path,
+            device_before_path: p.device_before_path,
+            device_after_path: p.device_after_path
+        }
+    });
+});
+practice_pairs.forEach(function(p) {
+    timeline.push({
+        type: jsPsychCallFunction,
+        func: function() {},
+        data: {
+            task: 'practice_assignment',
+            practice_order: p.practice_order,
+            practice_folder: p.practice_folder,
+            pair_id: p.pair_id,
+            button_series: p.button_series,
+            device_series: p.device_series,
+            device_name: p.device_name,
+            causality: p.causality,
+            button_is_A: p.button_is_A,
+            button_path: p.button_path,
+            click_path: p.click_path,
+            device_before_path: p.device_before_path,
+            device_after_path: p.device_after_path
         }
     });
 });
@@ -351,21 +418,42 @@ all_pairs.forEach(function (p) {
 // ============================================================
 // PRELOAD
 // ============================================================
-var imagesToPreload = ['images/consent_form_2026_page1.png', 'images/consent_form_2026_page2.png'];
-all_pairs.forEach(function (p) {
+var imagesToPreload = [
+    'images/consent_form_2026_page1.png',
+    'images/consent_form_2026_page2.png',
+    'images/gray.png',
+    'images/dollar.png'
+];
+
+practice_pairs.forEach(function(p) {
     imagesToPreload.push(p.button_path);
+    imagesToPreload.push(p.click_path);
     imagesToPreload.push(p.device_before_path);
+    imagesToPreload.push(p.device_after_path);
 });
+
+all_pairs.forEach(function(p) {
+    imagesToPreload.push(p.button_path);
+    imagesToPreload.push(p.click_path);
+    imagesToPreload.push(p.device_before_path);
+    imagesToPreload.push(p.device_after_path);
+});
+
 timeline.push({
     type: jsPsychPreload,
     images: imagesToPreload,
     message: 'Loading task assets...',
+    // Shows the FULL path of every file that failed to load (useful for
+    // debugging 404 errors). Can be removed once all images load correctly.
     show_detailed_errors: true
 });
 
 // ============================================================
 // SHARED HELPERS
 // ============================================================
+
+// Simple 3-option math question, shown a handful of times through the
+// experiment (not framed as an "attention check" to the participant).
 function mathQuestionTrial() {
     var a = Math.floor(Math.random() * 8) + 1;
     var b = Math.floor(Math.random() * 8) + 1;
@@ -393,10 +481,20 @@ var whiteScreenTrial = {
     trial_duration: dur(1000)
 };
 
-// Instruction page whose buttons stay disabled for a minimum reading time.
+var fixationTrial = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: '<div class="fixation">+</div>',
+    choices: "NO_KEYS",
+    trial_duration: dur(1000)
+};
+
+// Wraps a jsPsychInstructions trial so its navigation buttons stay
+// disabled for `minMs` (default 10000ms), forcing a minimum reading
+// time before the participant can click through to the next stage.
+// A small countdown notice is shown while buttons are disabled.
 function withMinReadTime(instructionsTrial, minMs) {
     minMs = (typeof minMs === 'number') ? minMs : 10000;
-    if (TEST_MODE) { minMs = TEST_IMAGE_MS; }
+    if (TEST_MODE) { minMs = TEST_IMAGE_MS; }   // test mode: unlock after half a second
     var trial = Object.assign({}, instructionsTrial);
     var original_on_load = trial.on_load;
 
@@ -409,7 +507,8 @@ function withMinReadTime(instructionsTrial, minMs) {
             );
         }
 
-        getNavButtons().forEach(function(btn) {
+        var buttons = getNavButtons();
+        buttons.forEach(function(btn) {
             btn.disabled = true;
             btn.style.opacity = '0.4';
             btn.style.cursor = 'not-allowed';
@@ -417,6 +516,7 @@ function withMinReadTime(instructionsTrial, minMs) {
 
         var contentEl = document.querySelector('.jspsych-content') || document.body;
         var notice = document.createElement('div');
+        notice.id = 'min-read-notice';
         notice.style.cssText = 'text-align:center; color:#888; font-size:14px; margin-top:15px;';
         var remaining = Math.ceil(minMs / 1000);
         notice.innerText = 'Please take a moment to read (you can continue in ' + remaining + 's)...';
@@ -444,13 +544,18 @@ function withMinReadTime(instructionsTrial, minMs) {
 
     return trial;
 }
+
+// Short instruction screens (little text): the navigation buttons unlock
+// after SHORT_READ_MS (5 seconds) instead of the default 10 seconds.
+// The welcome/consent screens and the Phase 2 instructions keep 10 seconds.
 var SHORT_READ_MS = 5000;
 function withShortReadTime(instructionsTrial) {
     return withMinReadTime(instructionsTrial, SHORT_READ_MS);
 }
 
-// Runs the trials of a phase, inserting ONE math question after the item at
-// `checkAfterPosition` (1-based), if provided.
+// Runs all trials for a phase, inserting exactly ONE math question after
+// the item at `checkAfterPosition` (1-based), if provided. Used to keep
+// the total math-question count at exactly 4 across the whole experiment.
 function pushPhase(sourceArray, trialBuilderFn, checkAfterPosition) {
     sourceArray.forEach(function(item, idx) {
         timeline = timeline.concat(trialBuilderFn(item));
@@ -460,6 +565,206 @@ function pushPhase(sourceArray, trialBuilderFn, checkAfterPosition) {
     });
 }
 
+function randomColor() {
+    return COLOR_OPTIONS[Math.floor(Math.random() * COLOR_OPTIONS.length)];
+}
+
+// Shows ONE image alone; after `delayMs` (default IMAGE_DISPLAY_MS) a short
+// Yes/No question about a randomly chosen color fades in BELOW the same
+// image ("Is there <color> in this image?"), and only then can the
+// participant respond and continue. The color that was asked about is
+// saved in the data (color_asked), together with answered_yes (1/0).
+function buildImageWithColorQuestionTrial(imagePath, dataObj, delayMs) {
+    delayMs = (typeof delayMs === 'number') ? delayMs : IMAGE_DISPLAY_MS;
+    var color = randomColor();
+    var trialData = Object.assign({}, dataObj, { image_path: imagePath, color_asked: color });
+
+    if (TEST_MODE) {
+        // Test version: show the image briefly and move on, no question.
+        return {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: '<div class="stimulus-container"><img src="' + imagePath + '" class="exp-image"></div>',
+            choices: "NO_KEYS",
+            trial_duration: TEST_IMAGE_MS,
+            data: Object.assign({}, trialData, { test_mode: 1 })
+        };
+    }
+
+    return {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: '<div class="stimulus-container">' +
+                   '<img src="' + imagePath + '" class="exp-image">' +
+                   '<div class="question-area" id="delayed-question" style="visibility:hidden; margin-top:15px;">' +
+                   '<p style="font-size:20px; font-weight:bold;">Is there <b>' + color + '</b> in this image?</p>' +
+                   '</div></div>',
+        choices: ['Yes', 'No'],
+        data: trialData,
+        on_load: function() {
+            var btnGroup = document.querySelector('#jspsych-html-button-response-btngroup');
+            if (btnGroup) { btnGroup.style.visibility = 'hidden'; }
+            setTimeout(function() {
+                var q = document.querySelector('#delayed-question');
+                if (q) { q.style.visibility = 'visible'; }
+                var bg = document.querySelector('#jspsych-html-button-response-btngroup');
+                if (bg) { bg.style.visibility = 'visible'; }
+            }, delayMs);
+        },
+        on_finish: function(data) {
+            data.answered_yes = (data.response === 0) ? 1 : 0;
+        }
+    };
+}
+
+// ------------------------------------------------------------
+// Causal judgment shown after the association sequence of each pair.
+// Image A = the button being pressed (click_N), Image B = the device after
+// pressing. The participant sees the outcome (device activated or not)
+// and decides: A activated B / B activated A / they do not activate each other.
+// Coding: 'A_to_B' (correct for causal series), 'B_to_A', 'unrelated'
+// (correct for non-causal series).
+// ------------------------------------------------------------
+// Time limit (ms) for the causal judgment. If the participant does not
+// answer within this time, the experiment moves on automatically
+// (response = null, timed_out = 1 in the data).
+var JUDGMENT_TIME_MS = 6000;
+
+var JUDGMENT_CHOICES = ['A activated B', 'B activated A', 'They do not activate each other'];
+
+// Which image is shown as "A" (left) and "B" (right): the pressed button
+// or the device, depending on pair.button_is_A.
+function judgmentImages(pair) {
+    return pair.button_is_A
+        ? { A: pair.click_path, B: pair.device_after_path }
+        : { A: pair.device_after_path, B: pair.click_path };
+}
+// Choice index (0 = "A activated B", 1 = "B activated A") that is correct
+// for a causal pair (button activated the device).
+function correctCausalIndex(pair) { return pair.button_is_A ? 0 : 1; }
+// Data coding is in terms of button/device, independent of A/B labels.
+function judgmentCode(pair, response) {
+    if (response === null) return null;
+    if (response === 2) return 'unrelated';
+    return (response === correctCausalIndex(pair)) ? 'button_to_device' : 'device_to_button';
+}
+
+function buildCausalJudgmentTrial(pair, taskPrefix) {
+    var imgs = judgmentImages(pair);
+    return {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: '<div class="stimulus-container">' +
+                   '<div class="assoc-row">' +
+                   '<div><img src="' + imgs.A + '" class="assoc-image">' +
+                   '<p style="font-size:24px; font-weight:bold; margin-top:10px;">A</p></div>' +
+                   '<div><img src="' + imgs.B + '" class="assoc-image">' +
+                   '<p style="font-size:24px; font-weight:bold; margin-top:10px;">B</p></div>' +
+                   '</div>' +
+                   '<p style="font-size:20px; font-weight:bold; margin-top:15px;">What is the relationship between image A and image B?</p>' +
+                   '</div>',
+        choices: JUDGMENT_CHOICES,
+        trial_duration: JUDGMENT_TIME_MS,
+        data: {
+            task: taskPrefix + 'causal_judgment',
+            pair_id: pair.pair_id,
+            button_series: pair.button_series,
+            device_series: pair.device_series,
+            causality: pair.causality,
+            device_name: pair.device_name,
+            button_is_A: pair.button_is_A,
+            practice_folder: pair.practice_folder   // only set for practice pairs
+        },
+        on_finish: function(data) {
+            data.timed_out = (data.response === null) ? 1 : 0;
+            data.judgment = judgmentCode(pair, data.response);
+            data.judged_causal = (data.response === null) ? null : ((data.response === 0 || data.response === 1) ? 1 : 0);
+            var correct_code = (pair.causality === 'causal') ? 'button_to_device' : 'unrelated';
+            data.judgment_correct = (data.judgment === null) ? null : ((data.judgment === correct_code) ? 1 : 0);
+        }
+    };
+}
+
+// ------------------------------------------------------------
+// Feedback shown right after the causal judgment in the PRACTICE round.
+// Tells the participant whether the answer was right and what the correct
+// answer is: "X activated Y" for the causal example, "They do not activate each other"
+// for the non-causal example. Must directly follow the judgment trial
+// (it reads the judgment's data).
+// ------------------------------------------------------------
+function buildPracticeFeedbackTrial(pair) {
+    var is_causal = (pair.causality === 'causal');
+    var btnL = pair.button_is_A ? 'A' : 'B';
+    var devL = pair.button_is_A ? 'B' : 'A';
+    var correct_label = is_causal ? (btnL + ' activated ' + devL) : 'They do not activate each other';
+    var explanation = is_causal
+        ? 'Pressing the button (' + btnL + ') activated the device (' + devL + ').'
+        : 'Pressing the button (' + btnL + ') did not activate the device (' + devL + ').';
+
+    return {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: function() {
+            var last = jsPsych.data.get().last(1).values()[0];
+            var verdict, color;
+            if (last.response === null) {
+                verdict = 'Time ran out.'; color = '#888';
+            } else if (last.judgment_correct === 1) {
+                verdict = 'Correct!'; color = 'green';
+            } else {
+                verdict = 'Incorrect.'; color = '#c0392b';
+            }
+            return '<div class="stimulus-container">' +
+                   '<h2 style="color:' + color + ';">' + verdict + '</h2>' +
+                   '<div class="assoc-row">' +
+                   '<div><img src="' + judgmentImages(pair).A + '" class="small-image">' +
+                   '<p style="font-size:20px; font-weight:bold; margin-top:8px;">A</p></div>' +
+                   '<div><img src="' + judgmentImages(pair).B + '" class="small-image">' +
+                   '<p style="font-size:20px; font-weight:bold; margin-top:8px;">B</p></div>' +
+                   '</div>' +
+                   '<p style="font-size:20px; margin-top:15px;">The correct answer is: <b>' + correct_label + '</b></p>' +
+                   '<p style="font-size:18px;">' + explanation + '</p>' +
+                   '</div>';
+        },
+        choices: ['Continue'],
+        data: { task: 'practice_feedback', pair_id: pair.pair_id, button_series: pair.button_series,
+                 device_series: pair.device_series, causality: pair.causality,
+                 practice_folder: pair.practice_folder }   // only set for practice pairs
+    };
+}
+
+// ------------------------------------------------------------
+// Full association sequence for ONE pair (used for the practice series
+// with taskPrefix 'practice_' and for the main phase with 'encoding_').
+// All images are shown ONE AT A TIME, each followed by a color question:
+//   BEFORE pressing: 1) button alone   2) device alone (before)
+//   AFTER  pressing: 3) button pressed (click) alone   4) device alone (after)
+// then the causal judgment (A/B labels randomized: button is A in half of the pairs).
+// ------------------------------------------------------------
+// If withFeedback is true (practice only), a feedback screen with the
+// correct answer is added right after the causal judgment.
+function buildAssociationTrials(pair, taskPrefix, withFeedback) {
+    var base = {
+        pair_id: pair.pair_id,
+        button_series: pair.button_series,
+        device_series: pair.device_series,
+        causality: pair.causality,
+        device_name: pair.device_name,
+        practice_folder: pair.practice_folder   // only set for practice pairs
+    };
+    function imageTrial(path, stage, role) {
+        return buildImageWithColorQuestionTrial(
+            path,
+            Object.assign({ task: taskPrefix + 'image', stage: stage, image_role: role }, base)
+        );
+    }
+    return [
+        imageTrial(pair.button_path, 'before', 'button'),
+        imageTrial(pair.device_before_path, 'before', 'device'),
+        fixationTrial,
+        imageTrial(pair.click_path, 'after', 'button'),
+        imageTrial(pair.device_after_path, 'after', 'device'),
+        fixationTrial,
+        buildCausalJudgmentTrial(pair, taskPrefix)
+    ].concat(withFeedback ? [buildPracticeFeedbackTrial(pair)] : [], [whiteScreenTrial]);
+}
+
 // ============================================================
 // INSTRUCTIONS & CONSENT
 // ============================================================
@@ -467,9 +772,9 @@ timeline.push(withMinReadTime({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
-        '<h2>Welcome Back: Part 2 of the Experiment</h2>' +
-        '<p><b>This is Part 2 of the study you took part in about 24 hours ago.</b></p>' +
-        '<p>In Part 1 you looked at devices that are produced in a factory. Each device came with a button. In this part you will see some of those buttons and devices again and answer a few questions about them.</p>' +
+        '<h2>Welcome to the Experiment</h2>' +
+        '<p>In this study you will look at devices that are produced in a factory. Each device comes with a button, and you will be asked to judge things related to them.</p>' +
+        '<p>The experiment has several short parts, beginning with a brief practice round.</p>' +
         '<p>Click "Next" to read the consent form.</p>' +
         '</div>',
         '<div style="text-align: center; padding: 20px;">' +
@@ -487,22 +792,273 @@ timeline.push({
     fullscreen_mode: true
 });
 
+// ------------------------------------------------------------
+// Short repetition of one pair (association rounds 2..N): the same
+// sequence as round 1 (button, device, button pressed, device after
+// pressing), one image at a time, but without color questions and
+// without the causal judgment.
+// ------------------------------------------------------------
+function buildRepeatAssociationTrials(pair, roundNum) {
+    function img(path, stage, role) {
+        return {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: '<div class="stimulus-container"><img src="' + path + '" class="exp-image"></div>',
+            choices: "NO_KEYS",
+            trial_duration: dur(REPEAT_IMAGE_MS),
+            data: {
+                task: 'encoding_repeat_image', assoc_round: roundNum, stage: stage, image_role: role,
+                pair_id: pair.pair_id, button_series: pair.button_series, device_series: pair.device_series,
+                causality: pair.causality, device_name: pair.device_name, image_path: path
+            }
+        };
+    }
+    var gap = {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: '<div class="fixation">+</div>',
+        choices: "NO_KEYS",
+        trial_duration: dur(REPEAT_GAP_MS)
+    };
+    return [
+        img(pair.button_path, 'before', 'button'),
+        img(pair.device_before_path, 'before', 'device'),
+        gap,
+        img(pair.click_path, 'after', 'button'),
+        img(pair.device_after_path, 'after', 'device'),
+        gap
+    ];
+}
+
+// ------------------------------------------------------------
+// One matching question inside a repetition round: a pair from the last
+// few pairs shown is picked, its button is displayed and the participant
+// chooses the matching device out of 4 (same format as the memory test,
+// but a different task name: 'repeat_match_question'). No feedback.
+// ------------------------------------------------------------
+function buildRepeatQuestionTrial(pair, roundNum) {
+    var foil_pool = all_pairs.filter(function(p) { return p.pair_id !== pair.pair_id; });
+    var foil_sample = jsPsych.randomization.sampleWithoutReplacement(foil_pool, 3);
+    var option_paths = jsPsych.randomization.shuffle(
+        [pair.effect_path].concat(foil_sample.map(function(p) { return p.effect_path; }))
+    );
+    var correct_index = option_paths.indexOf(pair.effect_path);
+    var option_labels = option_paths.map(function(p, i) { return 'Option ' + (i + 1); });
+    var options_html = option_paths.map(function(p, i) {
+        return '<div style="text-align:center;"><img src="' + p + '" class="small-image"><br>' +
+               '<span style="font-weight:bold;">Option ' + (i + 1) + '</span></div>';
+    }).join('');
+    return {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: '<div class="stimulus-container"><img src="' + pair.cause_path + '" class="small-image">' +
+                   '<p style="font-size: 18px; margin-top: 15px; font-weight:bold;">Which device matches this button?</p></div>' +
+                   '<div style="display:flex; justify-content:center; gap:15px; flex-wrap:wrap; margin-top:10px;">' + options_html + '</div>',
+        choices: option_labels,
+        trial_duration: dur(REPEAT_QUESTION_MS),
+        data: { task: 'repeat_match_question', assoc_round: roundNum, pair_id: pair.pair_id,
+                button_series: pair.button_series, device_series: pair.device_series,
+                causality: pair.causality, correct_index: correct_index },
+        on_finish: function(data) {
+            data.timed_out = (data.response === null) ? 1 : 0;
+            data.correct = (data.response === null) ? null : ((data.response === correct_index) ? 1 : 0);
+        }
+    };
+}
+
 // ============================================================
-// PHASE 1 (of Part 2): DECISION (forced choice) - same as Part 1
-//
-//   INDIRECT test (the BUTTON of each pair, never shown with a value):
-//     causal: 4 trials, button of a REWARDED device vs button of a NEUTRAL device
-//     non-causal: 4 trials, same
-//   DIRECT test (the DEVICE, whose value was shown in Part 1):
-//     causal: 4 trials, rewarded device vs neutral device
-//     non-causal: 4 trials, same
-// 16 choices in total (8 indirect + 8 direct).
+// PRACTICE PHASE
+// Two randomly chosen series from the experiment (one causal, one
+// non-causal), each run through the full association procedure, with
+// feedback on the correct answer in the causal judgment.
 // ============================================================
 timeline.push(withShortReadTime({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
-        '<h2>Decision</h2>' +
+        '<h2>Practice Round</h2>' +
+        '<p>We will now go through a short practice round so you can get familiar with the task.</p>' +
+        '<p>You will see buttons and devices. After each one, you will be asked a short question about it. In this round, you will also see the correct answer to the last question.</p>' +
+        '<p><b>It is important to pay attention to the relationship between the two images (the button and the device).</b></p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
+}));
+
+// The two examples (folder 0_on = causal, then 0_off = non-causal) use the
+// separate practice folders. Each one ends with feedback on the causal
+// judgment.
+practice_pairs.forEach(function(p) {
+    timeline = timeline.concat(buildAssociationTrials(p, 'practice_', true));
+});
+
+timeline.push(withShortReadTime({
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
+        '<h2>Practice Completed</h2>' +
+        '<p>Great! The main experiment is about to begin. Please stay focused on the screen throughout.</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
+}));
+
+// ============================================================
+// PHASE 1: ASSOCIATION (ENCODING)
+// Each of the 16 pairs (button + device) goes through the full sequence
+// (see buildAssociationTrials): button, device, button pressed, device
+// after pressing - one image at a time, each followed by a color
+// question - and then a causal judgment (A activated B / B activated A /
+// they do not activate each other).
+// Each pair is tagged "causal" (pressing activates the device) or
+// "non_causal" (pressing does nothing); which pairs are causal is random
+// per participant (see BUILD THE 16 PAIRS). Order of pairs is randomized
+// per participant.
+// ============================================================
+timeline.push(withShortReadTime({
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
+        '<h2>Phase 1: Buttons and Devices</h2>' +
+        '<p>You will see buttons and devices. After each one, you will be asked a short question about it.</p>' +
+        '<p>You will see each pair several times. <b>It is important to pay attention to the relationship between the two images (the button and the device).</b></p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
+}));
+
+var encoding_order = jsPsych.randomization.shuffle(all_pairs.slice());
+
+pushPhase(encoding_order, function(pair) {
+    return buildAssociationTrials(pair, 'encoding_');
+}, 8);
+
+// Repetition rounds (2..NUM_ASSOC_ROUNDS): all 16 pairs again, new random
+// order each round, same one-image-at-a-time sequence, no questions.
+for (var round = 2; round <= NUM_ASSOC_ROUNDS; round++) {
+    timeline.push(withShortReadTime({
+        type: jsPsychInstructions,
+        pages: [
+            '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
+            '<h2>Phase 1: Round ' + round + ' of ' + NUM_ASSOC_ROUNDS + '</h2>' +
+            '<p>You will now see the same buttons and devices again. Every now and then you will be asked which device matches a button.</p>' +
+            '<p><b>Please pay attention to the relationship between the button and the device in each pair.</b></p>' +
+            '</div>'
+        ],
+        show_clickable_nav: true
+    }));
+    var roundOrder = jsPsych.randomization.shuffle(all_pairs.slice());
+    roundOrder.forEach(function(pair, idx) {
+        timeline = timeline.concat(buildRepeatAssociationTrials(pair, round));
+        if ((idx + 1) % REPEAT_QUESTION_EVERY === 0) {
+            // ask about one of the last REPEAT_QUESTION_EVERY pairs shown
+            var recent = roundOrder.slice(idx + 1 - REPEAT_QUESTION_EVERY, idx + 1);
+            var asked = jsPsych.randomization.sampleWithoutReplacement(recent, 1)[0];
+            timeline.push(buildRepeatQuestionTrial(asked, round));
+            timeline.push(whiteScreenTrial);
+        }
+    });
+}
+
+// ============================================================
+// PHASE 2: CONTROLLED EXPOSURE
+// Only the DEVICE of each pair is shown, followed by a reward ($1) or
+// neutral ($0) outcome. Within each causality group (causal / non-causal),
+// 4 devices are rewarded and 4 are neutral (8 + 8 overall).
+// EACH DEVICE IS SHOWN TWICE (with the same value both times): the phase
+// has two rounds, each containing all 16 devices in a new random order
+// (32 exposure trials in total). Order is independent of the encoding order.
+// ============================================================
+timeline.push(withMinReadTime({
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
+        '<h2>Phase 2</h2>' +
+        '<p>You will now see some of the devices again, one at a time.</p>' +
+        '<p><b>Press the SPACEBAR</b> to reveal what that device is worth.</p>' +
+        '<p><span style="color:green; font-weight:bold;">$</span> = This device is worth $1</p>' +
+        '<p><span style="color:gray; font-weight:bold;">&#9670;</span> = This device is worth $0</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
+}));
+
+// Two rounds; in each round all 16 devices appear once, in a fresh random
+// order, so the two showings of a device are never back-to-back. Copies of
+// the pair objects carry the round number (exposure_round) into the data.
+var exposure_order = [];
+[1, 2].forEach(function(round) {
+    jsPsych.randomization.shuffle(all_pairs.slice()).forEach(function(p) {
+        exposure_order.push(Object.assign({}, p, { exposure_round: round }));
+    });
+});
+
+function buildExposureTrials(pair) {
+    var is_rewarded = pair.reward_condition === 'reward';
+    var reward_img = is_rewarded ? 'images/dollar.png' : 'images/gray.png';
+    var reward_txt = is_rewarded ? 'This device is worth $1' : 'This device is worth $0';
+    var reward_clr = is_rewarded ? 'green' : 'gray';
+
+    var common_data = {
+        pair_id: pair.pair_id,
+        button_series: pair.button_series,
+        device_series: pair.device_series,
+        causality: pair.causality,
+        exposed_role: pair.exposed_role,
+        reward_condition: pair.reward_condition,
+        cell: pair.cell,
+        exposure_round: pair.exposure_round
+    };
+
+    return [
+        {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: '<div class="stimulus-container"><img src="' + pair.exposed_path + '" class="exp-image">' +
+                       '<p style="font-size: 22px; margin-top: 20px; font-weight: bold;">Press SPACEBAR to reveal this device\'s value</p></div>',
+            choices: [' '],
+            data: Object.assign({ task: 'exposure_wait' }, common_data)
+        },
+        {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: '<div class="stimulus-container" style="display:flex; align-items:center; justify-content:center; gap:30px;">' +
+                       '<img src="' + pair.exposed_path + '" class="exp-image">' +
+                       '<div><img src="' + reward_img + '" style="width:140px;height:140px;border:4px solid ' + reward_clr + ';">' +
+                       '<p style="color:' + reward_clr + '; font-weight:bold; font-size:22px;">' + reward_txt + '</p></div></div>',
+            choices: "NO_KEYS",
+            trial_duration: dur(3000),
+            data: Object.assign({ task: 'exposure_feedback' }, common_data)
+        },
+        whiteScreenTrial
+    ];
+}
+
+// The single math question of this phase goes after the 16th of 32 trials.
+pushPhase(exposure_order, buildExposureTrials, 16);
+
+// ============================================================
+// PHASE 3: DECISION (forced choice)
+// Every choice is now between a CAUSAL and a NON-CAUSAL item that have
+// the SAME reward level (comparison ACROSS causality, WITHIN reward level):
+//
+//   Choice type 1 - both devices were worth $1:   C+ vs N+
+//   Choice type 2 - both devices were worth $0:   C- vs N-
+//
+//   (C = causal, N = non-causal, + = rewarded $1, - = neutral $0)
+//
+// Each choice type is run twice:
+//   INDIRECT test (the never-directly-shown BUTTON of each pair):
+//     - 4 trials  C+ vs N+  (buttons whose devices were both worth $1)
+//     - 4 trials  C- vs N-  (buttons whose devices were both worth $0)
+//   DIRECT test (the DEVICE that WAS shown with its $1/$0 in Phase 2):
+//     - 4 trials  C+ vs N+
+//     - 4 trials  C- vs N-
+//
+// 16 choices total (8 indirect + 8 direct). Since reward is equal within
+// each trial, the dependent measure is the preference for the CAUSAL item
+// (chose_causal). Each pair is used exactly once per test type.
+// ============================================================
+timeline.push(withShortReadTime({
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
+        '<h2>Phase 3: Decision</h2>' +
         '<p>You will now see pairs of images side by side.</p>' +
         '<p>Choose the image that has the <b>higher monetary value</b>.</p>' +
         '<p>Each screen takes a few seconds to move on to the next one, whether or not you answer right away, so take your time to choose correctly.</p>' +
@@ -511,47 +1067,64 @@ timeline.push(withShortReadTime({
     show_clickable_nav: true
 }));
 
-var causal_pairs = all_pairs.filter(function(p) { return p.causality === 'causal'; });
-var noncausal_pairs = all_pairs.filter(function(p) { return p.causality === 'non_causal'; });
+// Reward is always on the effect (device), so the critical (unseen) item is
+// always the cause (button) and the exposed item is always the device.
+// Pairs are grouped by causality AND reward level: 4 pairs per cell.
+function pairsInCell(causality, rewardCondition) {
+    return all_pairs.filter(function(p) {
+        return p.causality === causality && p.reward_condition === rewardCondition;
+    });
+}
 
-function buildComparisonSet(group, comparisonRole, testType, pathField, causality) {
-    var reward_items = jsPsych.randomization.shuffle(
-        group.filter(function(p) { return p.reward_condition === 'reward'; })
-    );
-    var neutral_items = jsPsych.randomization.shuffle(
-        group.filter(function(p) { return p.reward_condition === 'neutral'; })
-    );
-    return reward_items.map(function(rewardPair, idx) {
-        var neutralPair = neutral_items[idx];
+// Builds causal-vs-non-causal trials for ONE reward level
+// (rewardCondition = 'reward' -> C+ vs N+, 'neutral' -> C- vs N-).
+// The 4 causal pairs of that level are randomly matched with the 4
+// non-causal pairs of the same level -> 4 trials. `pathField` selects the
+// image shown per pair: 'critical_path' (button) for the indirect test,
+// 'exposed_path' (device) for the direct test.
+function buildComparisonSet(rewardCondition, comparisonRole, testType, pathField) {
+    var causal_items = jsPsych.randomization.shuffle(pairsInCell('causal', rewardCondition));
+    var noncausal_items = jsPsych.randomization.shuffle(pairsInCell('non_causal', rewardCondition));
+    // causal_items.length === noncausal_items.length === 4 by design
+    var level_label = (rewardCondition === 'reward') ? 'plus' : 'minus';   // C+ vs N+ / C- vs N-
+    return causal_items.map(function(causalPair, idx) {
+        var nonCausalPair = noncausal_items[idx];
         return {
-            test_type: testType,
-            comparison_role: comparisonRole,
-            causality: causality,
-            decision_cell: testType + '_' + causality,
-            reward_cell: rewardPair.cell,
-            neutral_cell: neutralPair.cell,
-            reward_pair_id: rewardPair.pair_id,
-            reward_button_series: rewardPair.button_series,
-            reward_device_series: rewardPair.device_series,
-            reward_path: rewardPair[pathField],
-            neutral_pair_id: neutralPair.pair_id,
-            neutral_button_series: neutralPair.button_series,
-            neutral_device_series: neutralPair.device_series,
-            neutral_path: neutralPair[pathField]
+            test_type: testType,                    // 'direct' or 'indirect'
+            comparison_role: comparisonRole,        // 'cause' (button) or 'effect' (device)
+            reward_condition: rewardCondition,      // 'reward' ($1 both) or 'neutral' ($0 both)
+            reward_value: (rewardCondition === 'reward') ? 1 : 0,
+            decision_cell: testType + '_' + rewardCondition,   // e.g. indirect_reward
+            comparison_label: (rewardCondition === 'reward') ? 'C+ vs N+' : 'C- vs N-',
+            causal_cell: causalPair.cell,           // causal_reward / causal_neutral
+            noncausal_cell: nonCausalPair.cell,     // non_causal_reward / non_causal_neutral
+            causal_pair_id: causalPair.pair_id,
+            causal_button_series: causalPair.button_series,
+            causal_device_series: causalPair.device_series,
+            causal_path: causalPair[pathField],
+            noncausal_pair_id: nonCausalPair.pair_id,
+            noncausal_button_series: nonCausalPair.button_series,
+            noncausal_device_series: nonCausalPair.device_series,
+            noncausal_path: nonCausalPair[pathField]
         };
     });
 }
 
+// Combine all 4 sets (indirect: C+ vs N+, C- vs N-; direct: C+ vs N+,
+// C- vs N-), then shuffle overall order so everything is interleaved
+// unpredictably for the participant.
 var decision_trials = jsPsych.randomization.shuffle(
-    buildComparisonSet(causal_pairs, 'cause', 'indirect', 'critical_path', 'causal').concat(
-        buildComparisonSet(noncausal_pairs, 'cause', 'indirect', 'critical_path', 'non_causal'),
-        buildComparisonSet(causal_pairs, 'effect', 'direct', 'exposed_path', 'causal'),
-        buildComparisonSet(noncausal_pairs, 'effect', 'direct', 'exposed_path', 'non_causal')
+    buildComparisonSet('reward',  'cause',  'indirect', 'critical_path').concat(
+        buildComparisonSet('neutral', 'cause',  'indirect', 'critical_path'),
+        buildComparisonSet('reward',  'effect', 'direct',   'exposed_path'),
+        buildComparisonSet('neutral', 'effect', 'direct',   'exposed_path')
     )
 );
 
-// Total duration (ms) of each forced-choice screen (the screen always lasts the
-// full time; response = null, timed_out = 1, chose_reward = null if no answer).
+// Total duration (ms) of each forced-choice screen. The participant can
+// answer at any moment, but the screen always lasts the full time before
+// moving on. If no answer is given, the data has response = null,
+// timed_out = 1 and chose_causal = null.
 var DECISION_TIME_MS = 6000;
 
 function buildDecisionTrials(dt) {
@@ -559,33 +1132,41 @@ function buildDecisionTrials(dt) {
         {
             type: jsPsychHtmlButtonResponse,
             stimulus: function() {
-                var reward_left = Math.random() < 0.5;
+                // random left/right position of the causal item
+                var causal_left = Math.random() < 0.5;
                 window.current_decision = {
-                    reward_left: reward_left,
+                    causal_left: causal_left,
                     test_type: dt.test_type,
                     comparison_role: dt.comparison_role,
-                    causality: dt.causality,
+                    reward_condition: dt.reward_condition,
+                    reward_value: dt.reward_value,
                     decision_cell: dt.decision_cell,
-                    reward_cell: dt.reward_cell,
-                    neutral_cell: dt.neutral_cell,
-                    reward_pair_id: dt.reward_pair_id,
-                    neutral_pair_id: dt.neutral_pair_id,
-                    reward_button_series: dt.reward_button_series,
-                    reward_device_series: dt.reward_device_series,
-                    neutral_button_series: dt.neutral_button_series,
-                    neutral_device_series: dt.neutral_device_series
+                    comparison_label: dt.comparison_label,
+                    causal_cell: dt.causal_cell,
+                    noncausal_cell: dt.noncausal_cell,
+                    causal_pair_id: dt.causal_pair_id,
+                    noncausal_pair_id: dt.noncausal_pair_id,
+                    causal_button_series: dt.causal_button_series,
+                    causal_device_series: dt.causal_device_series,
+                    noncausal_button_series: dt.noncausal_button_series,
+                    noncausal_device_series: dt.noncausal_device_series
                 };
-                var left_img = reward_left ? dt.reward_path : dt.neutral_path;
-                var right_img = reward_left ? dt.neutral_path : dt.reward_path;
+                var left_img = causal_left ? dt.causal_path : dt.noncausal_path;
+                var right_img = causal_left ? dt.noncausal_path : dt.causal_path;
                 return '<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image has the <b>higher monetary value</b>?</h3></div>' +
                        '<div class="stimulus-container" style="display: flex; justify-content: center; gap: 30px;">' +
                        '<img src="' + left_img + '" class="small-image"><img src="' + right_img + '" class="small-image"></div>';
             },
             choices: ['Left', 'Right'],
+            // The screen lasts DECISION_TIME_MS in total. The participant can
+            // answer immediately, but the screen always stays for the full
+            // time (answering fast does not speed things up). In test mode
+            // (?test=1) an answer ends the screen right away.
             trial_duration: DECISION_TIME_MS,
             response_ends_trial: TEST_MODE,
             data: { task: 'decision_choice' },
             on_load: function() {
+                // after a click the buttons are disabled; mark the chosen one
                 document.querySelectorAll('#jspsych-html-button-response-btngroup button').forEach(function(b) {
                     b.addEventListener('click', function() {
                         b.style.outline = '4px solid #2e7d32';
@@ -597,21 +1178,23 @@ function buildDecisionTrials(dt) {
                 var c = window.current_decision;
                 data.test_type = c.test_type;
                 data.comparison_role = c.comparison_role;
-                data.causality = c.causality;
+                data.reward_condition = c.reward_condition;
+                data.reward_value = c.reward_value;
                 data.decision_cell = c.decision_cell;
-                data.reward_cell = c.reward_cell;
-                data.neutral_cell = c.neutral_cell;
-                data.reward_pair_id = c.reward_pair_id;
-                data.neutral_pair_id = c.neutral_pair_id;
-                data.reward_button_series = c.reward_button_series;
-                data.reward_device_series = c.reward_device_series;
-                data.neutral_button_series = c.neutral_button_series;
-                data.neutral_device_series = c.neutral_device_series;
-                data.reward_left = c.reward_left ? 1 : 0;
+                data.comparison_label = c.comparison_label;
+                data.causal_cell = c.causal_cell;
+                data.noncausal_cell = c.noncausal_cell;
+                data.causal_pair_id = c.causal_pair_id;
+                data.noncausal_pair_id = c.noncausal_pair_id;
+                data.causal_button_series = c.causal_button_series;
+                data.causal_device_series = c.causal_device_series;
+                data.noncausal_button_series = c.noncausal_button_series;
+                data.noncausal_device_series = c.noncausal_device_series;
+                data.causal_left = c.causal_left ? 1 : 0;
                 data.timed_out = (data.response === null) ? 1 : 0;
-                data.chose_reward = (data.response === null) ? null :
-                                    (((data.response === 0 && c.reward_left) ||
-                                      (data.response === 1 && !c.reward_left)) ? 1 : 0);
+                data.chose_causal = (data.response === null) ? null :
+                                    (((data.response === 0 && c.causal_left) ||
+                                      (data.response === 1 && !c.causal_left)) ? 1 : 0);
             }
         },
         {
@@ -626,20 +1209,23 @@ function buildDecisionTrials(dt) {
 pushPhase(decision_trials, buildDecisionTrials, 8);
 
 // ============================================================
-// PHASE 2 (of Part 2): MEMORY TEST (all 16 pairs) - same as Part 1
-// For each button, pick the matching device out of 4.
+// PHASE 4: CONTROL (memory test)
 // ============================================================
 timeline.push(withShortReadTime({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
-        '<h2>Memory Questions</h2>' +
+        '<h2>Phase 4: Final Questions</h2>' +
         '<p>For each button you will pick the matching device from a few options.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
 }));
 
+// ---- 4a: Memory test (all 16 pairs) ----
+// Time limit (ms) for choosing the matching device. If the participant
+// does not answer within this time, the experiment moves on automatically
+// (response = null, timed_out = 1, correct = null in the data).
 var MEMORY_TIME_MS = 6000;
 var memory_order = jsPsych.randomization.shuffle(all_pairs.slice());
 
@@ -683,93 +1269,17 @@ function buildMemoryTrial(pair) {
     ];
 }
 
+// The single math question of this phase goes after the 8th of 16 trials.
 pushPhase(memory_order, buildMemoryTrial, 8);
 
 // ============================================================
-// PHASE 3 (of Part 2): CAUSAL JUDGMENT AGAIN (all 16 pairs)
-// The button and its device are shown side by side (both in their neutral state, so
-// the answer is not visible on the screen) and the participant says what the
-// relationship between them was in Part 1:
-//   'A activated B' / 'B activated A' / 'They do not activate each other'.
-// Coding as in Part 1: judgment = 'button_to_device' (correct for causal pairs) /
-// 'device_to_button' / 'unrelated' (correct for non-causal pairs); judged_causal =
-// 1 if either direction was chosen. Task name: 'delayed_causal_judgment'.
-// ============================================================
-timeline.push(withShortReadTime({
-    type: jsPsychInstructions,
-    pages: [
-        '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
-        '<h2>Relationship Questions</h2>' +
-        '<p>You will now see a button and a device side by side. For each one, indicate what the relationship between them was in Part 1.</p>' +
-        '</div>'
-    ],
-    show_clickable_nav: true
-}));
-
-var JUDGMENT_TIME_MS = 6000;
-var JUDGMENT_CHOICES = ['A activated B', 'B activated A', 'They do not activate each other'];
-
-// Which image is "A" (left) and "B" (right): the button or the device, depending on button_is_A
-// (the same A/B labels the participant had for this pair in Part 1).
-function judgmentImages(pair) {
-    return pair.button_is_A
-        ? { A: pair.button_path, B: pair.effect_path }
-        : { A: pair.effect_path, B: pair.button_path };
-}
-function correctCausalIndex(pair) { return pair.button_is_A ? 0 : 1; }
-function judgmentCode(pair, response) {
-    if (response === null) return null;
-    if (response === 2) return 'unrelated';
-    return (response === correctCausalIndex(pair)) ? 'button_to_device' : 'device_to_button';
-}
-
-function buildDelayedJudgmentTrial(pair) {
-    var imgs = judgmentImages(pair);
-    return [
-        {
-            type: jsPsychHtmlButtonResponse,
-            stimulus: '<div class="stimulus-container">' +
-                       '<div class="assoc-row">' +
-                       '<div><img src="' + imgs.A + '" class="assoc-image">' +
-                       '<p style="font-size:24px; font-weight:bold; margin-top:10px;">A</p></div>' +
-                       '<div><img src="' + imgs.B + '" class="assoc-image">' +
-                       '<p style="font-size:24px; font-weight:bold; margin-top:10px;">B</p></div>' +
-                       '</div>' +
-                       '<p style="font-size:20px; font-weight:bold; margin-top:15px;">What was the relationship between image A and image B?</p>' +
-                       '</div>',
-            choices: JUDGMENT_CHOICES,
-            trial_duration: JUDGMENT_TIME_MS,
-            data: {
-                task: 'delayed_causal_judgment',
-                pair_id: pair.pair_id,
-                button_series: pair.button_series,
-                device_series: pair.device_series,
-                causality: pair.causality,
-                reward_condition: pair.reward_condition,
-                device_name: pair.device_name,
-                button_is_A: pair.button_is_A
-            },
-            on_finish: function(data) {
-                data.timed_out = (data.response === null) ? 1 : 0;
-                data.judgment = judgmentCode(pair, data.response);
-                data.judged_causal = (data.response === null) ? null : ((data.response === 0 || data.response === 1) ? 1 : 0);
-                var correct_code = (pair.causality === 'causal') ? 'button_to_device' : 'unrelated';
-                data.judgment_correct = (data.judgment === null) ? null : ((data.judgment === correct_code) ? 1 : 0);
-            }
-        },
-        whiteScreenTrial
-    ];
-}
-
-var judgment_order = jsPsych.randomization.shuffle(all_pairs.slice());
-pushPhase(judgment_order, buildDelayedJudgmentTrial, 8);
-
-// ============================================================
-// FINAL QUESTIONS (strategy, as in Part 1; no age / gender again)
+// DEMOGRAPHICS
 // ============================================================
 timeline.push({
     type: jsPsychSurveyText,
     questions: [
+        { prompt: 'Gender (MALE / FEMALE / OTHER):', name: 'gender', rows: 1, columns: 20 },
+        { prompt: 'Age:', name: 'age', rows: 1, columns: 5 },
         { prompt: 'Did you notice any pattern in how the values were assigned to devices? If so, describe it.', name: 'reward_strategy', rows: 2, columns: 50 },
         { prompt: 'How did you choose between images in the "higher monetary value" part?', name: 'strategy', rows: 2, columns: 50 }
     ],
@@ -794,21 +1304,23 @@ timeline.push({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: center; padding: 60px; font-family: Arial;">' +
-        '<h2>Experiment Completed (Part 2)</h2>' +
+        '<h2>Experiment Completed</h2>' +
         '<p style="font-size: 20px; margin-top: 20px;">You have successfully finished the study.</p>' +
         '<p style="font-size: 22px; color: #28a745; font-weight: bold; margin-top: 30px;">Thank you very much for your participation!</p>' +
         '<p style="font-size: 20px; margin-top: 30px;">Your completion code is:</p>' +
-        '<p style="font-size: 34px; font-weight: bold; letter-spacing: 3px; margin: 10px 0;">' + COMPLETION_CODE + '</p>' +
+        '<p style="font-size: 34px; font-weight: bold; letter-spacing: 3px; margin: 10px 0;">C1AB457CA9</p>' +
         '<p style="font-size: 16px; color: #666;">Please copy this code and enter it on the platform to confirm that you completed the study.</p>' +
         '<p style="font-size: 16px; color: #666; margin-top: 40px;">Your data has already been saved. You may now safely close this window or return to the platform.</p>' +
         '</div>'
     ],
+    // The final screen has no "Next" button and no keyboard navigation, so
+    // it stays on the screen and the participant can copy the completion
+    // code. (The data was already saved by the call-function trial above.)
     show_clickable_nav: false,
     allow_keys: false
 });
 
 jsPsych.run(timeline);
 
-})();
   </script>
 </html>
