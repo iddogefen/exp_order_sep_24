@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Image Value Study</title>
+    <title>Image Value Study - Part 2</title>
     <style>
       body {
           background-color: #f8f9fa;
@@ -47,22 +47,6 @@
           border: 2px solid #ccc;
           background-color: #fff;
       }
-
-      .fixation {
-          font-size: 60px;
-          color: #333;
-          height: 400px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-      }
-
-      .question-area {
-          height: 80px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-      }
     </style>
     <script src="jspsych/plugins/jspsych.js"></script>
     <script src="jspsych/plugins/plugin-instructions.js"></script>
@@ -72,15 +56,40 @@
     <script src="jspsych/plugins/plugin-fullscreen.js"></script>
     <script src="jspsych/plugins/plugin-preload.js"></script>
     <script src="jspsych/plugins/plugin-call-function.js"></script>
+    <script src="part1_assignments.js"></script>
     <link rel="stylesheet" href="jspsych/css/jspsych.css">
   </head>
   <body></body>
   <script>
+(function () {
 
 // ============================================================
-// DATA SAVING (same mechanism as base template, with backup)
+// PART 2 (about 24 hours after Part 1) - DELAYED TEST ONLY
+//
+// What happens here:
+//   1) The participant is identified by the platform id in the URL
+//      (?participantId=...). Their Part-1 arrangement (which button went with
+//      which device, which pairs were causal, which devices were rewarded, the
+//      A/B labels) is read from part1_assignments.js and REUSED exactly.
+//      Ids inside that file are stored only as SHA-256 hashes.
+//   2) NO learning phase and NO reward is shown again.
+//   3) Decision phase (same as Part 1: 8 indirect + 8 direct choices)
+//   4) Memory test (which device matches each button)  - all 16 pairs
+//   5) Causal judgment again (what was the relationship between the button and
+//      the device)                                        - all 16 pairs
+//
+// URL options:  ?allow_new=1 -> TESTING ONLY: if the id is not found, build a new
+//                               random arrangement instead of stopping.
+//               ?test=1      -> quick test mode (timed screens last 0.5 s).
 // ============================================================
-var data_folder = 'data/';
+
+// Completion code shown at the end. CHANGE it to the code of the Part-2 study on the platform.
+var COMPLETION_CODE = 'C1AB457CA9';
+var PART = 2;
+
+// ============================================================
+// DATA SAVING (same mechanism as Part 1, with local backup)
+// ============================================================
 var data_already_saved = false;
 
 function saveData(data) {
@@ -142,302 +151,196 @@ jsPsych.data.addProperties({
     subject_id: participant_id,
     study_id: study_id,
     session_id: session_id,
-    experiment: 'Button_Device_TwoButtons_Value_Spreading_Pilot'
+    experiment: 'Button_Device_Value_Spreading_Pilot'
 });
 
-// ============================================================
-// STIMULUS FOLDER & FILE NAMING (same image files as the original study)
-// Each SERIES lives in its own folder inside images_buttons/ (series_N) and
-// holds one BUTTON and one DEVICE:
-//
-//   images_buttons/ series_N/button_N.png                       (button, before pressing)
-//   images_buttons/ series_N/click_N.png                        (button, being pressed)
-//   images_buttons/ series_N/<device>_before_pressing_N.png     (device, before pressing)
-//   images_buttons/ series_N/<device>_off_N.png                 (device after pressing, NOT activated)
-//   images_buttons/ series_N/<device>_on_N.png                  (device after pressing, ACTIVATED)
-//
-// DESIGN: ONE DEVICE, TWO BUTTONS  (a NEW random assignment for every participant)
-//   - 8 DEVICES: the device images of 8 randomly chosen series.
-//   - 16 BUTTONS: all 16 button images, split at random into 8 couples; each couple
-//     belongs to one device.
-//   - For every device exactly ONE button activates it (CAUSAL) and the other one
-//     does not (NON-CAUSAL, pressing shows the device "off"). Which one is random.
-//   - LEARNING: the participant PRESSES each button and sees whether the device
-//     turns on (LEARNING_MODE 'active', the default). With ?mode=passive the press
-//     is shown automatically instead (for a passive comparison group).
-//   - REWARD is on the DEVICE (never on a button): 4 devices are worth $1 and 4 are
-//     worth $0. Both buttons of a device therefore have the same reward history and
-//     differ ONLY in their causal relation to it.
-//     => 4 cells with 4 buttons each:
-//        causal_reward | causal_neutral | non_causal_reward | non_causal_neutral
-//   - TESTS (Phase 3):
-//        indirect      : button of a rewarded device vs button of a neutral device
-//                        (4 trials causal-vs-causal, 4 trials non-causal-vs-non-causal)
-//        direct        : rewarded device vs neutral device (8 trials, manipulation check)
-//        within_device : the CAUSAL and the NON-CAUSAL button of the SAME device side by
-//                        side (8 trials, one per device; asked AFTER all other choices)
-//
-// pair_id = the number of the BUTTON's series (the button is the critical test item).
-// The device of that pair comes from series device_series. Both numbers, the
-// causality, the reward condition and the sibling button (the other button of the
-// same device) of every pair are saved in the data ('pair_assignment' rows).
-// ============================================================
-var NUM_DEVICES = 8;
-var NUM_PAIRS = 16;              // = number of buttons (2 per device)
-// 'active' (default): the participant presses every button. '?mode=passive': the press is shown automatically.
-var LEARNING_MODE = (jsPsych.data.getURLVariable('mode') === 'passive') ? 'passive' : 'active';
-var PRESS_TIME_MS = 8000;        // time limit for pressing a button (the outcome is shown anyway)
-var RESULT_MS = 2500;            // how long the outcome (pressed button + device) is shown in round 1
-var REPEAT_RESULT_MS = 1500;     // ... in the repetition rounds
-// Reward-prediction (inference) block at the very end of Phase 3 (8 trials). Switch it off with ?inference=0
-var INFERENCE_BLOCK = (jsPsych.data.getURLVariable('inference') !== '0');
-// Final knowledge block at the end of Phase 4 (8 trials, 'which button activates the device?'). Switch it off with ?knowledge=0
-var FINAL_KNOWLEDGE_BLOCK = (jsPsych.data.getURLVariable('knowledge') !== '0');
-var STIM_FOLDER = 'images_buttons/';
-
-// PRACTICE uses its own two folders, which are NOT among the 16 experiment
-// pairs: the same button and device in a CAUSAL version (device lights up
-// after pressing) and a NON-CAUSAL version (pressing does nothing), shown in
-// this order. Each is followed by the causal judgment with feedback.
-// Folder names follow the series pattern (prefix + label); the files inside
-// both folders end with 0 (series number 0):
-//   <prefix>0_on/ : button_0, click_0, <device>_before_pressing_0, <device>_on_0
-//   <prefix>0_off/: button_0, click_0, <device>_before_pressing_0, <device>_off_0
-// (<prefix> = SERIES_FOLDER_PREFIX, e.g. " series_" -> " series_0_on")
-var PRACTICE_SERIES_LIST = [
-    { series: 0, folder_label: '0_on',  state: 'causal' },
-    { series: 0, folder_label: '0_off', state: 'non_causal' }
-];
-
-// Device name used in the file names of each series (by series number).
-var DEVICE_NAMES = {
-    1: 'light', 2: 'light', 3: 'light', 4: 'light',
-    5: 'light', 6: 'light', 7: 'light', 8: 'light',
-    9: 'light', 10: 'light', 11: 'light', 12: 'light',
-    13: 'light', 14: 'light', 15: 'light', 16: 'light'
-};
-
-// Which device image represents the device in Phase 2 (exposure), Phase 3
-// (decision) and the memory test: 'before' or 'after'. 'before' is used so
-// that causal and non-causal devices look equally "neutral" (in causal
-// pairs the "after" image is lit up, which could confound the results).
-var DEVICE_TEST_STATE = 'before';
-
-// Colors used in the short question shown after every image in the
-// association phase ("Is there <color> in this image?"). A random color
-// from this list is chosen for each image.
-var COLOR_OPTIONS = ['blue', 'red', 'green', 'purple', 'yellow', 'orange'];
-
-// How long (ms) each image is shown before the color question appears.
-var IMAGE_DISPLAY_MS = 2500;
-// Association phase repetitions: round 1 is the full sequence (color
-// question + causal judgment). Rounds 2..NUM_ASSOC_ROUNDS are short
-// repetitions of the same one-image-at-a-time sequence (no questions).
-var NUM_ASSOC_ROUNDS = 3;
-var REPEAT_IMAGE_MS = 1500;
-var REPEAT_QUESTION_EVERY = 4;   // in repetition rounds: one matching question after every N pairs
-var REPEAT_QUESTION_MS = 6000;   // time limit for that question
-var REPEAT_GAP_MS = 500;   // fixation between before/after and after each pair
-
-// TEST MODE: add ?test=1 to the URL to run a quick test version. In test
-// mode everything that is shown for a fixed time (association images,
-// fixation crosses, blank screens, reward screens, the decision preview,
-// the memory cue) lasts only TEST_IMAGE_MS (half a second), the
-// association images move on automatically with no color question, and
-// the instruction screens unlock after half a second. Screens that wait
-// for an answer (judgment, decision choice, memory choice, math,
-// SPACEBAR) still wait for the participant. Without ?test=1 the
-// experiment runs normally.
 var TEST_MODE = jsPsych.data.getURLVariable('test') === '1';
 var TEST_IMAGE_MS = 500;
+var ALLOW_NEW_ASSIGNMENT = jsPsych.data.getURLVariable('allow_new') === '1';
 
-// Returns the given duration normally, or TEST_IMAGE_MS in test mode.
 function dur(normalMs) {
     return TEST_MODE ? TEST_IMAGE_MS : normalMs;
 }
 
-function getDeviceName(n) {
-    return DEVICE_NAMES[n] || 'light';
+// ============================================================
+// FIND THE PARTICIPANT'S PART-1 ARRANGEMENT
+// ============================================================
+function sha256Hex(msg) {
+    var K = [], H = [], i, j;
+    var isPrime = function (n) { for (var d = 2; d * d <= n; d++) { if (n % d === 0) return false; } return true; };
+    var frac = function (x) { return ((x - Math.floor(x)) * 4294967296) | 0; };
+    for (var cand = 2, n = 0; n < 64; cand++) {
+        if (isPrime(cand)) {
+            if (n < 8) { H[n] = frac(Math.pow(cand, 1 / 2)); }
+            K[n] = frac(Math.pow(cand, 1 / 3));
+            n++;
+        }
+    }
+    var bytes = unescape(encodeURIComponent(msg)).split('').map(function (c) { return c.charCodeAt(0); });
+    var bitLen = bytes.length * 8;
+    bytes.push(0x80);
+    while (bytes.length % 64 !== 56) { bytes.push(0); }
+    for (i = 7; i >= 0; i--) { bytes.push(i >= 4 ? 0 : (bitLen >>> (i * 8)) & 0xff); }
+    var rotr = function (x, n) { return (x >>> n) | (x << (32 - n)); };
+    for (var off = 0; off < bytes.length; off += 64) {
+        var w = [];
+        for (j = 0; j < 16; j++) {
+            w[j] = (bytes[off + 4 * j] << 24) | (bytes[off + 4 * j + 1] << 16) | (bytes[off + 4 * j + 2] << 8) | bytes[off + 4 * j + 3];
+        }
+        for (j = 16; j < 64; j++) {
+            var s0 = rotr(w[j - 15], 7) ^ rotr(w[j - 15], 18) ^ (w[j - 15] >>> 3);
+            var s1 = rotr(w[j - 2], 17) ^ rotr(w[j - 2], 19) ^ (w[j - 2] >>> 10);
+            w[j] = (w[j - 16] + s0 + w[j - 7] + s1) | 0;
+        }
+        var a = H[0], b = H[1], c = H[2], d = H[3], e = H[4], f = H[5], g = H[6], h = H[7];
+        for (j = 0; j < 64; j++) {
+            var S1 = rotr(e, 6) ^ rotr(e, 11) ^ rotr(e, 25);
+            var ch = (e & f) ^ (~e & g);
+            var t1 = (h + S1 + ch + K[j] + w[j]) | 0;
+            var S0 = rotr(a, 2) ^ rotr(a, 13) ^ rotr(a, 22);
+            var maj = (a & b) ^ (a & c) ^ (b & c);
+            var t2 = (S0 + maj) | 0;
+            h = g; g = f; f = e; e = (d + t1) | 0; d = c; c = b; b = a; a = (t1 + t2) | 0;
+        }
+        H[0] = (H[0] + a) | 0; H[1] = (H[1] + b) | 0; H[2] = (H[2] + c) | 0; H[3] = (H[3] + d) | 0;
+        H[4] = (H[4] + e) | 0; H[5] = (H[5] + f) | 0; H[6] = (H[6] + g) | 0; H[7] = (H[7] + h) | 0;
+    }
+    return H.map(function (x) { return ('00000000' + (x >>> 0).toString(16)).slice(-8); }).join('');
 }
 
-// Folder name of each series, e.g. "series_" -> images_buttons/series_1/
-// NOTE: on the server the folders are named WITH A LEADING SPACE
-// (" series_1", " series_2", ...), so the prefix starts with a space.
-// If the folders are renamed to "series_1" etc., change this to 'series_'.
+
+function lookupAssignment(pid) {
+    if (typeof PART1_ASSIGNMENTS === 'undefined') { return null; }
+    var key = sha256Hex(String(pid || '').trim().toUpperCase());
+    return PART1_ASSIGNMENTS[key] || null;
+}
+
+// Stops the experiment with a message (and saves a small record of what happened).
+function runBlocked(reason, message) {
+    jsPsych.data.addProperties({ part: PART, assignment_found: 0, blocked_reason: reason });
+    jsPsych.run([
+        { type: jsPsychCallFunction, func: function () {}, data: { task: 'part2_blocked', participant_id: participant_id, reason: reason } },
+        { type: jsPsychCallFunction, func: function () { saveData(jsPsych.data.get().csv()); } },
+        { type: jsPsychHtmlKeyboardResponse, choices: 'NO_KEYS',
+          stimulus: '<div style="max-width:700px; margin:80px auto; font-family:Arial; text-align:center;">' +
+                    '<h2>Part 2</h2><p style="font-size:18px;">' + message + '</p></div>' }
+    ]);
+}
+
+var assignment = lookupAssignment(participant_id);
+if (!assignment && !ALLOW_NEW_ASSIGNMENT) {
+    runBlocked('participant_not_found',
+        'We could not find your records from Part 1 of this study. Please do not continue. ' +
+        'Contact the researcher through the platform and mention this message.');
+    return;
+}
+
+// ============================================================
+// STIMULI: same folders and file names as Part 1
+//   images_buttons/ series_N/button_N.png                    (button)
+//   images_buttons/ series_N/<device>_before_pressing_N.png  (device, neutral state - used for every test here)
+// (the folders on the server have a leading space: " series_N")
+// ============================================================
+var NUM_PAIRS = 16;
+var NUM_CAUSAL = 8;
+var STIM_FOLDER = 'images_buttons/';
 var SERIES_FOLDER_PREFIX = ' series_';
+function seriesFolder(n) { return STIM_FOLDER + SERIES_FOLDER_PREFIX + n + '/'; }
+function getDeviceName(n) { return 'light'; }
 
-function seriesFolder(n) {
-    return STIM_FOLDER + SERIES_FOLDER_PREFIX + n + '/';
-}
-
-// ============================================================
-// BUILD THE 8 DEVICES x 2 BUTTONS (random couples, random causal button, random reward)
-// ============================================================
-var ALL_SERIES = Array.from({ length: 16 }, function(_, k) { return k + 1; });
-var device_series_used = jsPsych.randomization.sampleWithoutReplacement(ALL_SERIES, NUM_DEVICES);
-var button_series_order = jsPsych.randomization.shuffle(ALL_SERIES.slice());
-
-// Builds one pair object: the BUTTON of series `bser` with the DEVICE of
-// series `dser` (their image paths). Causality is set afterwards.
-function makePair(bser, dser, bFolderOverride, dFolderOverride) {
+function makePair(bser, dser) {
     var dev = getDeviceName(dser);
-    var bFolder = bFolderOverride || seriesFolder(bser);   // folder of the BUTTON's series
-    var dFolder = dFolderOverride || seriesFolder(dser);   // folder of the DEVICE's series
-    return {
+    var pair = {
         pair_id: bser,                  // = button series number
         button_series: bser,
         device_series: dser,
-        same_series_pairing: (bser === dser) ? 1 : 0,
         device_name: dev,
-        button_path: bFolder + 'button_' + bser + '.png',
-        click_path: bFolder + 'click_' + bser + '.png',
-        device_before_path: dFolder + dev + '_before_pressing_' + dser + '.png',
-        device_off_path: dFolder + dev + '_off_' + dser + '.png',
-        device_on_path: dFolder + dev + '_on_' + dser + '.png'
+        button_path: seriesFolder(bser) + 'button_' + bser + '.png',
+        device_before_path: seriesFolder(dser) + dev + '_before_pressing_' + dser + '.png'
     };
+    pair.cause_path = pair.button_path;               // the button (critical item in the indirect test)
+    pair.effect_path = pair.device_before_path;       // the device, neutral state (same as Part 1: DEVICE_TEST_STATE = 'before')
+    return pair;
 }
 
-// Sets causality on a pair and derives the images that depend on it.
-function applyCausality(pair, causality) {
-    pair.causality = causality;
-    // Device image shown AFTER pressing: lit (on) in causal pairs, unchanged (off) in non-causal pairs.
-    pair.device_after_path = (causality === 'causal') ? pair.device_on_path : pair.device_off_path;
-    // The CAUSE image of the pair = the (unpressed) button
-    pair.cause_path = pair.button_path;
-    // The EFFECT image of the pair = the device (state set by DEVICE_TEST_STATE)
-    pair.effect_path = (DEVICE_TEST_STATE === 'after') ? pair.device_after_path : pair.device_before_path;
-}
-
+// ------------------------------------------------------------
+// The 16 pairs
+// ------------------------------------------------------------
 var all_pairs = [];
-var devices = [];
-// balanced random flags over the 8 devices
-var causal_in_first_slot   = jsPsych.randomization.shuffle([1, 1, 1, 1, 0, 0, 0, 0]);  // which button of the couple is causal
-var causal_first_in_round1 = jsPsych.randomization.shuffle([1, 1, 1, 1, 0, 0, 0, 0]);  // causal button pressed first in round 1
-var reward_flags           = jsPsych.randomization.shuffle([1, 1, 1, 1, 0, 0, 0, 0]);  // device rewarded ($1) or neutral ($0)
-var which_causal_left      = jsPsych.randomization.shuffle([1, 1, 1, 1, 0, 0, 0, 0]);  // causal button on the left in the round-1 'which button' question
-
-device_series_used.forEach(function(dser, k) {
-    var p1 = makePair(button_series_order[2 * k], dser);
-    var p2 = makePair(button_series_order[2 * k + 1], dser);
-    var cp = causal_in_first_slot[k] ? p1 : p2;
-    var np = causal_in_first_slot[k] ? p2 : p1;
-    applyCausality(cp, 'causal');
-    applyCausality(np, 'non_causal');
-    cp.sibling_pair_id = np.pair_id;
-    np.sibling_pair_id = cp.pair_id;
-    var dev = {
-        device_series: dser,
-        device_name: getDeviceName(dser),
-        pairs: [cp, np],
-        causal_pair: cp,
-        noncausal_pair: np,
-        effect_path: cp.effect_path,                 // device image used in Phase 2, the tests and the memory test
-        reward_condition: reward_flags[k] ? 'reward' : 'neutral',
-        causal_first_in_round1: causal_first_in_round1[k],
-        which_causal_left: which_causal_left[k]
-    };
-    // Reward is ALWAYS on the device, so both buttons of a device share its reward condition.
-    dev.pairs.forEach(function(p) {
-        p.reward_condition = dev.reward_condition;
-        p.cell = p.causality + '_' + p.reward_condition;
-        p.exposed_role = 'effect';
-        p.exposed_path = p.effect_path;
-        p.critical_role = 'cause';
-        p.critical_path = p.cause_path;
-        p.causal_first_in_round1 = dev.causal_first_in_round1;
+if (assignment) {
+    // PART 2: exactly the Part-1 arrangement
+    assignment.pairs.slice().sort(function (a, b) { return a.pair_id - b.pair_id; }).forEach(function (a) {
+        var p = makePair(a.pair_id, a.device_series);
+        p.causality = a.causality;
+        p.reward_condition = a.reward_condition;
+        p.button_is_A = a.button_is_A;
+        all_pairs.push(p);
     });
-    devices.push(dev);
-    all_pairs.push(p1, p2);
+} else {
+    // TESTING ONLY (?allow_new=1): a new random arrangement, built like Part 1
+    var perm = jsPsych.randomization.shuffle(Array.from({ length: NUM_PAIRS }, function (_, k) { return k + 1; }));
+    for (var i = 1; i <= NUM_PAIRS; i++) { all_pairs.push(makePair(i, perm[i - 1])); }
+    var causal_ids = jsPsych.randomization.sampleWithoutReplacement(all_pairs.map(function (p) { return p.pair_id; }), NUM_CAUSAL);
+    all_pairs.forEach(function (p) { p.causality = (causal_ids.indexOf(p.pair_id) !== -1) ? 'causal' : 'non_causal'; });
+    ['causal', 'non_causal'].forEach(function (c) {
+        var grp = jsPsych.randomization.shuffle(all_pairs.filter(function (p) { return p.causality === c; }));
+        grp.forEach(function (p, idx) {
+            p.reward_condition = (idx < grp.length / 2) ? 'reward' : 'neutral';
+            p.button_is_A = (idx % 2 === 0) ? 1 : 0;
+        });
+    });
+}
+all_pairs.forEach(function (p) {
+    p.cell = p.causality + '_' + p.reward_condition;
+    p.exposed_role = 'effect';
+    p.exposed_path = p.effect_path;        // device: the item that had its value shown in Part 1
+    p.critical_role = 'cause';
+    p.critical_path = p.cause_path;        // button: never shown with a value
 });
 
-// In the causal judgment, the BUTTON is labelled "A" for half of the pairs
-// and "B" for the other half (balanced within causal / non-causal).
-['causal', 'non_causal'].forEach(function(c) {
-    var grp = jsPsych.randomization.shuffle(all_pairs.filter(function(p) { return p.causality === c; }));
-    grp.forEach(function(pair, idx) { pair.button_is_A = (idx < grp.length / 2) ? 1 : 0; });
-});
+// Safety check (16 pairs, 8 causal, 4 per cell, 16 distinct devices). If a stored
+// arrangement is broken, stop instead of running a wrong experiment.
+var cell_counts = {};
+all_pairs.forEach(function (p) { cell_counts[p.cell] = (cell_counts[p.cell] || 0) + 1; });
+var arrangement_ok = all_pairs.length === NUM_PAIRS &&
+    all_pairs.filter(function (p) { return p.causality === 'causal'; }).length === NUM_CAUSAL &&
+    ['causal_reward', 'causal_neutral', 'non_causal_reward', 'non_causal_neutral'].every(function (c) { return cell_counts[c] === NUM_PAIRS / 4; }) &&
+    new Set(all_pairs.map(function (p) { return p.device_series; })).size === NUM_PAIRS;
+if (!arrangement_ok) {
+    runBlocked('invalid_stored_arrangement',
+        'There was a problem loading your records from Part 1. Please do not continue. ' +
+        'Contact the researcher through the platform and mention this message.');
+    return;
+}
 
-// ------------------------------------------------------------
-// PRACTICE PAIRS: built from the two separate practice folders
-// (PRACTICE_SERIES_LIST: 0_on = causal, then 0_off = non-causal). They are
-// NOT part of the 16 experiment pairs and are never shown again later. Each
-// is run through the full association procedure, with feedback on the
-// causal judgment. The button is labelled A in the first example for a
-// random half of the participants, and the label alternates between the
-// two examples. Practice rows are tagged: task starts with 'practice_',
-// pair_id = 'practice_1' / 'practice_2' (practice_1 = first example), plus
-// 'practice_assignment' rows that give the folder (practice_folder), the
-// causality and the image paths (see below).
-// ------------------------------------------------------------
-var practice_first_button_is_A = Math.random() < 0.5 ? 1 : 0;
-var practice_pairs = PRACTICE_SERIES_LIST.map(function(cfg, idx) {
-    var folder = seriesFolder(cfg.folder_label);
-    var pp = makePair(cfg.series, cfg.series, folder, folder);
-    pp.pair_id = 'practice_' + (idx + 1);
-    pp.practice_folder = cfg.folder_label;
-    applyCausality(pp, cfg.state);
-    pp.button_is_A = (idx % 2 === 0) ? practice_first_button_is_A : 1 - practice_first_button_is_A;
-    pp.practice_order = idx + 1;
-    return pp;
-});
 jsPsych.data.addProperties({
-    practice_folders: PRACTICE_SERIES_LIST.map(function(c) { return c.folder_label; }).join(','),
-    practice_states: PRACTICE_SERIES_LIST.map(function(c) { return c.state; }).join(','),
-    design_version: 'two_buttons_per_device_reward_on_device',
-    learning_mode: LEARNING_MODE,
-    inference_block: INFERENCE_BLOCK ? 1 : 0,
-    final_knowledge_block: FINAL_KNOWLEDGE_BLOCK ? 1 : 0
+    part: PART,
+    assignment_found: assignment ? 1 : 0,
+    assignment_source: assignment ? 'part1_lookup' : 'random_new_TEST',
+    part1_session_id: assignment ? (assignment.session_id || '') : '',
+    part1_design_version: assignment ? (assignment.design_version || '') : '',
+    design_version: 'random_pairing_random_causality_practice_0on_0off_part2_delayed_test'
 });
 
 // ------------------------------------------------------------
-// ASSIGNMENT RECORD: one data row per pair (task = 'pair_assignment') that
-// lists exactly which series were combined for THIS participant: the button
-// series, the device series, causality, reward condition and A/B label.
-// The practice pairs get the same kind of row (task = 'practice_assignment').
-// These are silent trials (nothing is shown on screen).
+// Record of the arrangement used (silent rows; same task name as Part 1)
 // ------------------------------------------------------------
-all_pairs.forEach(function(p) {
+all_pairs.forEach(function (p) {
     timeline.push({
         type: jsPsychCallFunction,
-        func: function() {},
+        func: function () {},
         data: {
             task: 'pair_assignment',
             pair_id: p.pair_id,
             button_series: p.button_series,
             device_series: p.device_series,
-            sibling_pair_id: p.sibling_pair_id,
-            same_series_pairing: p.same_series_pairing,
             device_name: p.device_name,
             causality: p.causality,
             reward_condition: p.reward_condition,
             cell: p.cell,
-            causal_first_in_round1: p.causal_first_in_round1,
             button_is_A: p.button_is_A,
             button_path: p.button_path,
-            click_path: p.click_path,
-            device_before_path: p.device_before_path,
-            device_after_path: p.device_after_path
-        }
-    });
-});
-practice_pairs.forEach(function(p) {
-    timeline.push({
-        type: jsPsychCallFunction,
-        func: function() {},
-        data: {
-            task: 'practice_assignment',
-            practice_order: p.practice_order,
-            practice_folder: p.practice_folder,
-            pair_id: p.pair_id,
-            button_series: p.button_series,
-            device_series: p.device_series,
-            device_name: p.device_name,
-            causality: p.causality,
-            button_is_A: p.button_is_A,
-            button_path: p.button_path,
-            click_path: p.click_path,
-            device_before_path: p.device_before_path,
-            device_after_path: p.device_after_path
+            device_before_path: p.device_before_path
         }
     });
 });
@@ -445,42 +348,21 @@ practice_pairs.forEach(function(p) {
 // ============================================================
 // PRELOAD
 // ============================================================
-var imagesToPreload = [
-    'images/consent_form_2026_page1.png',
-    'images/consent_form_2026_page2.png',
-    'images/gray.png',
-    'images/dollar.png'
-];
-
-practice_pairs.forEach(function(p) {
+var imagesToPreload = ['images/consent_form_2026_page1.png', 'images/consent_form_2026_page2.png'];
+all_pairs.forEach(function (p) {
     imagesToPreload.push(p.button_path);
-    imagesToPreload.push(p.click_path);
     imagesToPreload.push(p.device_before_path);
-    imagesToPreload.push(p.device_after_path);
 });
-
-all_pairs.forEach(function(p) {
-    imagesToPreload.push(p.button_path);
-    imagesToPreload.push(p.click_path);
-    imagesToPreload.push(p.device_before_path);
-    imagesToPreload.push(p.device_after_path);
-});
-
 timeline.push({
     type: jsPsychPreload,
     images: imagesToPreload,
     message: 'Loading task assets...',
-    // Shows the FULL path of every file that failed to load (useful for
-    // debugging 404 errors). Can be removed once all images load correctly.
     show_detailed_errors: true
 });
 
 // ============================================================
 // SHARED HELPERS
 // ============================================================
-
-// Simple 3-option math question, shown a handful of times through the
-// experiment (not framed as an "attention check" to the participant).
 function mathQuestionTrial() {
     var a = Math.floor(Math.random() * 8) + 1;
     var b = Math.floor(Math.random() * 8) + 1;
@@ -508,20 +390,10 @@ var whiteScreenTrial = {
     trial_duration: dur(1000)
 };
 
-var fixationTrial = {
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: '<div class="fixation">+</div>',
-    choices: "NO_KEYS",
-    trial_duration: dur(1000)
-};
-
-// Wraps a jsPsychInstructions trial so its navigation buttons stay
-// disabled for `minMs` (default 10000ms), forcing a minimum reading
-// time before the participant can click through to the next stage.
-// A small countdown notice is shown while buttons are disabled.
+// Instruction page whose buttons stay disabled for a minimum reading time.
 function withMinReadTime(instructionsTrial, minMs) {
     minMs = (typeof minMs === 'number') ? minMs : 10000;
-    if (TEST_MODE) { minMs = TEST_IMAGE_MS; }   // test mode: unlock after half a second
+    if (TEST_MODE) { minMs = TEST_IMAGE_MS; }
     var trial = Object.assign({}, instructionsTrial);
     var original_on_load = trial.on_load;
 
@@ -534,8 +406,7 @@ function withMinReadTime(instructionsTrial, minMs) {
             );
         }
 
-        var buttons = getNavButtons();
-        buttons.forEach(function(btn) {
+        getNavButtons().forEach(function(btn) {
             btn.disabled = true;
             btn.style.opacity = '0.4';
             btn.style.cursor = 'not-allowed';
@@ -543,7 +414,6 @@ function withMinReadTime(instructionsTrial, minMs) {
 
         var contentEl = document.querySelector('.jspsych-content') || document.body;
         var notice = document.createElement('div');
-        notice.id = 'min-read-notice';
         notice.style.cssText = 'text-align:center; color:#888; font-size:14px; margin-top:15px;';
         var remaining = Math.ceil(minMs / 1000);
         notice.innerText = 'Please take a moment to read (you can continue in ' + remaining + 's)...';
@@ -571,18 +441,13 @@ function withMinReadTime(instructionsTrial, minMs) {
 
     return trial;
 }
-
-// Short instruction screens (little text): the navigation buttons unlock
-// after SHORT_READ_MS (5 seconds) instead of the default 10 seconds.
-// The welcome/consent screens and the Phase 2 instructions keep 10 seconds.
 var SHORT_READ_MS = 5000;
 function withShortReadTime(instructionsTrial) {
     return withMinReadTime(instructionsTrial, SHORT_READ_MS);
 }
 
-// Runs all trials for a phase, inserting exactly ONE math question after
-// the item at `checkAfterPosition` (1-based), if provided. Used to keep
-// the total math-question count at exactly 4 across the whole experiment.
+// Runs the trials of a phase, inserting ONE math question after the item at
+// `checkAfterPosition` (1-based), if provided.
 function pushPhase(sourceArray, trialBuilderFn, checkAfterPosition) {
     sourceArray.forEach(function(item, idx) {
         timeline = timeline.concat(trialBuilderFn(item));
@@ -592,302 +457,6 @@ function pushPhase(sourceArray, trialBuilderFn, checkAfterPosition) {
     });
 }
 
-function randomColor() {
-    return COLOR_OPTIONS[Math.floor(Math.random() * COLOR_OPTIONS.length)];
-}
-
-// Shows ONE image alone; after `delayMs` (default IMAGE_DISPLAY_MS) a short
-// Yes/No question about a randomly chosen color fades in BELOW the same
-// image ("Is there <color> in this image?"), and only then can the
-// participant respond and continue. The color that was asked about is
-// saved in the data (color_asked), together with answered_yes (1/0).
-function buildImageWithColorQuestionTrial(imagePath, dataObj, delayMs) {
-    delayMs = (typeof delayMs === 'number') ? delayMs : IMAGE_DISPLAY_MS;
-    var color = randomColor();
-    var trialData = Object.assign({}, dataObj, { image_path: imagePath, color_asked: color });
-
-    if (TEST_MODE) {
-        // Test version: show the image briefly and move on, no question.
-        return {
-            type: jsPsychHtmlKeyboardResponse,
-            stimulus: '<div class="stimulus-container"><img src="' + imagePath + '" class="exp-image"></div>',
-            choices: "NO_KEYS",
-            trial_duration: TEST_IMAGE_MS,
-            data: Object.assign({}, trialData, { test_mode: 1 })
-        };
-    }
-
-    return {
-        type: jsPsychHtmlButtonResponse,
-        stimulus: '<div class="stimulus-container">' +
-                   '<img src="' + imagePath + '" class="exp-image">' +
-                   '<div class="question-area" id="delayed-question" style="visibility:hidden; margin-top:15px;">' +
-                   '<p style="font-size:20px; font-weight:bold;">Is there <b>' + color + '</b> in this image?</p>' +
-                   '</div></div>',
-        choices: ['Yes', 'No'],
-        data: trialData,
-        on_load: function() {
-            var btnGroup = document.querySelector('#jspsych-html-button-response-btngroup');
-            if (btnGroup) { btnGroup.style.visibility = 'hidden'; }
-            setTimeout(function() {
-                var q = document.querySelector('#delayed-question');
-                if (q) { q.style.visibility = 'visible'; }
-                var bg = document.querySelector('#jspsych-html-button-response-btngroup');
-                if (bg) { bg.style.visibility = 'visible'; }
-            }, delayMs);
-        },
-        on_finish: function(data) {
-            data.answered_yes = (data.response === 0) ? 1 : 0;
-        }
-    };
-}
-
-// ------------------------------------------------------------
-// Causal judgment shown after the association sequence of each pair.
-// Image A = the button being pressed (click_N), Image B = the device after
-// pressing. The participant sees the outcome (device activated or not)
-// and decides: A activated B / B activated A / they do not activate each other.
-// Coding: 'A_to_B' (correct for causal series), 'B_to_A', 'unrelated'
-// (correct for non-causal series).
-// ------------------------------------------------------------
-// Time limit (ms) for the causal judgment. If the participant does not
-// answer within this time, the experiment moves on automatically
-// (response = null, timed_out = 1 in the data).
-var JUDGMENT_TIME_MS = 6000;
-
-var JUDGMENT_CHOICES = ['A activated B', 'B activated A', 'They do not activate each other'];
-
-// Which image is shown as "A" (left) and "B" (right): the pressed button
-// or the device, depending on pair.button_is_A.
-function judgmentImages(pair) {
-    return pair.button_is_A
-        ? { A: pair.click_path, B: pair.device_after_path }
-        : { A: pair.device_after_path, B: pair.click_path };
-}
-// Choice index (0 = "A activated B", 1 = "B activated A") that is correct
-// for a causal pair (button activated the device).
-function correctCausalIndex(pair) { return pair.button_is_A ? 0 : 1; }
-// Data coding is in terms of button/device, independent of A/B labels.
-function judgmentCode(pair, response) {
-    if (response === null) return null;
-    if (response === 2) return 'unrelated';
-    return (response === correctCausalIndex(pair)) ? 'button_to_device' : 'device_to_button';
-}
-
-function buildCausalJudgmentTrial(pair, taskPrefix) {
-    var imgs = judgmentImages(pair);
-    return {
-        type: jsPsychHtmlButtonResponse,
-        stimulus: '<div class="stimulus-container">' +
-                   '<div class="assoc-row">' +
-                   '<div><img src="' + imgs.A + '" class="assoc-image">' +
-                   '<p style="font-size:24px; font-weight:bold; margin-top:10px;">A</p></div>' +
-                   '<div><img src="' + imgs.B + '" class="assoc-image">' +
-                   '<p style="font-size:24px; font-weight:bold; margin-top:10px;">B</p></div>' +
-                   '</div>' +
-                   '<p style="font-size:20px; font-weight:bold; margin-top:15px;">What is the relationship between image A and image B?</p>' +
-                   '</div>',
-        choices: JUDGMENT_CHOICES,
-        trial_duration: JUDGMENT_TIME_MS,
-        data: {
-            task: taskPrefix + 'causal_judgment',
-            pair_id: pair.pair_id,
-            button_series: pair.button_series,
-            device_series: pair.device_series,
-            causality: pair.causality,
-            device_name: pair.device_name,
-            button_is_A: pair.button_is_A,
-            practice_folder: pair.practice_folder   // only set for practice pairs
-        },
-        on_finish: function(data) {
-            data.timed_out = (data.response === null) ? 1 : 0;
-            data.judgment = judgmentCode(pair, data.response);
-            data.judged_causal = (data.response === null) ? null : ((data.response === 0 || data.response === 1) ? 1 : 0);
-            var correct_code = (pair.causality === 'causal') ? 'button_to_device' : 'unrelated';
-            data.judgment_correct = (data.judgment === null) ? null : ((data.judgment === correct_code) ? 1 : 0);
-        }
-    };
-}
-
-// ------------------------------------------------------------
-// Feedback shown right after the causal judgment in the PRACTICE round.
-// Tells the participant whether the answer was right and what the correct
-// answer is: "X activated Y" for the causal example, "They do not activate each other"
-// for the non-causal example. Must directly follow the judgment trial
-// (it reads the judgment's data).
-// ------------------------------------------------------------
-function buildPracticeFeedbackTrial(pair) {
-    var is_causal = (pair.causality === 'causal');
-    var btnL = pair.button_is_A ? 'A' : 'B';
-    var devL = pair.button_is_A ? 'B' : 'A';
-    var correct_label = is_causal ? (btnL + ' activated ' + devL) : 'They do not activate each other';
-    var explanation = is_causal
-        ? 'Pressing the button (' + btnL + ') activated the device (' + devL + ').'
-        : 'Pressing the button (' + btnL + ') did not activate the device (' + devL + ').';
-
-    return {
-        type: jsPsychHtmlButtonResponse,
-        stimulus: function() {
-            var last = jsPsych.data.get().last(1).values()[0];
-            var verdict, color;
-            if (last.response === null) {
-                verdict = 'Time ran out.'; color = '#888';
-            } else if (last.judgment_correct === 1) {
-                verdict = 'Correct!'; color = 'green';
-            } else {
-                verdict = 'Incorrect.'; color = '#c0392b';
-            }
-            return '<div class="stimulus-container">' +
-                   '<h2 style="color:' + color + ';">' + verdict + '</h2>' +
-                   '<div class="assoc-row">' +
-                   '<div><img src="' + judgmentImages(pair).A + '" class="small-image">' +
-                   '<p style="font-size:20px; font-weight:bold; margin-top:8px;">A</p></div>' +
-                   '<div><img src="' + judgmentImages(pair).B + '" class="small-image">' +
-                   '<p style="font-size:20px; font-weight:bold; margin-top:8px;">B</p></div>' +
-                   '</div>' +
-                   '<p style="font-size:20px; margin-top:15px;">The correct answer is: <b>' + correct_label + '</b></p>' +
-                   '<p style="font-size:18px;">' + explanation + '</p>' +
-                   '</div>';
-        },
-        choices: ['Continue'],
-        data: { task: 'practice_feedback', pair_id: pair.pair_id, button_series: pair.button_series,
-                 device_series: pair.device_series, causality: pair.causality,
-                 practice_folder: pair.practice_folder }   // only set for practice pairs
-    };
-}
-
-// ------------------------------------------------------------
-// LEARNING BUILDING BLOCKS (one device, two buttons)
-// ------------------------------------------------------------
-function pairBase(pair) {
-    return {
-        pair_id: pair.pair_id,
-        button_series: pair.button_series,
-        device_series: pair.device_series,
-        causality: pair.causality,
-        device_name: pair.device_name,
-        practice_folder: pair.practice_folder   // only set for practice pairs
-    };
-}
-function deviceBase(dev) {
-    return { device_series: dev.device_series, device_name: dev.device_name };
-}
-
-// Other devices' images (never the pair's own device) - foils of the matching questions.
-function otherDeviceImages(pair, n) {
-    var others = devices.filter(function(d) { return d.device_series !== pair.device_series; });
-    return jsPsych.randomization.sampleWithoutReplacement(others, n).map(function(d) { return d.effect_path; });
-}
-
-// The press and its outcome for ONE button. ACTIVE: the button is shown with a
-// "Press the button" key; after the press (or after PRESS_TIME_MS) the pressed
-// button and the device (lit in causal pairs, unchanged in non-causal pairs) are
-// shown for a fixed time, so the outcome is the same for everybody.
-// PASSIVE (?mode=passive): the button is shown for 1 s and the outcome follows.
-function buildPressTrials(pair, taskPrefix, resultMs, roundNum) {
-    var base = Object.assign({ assoc_round: roundNum, learning_mode: LEARNING_MODE }, pairBase(pair));
-    var press;
-    if (LEARNING_MODE === 'active') {
-        press = {
-            type: jsPsychHtmlButtonResponse,
-            stimulus: '<div class="stimulus-container"><img src="' + pair.button_path + '" class="exp-image">' +
-                       '<p style="font-size:20px; font-weight:bold; margin-top:15px;">Press the button and see what happens</p></div>',
-            choices: ['Press the button'],
-            trial_duration: PRESS_TIME_MS,
-            data: Object.assign({ task: taskPrefix + 'press' }, base),
-            on_finish: function(data) {
-                data.timed_out = (data.response === null) ? 1 : 0;
-                data.pressed = (data.response === null) ? 0 : 1;
-            }
-        };
-    } else {
-        press = {
-            type: jsPsychHtmlKeyboardResponse,
-            stimulus: '<div class="stimulus-container"><img src="' + pair.button_path + '" class="exp-image">' +
-                       '<p style="font-size:20px; font-weight:bold; margin-top:15px;">The button is pressed</p></div>',
-            choices: "NO_KEYS",
-            trial_duration: dur(1000),
-            data: Object.assign({ task: taskPrefix + 'press_auto' }, base)
-        };
-    }
-    var result = {
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: '<div class="stimulus-container"><div class="assoc-row">' +
-                   '<img src="' + pair.click_path + '" class="assoc-image">' +
-                   '<img src="' + pair.device_after_path + '" class="assoc-image">' +
-                   '</div></div>',
-        choices: "NO_KEYS",
-        trial_duration: dur(resultMs),
-        data: Object.assign({ task: taskPrefix + 'result' }, base)
-    };
-    return [press, result];
-}
-
-// "Which button activates the device?" - asked ONCE per device in round 1, after both buttons were
-// pressed: the device (top) and its two buttons side by side; the causal button is on the left for
-// half of the devices (balanced). One response = which button the participant thinks activates the device.
-function buildWhichButtonTrial(dev, taskName, causalLeft) {
-    var left = causalLeft ? dev.causal_pair : dev.noncausal_pair;
-    var right = causalLeft ? dev.noncausal_pair : dev.causal_pair;
-    return {
-        type: jsPsychHtmlButtonResponse,
-        stimulus: '<div class="stimulus-container">' +
-                   '<img src="' + dev.effect_path + '" class="small-image">' +
-                   '<div style="display:flex; justify-content:center; gap:30px; margin-top:15px;">' +
-                   '<div><img src="' + left.button_path + '" class="small-image"></div>' +
-                   '<div><img src="' + right.button_path + '" class="small-image"></div></div>' +
-                   '<p style="font-size:20px; font-weight:bold; margin-top:15px;">Which button activates the device?</p></div>',
-        choices: ['Left button', 'Right button'],
-        trial_duration: JUDGMENT_TIME_MS,
-        data: {
-            task: taskName,
-            device_series: dev.device_series,
-            device_name: dev.device_name,
-            causal_pair_id: dev.causal_pair.pair_id,
-            noncausal_pair_id: dev.noncausal_pair.pair_id,
-            causal_left: causalLeft,
-            reward_condition: dev.reward_condition
-        },
-        on_finish: function(data) {
-            data.timed_out = (data.response === null) ? 1 : 0;
-            data.chose_causal = (data.response === null) ? null :
-                                (((data.response === 0 && causalLeft) || (data.response === 1 && !causalLeft)) ? 1 : 0);
-            data.correct = data.chose_causal;
-        }
-    };
-}
-
-// Round 1 for ONE device: the device alone, then its two buttons one after the
-// other (each: button alone, press, outcome), then ONE question: which of the two buttons
-// activates the device (the two buttons side by side, causal button left/right balanced).
-function buildEpisodeRound1(dev) {
-    var order = dev.causal_first_in_round1 ? [dev.causal_pair, dev.noncausal_pair] : [dev.noncausal_pair, dev.causal_pair];
-    var seq = [
-        buildImageWithColorQuestionTrial(dev.effect_path, Object.assign({ task: 'encoding_image', stage: 'before', image_role: 'device' }, deviceBase(dev))),
-        fixationTrial
-    ];
-    order.forEach(function(p) {
-        seq.push(buildImageWithColorQuestionTrial(p.button_path, Object.assign({ task: 'encoding_image', stage: 'before', image_role: 'button' }, pairBase(p))));
-        seq = seq.concat(buildPressTrials(p, 'encoding_', RESULT_MS, 1));
-        seq.push(fixationTrial);
-    });
-    seq.push(buildWhichButtonTrial(dev, 'encoding_which_button', dev.which_causal_left));
-    seq.push(whiteScreenTrial);
-    return seq;
-}
-
-// Practice: ONE pair (button + device) with the same procedure and feedback on the judgment.
-function buildPracticeTrials(pair) {
-    var base = pairBase(pair);
-    return [
-        buildImageWithColorQuestionTrial(pair.device_before_path, Object.assign({ task: 'practice_image', stage: 'before', image_role: 'device' }, base)),
-        fixationTrial,
-        buildImageWithColorQuestionTrial(pair.button_path, Object.assign({ task: 'practice_image', stage: 'before', image_role: 'button' }, base))
-    ].concat(buildPressTrials(pair, 'practice_', RESULT_MS, 0),
-             [fixationTrial, buildCausalJudgmentTrial(pair, 'practice_'), buildPracticeFeedbackTrial(pair), whiteScreenTrial]);
-}
-
-
 // ============================================================
 // INSTRUCTIONS & CONSENT
 // ============================================================
@@ -895,9 +464,9 @@ timeline.push(withMinReadTime({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
-        '<h2>Welcome to the Experiment</h2>' +
-        '<p>In this study you will look at devices that are produced in a factory. Each device comes with a button, and you will be asked to judge things related to them.</p>' +
-        '<p>The experiment has several short parts, beginning with a brief practice round.</p>' +
+        '<h2>Welcome Back: Part 2 of the Experiment</h2>' +
+        '<p><b>This is Part 2 of the study you took part in about 24 hours ago.</b></p>' +
+        '<p>In Part 1 you looked at devices that are produced in a factory. Each device came with a button. In this part you will see some of those buttons and devices again and answer a few questions about them.</p>' +
         '<p>Click "Next" to read the consent form.</p>' +
         '</div>',
         '<div style="text-align: center; padding: 20px;">' +
@@ -915,252 +484,22 @@ timeline.push({
     fullscreen_mode: true
 });
 
-// ------------------------------------------------------------
-// Short repetition of ONE device (association rounds 2..N): the device, then
-// its two buttons in random order, each pressed again (active mode) and followed
-// by its outcome. No color questions and no causal judgment.
-// ------------------------------------------------------------
-var repeatGapTrial = {
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: '<div class="fixation">+</div>',
-    choices: "NO_KEYS",
-    trial_duration: dur(REPEAT_GAP_MS)
-};
-
-function buildEpisodeRepeat(dev, roundNum) {
-    function img(path, stage, role, baseObj) {
-        return {
-            type: jsPsychHtmlKeyboardResponse,
-            stimulus: '<div class="stimulus-container"><img src="' + path + '" class="exp-image"></div>',
-            choices: "NO_KEYS",
-            trial_duration: dur(REPEAT_IMAGE_MS),
-            data: Object.assign({ task: 'encoding_repeat_image', assoc_round: roundNum, stage: stage, image_role: role, image_path: path }, baseObj)
-        };
-    }
-    var seq = [img(dev.effect_path, 'before', 'device', deviceBase(dev)), repeatGapTrial];
-    jsPsych.randomization.shuffle(dev.pairs.slice()).forEach(function(p) {
-        seq.push(img(p.button_path, 'before', 'button', pairBase(p)));
-        seq = seq.concat(buildPressTrials(p, 'encoding_repeat_', REPEAT_RESULT_MS, roundNum));
-        seq.push(repeatGapTrial);
-    });
-    return seq;
-}
-
-// ------------------------------------------------------------
-// One matching question inside a repetition round: one of the buttons just
-// shown is displayed and the participant chooses the matching device out of 4
-// (same format as the memory test, task 'repeat_match_question'). No feedback.
-// ------------------------------------------------------------
-function buildRepeatQuestionTrial(pair, roundNum) {
-    var option_paths = jsPsych.randomization.shuffle([pair.effect_path].concat(otherDeviceImages(pair, 3)));
-    var correct_index = option_paths.indexOf(pair.effect_path);
-    var option_labels = option_paths.map(function(p, i) { return 'Option ' + (i + 1); });
-    var options_html = option_paths.map(function(p, i) {
-        return '<div style="text-align:center;"><img src="' + p + '" class="small-image"><br>' +
-               '<span style="font-weight:bold;">Option ' + (i + 1) + '</span></div>';
-    }).join('');
-    return {
-        type: jsPsychHtmlButtonResponse,
-        stimulus: '<div class="stimulus-container"><img src="' + pair.cause_path + '" class="small-image">' +
-                   '<p style="font-size: 18px; margin-top: 15px; font-weight:bold;">Which device matches this button?</p></div>' +
-                   '<div style="display:flex; justify-content:center; gap:15px; flex-wrap:wrap; margin-top:10px;">' + options_html + '</div>',
-        choices: option_labels,
-        trial_duration: dur(REPEAT_QUESTION_MS),
-        data: { task: 'repeat_match_question', assoc_round: roundNum, pair_id: pair.pair_id,
-                button_series: pair.button_series, device_series: pair.device_series,
-                causality: pair.causality, correct_index: correct_index },
-        on_finish: function(data) {
-            data.timed_out = (data.response === null) ? 1 : 0;
-            data.correct = (data.response === null) ? null : ((data.response === correct_index) ? 1 : 0);
-        }
-    };
-}
-
 // ============================================================
-// PRACTICE PHASE
-// Two examples from separate practice folders (not among the experiment
-// stimuli): first one where pressing activates the device (causal), then
-// one where it does not (non-causal). The participant presses the button in
-// each, makes the causal judgment and gets feedback on it.
+// PHASE 1 (of Part 2): DECISION (forced choice) - same as Part 1
+//
+//   INDIRECT test (the BUTTON of each pair, never shown with a value):
+//     causal: 4 trials, button of a REWARDED device vs button of a NEUTRAL device
+//     non-causal: 4 trials, same
+//   DIRECT test (the DEVICE, whose value was shown in Part 1):
+//     causal: 4 trials, rewarded device vs neutral device
+//     non-causal: 4 trials, same
+// 16 choices in total (8 indirect + 8 direct).
 // ============================================================
 timeline.push(withShortReadTime({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
-        '<h2>Practice Round</h2>' +
-        '<p>We will now go through a short practice round so you can get familiar with the task.</p>' +
-        '<p>You will see devices and buttons. After some of the images you will be asked a short question about them. <b>You will also press the buttons to see what they do.</b> In this round, you will see the correct answer to the last question.</p>' +
-        '<p><b>It is important to pay attention to what happens to the device when you press a button.</b></p>' +
-        '</div>'
-    ],
-    show_clickable_nav: true
-}));
-
-practice_pairs.forEach(function(p) {
-    timeline = timeline.concat(buildPracticeTrials(p));
-});
-
-timeline.push(withShortReadTime({
-    type: jsPsychInstructions,
-    pages: [
-        '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
-        '<h2>Practice Completed</h2>' +
-        '<p>Great! The main experiment is about to begin. Please stay focused on the screen throughout.</p>' +
-        '</div>'
-    ],
-    show_clickable_nav: true
-}));
-
-// ============================================================
-// PHASE 1: ASSOCIATION (LEARNING)
-// 8 devices, each with TWO buttons. Round 1 (per device): the device, then its
-// two buttons one after the other - each button is shown, PRESSED by the
-// participant, and the outcome is seen (the device turns on or not) - followed
-// by the question "which button activates the device?". Rounds 2..NUM_ASSOC_ROUNDS repeat the
-// same sequence in a new random order, without color questions or judgments,
-// with a matching question after every 2 devices (4 per round). Which button
-// of a device is causal is random per participant (see BUILD).
-// ============================================================
-timeline.push(withShortReadTime({
-    type: jsPsychInstructions,
-    pages: [
-        '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
-        '<h2>Phase 1: Devices and Buttons</h2>' +
-        '<p>You will see devices. <b>Each device has two buttons.</b> Press each button and watch what happens to the device. After some of the images you will be asked a short question about them.</p>' +
-        '<p>You will go through each device several times. <b>It is important to pay attention to what each button does.</b></p>' +
-        '</div>'
-    ],
-    show_clickable_nav: true
-}));
-
-var encoding_order = jsPsych.randomization.shuffle(devices.slice());
-pushPhase(encoding_order, buildEpisodeRound1, 4);
-
-// Repetition rounds (2..NUM_ASSOC_ROUNDS): all 8 devices again, new random order each round.
-for (var round = 2; round <= NUM_ASSOC_ROUNDS; round++) {
-    timeline.push(withShortReadTime({
-        type: jsPsychInstructions,
-        pages: [
-            '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
-            '<h2>Phase 1: Round ' + round + ' of ' + NUM_ASSOC_ROUNDS + '</h2>' +
-            '<p>You will now see the same devices and buttons again. <b>Press each button to see what it does.</b> Every now and then you will be asked which device matches a button.</p>' +
-            '</div>'
-        ],
-        show_clickable_nav: true
-    }));
-    var roundOrder = jsPsych.randomization.shuffle(devices.slice());
-    roundOrder.forEach(function(dev, idx) {
-        timeline = timeline.concat(buildEpisodeRepeat(dev, round));
-        if ((idx + 1) % 2 === 0) {
-            // ask about one of the 4 buttons of the last 2 devices shown
-            var recent = roundOrder[idx - 1].pairs.concat(dev.pairs);
-            var asked = jsPsych.randomization.sampleWithoutReplacement(recent, 1)[0];
-            timeline.push(buildRepeatQuestionTrial(asked, round));
-            timeline.push(whiteScreenTrial);
-        }
-    });
-}
-
-// ============================================================
-// PHASE 2: CONTROLLED EXPOSURE
-// Only the DEVICE is shown (never a button), followed AUTOMATICALLY by its
-// value: reward ($1) or neutral ($0). 4 devices are worth $1 and 4 are worth
-// $0. EACH DEVICE IS SHOWN TWICE (same value both times): two rounds with all
-// 8 devices in a new random order (16 exposure trials in total). There is no
-// key press here, so that pressing stays something that only happens to
-// buttons in Phase 1.
-// ============================================================
-timeline.push(withMinReadTime({
-    type: jsPsychInstructions,
-    pages: [
-        '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
-        '<h2>Phase 2</h2>' +
-        '<p>You will now see the devices again, one at a time. Each device will be shown together with what it is worth.</p>' +
-        '<p><span style="color:green; font-weight:bold;">$</span> = This device is worth $1</p>' +
-        '<p><span style="color:gray; font-weight:bold;">&#9670;</span> = This device is worth $0</p>' +
-        '</div>'
-    ],
-    show_clickable_nav: true
-}));
-
-var EXPOSURE_ROUNDS = 2;
-var EXPOSURE_WAIT_MS = 1500;   // the device alone, before its value appears
-var exposure_order = [];
-for (var er = 1; er <= EXPOSURE_ROUNDS; er++) {
-    jsPsych.randomization.shuffle(devices.slice()).forEach(function(dev) {
-        exposure_order.push({ dev: dev, exposure_round: er });
-    });
-}
-
-function buildExposureTrials(item) {
-    var dev = item.dev;
-    var is_rewarded = dev.reward_condition === 'reward';
-    var reward_img = is_rewarded ? 'images/dollar.png' : 'images/gray.png';
-    var reward_txt = is_rewarded ? 'This device is worth $1' : 'This device is worth $0';
-    var reward_clr = is_rewarded ? 'green' : 'gray';
-
-    var common_data = {
-        device_series: dev.device_series,
-        causal_pair_id: dev.causal_pair.pair_id,
-        noncausal_pair_id: dev.noncausal_pair.pair_id,
-        causality: 'device',
-        exposed_role: 'effect',
-        reward_condition: dev.reward_condition,
-        cell: 'device_' + dev.reward_condition,
-        exposure_round: item.exposure_round
-    };
-
-    return [
-        {
-            type: jsPsychHtmlKeyboardResponse,
-            stimulus: '<div class="stimulus-container"><img src="' + dev.effect_path + '" class="exp-image"></div>',
-            choices: "NO_KEYS",
-            trial_duration: dur(EXPOSURE_WAIT_MS),
-            data: Object.assign({ task: 'exposure_wait' }, common_data)
-        },
-        {
-            type: jsPsychHtmlKeyboardResponse,
-            stimulus: '<div class="stimulus-container" style="display:flex; align-items:center; justify-content:center; gap:30px;">' +
-                       '<img src="' + dev.effect_path + '" class="exp-image">' +
-                       '<div><img src="' + reward_img + '" style="width:140px;height:140px;border:4px solid ' + reward_clr + ';">' +
-                       '<p style="color:' + reward_clr + '; font-weight:bold; font-size:22px;">' + reward_txt + '</p></div></div>',
-            choices: "NO_KEYS",
-            trial_duration: dur(3000),
-            data: Object.assign({ task: 'exposure_feedback' }, common_data)
-        },
-        whiteScreenTrial
-    ];
-}
-
-// The single math question of this phase goes after the 8th of 16 trials.
-pushPhase(exposure_order, buildExposureTrials, 8);
-
-// ============================================================
-// PHASE 3: DECISION (forced choice, 6 s per screen)
-// BLOCK A (16 trials, interleaved in random order):
-//   INDIRECT (the never-directly-shown BUTTONS): the button of a rewarded device
-//     vs the button of a neutral device, within the same causality group
-//     (4 causal-vs-causal + 4 non-causal-vs-non-causal trials).
-//   DIRECT (the DEVICES that WERE shown with their $1/$0 in Phase 2; manipulation
-//     check): rewarded device vs neutral device, 8 trials (every rewarded device
-//     is compared twice, with two different neutral devices).
-// BLOCK B (8 trials, always AFTER block A so it cannot influence it):
-//   WITHIN-DEVICE: the CAUSAL and the NON-CAUSAL button of the SAME device side by
-//     side, one trial per device (4 rewarded + 4 neutral devices). Both buttons
-//     share the device's reward history. chose_causal = 1 if the causal button was
-//     chosen; the key comparison is rewarded vs neutral devices.
-// BLOCK C (8 trials, last, only if INFERENCE_BLOCK; task 'inference_choice'):
-//   REWARD PREDICTION: the same button pairs as the indirect test (button of a rewarded vs a neutral
-//     device; 4 causal + 4 non-causal pairs) but the question is "If you actually pressed one of
-//     these buttons, which one would be more likely to make its device produce $1?"
-//     Rational answer: the rewarded device's button for CAUSAL pairs, no preference for NON-CAUSAL pairs.
-//     chose_reward = 1 if the button of the rewarded device was chosen.
-// ============================================================
-timeline.push(withShortReadTime({
-    type: jsPsychInstructions,
-    pages: [
-        '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
-        '<h2>Phase 3: Decision</h2>' +
+        '<h2>Decision</h2>' +
         '<p>You will now see pairs of images side by side.</p>' +
         '<p>Choose the image that has the <b>higher monetary value</b>.</p>' +
         '<p>Each screen takes a few seconds to move on to the next one, whether or not you answer right away, so take your time to choose correctly.</p>' +
@@ -1169,15 +508,9 @@ timeline.push(withShortReadTime({
     show_clickable_nav: true
 }));
 
-// Reward is always on the effect (device), so the critical (unseen) item is
-// always the cause (button) and the exposed item is always the device.
 var causal_pairs = all_pairs.filter(function(p) { return p.causality === 'causal'; });
 var noncausal_pairs = all_pairs.filter(function(p) { return p.causality === 'non_causal'; });
 
-// Builds reward-vs-neutral trials for one causality group (8 pairs ->
-// 4 reward, 4 neutral -> 4 trials). `pathField` selects which image to
-// use per pair: 'critical_path' (button) for the indirect test,
-// 'exposed_path' (device) for the direct test.
 function buildComparisonSet(group, comparisonRole, testType, pathField, causality) {
     var reward_items = jsPsych.randomization.shuffle(
         group.filter(function(p) { return p.reward_condition === 'reward'; })
@@ -1185,16 +518,15 @@ function buildComparisonSet(group, comparisonRole, testType, pathField, causalit
     var neutral_items = jsPsych.randomization.shuffle(
         group.filter(function(p) { return p.reward_condition === 'neutral'; })
     );
-    // reward_items.length === neutral_items.length === 4 by design
     return reward_items.map(function(rewardPair, idx) {
         var neutralPair = neutral_items[idx];
         return {
-            test_type: testType, // 'direct' or 'indirect'
-            comparison_role: comparisonRole, // 'cause' (button) or 'effect' (device)
-            causality: causality, // 'causal' or 'non_causal'
-            decision_cell: testType + '_' + causality,          // e.g. indirect_causal
-            reward_cell: rewardPair.cell,                       // e.g. causal_reward
-            neutral_cell: neutralPair.cell,                     // e.g. causal_neutral
+            test_type: testType,
+            comparison_role: comparisonRole,
+            causality: causality,
+            decision_cell: testType + '_' + causality,
+            reward_cell: rewardPair.cell,
+            neutral_cell: neutralPair.cell,
             reward_pair_id: rewardPair.pair_id,
             reward_button_series: rewardPair.button_series,
             reward_device_series: rewardPair.device_series,
@@ -1207,48 +539,16 @@ function buildComparisonSet(group, comparisonRole, testType, pathField, causalit
     });
 }
 
-// DIRECT set: rewarded device vs neutral device, 8 trials. Round 2 uses a
-// different neutral device for each rewarded device (rotation by one).
-function buildDirectSet() {
-    var rew = jsPsych.randomization.shuffle(devices.filter(function(d) { return d.reward_condition === 'reward'; }));
-    var neu = jsPsych.randomization.shuffle(devices.filter(function(d) { return d.reward_condition === 'neutral'; }));
-    var out = [];
-    [0, 1].forEach(function(shift) {
-        rew.forEach(function(rd, i) {
-            var nd = neu[(i + shift) % neu.length];
-            out.push({
-                test_type: 'direct',
-                comparison_role: 'effect',
-                causality: 'device',
-                decision_cell: 'direct_device',
-                reward_cell: 'device_reward',
-                neutral_cell: 'device_neutral',
-                reward_pair_id: null,
-                reward_button_series: null,
-                reward_device_series: rd.device_series,
-                reward_path: rd.effect_path,
-                neutral_pair_id: null,
-                neutral_button_series: null,
-                neutral_device_series: nd.device_series,
-                neutral_path: nd.effect_path
-            });
-        });
-    });
-    return out;
-}
-
-// Combine block A (indirect + direct) and shuffle so everything is interleaved.
 var decision_trials = jsPsych.randomization.shuffle(
     buildComparisonSet(causal_pairs, 'cause', 'indirect', 'critical_path', 'causal').concat(
         buildComparisonSet(noncausal_pairs, 'cause', 'indirect', 'critical_path', 'non_causal'),
-        buildDirectSet()
+        buildComparisonSet(causal_pairs, 'effect', 'direct', 'exposed_path', 'causal'),
+        buildComparisonSet(noncausal_pairs, 'effect', 'direct', 'exposed_path', 'non_causal')
     )
 );
 
-// Total duration (ms) of each forced-choice screen. The participant can
-// answer at any moment, but the screen always lasts the full time before
-// moving on. If no answer is given, the data has response = null,
-// timed_out = 1 and chose_reward = null.
+// Total duration (ms) of each forced-choice screen (the screen always lasts the
+// full time; response = null, timed_out = 1, chose_reward = null if no answer).
 var DECISION_TIME_MS = 6000;
 
 function buildDecisionTrials(dt) {
@@ -1256,7 +556,6 @@ function buildDecisionTrials(dt) {
         {
             type: jsPsychHtmlButtonResponse,
             stimulus: function() {
-                // random left/right position of the rewarded item
                 var reward_left = Math.random() < 0.5;
                 window.current_decision = {
                     reward_left: reward_left,
@@ -1275,21 +574,15 @@ function buildDecisionTrials(dt) {
                 };
                 var left_img = reward_left ? dt.reward_path : dt.neutral_path;
                 var right_img = reward_left ? dt.neutral_path : dt.reward_path;
-                var question = dt.question || 'Which image has the <b>higher monetary value</b>?';
-                return '<div style="font-family: Arial; margin-bottom: 20px;"><h3>' + question + '</h3></div>' +
+                return '<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image has the <b>higher monetary value</b>?</h3></div>' +
                        '<div class="stimulus-container" style="display: flex; justify-content: center; gap: 30px;">' +
                        '<img src="' + left_img + '" class="small-image"><img src="' + right_img + '" class="small-image"></div>';
             },
             choices: ['Left', 'Right'],
-            // The screen lasts DECISION_TIME_MS in total. The participant can
-            // answer immediately, but the screen always stays for the full
-            // time (answering fast does not speed things up). In test mode
-            // (?test=1) an answer ends the screen right away.
             trial_duration: DECISION_TIME_MS,
             response_ends_trial: TEST_MODE,
-            data: { task: dt.task_name || 'decision_choice' },
+            data: { task: 'decision_choice' },
             on_load: function() {
-                // after a click the buttons are disabled; mark the chosen one
                 document.querySelectorAll('#jspsych-html-button-response-btngroup button').forEach(function(b) {
                     b.addEventListener('click', function() {
                         b.style.outline = '4px solid #2e7d32';
@@ -1329,128 +622,30 @@ function buildDecisionTrials(dt) {
 
 pushPhase(decision_trials, buildDecisionTrials, 8);
 
-// ---- BLOCK B: the two buttons of the same device side by side ----
-timeline.push(withShortReadTime({
-    type: jsPsychInstructions,
-    pages: [
-        '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
-        '<h2>Phase 3, part 2</h2>' +
-        '<p>You will now see the two buttons of the same device side by side.</p>' +
-        '<p>Choose the button that has the <b>higher monetary value</b>.</p>' +
-        '</div>'
-    ],
-    show_clickable_nav: true
-}));
-
-// the causal button is on the left in exactly 4 of the 8 trials (random which devices)
-var within_flags = jsPsych.randomization.shuffle([1, 1, 1, 1, 0, 0, 0, 0]);
-var within_trials = jsPsych.randomization.shuffle(devices.slice()).map(function(dev, i) {
-    return { dev: dev, causal_left: within_flags[i] };
-});
-
-function buildWithinTrials(item) {
-    var dev = item.dev;
-    return [
-        {
-            type: jsPsychHtmlButtonResponse,
-            stimulus: function() {
-                var causal_left = !!item.causal_left;
-                window.current_within = { causal_left: causal_left };
-                var left_img = causal_left ? dev.causal_pair.cause_path : dev.noncausal_pair.cause_path;
-                var right_img = causal_left ? dev.noncausal_pair.cause_path : dev.causal_pair.cause_path;
-                return '<div style="font-family: Arial; margin-bottom: 20px;"><h3>Which image has the <b>higher monetary value</b>?</h3></div>' +
-                       '<div class="stimulus-container" style="display: flex; justify-content: center; gap: 30px;">' +
-                       '<img src="' + left_img + '" class="small-image"><img src="' + right_img + '" class="small-image"></div>';
-            },
-            choices: ['Left', 'Right'],
-            trial_duration: DECISION_TIME_MS,
-            response_ends_trial: TEST_MODE,
-            data: { task: 'decision_choice' },
-            on_load: function() {
-                document.querySelectorAll('#jspsych-html-button-response-btngroup button').forEach(function(b) {
-                    b.addEventListener('click', function() {
-                        b.style.outline = '4px solid #2e7d32';
-                        b.style.outlineOffset = '2px';
-                    });
-                });
-            },
-            on_finish: function(data) {
-                var c = window.current_within;
-                data.test_type = 'within_device';
-                data.comparison_role = 'cause';
-                data.causality = 'within';
-                data.decision_cell = 'within_' + dev.reward_condition;
-                data.device_reward_condition = dev.reward_condition;
-                data.device_series = dev.device_series;
-                data.causal_pair_id = dev.causal_pair.pair_id;
-                data.noncausal_pair_id = dev.noncausal_pair.pair_id;
-                data.causal_left = c.causal_left ? 1 : 0;
-                data.timed_out = (data.response === null) ? 1 : 0;
-                data.chose_causal = (data.response === null) ? null :
-                                    (((data.response === 0 && c.causal_left) ||
-                                      (data.response === 1 && !c.causal_left)) ? 1 : 0);
-                data.chose_reward = null;   // not applicable here (kept empty so reward-vs-neutral analyses ignore these rows)
-            }
-        },
-        {
-            type: jsPsychHtmlKeyboardResponse,
-            stimulus: '<div style="background-color: white; width: 100vw; height: 100vh;"></div>',
-            choices: "NO_KEYS",
-            trial_duration: dur(800)
-        }
-    ];
-}
-
-pushPhase(within_trials, buildWithinTrials);
-
-// ---- BLOCK C: reward prediction ("which button would make its device produce $1 if you pressed it") ----
-if (INFERENCE_BLOCK) {
-    timeline.push(withShortReadTime({
-        type: jsPsychInstructions,
-        pages: [
-            '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
-            '<h2>Phase 3, part 3</h2>' +
-            '<p>You will now see pairs of buttons again. Imagine that you <b>press</b> one of them.</p>' +
-            '<p>Choose the button that is <b>more likely to make its device produce $1</b>.</p>' +
-            '</div>'
-        ],
-        show_clickable_nav: true
-    }));
-    var inference_trials = jsPsych.randomization.shuffle(
-        buildComparisonSet(causal_pairs, 'cause', 'inference', 'critical_path', 'causal').concat(
-            buildComparisonSet(noncausal_pairs, 'cause', 'inference', 'critical_path', 'non_causal')
-        ).map(function(t) {
-            t.question = 'If you actually pressed one of these buttons, which one would be more likely to make its device produce <b>$1</b>?';
-            t.task_name = 'inference_choice';
-            return t;
-        })
-    );
-    pushPhase(inference_trials, buildDecisionTrials);
-}
-
 // ============================================================
-// PHASE 4: CONTROL (memory test)
+// PHASE 2 (of Part 2): MEMORY TEST (all 16 pairs) - same as Part 1
+// For each button, pick the matching device out of 4.
 // ============================================================
 timeline.push(withShortReadTime({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
-        '<h2>Phase 4: Final Questions</h2>' +
+        '<h2>Memory Questions</h2>' +
         '<p>For each button you will pick the matching device from a few options.</p>' +
         '</div>'
     ],
     show_clickable_nav: true
 }));
 
-// ---- 4a: Memory test (all 16 pairs) ----
-// Time limit (ms) for choosing the matching device. If the participant
-// does not answer within this time, the experiment moves on automatically
-// (response = null, timed_out = 1, correct = null in the data).
 var MEMORY_TIME_MS = 6000;
 var memory_order = jsPsych.randomization.shuffle(all_pairs.slice());
 
 function buildMemoryTrial(pair) {
-    var option_paths = jsPsych.randomization.shuffle([pair.effect_path].concat(otherDeviceImages(pair, 3)));
+    var foil_pool = all_pairs.filter(function(p) { return p.pair_id !== pair.pair_id; });
+    var foil_sample = jsPsych.randomization.sampleWithoutReplacement(foil_pool, 3);
+    var option_paths = jsPsych.randomization.shuffle(
+        [pair.effect_path].concat(foil_sample.map(function(p) { return p.effect_path; }))
+    );
     var correct_index = option_paths.indexOf(pair.effect_path);
     var option_labels = option_paths.map(function(p, i) { return 'Option ' + (i + 1); });
 
@@ -1475,7 +670,7 @@ function buildMemoryTrial(pair) {
             choices: option_labels,
             trial_duration: MEMORY_TIME_MS,
             data: { task: 'memory_test', pair_id: pair.pair_id, button_series: pair.button_series,
-                     device_series: pair.device_series, sibling_pair_id: pair.sibling_pair_id, causality: pair.causality, correct_index: correct_index },
+                     device_series: pair.device_series, causality: pair.causality, correct_index: correct_index },
             on_finish: function(data) {
                 data.timed_out = (data.response === null) ? 1 : 0;
                 data.correct = (data.response === null) ? null : ((data.response === correct_index) ? 1 : 0);
@@ -1485,38 +680,93 @@ function buildMemoryTrial(pair) {
     ];
 }
 
-// The single math question of this phase goes after the 8th of 16 trials.
 pushPhase(memory_order, buildMemoryTrial, 8);
 
-// ---- 4b: final knowledge check (after all choices): which button activates each device? ----
-// Same question and layout as in round 1 ('encoding_which_button'), task 'final_which_button',
-// causal button left/right balanced and a new random order. Shows whether the causal knowledge is
-// still there at the end. It comes after every choice, so it cannot influence them.
-if (FINAL_KNOWLEDGE_BLOCK) {
-    timeline.push(withShortReadTime({
-        type: jsPsychInstructions,
-        pages: [
-            '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
-            '<h2>Phase 4, part 2</h2>' +
-            '<p>For each device you will see its two buttons. Choose the button that <b>activates</b> the device.</p>' +
-            '</div>'
-        ],
-        show_clickable_nav: true
-    }));
-    var final_flags = jsPsych.randomization.shuffle([1, 1, 1, 1, 0, 0, 0, 0]);
-    jsPsych.randomization.shuffle(devices.slice()).forEach(function(dev, idx) {
-        timeline = timeline.concat([buildWhichButtonTrial(dev, 'final_which_button', final_flags[idx]), whiteScreenTrial]);
-    });
+// ============================================================
+// PHASE 3 (of Part 2): CAUSAL JUDGMENT AGAIN (all 16 pairs)
+// The button and its device are shown side by side (both in their neutral state, so
+// the answer is not visible on the screen) and the participant says what the
+// relationship between them was in Part 1:
+//   'A activated B' / 'B activated A' / 'They do not activate each other'.
+// Coding as in Part 1: judgment = 'button_to_device' (correct for causal pairs) /
+// 'device_to_button' / 'unrelated' (correct for non-causal pairs); judged_causal =
+// 1 if either direction was chosen. Task name: 'delayed_causal_judgment'.
+// ============================================================
+timeline.push(withShortReadTime({
+    type: jsPsychInstructions,
+    pages: [
+        '<div style="text-align: left; padding: 40px; font-family: Arial;">' +
+        '<h2>Relationship Questions</h2>' +
+        '<p>You will now see a button and a device side by side. For each one, indicate what the relationship between them was in Part 1.</p>' +
+        '</div>'
+    ],
+    show_clickable_nav: true
+}));
+
+var JUDGMENT_TIME_MS = 6000;
+var JUDGMENT_CHOICES = ['A activated B', 'B activated A', 'They do not activate each other'];
+
+// Which image is "A" (left) and "B" (right): the button or the device, depending on button_is_A
+// (the same A/B labels the participant had for this pair in Part 1).
+function judgmentImages(pair) {
+    return pair.button_is_A
+        ? { A: pair.button_path, B: pair.effect_path }
+        : { A: pair.effect_path, B: pair.button_path };
+}
+function correctCausalIndex(pair) { return pair.button_is_A ? 0 : 1; }
+function judgmentCode(pair, response) {
+    if (response === null) return null;
+    if (response === 2) return 'unrelated';
+    return (response === correctCausalIndex(pair)) ? 'button_to_device' : 'device_to_button';
 }
 
+function buildDelayedJudgmentTrial(pair) {
+    var imgs = judgmentImages(pair);
+    return [
+        {
+            type: jsPsychHtmlButtonResponse,
+            stimulus: '<div class="stimulus-container">' +
+                       '<div class="assoc-row">' +
+                       '<div><img src="' + imgs.A + '" class="assoc-image">' +
+                       '<p style="font-size:24px; font-weight:bold; margin-top:10px;">A</p></div>' +
+                       '<div><img src="' + imgs.B + '" class="assoc-image">' +
+                       '<p style="font-size:24px; font-weight:bold; margin-top:10px;">B</p></div>' +
+                       '</div>' +
+                       '<p style="font-size:20px; font-weight:bold; margin-top:15px;">What was the relationship between image A and image B?</p>' +
+                       '</div>',
+            choices: JUDGMENT_CHOICES,
+            trial_duration: JUDGMENT_TIME_MS,
+            data: {
+                task: 'delayed_causal_judgment',
+                pair_id: pair.pair_id,
+                button_series: pair.button_series,
+                device_series: pair.device_series,
+                causality: pair.causality,
+                reward_condition: pair.reward_condition,
+                device_name: pair.device_name,
+                button_is_A: pair.button_is_A
+            },
+            on_finish: function(data) {
+                data.timed_out = (data.response === null) ? 1 : 0;
+                data.judgment = judgmentCode(pair, data.response);
+                data.judged_causal = (data.response === null) ? null : ((data.response === 0 || data.response === 1) ? 1 : 0);
+                var correct_code = (pair.causality === 'causal') ? 'button_to_device' : 'unrelated';
+                data.judgment_correct = (data.judgment === null) ? null : ((data.judgment === correct_code) ? 1 : 0);
+            }
+        },
+        whiteScreenTrial
+    ];
+}
+
+var judgment_order = jsPsych.randomization.shuffle(all_pairs.slice());
+pushPhase(judgment_order, buildDelayedJudgmentTrial, 8);
+
 // ============================================================
-// DEMOGRAPHICS
+// FINAL QUESTIONS (strategy, as in Part 1; no age / gender again)
 // ============================================================
 timeline.push({
     type: jsPsychSurveyText,
     questions: [
-        { prompt: 'Gender (MALE / FEMALE / OTHER):', name: 'gender', rows: 1, columns: 20 },
-        { prompt: 'Age:', name: 'age', rows: 1, columns: 5 },
         { prompt: 'Did you notice any pattern in how the values were assigned to devices? If so, describe it.', name: 'reward_strategy', rows: 2, columns: 50 },
         { prompt: 'How did you choose between images in the "higher monetary value" part?', name: 'strategy', rows: 2, columns: 50 }
     ],
@@ -1541,23 +791,21 @@ timeline.push({
     type: jsPsychInstructions,
     pages: [
         '<div style="text-align: center; padding: 60px; font-family: Arial;">' +
-        '<h2>Experiment Completed</h2>' +
+        '<h2>Experiment Completed (Part 2)</h2>' +
         '<p style="font-size: 20px; margin-top: 20px;">You have successfully finished the study.</p>' +
         '<p style="font-size: 22px; color: #28a745; font-weight: bold; margin-top: 30px;">Thank you very much for your participation!</p>' +
         '<p style="font-size: 20px; margin-top: 30px;">Your completion code is:</p>' +
-        '<p style="font-size: 34px; font-weight: bold; letter-spacing: 3px; margin: 10px 0;">C1AB457CA9</p>' +
+        '<p style="font-size: 34px; font-weight: bold; letter-spacing: 3px; margin: 10px 0;">' + COMPLETION_CODE + '</p>' +
         '<p style="font-size: 16px; color: #666;">Please copy this code and enter it on the platform to confirm that you completed the study.</p>' +
         '<p style="font-size: 16px; color: #666; margin-top: 40px;">Your data has already been saved. You may now safely close this window or return to the platform.</p>' +
         '</div>'
     ],
-    // The final screen has no "Next" button and no keyboard navigation, so
-    // it stays on the screen and the participant can copy the completion
-    // code. (The data was already saved by the call-function trial above.)
     show_clickable_nav: false,
     allow_keys: false
 });
 
 jsPsych.run(timeline);
 
+})();
   </script>
 </html>
